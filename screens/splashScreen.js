@@ -17,7 +17,7 @@ export default function SplashScreen({ navigation }) {
             <Animatable.View style={styles.footer} animation='fadeInUpBig'  >
                 <Text style={styles.title}>Stay connect with everyone!</Text>
                 <Text style={styles.text}>Sign in with account</Text>
-                <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SignInScreen') }}>
+                <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('DrawerStack') }}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
