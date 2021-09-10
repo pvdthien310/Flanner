@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Animated } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { EvilIcons } from '@expo/vector-icons';
@@ -12,18 +13,19 @@ export default function SplashScreen({ navigation }) {
                     animation={logoAnim}
                     style={styles.logo}
                     source={require('../assets/flaner.png')}
-                    resizeMode='stretch' />
+                    resizeMode='stretch'
+                    easing='ease-out-back' />
             </View>
-            <Animatable.View style={styles.footer} animation='fadeInUpBig'  >
+            <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
                 <Text style={styles.title}>Stay connect with everyone!</Text>
                 <Text style={styles.text}>Sign in with account</Text>
-                <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('DrawerStack') }}>
+                <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SignInScreen') }}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
                     >
-                        <Text style={styles.textSign}>Get Started</Text>
-                        <EvilIcons name="chevron-right" size={24} color='white' style={{}} />
+                        <Text style={styles.textSign}>Get Flânner</Text>
+                        <EvilIcons name="chevron-right" size={24} color='white' />
                     </LinearGradient>
                 </TouchableOpacity>
             </Animatable.View>
@@ -51,15 +53,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#CFCFCF'
     },
     header: {
-        flex: 2,
+        height: height * 0.54,
         justifyContent: 'center',
         alignItems: 'center'
     },
     footer: {
-        flex: 1,
+        height: 500,
         backgroundColor: 'white',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        //borderTopLeftRadius: 30,
+        borderTopRightRadius: 70,
         paddingVertical: 50,
         paddingHorizontal: 30
     },
@@ -75,7 +77,6 @@ const styles = StyleSheet.create({
     text: {
         color: 'grey',
         marginTop: 5,
-
     },
     button: {
         alignItems: 'flex-end',
