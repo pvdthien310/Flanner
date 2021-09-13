@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import ChatStackNavigator from './../Fess/navigations/Navigator';
+
 
 function HomeScreen({ navigation }) {
     return (
@@ -26,9 +28,10 @@ const Drawer = createDrawerNavigator();
 
 export const DrawerStack = () => {
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator initialRouteName="Home" >
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+            <Drawer.Screen name="Flanner Chat" component={ChatStackNavigator} options={{headerShown:false}} />
         </Drawer.Navigator>
     );
 }
