@@ -12,7 +12,7 @@ export default function SplashScreen({ navigation }) {
                 <Animatable.Image
                     animation={logoAnim}
                     style={styles.logo}
-                    source={require('../assets/flaner.png')}
+                    source={require('../../assets/flaner.png')}
                     resizeMode='stretch'
                     easing='ease-out-back' />
             </View>
