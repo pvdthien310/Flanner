@@ -6,16 +6,17 @@ const Sent = ({message}) => {
     return(
         <View style={styles.container}>
             <LinearGradient
-                colors={['#f26a50','#f20045']}
+                colors={['#252933','#252933']}
                 style={styles.gradient}
             >
-                <Text style={styles.text}>{message}</Text>
+                <Text style={styles.text}>Hello mother fucker</Text> 
             </LinearGradient>
             <Text style={styles.duration}>12:34 AM</Text>
         </View>
     )
 }
 export default Sent;
+//Tại chỗ message thay bằng variable message dc khai báo trong hàm Sent
 
 const styles = StyleSheet.create({
     container:{
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
         alignSelf:'flex-end'
     },
     duration:{
-        color:'#b6b6b6',
+        color:'#252933',
         fontSize:11,
         marginTop:5,
         fontFamily:'Montserrat_600SemiBold',

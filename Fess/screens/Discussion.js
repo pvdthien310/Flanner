@@ -26,7 +26,7 @@ const Discussion = ({ route, navigation }) => {
 
     return(
       <LinearGradient
-        colors={["#f26a50","#f26a50", "#f20045"]}
+        colors={["black","black", "black"]}
         style={styles.container}
       >
           <View style={styles.main}>

@@ -11,16 +11,15 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
     return (
         <Tab.Navigator 
-            tabBarOptions={{
-                activeTintColor:'#f2404c',
-                inactiveTintColor:'#000119',
+            screenOptions={{
+                tabBarActiveTintColor: 'black',
                 style:{
                     height:65,
                     justifyContent:'center',
                     paddingVertical:15,
                     backgroundColor:'#FFF',
                     elevation:2
-                }
+                },
             }}
         >
                  <Tab.Screen
@@ -30,7 +29,8 @@ const BottomTabNavigator = () => {
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
                             <Entypo name="chat" color={color} size={30}/>
-                        )
+                        ),
+                        headerShown: false
                     }}
                 />
                  <Tab.Screen
@@ -40,7 +40,8 @@ const BottomTabNavigator = () => {
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
                             <Ionicons name='ios-person' color={color} size={30}/>
-                        )
+                        ),
+                        headerShown: false
                     }}
                 />
         </Tab.Navigator>
@@ -53,8 +54,8 @@ const screenOptionStyle = {
 
 const ChatStackNavigator = () => {
     return(
-        <Stack.Navigator screenOptions={screenOptionStyle}>
-            <Stack.Screen name='Chat' component={BottomTabNavigator}/>
+        <Stack.Navigator screenOptions={screenOptionStyle} >
+            <Stack.Screen name='Fess' component={BottomTabNavigator} options={{headerShown: false}} />
             <Stack.Screen name='Discussion' component={Discussion}/>
         </Stack.Navigator>
     )

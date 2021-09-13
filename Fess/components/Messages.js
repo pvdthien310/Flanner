@@ -20,7 +20,7 @@ const Messages = ({ username, uri, count, onPress }) => {
            {
                count > 0 ? (
                    <LinearGradient
-                    colors={['#f26a50', '#f20045', '#f20045']}
+                    colors={['#252933', '#252933', '#252933']}
                     style={styles.gradientStyle}
                    >
                        <Text style={styles.count}>{count}</Text>
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     image:{
         width:60,
         height:60,
-        borderRadius:30
+        borderRadius: 10
     },
     text:{
         color:'#b6b6b6',

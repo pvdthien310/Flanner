@@ -10,15 +10,16 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 const Input = ({ inputMessage, onSendPress, setMessage }) => {
     return(
         <View style={styles.container}>
-            <Entypo name='emoji-happy' color='#fff' size={20}/>
+            <Entypo name='emoji-happy' color='#fff' size={35}/>
             <TextInput
                 placeholder='Some text'
+                placeholderTextColor='white'
                 value={inputMessage}
                 onChangeText={setMessage}
                 style={styles.input}
             />
             <TouchableOpacity onPress={onSendPress}>
-                <Ionicons name='ios-send' color='#FFF' size={20}/>
+                <Ionicons name='ios-send' color='#FFF' size={35}/>
             </TouchableOpacity>
         </View>
     )
@@ -40,8 +41,8 @@ const styles = StyleSheet.create({
     },
     input:{
         fontFamily:'Montserrat_600SemiBold',
-        fontSize:11,
-        color:'#fff',
+        fontSize:15,
+        color:'white',
         paddingHorizontal:10,
         flex:1
     }

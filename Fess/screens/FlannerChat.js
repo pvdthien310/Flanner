@@ -41,12 +41,12 @@ const Chat = (props) => {
 
     return(
        <LinearGradient
-        colors={['#f26a50', '#f20042', '#f20045']}
+        colors={['black', 'black', 'black']}
         style={styles.gradient}
        >
            <View style={styles.headerContainer}>
-                <Text style={styles.header}>Chat</Text>
-                <MaterialIcons name="add" color='#fff' size={30}/>
+                <Text style={styles.header}>Fess</Text>
+                <MaterialIcons name="add" color='#fff' size={35}/>
            </View>
            <ScrollView
                 horizontal
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     ops:{
         borderTopLeftRadius:40,
         borderTopRightRadius:40,
-        height:500,
+        height: 580,
         backgroundColor:'#FFF',
         marginHorizontal:-20
     },
