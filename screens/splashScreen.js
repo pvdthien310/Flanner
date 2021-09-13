@@ -24,7 +24,7 @@ export default function SplashScreen({ navigation }) {
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
                     >
-                        <Text style={styles.textSign}>Get Flânner</Text>
+                        <Text style={styles.textSign}>Get Flâner</Text>
                         <EvilIcons name="chevron-right" size={24} color='white' />
                     </LinearGradient>
                 </TouchableOpacity>

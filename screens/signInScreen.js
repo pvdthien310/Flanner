@@ -4,6 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
+import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function SignInScreen({ navigation }) {
     const [data, setData] = useState({
@@ -33,10 +35,12 @@ export default function SignInScreen({ navigation }) {
         <View style={styles.container}>
             <Animatable.View style={styles.header} animation='zoomInRight' >
                 <Text style={styles.welcome}>Welcome to, </Text>
-                <Text style={styles.flanner}>Flânner</Text>
+                <Text style={styles.flanner}>Flâner</Text>
             </Animatable.View>
+
             <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
                 <Text style={styles.signInTxt}>Sign In</Text>
+
                 <View>
                     <View style={styles.border}></View>
                     <Text style={styles.accountTxt}> Account</Text>
@@ -50,6 +54,7 @@ export default function SignInScreen({ navigation }) {
 
                     </View>
                 </View>
+
                 <View style={{ marginTop: 5 }}>
                     <View style={styles.border}></View>
                     <Text style={styles.passwordTxt}> Password</Text>
@@ -68,19 +73,38 @@ export default function SignInScreen({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} >
-                    <LinearGradient
-                        colors={['black', 'dimgray']}
-                        style={styles.signIn}
-                    >
-                        <Text style={styles.textSign}>Sign In</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <Text style={styles.signUpTxt}>Sign Up</Text>
-                    <Text style={styles.forgot}>For got your password?</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
+
+                    <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                        <Text style={styles.forgot} >Forgot password?</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.signInBtn} >
+                        <LinearGradient
+                            colors={['black', 'dimgray']}
+                            style={styles.signIn}
+                        >
+                            <Text style={styles.textSign}>Sign In</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
                 </View>
 
+                <View style={{ marginTop: 20 }}>
+                    <View style={{ borderBottomColor: 'grey', borderWidth: 0.3, opacity: 0.5, marginTop: 11 }}></View>
+                    <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
+                </View>
+
+                <TouchableOpacity style={styles.facebookGoogleBtn}>
+                    <AntDesign name="google" size={24} color="white" />
+                    <Text style={styles.googleTxt}>Login with Google</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 130 }}
+                    onPress={() => navigation.navigate('SignUpScreen')}
+                >
+                    <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
+                    <Text style={styles.signUpTxt}>Sign Up</Text>
+                </TouchableOpacity>
             </Animatable.View>
         </View>
     )
@@ -104,11 +128,12 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     welcome: {
+        marginTop: 10,
         fontSize: 30,
         marginLeft: 20
     },
     header: {
-        height: height * 0.3,
+        height: height * 0.25,
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
@@ -117,7 +142,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         //borderTopLeftRadius: 30,
         borderTopRightRadius: 70,
-        paddingVertical: 50,
+        paddingVertical: 40,
         paddingHorizontal: 30
     },
     accountView: {
@@ -136,14 +161,14 @@ const styles = StyleSheet.create({
     },
     accountTxt: {
         fontWeight: 'bold',
-        marginLeft: 20,
+        marginLeft: 25,
         backgroundColor: 'white',
         width: 60,
         zIndex: 1,
         marginTop: 15
     },
     accountEdt: {
-        paddingLeft: 10,
+        paddingLeft: 13,
         flex: 1
     },
     passwordView: {
@@ -152,19 +177,18 @@ const styles = StyleSheet.create({
     },
     passwordTxt: {
         fontWeight: 'bold',
-        marginLeft: 20,
+        marginLeft: 25,
         backgroundColor: 'white',
         width: 70,
         zIndex: 1,
         marginTop: 15
     },
     passwordEdt: {
-        paddingLeft: 10,
+        paddingLeft: 13,
         flex: 1
     },
     signInBtn: {
         alignItems: 'flex-end',
-        marginTop: 30
     },
     signIn: {
         width: 150,
@@ -178,11 +202,28 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold'
     },
+    forgot: {
+        fontStyle: 'italic',
+    },
+    facebookGoogleBtn: {
+        backgroundColor: 'black',
+        marginTop: 15,
+        borderRadius: 50,
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    facebookTxt: {
+        color: 'white',
+        marginLeft: 8
+    },
+    googleTxt: {
+        color: 'white',
+        marginLeft: 8,
+        marginRight: 10
+    },
     signUpTxt: {
-        fontSize: 20,
         fontWeight: 'bold'
     },
-    forgot: {
-        fontStyle: 'italic'
-    }
 })

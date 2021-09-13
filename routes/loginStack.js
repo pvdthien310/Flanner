@@ -5,10 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from '../screens/splashScreen'
 import SignInScreen from '../screens/signInScreen';
 import SignUpScreen from '../screens/signUpScreen';
+import ForgotPasswordScreen from '../screens/forgotPasswordScreen';
 import { DrawerStack } from './drawer';
 
-import { CardStyleInterpolators } from '@react-navigation/stack';
-import { TransitionSpecs } from '@react-navigation/stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +22,9 @@ export default function LoginStack() {
                     headerShown: false,
                 }} />
                 <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{
                     headerShown: false,
                 }} />
                 <Stack.Screen name="DrawerStack" component={DrawerStack} options={{

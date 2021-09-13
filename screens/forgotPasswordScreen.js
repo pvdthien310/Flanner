@@ -4,15 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
+import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function SignUpScreen({ navigation }) {
+export default function ForgotPasswordScreen({ navigation }) {
     const [data, setData] = useState({
         user: '',
         password: '',
-        confirm: '',
         showPassword: false,
-        showConfirm: false,
-        checkUser: false,
+        checkUser: false
     });
 
     const TextInputChange = (val) => {
@@ -34,12 +34,12 @@ export default function SignUpScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Animatable.View style={styles.header} animation='zoomInRight' >
-                <Text style={styles.welcome}>Create your </Text>
-                <Text style={styles.flanner}>Flâner</Text>
+                {/* <Text style={styles.welcome}>Create your </Text>
+                <Text style={styles.flanner}>Flânner</Text> */}
             </Animatable.View>
 
             <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
-                <Text style={styles.signInTxt}>Sign Up</Text>
+                <Text style={styles.signInTxt}>Reset Password</Text>
                 <View>
                     <View style={styles.border}></View>
                     <Text style={styles.accountTxt}> Email</Text>
@@ -55,12 +55,24 @@ export default function SignUpScreen({ navigation }) {
 
                 <View style={{ marginTop: 5 }}>
                     <View style={styles.border}></View>
-                    <Text style={styles.passwordTxt}> Password</Text>
+                    <Text style={styles.verifyTxt}> Verify Code</Text>
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
-                            placeholder='Type your password'
+                            placeholder='Type your verify code'
                             secureTextEntry={!data.showPassword}
+                        />
+                    </View>
+                </View>
+
+                <View style={{ marginTop: 5 }}>
+                    <View style={styles.border}></View>
+                    <Text style={styles.newTxt}> New password</Text>
+                    <View style={styles.passwordView}>
+                        <TextInput
+                            style={styles.passwordEdt}
+                            secureTextEntry={!data.showPassword}
+                            placeholder="Type new password"
                         />
                         <Ionicons
                             name={data.showPassword ? "eye-outline" : "eye-off-outline"}
@@ -73,18 +85,18 @@ export default function SignUpScreen({ navigation }) {
 
                 <View style={{ marginTop: 5 }}>
                     <View style={styles.border}></View>
-                    <Text style={styles.confirmPasswordTxt}> Confirm password </Text>
+                    <Text style={styles.confirmTxt}> Confirm password </Text>
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
                             placeholder='Confirm your password'
-                            secureTextEntry={!data.showConfirm}
+                            secureTextEntry={!data.showPassword}
                         />
                         <Ionicons
-                            name={data.showConfirm ? "eye-outline" : "eye-off-outline"}
+                            name={data.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...data, showConfirm: !data.showConfirm })}
+                            onPress={() => setData({ ...data, showPassword: !data.showPassword })}
                         />
                     </View>
                 </View>
@@ -134,14 +146,13 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     header: {
-        height: height * 0.25,
+        height: height * 0.15,
         justifyContent: 'center',
         alignItems: 'flex-start',
     },
     footer: {
         height: 700,
         backgroundColor: 'white',
-        //borderTopLeftRadius: 30,
         borderTopRightRadius: 70,
         paddingVertical: 40,
         paddingHorizontal: 30
@@ -162,37 +173,44 @@ const styles = StyleSheet.create({
     },
     accountTxt: {
         fontWeight: 'bold',
-        marginLeft: 25,
+        marginLeft: 30,
         backgroundColor: 'white',
-        width: 41,
+        width: 42,
         zIndex: 1,
         marginTop: 15
     },
     accountEdt: {
-        paddingLeft: 13,
+        paddingLeft: 20,
         flex: 1
     },
     passwordView: {
         flexDirection: 'row',
         alignItems: 'center'
     },
-    passwordTxt: {
+    verifyTxt: {
         fontWeight: 'bold',
-        marginLeft: 25,
+        marginLeft: 30,
         backgroundColor: 'white',
-        width: 70,
+        width: 82,
         marginTop: 15
     },
-    passwordEdt: {
-        paddingLeft: 13,
-        flex: 1
-    },
-    confirmPasswordTxt: {
+    newTxt: {
         fontWeight: 'bold',
-        marginLeft: 25,
+        marginLeft: 30,
+        backgroundColor: 'white',
+        width: 100,
+        marginTop: 15
+    },
+    confirmTxt: {
+        fontWeight: 'bold',
+        marginLeft: 30,
         backgroundColor: 'white',
         width: 123,
         marginTop: 15
+    },
+    passwordEdt: {
+        paddingLeft: 20,
+        flex: 1
     },
     signInBtn: {
         alignItems: 'flex-end',
