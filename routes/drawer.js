@@ -31,7 +31,7 @@ export const DrawerStack = () => {
         <Drawer.Navigator initialRouteName="Home" >
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-            <Drawer.Screen name="Flanner Chat" component={ChatStackNavigator} options={{headerShown:false}} />
+            <Drawer.Screen name="Flâner Chat" component={ChatStackNavigator} options={{ headerShown: false }} />
         </Drawer.Navigator>
     );
 }
