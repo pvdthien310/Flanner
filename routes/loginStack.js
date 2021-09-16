@@ -15,10 +15,10 @@ export default function LoginStack() {
     return (
         <NavigationContainer>
             <Stack.Navigator >
-                <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
+                <Stack.Screen name="SignInScreen" component={SignInScreen} options={{
                     headerShown: false,
                 }} />
-                <Stack.Screen name="SignInScreen" component={SignInScreen} options={{
+                <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
                     headerShown: false,
                 }} />
                 <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{

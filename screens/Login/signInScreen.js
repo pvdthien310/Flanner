@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, CheckBox } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { Entypo } from '@expo/vector-icons';
@@ -73,20 +73,20 @@ export default function SignInScreen({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <CheckBox />
+                        <Text>Remember me</Text>
+                    </View>
 
-                    <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                    <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => navigation.navigate('ForgotPasswordScreen')}>
                         <Text style={styles.forgot} >Forgot password?</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.signInBtn} >
-                        <LinearGradient
-                            colors={['black', 'dimgray']}
-                            style={styles.signIn}
-                        >
-                            <Text style={styles.textSign}>Sign In</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
                 </View>
+
+                <TouchableOpacity style={styles.signInBtn} >
+                    <Text style={styles.textSign}>SIGN IN</Text>
+                </TouchableOpacity>
 
                 <View style={{ marginTop: 20 }}>
                     <View style={{ borderBottomColor: 'grey', borderWidth: 0.3, opacity: 0.5, marginTop: 11 }}></View>
@@ -94,12 +94,12 @@ export default function SignInScreen({ navigation }) {
                 </View>
 
                 <TouchableOpacity style={styles.facebookGoogleBtn}>
-                    <AntDesign name="google" size={24} color="white" />
+                    <AntDesign name="google" size={24} color="black" />
                     <Text style={styles.googleTxt}>Login with Google</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 130 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 110 }}
                     onPress={() => navigation.navigate('SignUpScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
@@ -188,24 +188,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     signInBtn: {
-        alignItems: 'flex-end',
-    },
-    signIn: {
-        width: 150,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 50,
-        flexDirection: 'row'
-    },
-    textSign: {
-        color: 'white',
-        fontWeight: 'bold'
-    },
-    forgot: {
-        fontStyle: 'italic',
-    },
-    facebookGoogleBtn: {
         backgroundColor: 'black',
         marginTop: 15,
         borderRadius: 50,
@@ -214,12 +196,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    facebookTxt: {
+    signIn: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 50,
+        flexDirection: 'row'
+    },
+    textSign: {
         color: 'white',
-        marginLeft: 8
+        fontWeight: 'bold',
+        fontSize: 15
+    },
+    forgot: {
+        fontStyle: 'italic',
+    },
+    facebookGoogleBtn: {
+        borderWidth: 2,
+        borderColor: 'black',
+        marginTop: 15,
+        borderRadius: 50,
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     googleTxt: {
-        color: 'white',
+        color: 'black',
         marginLeft: 8,
         marginRight: 10
     },
