@@ -15,12 +15,13 @@ export default function LoginStack() {
     return (
         <NavigationContainer>
             <Stack.Navigator >
-                <Stack.Screen name="SignInScreen" component={SignInScreen} options={{
-                    headerShown: false,
-                }} />
                 <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
                     headerShown: false,
                 }} />
+                <Stack.Screen name="SignInScreen" component={SignInScreen} options={{
+                    headerShown: false,
+                }} />
+
                 <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{
                     headerShown: false,
                 }} />
