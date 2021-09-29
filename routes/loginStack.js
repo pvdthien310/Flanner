@@ -15,6 +15,9 @@ export default function LoginStack() {
     return (
         <NavigationContainer>
             <Stack.Navigator >
+                 <Stack.Screen name="DrawerStack" component={DrawerStack} options={{
+                    headerShown: false
+                }} />
                 <Stack.Screen name="SignInScreen" component={SignInScreen} options={{
                     headerShown: false,
                 }} />
@@ -27,9 +30,7 @@ export default function LoginStack() {
                 <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{
                     headerShown: false,
                 }} />
-                <Stack.Screen name="DrawerStack" component={DrawerStack} options={{
-                    headerShown: false
-                }} />
+               
             </Stack.Navigator>
         </NavigationContainer>
     );
