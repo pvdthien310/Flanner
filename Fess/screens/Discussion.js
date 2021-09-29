@@ -3,15 +3,33 @@ import React, {
     useEffect,
     useCallback
 } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+
+import { 
+    View, 
+    Text, 
+    Image, 
+    StyleSheet 
+} from 'react-native';
+
+import { 
+    FontAwesome, 
+    Feather 
+} from '@expo/vector-icons';
+
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+
+import { 
+    ScrollView, 
+    TouchableOpacity 
+} from 'react-native-gesture-handler';
+
 import Icon from '@expo/vector-icons/AntDesign';
 import LastWatch from '../components/LastWatch';
 import Received from '../components/Received';
 import Sent from '../components/Sent';
 import Data from '../dummy/Data.json';
 import Input from '../components/Input';
+import * as ImagePicker from 'expo-image-picker';
 
 import { messages, Linh1, Linh2 } from '../components/data';
 
@@ -19,7 +37,6 @@ import {
     renderAvatar,
     renderBubble,
     renderChatEmpty,
-    // onSend,
     renderMessageText,
     renderActions,
     renderTime,
@@ -98,6 +115,63 @@ const Discussion = ({ route, navigation }) => {
     const [messagess, setMessages] = useState(messages);
 
     useEffect(() => { messagess }, [])
+
+    const openCameraPicker = async () => {
+        permission = await ImagePicker.requestCameraPermissionsAsync();
+    
+        if (permission.granted === false) {
+            alert("Flâner requires permission to access your camera roll.")
+            return;
+        }
+    
+        let pickerResult = await ImagePicker.launchCameraAsync();
+    
+        if (pickerResult.cancelled === true) {
+            return;
+        }
+    
+        onSend({
+            image: pickerResult.uri,
+            user: Linh1,
+        });
+    }
+    
+    const openPhotoLibary = async () => {
+        permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+        if (permission.granted === false) {
+            alert("Flâner requires permission to access your libary.")
+            return;
+        }
+    
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+        });
+    
+        if (pickerResult.cancelled === true) {
+            return;
+        }
+    
+        onSend({
+            image: pickerResult.uri,
+            user: Linh1
+        });
+    }
+    
+    const renderActions = () => {
+        return (
+            <View style={{ flexDirection: "row", marginLeft: 15, marginBottom: 5 }}>
+                <TouchableOpacity onPress={openCameraPicker}>
+                    <Feather name="camera" size={25} color='black' style={{ marginLeft: 2, marginRight: 5 }} />
+                </TouchableOpacity>
+    
+                <TouchableOpacity onPress={openPhotoLibary}>
+                    <FontAwesome name="photo" size={24} color='black' style={{ marginLeft: 8, marginRight: 5 }} />
+                </TouchableOpacity>
+            </View>
+        );
+    }
 
     const onSend = useCallback((messages = []) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))

@@ -19,6 +19,7 @@ export const messages = [
     {
         _id: 1,
         text: 'I must ve called a thousand times to tell you Im sorry for everything that Ive done',
+        image:'',
         createdAt: new Date(),
         user: Linh1,
     },
@@ -26,34 +27,35 @@ export const messages = [
     {
         _id: 2,
         text: 'Hello from the other side!',
+        image: '',
         createdAt: new Date(),
         user: Linh2,
     },
 
-    {
-        _id: 3,
-        text: 'This is a quick reply. Do you love Gifted Chat? (radio) KEEP IT',
-        createdAt: new Date(),
-        quickReplies: {
-            type: 'radio', // or 'checkbox',
-            keepIt: true,
-            values: [
-                {
-                    title: '😋 Yes',
-                    value: 'yes',
-                },
-                {
-                    title: '📷 Yes, let me show you with a picture!',
-                    value: 'yes_picture',
-                },
-                {
-                    title: '😞 Nope. What?',
-                    value: 'no',
-                },
-            ],
-        },
-        user: Linh2,
-    },
+    // {
+    //     _id: 3,
+    //     text: 'This is a quick reply. Do you love Gifted Chat? (radio) KEEP IT',
+    //     createdAt: new Date(),
+    //     quickReplies: {
+    //         type: 'radio', // or 'checkbox',
+    //         keepIt: true,
+    //         values: [
+    //             {
+    //                 title: '😋 Yes',
+    //                 value: 'yes',
+    //             },
+    //             {
+    //                 title: '📷 Yes, let me show you with a picture!',
+    //                 value: 'yes_picture',
+    //             },
+    //             {
+    //                 title: '😞 Nope. What?',
+    //                 value: 'no',
+    //             },
+    //         ],
+    //     },
+    //     user: Linh2,
+    // },
 
     {
         _id: 165,
