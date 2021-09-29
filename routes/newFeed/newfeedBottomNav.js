@@ -166,7 +166,7 @@ export const BottomNavigator = (props) => {
                     ),
                 }}
             /> */}
-            <Tab.Screen name="Status Stack" component={StatusStack} options={{
+            {/* <Tab.Screen name="Status Stack" component={StatusStack} options={{
                 headerTitle: () => <HeaderNews navigation={navigation} title='Status' />,
 
                 tabBarIcon: ({ focused }) => (
@@ -193,7 +193,7 @@ export const BottomNavigator = (props) => {
                         }}> Status</Text>
                     </View>
                 )
-            }} />
+            }} /> */}
 
         </Tab.Navigator >
     );
