@@ -20,7 +20,6 @@ const KnowledgeSchema = new mongoose.Schema({
     },
     listImage:{
         type: Array,
-        default:[]
     },
     react:{
         type:Boolean,

@@ -9,7 +9,7 @@ import { StatusStack } from './statusStack';
 
 
 const Tab = createBottomTabNavigator();
-const user = { name: 'Thien Pham', age: '21', avatar: '2', key: '1' }
+
 
 // const CustomAddPostButton = ({ children, onPress }) => (
 //     <TouchableOpacity
@@ -115,7 +115,6 @@ export const BottomNavigator = (props) => {
                 }
             }}>
             <Tab.Screen name="Knowledge Stack" component={KnowledgeStack}
-                onPress={() => console.log('aa')}
                 options={{
                     headerTitle: () => <HeaderNews navigation={navigation} title='Knowledge' />,
                     tabBarIcon: ({ focused }) => (
@@ -166,7 +165,7 @@ export const BottomNavigator = (props) => {
                     ),
                 }}
             /> */}
-            {/* <Tab.Screen name="Status Stack" component={StatusStack} options={{
+            <Tab.Screen name="Status Stack" component={StatusStack} options={{
                 headerTitle: () => <HeaderNews navigation={navigation} title='Status' />,
 
                 tabBarIcon: ({ focused }) => (
@@ -193,7 +192,7 @@ export const BottomNavigator = (props) => {
                         }}> Status</Text>
                     </View>
                 )
-            }} /> */}
+            }} />
 
         </Tab.Navigator >
     );

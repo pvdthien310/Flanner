@@ -12,7 +12,6 @@ export const StatusStack = (props) => {
             <Stack.Screen name='Status' component={Status} />
             <Stack.Screen name='Status Detail' component={DetailStatus} />
             <Stack.Screen name='Status Member' component={StatusMember} />
-
         </Stack.Navigator>
     )
 }

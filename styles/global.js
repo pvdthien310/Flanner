@@ -11,12 +11,12 @@ export const globalStyles = StyleSheet.create({
         padding: 12
     },
     tittleText: {
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 25
     },
     textinside: {
         fontSize: 15,
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         margin: 10
     },
     input: {

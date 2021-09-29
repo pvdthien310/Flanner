@@ -47,6 +47,7 @@ const KnowledgeMember = ({ item, navigation }) => {
 
     useEffect(() => {
         console.log('render post')
+        console.log(item.listImage.length)
     })
 
     return (
@@ -61,6 +62,7 @@ const KnowledgeMember = ({ item, navigation }) => {
             <PostText>
                 <TouchableOpacity onPress={() => navigation.navigate('KnowLedge Detail', { item })}>
                     <Text style={Poststyle.body}>{item.body}</Text>
+                  
                 </TouchableOpacity>
             </PostText>
             <PostImage>

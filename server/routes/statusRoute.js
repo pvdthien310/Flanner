@@ -19,9 +19,9 @@ StatusRoute.post('/send-data', (req,res) => {
     const newStatus = new Status({
         username: req.body.username,
         body: req.body.body,
-        avatar: req.body.avatar,
         title : req.body.title,
         description: req.body.description,
+        avatar: req.body.avatar,
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
@@ -43,9 +43,9 @@ StatusRoute.post('/update', (req, res) => {
     Status.findByIdAndUpdate(req.body.id, {
         username: req.body.username,
         body: req.body.body,
-        avatar: req.body.avatar,
         title : req.body.title,
         description: req.body.description,
+        avatar: req.body.avatar,
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
@@ -76,9 +76,5 @@ StatusRoute.get('/', (req, res) => {
             console.log(err)
         })
 })
-
-
-
-
 
 module.exports = StatusRoute

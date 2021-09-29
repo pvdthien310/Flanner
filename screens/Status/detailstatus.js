@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Poststyle_Status,images } from '../../styles/poststyle';
+import { Poststyle_Status,images,Poststyle } from '../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 
 const DetailStatus = ({ route, navigation }) => {
@@ -28,17 +28,17 @@ const DetailStatus = ({ route, navigation }) => {
             <UserInfo>
                 <Image source={images.avatars[item.avatar]} style={Poststyle_Status.imageavatar} />
                 <UserInfoText>
-                    <Text style={Poststyle_Status.name}> {item.name}</Text>
+                    <Text style={Poststyle_Status.name}> {item.username}</Text>
                     <Text style={Poststyle_Status.posttime}> {item.posttime}</Text>
                 </UserInfoText>
 
             </UserInfo>
 
             <PostText>    
-            <Text style={Poststyle_Status.body_detail}>{item.title}</Text>
+                    <Text style={Poststyle_Status.title_detail}>{item.title}</Text>
                     <Text style={Poststyle_Status.body_detail}>{item.body}</Text>
             </PostText>
-            <Text style={Poststyle_Status.reactnumber_detail}>{item.reactnumber} Likes</Text>
+            <Text style={Poststyle_Status.reactnumber_detail}>{item.reactNumber} Likes</Text>
             </ScrollView>
                
         </Post>

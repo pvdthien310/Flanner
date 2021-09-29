@@ -4,8 +4,6 @@ const StatusSchema = new mongoose.Schema({
     username:{
         type:String,
         required:true,
-        min: 1 ,
-        max: 20,
     },
     body:{
         type:String,
@@ -28,7 +26,6 @@ const StatusSchema = new mongoose.Schema({
     },
     listImage:{
         type: Array,
-        default:[]
     },
     react:{
         type:Boolean,
@@ -37,8 +34,7 @@ const StatusSchema = new mongoose.Schema({
     reactNumber:{
         type:String,
     }
-},
- {timestamps:true}
+}
 );
 
 module.exports = mongoose.model("Status", StatusSchema);

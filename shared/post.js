@@ -94,6 +94,27 @@ export function ReactNumber(props) {
         </View>
     )
 }
+
+export function ReactNumber1(props) {
+    return (
+        <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowOffset: { width: 1, height: 1 },
+            shadowColor: '',
+            shadowOpacity: 0.1,
+            shadowRadius: 2,
+            marginTop: 5,
+            marginEnd: 10,
+            marginStart: 13,
+            borderRadius: 2,
+            padding: 6,
+            backgroundColor: 'lightslategrey',
+        }}>
+            {props.children}
+        </View>
+    )
+}
 export function InteractionWrapper(props) {
     return (
         <View style={Poststyle.interactionwrapper}>

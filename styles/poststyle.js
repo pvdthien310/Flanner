@@ -19,18 +19,18 @@ export const imagespost = {
 }
 export const Poststyle = StyleSheet.create({
     name: {
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         marginStart: 5,
         marginTop: 5
     },
     posttime: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 10,
         marginStart: 8,
     },
     body: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 15,
         marginTop: 5
     },
@@ -49,7 +49,7 @@ export const Poststyle = StyleSheet.create({
     },
     imagenumber: {
         textAlign: 'right',
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         borderWidth: 1,
         borderRadius: 5,
         paddingStart: 2,
@@ -81,13 +81,13 @@ export const Poststyle = StyleSheet.create({
     buttontext: {
         marginTop: 5,
         marginStart: 5,
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         color: 'black'
     },
     reactnumber: {
 
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         textAlign: 'center',
         color: 'white',
@@ -103,7 +103,7 @@ export const Poststyle = StyleSheet.create({
     buttontext1: {
         marginTop: 5,
         marginStart: 5,
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         color: 'firebrick'
     },
@@ -129,35 +129,35 @@ export const Poststyle = StyleSheet.create({
 })
 export const Poststyle_Knowledge = StyleSheet.create({
     name: {
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         marginStart: 5,
         marginTop: 5
     },
     posttime: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 10,
         marginStart: 8,
     },
     title: {
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 18,
         marginTop: 5,
         marginBottom: 5,
     },
     description: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 15,
         marginTop: 5,
         color: 'dimgray'
     },
     body: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 15,
         marginTop: 5
     },
     body_detail: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 18,
         marginTop: 5
     },
@@ -176,7 +176,7 @@ export const Poststyle_Knowledge = StyleSheet.create({
     },
     imagenumber: {
         textAlign: 'right',
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         borderWidth: 1,
         borderRadius: 5,
         paddingStart: 2,
@@ -208,13 +208,13 @@ export const Poststyle_Knowledge = StyleSheet.create({
     buttontext: {
         marginTop: 5,
         marginStart: 5,
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         color: 'black'
     },
     reactnumber: {
 
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         textAlign: 'center',
         color: 'white',
@@ -228,7 +228,7 @@ export const Poststyle_Knowledge = StyleSheet.create({
     },
     reactnumber_detail: {
 
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         textAlign: 'center',
         color: 'black',
@@ -243,7 +243,7 @@ export const Poststyle_Knowledge = StyleSheet.create({
     buttontext1: {
         marginTop: 5,
         marginStart: 5,
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         color: 'firebrick'
     },
@@ -269,30 +269,40 @@ export const Poststyle_Knowledge = StyleSheet.create({
 
 export const Poststyle_Status = StyleSheet.create({
     name: {
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         marginStart: 5,
         marginTop: 5
     },
+    title_detail: {
+        fontFamily: 'nunitobold',
+        fontSize: 22,
+        marginTop: 5
+    },
+    body_detail: {
+        fontFamily: 'nunitoregular',
+        fontSize: 18,
+        marginTop: 5
+    },
     posttime: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 10,
         marginStart: 8,
     },
     title: {
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 18,
         marginTop: 5,
         marginBottom: 5,
     },
     description: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 15,
         marginTop: 5,
         color: 'dimgray'
     },
     body: {
-        fontFamily: 'nunito-regular',
+        fontFamily: 'nunitoregular',
         fontSize: 15,
         marginTop: 5
     },
@@ -311,7 +321,7 @@ export const Poststyle_Status = StyleSheet.create({
     },
     imagenumber: {
         textAlign: 'right',
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         borderWidth: 1,
         borderRadius: 5,
         paddingStart: 2,
@@ -343,13 +353,13 @@ export const Poststyle_Status = StyleSheet.create({
     buttontext: {
         marginTop: 5,
         marginStart: 5,
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         color: 'black'
     },
     reactnumber: {
 
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         textAlign: 'center',
         color: 'white',
@@ -364,7 +374,7 @@ export const Poststyle_Status = StyleSheet.create({
     buttontext1: {
         marginTop: 5,
         marginStart: 5,
-        fontFamily: 'nunito-bold',
+        fontFamily: 'nunitobold',
         fontSize: 15,
         color: 'firebrick'
     },
