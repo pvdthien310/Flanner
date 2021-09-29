@@ -2,13 +2,13 @@ import * as  React from 'react'
 import { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Image, Text, View, TouchableOpacity, useState } from 'react-native'
-import { HeaderNews } from '../shared/header'
+import { HeaderNews } from '../../shared/header'
 
 import { KnowledgeStack } from './knowledgeStack';
 
 
 const Tab = createBottomTabNavigator();
-const user = { name: 'Thien Pham', age: '21', avatar: '2', key: '1', Addnewpost: Addnewpost }
+const user = { name: 'Thien Pham', age: '21', avatar: '2', key: '1' }
 
 // const CustomAddPostButton = ({ children, onPress }) => (
 //     <TouchableOpacity
@@ -126,7 +126,7 @@ export const BottomNavigator = (props) => {
                                 marginTop: 5
 
                             }}>
-                            <Image source={require('../assets/icons8-book-64.png')}
+                            <Image source={require('../../assets/icon/knowledge.png')}
                                 resizeMode='contain'
                                 style={{
                                     width: focused ? 30 : 25,

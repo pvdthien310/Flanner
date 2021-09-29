@@ -37,12 +37,3 @@ export const globalStyles = StyleSheet.create({
     }
 })
 
-export const images = {
-    ratings: {
-        '1': require('../assets/Picture/rating-1.png'),
-        '2': require('../assets/Picture/rating-2.png'),
-        '3': require('../assets/Picture/rating-3.png'),
-        '4': require('../assets/Picture/rating-4.png'),
-        '5': require('../assets/Picture/rating-5.png'),
-    }
-}

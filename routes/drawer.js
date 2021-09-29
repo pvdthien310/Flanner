@@ -35,8 +35,7 @@ export const DrawerStack = () => {
             headerShown: false
         }} 
         drawerContent = {(props) => <CustomDrawer {...props}/> } >
-            <Drawer.Screen name="Home" component={HomeScreen} />
-            <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+           
             <Drawer.Screen name = "Drawer" component = {BottomNavigator}/>
         </Drawer.Navigator>
     );

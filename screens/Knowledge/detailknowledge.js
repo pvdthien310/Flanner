@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Button, Image, FlatList } from 'react-native';
-import { globalStyles } from '../styles/global';
-import Post, { PostText, UserInfo, UserInfoText } from '../shared/post';
+import { globalStyles } from '../../styles/global';
+import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Poststyle_Knowledge, images, Poststyle } from '../styles/poststyle';
+import { Poststyle_Knowledge, images, Poststyle } from '../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 
 const DetailKnowledge = ({ route, navigation }) => {

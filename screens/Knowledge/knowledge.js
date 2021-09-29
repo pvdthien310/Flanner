@@ -1,13 +1,13 @@
 import React, { useState, useEffect} from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
-import { globalStyles } from '../styles/global';
+import { globalStyles } from '../../styles/global';
 import KnowledgeMember from '../../components/knowledgeMember';
 const Knowledge = ({ navigation }) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
 
     const fetchData = () => {
-        fetch('http://192.168.0.106:3000/')
+        fetch('http://192.168.0.103:3000/api/knowledge')
             .then(res => res.json())
             .then(result => {
                 setData(result)

@@ -17,14 +17,14 @@ const KnowledgeMember = ({ item, navigation }) => {
         if (pressed == true) setReactnumber(reactnumber - 1);
         else setReactnumber(reactnumber + 1)
 
-        fetch("http://192.168.0.106:3000/update", {
+        fetch("http://192.168.0.106:3000/api/knowledge/update", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 id: item._id,
-                name: item.name,
+                username: item.username,
                 body: item.body,
                 avatar: item.avatar,
                 posttime: item.posttime,
@@ -54,7 +54,7 @@ const KnowledgeMember = ({ item, navigation }) => {
             <UserInfo>
                 <Image source={images.avatars[item.avatar]} style={Poststyle.imageavatar} />
                 <UserInfoText>
-                    <Text style={Poststyle.name}> {item.name}</Text>
+                    <Text style={Poststyle.name}> {item.username}</Text>
                     <Text style={Poststyle.posttime}> {item.posttime}</Text>
                 </UserInfoText>
             </UserInfo>

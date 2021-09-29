@@ -10,10 +10,10 @@ export default function Header({ navigation, title }) {
         navigation.openDrawer();
     }
     return (
-        <ImageBackground source={require('../assets/Picture/game_bg.png')} style={styles.header}>
+        <ImageBackground source={require('../assets/game_bg.png')} style={styles.header}>
             <MaterialIcons name='menu' size={28} onPress={openMenu} style={styles.icon} />
             <View style={styles.headerTitle}>
-                <Image style={styles.headerImage} source={require('../assets/logo/Logo.png')} />
+                <Image style={styles.headerImage} source={require('../assets/logo/logo.png')} />
                 <Text style={styles.headerText}>{title}</Text>
             </View>
         </ImageBackground>
@@ -25,11 +25,11 @@ export const HeaderNews = ({ navigation, title }) => {
         navigation.openDrawer();
     }
     return (
-        <ImageBackground source={require('../assets/Picture/game_bg.png')} style={styles.header}>
+        <ImageBackground source={require('../assets/game_bg.png')} style={styles.header}>
             <MaterialIcons name='menu' size={28} onPress={openMenu} style={styles.icon} />
             {/* <Image style={styles.headerImage} onPress={openMenu} source={require('../assets/logo/Logo.png')} /> */}
             <View style={styles.headerTitle}>
-                <Image style={styles.headerImage} source={require('../assets/logo/Logo.png')} />
+                <Image style={styles.headerImage} source={require('../assets/logo/logo.png')} />
                 <Text style={styles.headerText}>{title}</Text>
             </View>
             <Image source={images.avatars['2']} style={styles.imageavatar} />
