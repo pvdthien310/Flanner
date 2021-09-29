@@ -1,11 +1,11 @@
 
-const KnowledgeRoute = require('express').Router();
-const Knowledge = require("../models/Knowledge")
+const StatusRoute = require('express').Router();
+const Status = require("../models/Status")
 
 
 /// Delete member
-KnowledgeRoute.post('/delete', (req, res) => {
-    Knowledge.findByIdAndRemove(req.body.id)
+StatusRoute.post('/delete', (req, res) => {
+    Status.findByIdAndRemove(req.body.id)
         .then((data) => {
             console.log("Delete Success")
             res.send("delete")
@@ -15,18 +15,20 @@ KnowledgeRoute.post('/delete', (req, res) => {
 })
 
 /// Add new member
-KnowledgeRoute.post('/send-data', (req,res) => {
-    const newKnowledge = new Knowledge({
+StatusRoute.post('/send-data', (req,res) => {
+    const newStatus = new Status({
         username: req.body.username,
         body: req.body.body,
         avatar: req.body.avatar,
+        title : req.body.title,
+        description: req.body.description,
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
         reactNumber: req.body.reactNumber 
     })
 
-    newKnowledge.save()
+    newStatus.save()
     .then((data) => {
         console.log(data)
         res.send("Add Success")
@@ -37,11 +39,13 @@ KnowledgeRoute.post('/send-data', (req,res) => {
 })
 
 /// Update member by ID
-KnowledgeRoute.post('/update', (req, res) => {
-    Knowledge.findByIdAndUpdate(req.body.id, {
+StatusRoute.post('/update', (req, res) => {
+    Status.findByIdAndUpdate(req.body.id, {
         username: req.body.username,
         body: req.body.body,
         avatar: req.body.avatar,
+        title : req.body.title,
+        description: req.body.description,
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
@@ -57,15 +61,15 @@ KnowledgeRoute.post('/update', (req, res) => {
 })
 
 //Get a member by ID
-KnowledgeRoute.get('/:id', (req,res) => {
-    Knowledge.findById(req.body.id)
+StatusRoute.get('/:id', (req,res) => {
+    Status.findById(req.body.id)
     .then(data => res.send(data))
     .catch(err => console.log(err))
 })
 
 /// Get all members
-KnowledgeRoute.get('/', (req, res) => {
-    Knowledge.find({})
+StatusRoute.get('/', (req, res) => {
+    Status.find({})
         .then(data => {
             res.send(data)
         }).catch(err => {
@@ -74,4 +78,7 @@ KnowledgeRoute.get('/', (req, res) => {
 })
 
 
-module.exports = KnowledgeRoute
+
+
+
+module.exports = StatusRoute

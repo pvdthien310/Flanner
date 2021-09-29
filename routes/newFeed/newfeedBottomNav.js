@@ -5,6 +5,7 @@ import { StyleSheet, Image, Text, View, TouchableOpacity, useState } from 'react
 import { HeaderNews } from '../../shared/header'
 
 import { KnowledgeStack } from './knowledgeStack';
+import { StatusStack } from './statusStack';
 
 
 const Tab = createBottomTabNavigator();
@@ -165,7 +166,7 @@ export const BottomNavigator = (props) => {
                     ),
                 }}
             /> */}
-            {/* <Tab.Screen name="Status" component={Status} options={{
+            <Tab.Screen name="Status Stack" component={StatusStack} options={{
                 headerTitle: () => <HeaderNews navigation={navigation} title='Status' />,
 
                 tabBarIcon: ({ focused }) => (
@@ -176,7 +177,7 @@ export const BottomNavigator = (props) => {
                             top: 10,
                             marginTop: 5
                         }}>
-                        <Image source={require('../assets/icons8-file-64.png')}
+                        <Image source={require('../../assets/icon/status.png')}
                             resizeMode='contain'
                             style={{
                                 width: focused ? 30 : 25,
@@ -192,7 +193,7 @@ export const BottomNavigator = (props) => {
                         }}> Status</Text>
                     </View>
                 )
-            }} /> */}
+            }} />
 
         </Tab.Navigator >
     );
