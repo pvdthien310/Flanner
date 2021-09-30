@@ -4,23 +4,24 @@ import React, {
     useCallback
 } from 'react';
 
-import { 
-    View, 
-    Text, 
-    Image, 
-    StyleSheet 
+import {
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    Clipboard,
 } from 'react-native';
 
-import { 
-    FontAwesome, 
-    Feather 
+import {
+    FontAwesome,
+    Feather
 } from '@expo/vector-icons';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { 
-    ScrollView, 
-    TouchableOpacity 
+import {
+    ScrollView,
+    TouchableOpacity
 } from 'react-native-gesture-handler';
 
 import Icon from '@expo/vector-icons/AntDesign';
@@ -31,14 +32,13 @@ import Data from '../dummy/Data.json';
 import Input from '../components/Input';
 import * as ImagePicker from 'expo-image-picker';
 
-import { messages, Linh1, Linh2 } from '../components/data';
+import { data, Linh1, Linh2 } from '../components/data';
 
 import {
     renderAvatar,
     renderBubble,
     renderChatEmpty,
     renderMessageText,
-    renderActions,
     renderTime,
     renderInputToolbar,
     renderSend,
@@ -112,75 +112,100 @@ const Discussion = ({ route, navigation }) => {
     //     </LinearGradient>
     // )
 
-    const [messagess, setMessages] = useState(messages);
+    const [messages, setMessages] = useState(data);
 
-    useEffect(() => { messagess }, [])
+    useEffect(() => { messages }, [])
 
     const openCameraPicker = async () => {
         permission = await ImagePicker.requestCameraPermissionsAsync();
-    
+
         if (permission.granted === false) {
             alert("Flâner requires permission to access your camera roll.")
             return;
         }
-    
+
         let pickerResult = await ImagePicker.launchCameraAsync();
-    
+
         if (pickerResult.cancelled === true) {
             return;
         }
-    
+
         onSend({
             image: pickerResult.uri,
             user: Linh1,
         });
     }
-    
+
     const openPhotoLibary = async () => {
         permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    
+
         if (permission.granted === false) {
             alert("Flâner requires permission to access your libary.")
             return;
         }
-    
+
         let pickerResult = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
         });
-    
+
         if (pickerResult.cancelled === true) {
             return;
         }
-    
+
         onSend({
             image: pickerResult.uri,
             user: Linh1
         });
-    }
-    
+    };
+
     const renderActions = () => {
         return (
-            <View style={{ flexDirection: "row", marginLeft: 15, marginBottom: 5 }}>
+            <View style={{ flexDirection: "row", marginLeft: 15, marginBottom: 8 }}>
                 <TouchableOpacity onPress={openCameraPicker}>
                     <Feather name="camera" size={25} color='black' style={{ marginLeft: 2, marginRight: 5 }} />
                 </TouchableOpacity>
-    
+
                 <TouchableOpacity onPress={openPhotoLibary}>
-                    <FontAwesome name="photo" size={24} color='black' style={{ marginLeft: 8, marginRight: 5 }} />
+                    <FontAwesome name="photo" size={24} color='black' style={{ marginLeft: 8, marginRight: 5, marginBottom: 1}} />
                 </TouchableOpacity>
             </View>
         );
+    };
+
+    const onLongPress = (context, message) => {
+        console.log(context, message);
+        const options = ['Copy', 'Delete Message', 'Cancel'];
+        const cancelButtonIndex = options.length - 1;
+        context.actionSheet().showActionSheetWithOptions({
+            options,
+            cancelButtonIndex
+        }, (buttonIndex) => {
+            switch (buttonIndex) {
+                case 0:
+                    console.log(message);
+                    Clipboard.setString(message.text);
+                    break;
+                case 1:
+                    onDelete(message);
+                    break;
+            }
+        });
     }
 
-    const onSend = useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    const onSend = useCallback((message = []) => {
+        console.log(message)
+        setMessages(previousMessages => GiftedChat.append(previousMessages, message))
     }, []);
+
+    const onDelete = (message) =>{
+        console.log(message)
+        setMessages(previousMessages => previousMessages.filter(mess => mess.id !== message.id))
+    }
 
 
     return (
         <View style={styles.container}>
-
             <View style={styles.headerContainer}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
@@ -191,14 +216,17 @@ const Discussion = ({ route, navigation }) => {
                         size={24} />
                 </TouchableOpacity>
                 <Text style={styles.username}>{Linh2.name}</Text>
-                <Image source={Linh2.avatar} style={styles.avatar} />
+                <Image source={Linh2.avatar}
+                    style={styles.avatar} />
             </View>
 
-            <GiftedChat
-                messages={messagess}
+            <GiftedChat 
+                messages={messages}
+                user={Linh1}
+
                 alwaysShowSend
                 onSend={messages => onSend(messages)}
-                user={Linh1}
+                onLongPress={onLongPress}
 
                 scrollToBottom
                 scrollToBottomComponent={scrollToBottomComponent}
@@ -255,7 +283,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 25,
         borderColor: 'white',
-        borderWidth: 2
+        borderWidth: 2,
     }
 
 })

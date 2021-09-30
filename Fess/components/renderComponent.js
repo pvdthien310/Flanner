@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Image, Text } from 'react-native';
 import {
     Avatar,
     Bubble,
@@ -19,9 +19,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-
-
 import { Linh1, Linh2 } from './data'
+import { color } from 'react-native-reanimated';
 
 export const renderBubble = (props) => {
     return (
@@ -29,12 +28,14 @@ export const renderBubble = (props) => {
             wrapperStyle={{
                 right: {
                     backgroundColor: props?.currentMessage?.image ? "transparent" : 'white',
-                    padding: 7,
+                    padding: props?.currentMessage?.image ? 2: 7,
+                    paddingBottom: props?.currentMessage?.image? 0: 7
                 },
 
                 left: {
-                    backgroundColor: props?.currentMessage?.image ? "transparent" : 'grey',
-                    padding: 7,
+                    backgroundColor: props?.currentMessage?.image ? "transparent" : 'lightslategrey',
+                    padding: props?.currentMessage?.image ? 2: 7,
+                    paddingBottom: props?.currentMessage?.image? 0: 7
                 }
             }}
 
@@ -45,6 +46,10 @@ export const renderBubble = (props) => {
                 left: {
                     color: 'white'
                 }
+            }}
+
+            usernameStyle={{
+                color:  props?.currentMessage?.image? 'transparent':'white'
             }}
         >
         </Bubble>
@@ -87,10 +92,10 @@ export const renderTime = (props) => {
         <Time {...props}
             timeTextStyle={{
                 right: {
-                    color: "black"
+                    color: props?.currentMessage?.image ? "transparent" : "black"
                 },
                 left: {
-                    color: props?.currentMessage?.image ? "dimgray" : "white"
+                    color: props?.currentMessage?.image ? "transparent" : "white"
                 }
             }}
         />
