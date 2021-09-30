@@ -7,6 +7,7 @@ import {
     MessageText,
     Send,
     Time,
+    Day,
     GiftedChat
 } from 'react-native-gifted-chat'
 
@@ -80,6 +81,7 @@ export const renderInputToolbar = (props) => {
                 backgroundColor: 'white',
                 borderRadius: 25,
                 marginLeft: 7,
+                marginTop: 2,
                 marginRight: 7,
                 shadowColor: 'light-gray'
             }}
@@ -100,6 +102,19 @@ export const renderTime = (props) => {
             }}
         />
     );
+}
+
+export const renderDay = (props)=>{
+    return (
+        <Day {...props}
+            wrapperStyle={{
+                backgroundColor: 'black',
+                paddingHorizontal: 8,
+                paddingVertical: 5,
+                borderRadius: 5,
+            }}
+        />
+    )
 }
 
 export const renderAvatar = (props) => {

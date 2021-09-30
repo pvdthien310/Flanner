@@ -20,14 +20,14 @@ export const data = [
         id: '00001',
         text: 'https://www.google.com.vn/',
         image:'',
-        createdAt: new Date(),
+        createdAt: new Date('September 29, 2021 20:30:00'),
         user: Linh1,
     },
     {
         id: 1,
         text: 'I must ve called a thousand times to tell you Im sorry for everything that Ive done',
         image:'',
-        createdAt: new Date(),
+        createdAt: new Date('September 29, 2021 20:01:00'),
         user: Linh1,
     },
 
@@ -35,7 +35,7 @@ export const data = [
         id: 2,
         text: 'Hello from the other side!',
         image: '',
-        createdAt: new Date(),
+        createdAt: new Date('September 29, 2021 20:00:00'),
         user: Linh2,
     },
 
@@ -67,21 +67,21 @@ export const data = [
     {
         id: 165,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyiB7uhehP8tLFkKcxrFLp6YbVwIoVMTEbFw&usqp=CAU',
-        createdAt: new Date(),
+        createdAt: new Date('September 29, 2021 7:50:00'),
         user: Linh2
     },
 
     {
         id: 124,
         text: 'I ll with you from dusk till dawn',
-        createdAt: new Date(),
+        createdAt: new Date('September 29, 2021 7:49:00'),
         user: Linh2
     },
 
     {
         id: 19888,
         text: 'I ll with you from dusk till dawn, baby im right here!',
-        createdAt: new Date(),
+        createdAt: new Date('September 29, 2021 7:39:00'),
         user: Linh1,
     },
 
@@ -101,14 +101,14 @@ export const data = [
             //     image: 'https://www.surfertoday.com/images/stories/seawater.jpg'
             // },
         ],
-        createdAt: new Date(),
+        createdAt: new Date('September 4, 2021 23:39:00'),
         user: Linh1,
     },
 
     {
         id: 27,
         text: 'Hello, it is me!',
-        createdAt: new Date(),
+        createdAt: new Date('September 4, 2021 23:39:00'),
         user: Linh1,
     },
 

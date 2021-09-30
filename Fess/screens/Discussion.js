@@ -43,6 +43,7 @@ import {
     renderInputToolbar,
     renderSend,
     scrollToBottomComponent,
+    renderDay
 
 } from '../components/renderComponent'
 
@@ -157,6 +158,8 @@ const Discussion = ({ route, navigation }) => {
             image: pickerResult.uri,
             user: Linh1
         });
+
+        
     };
 
     const renderActions = () => {
@@ -236,6 +239,7 @@ const Discussion = ({ route, navigation }) => {
                 renderActions={renderActions}
                 renderInputToolbar={renderInputToolbar}
                 renderTime={renderTime}
+                renderDay = {renderDay}
                 renderAvatar={renderAvatar}
                 renderUsernameOnMessage={true}
                 renderChatEmpty={renderChatEmpty}
