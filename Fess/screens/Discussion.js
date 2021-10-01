@@ -32,7 +32,7 @@ import Data from '../dummy/Data.json';
 import Input from '../components/Input';
 import * as ImagePicker from 'expo-image-picker';
 
-import { data, Linh1, Linh2 } from '../components/data';
+import { messageData, Linh1, Linh2 } from '../components/data';
 
 import {
     renderAvatar,
@@ -113,7 +113,7 @@ const Discussion = ({ route, navigation }) => {
     //     </LinearGradient>
     // )
 
-    const [messages, setMessages] = useState(data);
+    const [messages, setMessages] = useState(messageData);
 
     useEffect(() => { messages }, [])
 
@@ -176,6 +176,11 @@ const Discussion = ({ route, navigation }) => {
         );
     };
 
+    const onDelete = (message) =>{
+        console.log(message)
+        setMessages(previousMessages => previousMessages.filter(mess => mess._id !== message._id))
+    }
+
     const onLongPress = (context, message) => {
         console.log(context, message);
         const options = ['Copy', 'Delete Message', 'Cancel'];
@@ -196,16 +201,9 @@ const Discussion = ({ route, navigation }) => {
         });
     }
 
-    const onSend = useCallback((message = []) => {
-        console.log(message)
-        setMessages(previousMessages => GiftedChat.append(previousMessages, message))
-    }, []);
-
-    const onDelete = (message) =>{
-        console.log(message)
-        setMessages(previousMessages => previousMessages.filter(mess => mess.id !== message.id))
-    }
-
+    const onSend = useCallback((messages = []) => {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+      }, [])
 
     return (
         <View style={styles.container}>
