@@ -6,40 +6,44 @@ import { HeaderNews } from '../../shared/header'
 
 import { KnowledgeStack } from './knowledgeStack';
 import { StatusStack } from './statusStack';
+import Addpost from '../../screens/Addpost/addKnowledge';
+import AddStatus from '../../screens/Addpost/addStatus';
 
 
 const Tab = createBottomTabNavigator();
+const user = {name : 'Thien Pham', age : '20', avatar : '1'}
 
 
-// const CustomAddPostButton = ({ children, onPress }) => (
-//     <TouchableOpacity
+const CustomAddPostButton = ({ children, onPress }) => (
 
-//         onPress={() => {
-//             console.log(user)
-//             navigation.navigate('Add', { user })
-//         }}
+    <TouchableOpacity
 
-//         style={{
-//             top: -10,
-//             justifyContent: 'center',
-//             alignItems: 'center',
+        onPress={() => {
+            console.log(user)
+            navigation.navigate('Add', { user })
+        }}
 
-//             ...styles.shadow
-//         }}
-//     >
-//         <View
-//             style={{
-//                 width: 70,
-//                 height: 70,
-//                 borderRadius: 35,
-//                 backgroundColor: 'lightgrey'
-//             }}>
-//             {children}
-//         </View>
+        style={{
+            top: -10,
+            justifyContent: 'center',
+            alignItems: 'center',
+
+            ...styles.shadow
+        }}
+    >
+        <View
+            style={{
+                width: 70,
+                height: 70,
+                borderRadius: 35,
+                backgroundColor: 'lightgrey'
+            }}>
+            {children}
+        </View>
 
 
-//     </TouchableOpacity>
-// )
+    </TouchableOpacity>
+)
 
 
 
@@ -143,14 +147,14 @@ export const BottomNavigator = (props) => {
                         </View>
                     )
                 }} />
-            {/* <Tab.Screen name="Add" component={Addpost}
+            <Tab.Screen name="Add" component={AddStatus}
 
                 options={{
                     headerTitle: () => <HeaderNews navigation={navigation} title='Add Post' />,
 
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons8-send-64.png')}
+                            source={require('../../assets/icon/addpost.png')}
                             resizeMode='contain'
                             style={{
                                 width: 30,
@@ -164,7 +168,7 @@ export const BottomNavigator = (props) => {
                         <CustomAddPostButton  {...props} />
                     ),
                 }}
-            /> */}
+            />
             <Tab.Screen name="Status Stack" component={StatusStack} options={{
                 headerTitle: () => <HeaderNews navigation={navigation} title='Status' />,
 

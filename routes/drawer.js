@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { CustomDrawer } from '../custom/customDrawer';
 import { BottomNavigator } from './newFeed/newfeedBottomNav';
+import AddStatus from '../screens/Addpost/addStatus';
 
 function HomeScreen({ navigation }) {
     return (
@@ -37,6 +38,7 @@ export const DrawerStack = () => {
         drawerContent = {(props) => <CustomDrawer {...props}/> } >
            
             <Drawer.Screen name = "Drawer" component = {BottomNavigator}/>
+            <Drawer.Screen name = "Test" component = {AddStatus}/>
         </Drawer.Navigator>
     );
 }

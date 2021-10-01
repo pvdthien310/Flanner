@@ -17,7 +17,7 @@ const KnowledgeMember = ({ item, navigation }) => {
         if (pressed == true) setReactnumber(reactnumber - 1);
         else setReactnumber(reactnumber + 1)
 
-        fetch("http://192.168.0.106:3000/api/knowledge/update", {
+        fetch("http://192.168.0.103:3000/api/knowledge/update", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ const KnowledgeMember = ({ item, navigation }) => {
                 avatar: item.avatar,
                 posttime: item.posttime,
                 listImage: item.listImage,
-                react: pressed,
+                react: !pressed,
                 reactNumber: reactnumber.toString()
             })
         }).then(res => {
@@ -39,7 +39,7 @@ const KnowledgeMember = ({ item, navigation }) => {
             else
                 return res.json()
         }).then(data => {
-            console.log(data)
+            // console.log(data)
         }).catch(err => {
             console.log("error", err)
         })
@@ -89,9 +89,9 @@ const KnowledgeMember = ({ item, navigation }) => {
                     onPress={() => {
                         setPressed(!pressed)
                         reactPressHandle();
-                        if (pressed == false)
-                            setReactnumber(reactnumber + 1)
-                        else setReactnumber(reactnumber - 1)
+                        // if (pressed == false)
+                        //     setReactnumber(reactnumber + 1)
+                        // else setReactnumber(reactnumber - 1)
                     }}>
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
                     <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>

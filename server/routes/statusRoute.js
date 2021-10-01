@@ -62,7 +62,7 @@ StatusRoute.post('/update', (req, res) => {
 
 //Get a member by ID
 StatusRoute.get('/:id', (req,res) => {
-    Status.findById(req.body.id)
+    Status.findById(req.params.id)
     .then(data => res.send(data))
     .catch(err => console.log(err))
 })

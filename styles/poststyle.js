@@ -41,10 +41,11 @@ export const Poststyle = StyleSheet.create({
     },
     imagepost: {
         height: 300,
-        width: 350,
+        width: 335,
         resizeMode: 'stretch',
         margin: 5,
-        flex: 1
+        flex: 1,
+        borderRadius: 10
 
     },
     imagenumber: {
@@ -274,31 +275,73 @@ export const Poststyle_Status = StyleSheet.create({
         marginStart: 5,
         marginTop: 5
     },
-    title_detail: {
+    _name_detail: {
         fontFamily: 'nunitobold',
-        fontSize: 22,
-        marginTop: 5
+        fontSize: 15,
+        marginStart: 10,
+        color: 'white'
+    },
+    _name: {
+        fontFamily: 'nunitobold',
+        fontSize: 15,
+        marginStart: 10,
+        color: 'lightslategrey'
+    },
+    container: {
+        padding: 10,
+        marginBottom: 200
+
+    },
+    title_detail: {
+        fontFamily: 'Gemunu Libre',
+        fontWeight: 'bold',
+        fontSize: 45,
+        marginTop: 10,
+        marginBottom: 10
     },
     body_detail: {
         fontFamily: 'nunitoregular',
         fontSize: 18,
-        marginTop: 5
+        marginTop: 3,
+        padding: 10,
+        borderRadius: 10
+    },
+    description_detail: {
+        fontFamily: 'nunitoregular',
+        fontSize: 20,
+        marginTop: 5,
+        color: 'dimgray',
+        marginBottom: 5
     },
     posttime: {
-        fontFamily: 'nunitoregular',
+        fontFamily: 'nunitobold',
         fontSize: 10,
-        marginStart: 8,
+        alignSelf: 'flex-start',
+        color: 'lightslategrey',
+        margin: 5
+
+    },
+    posttime_detail: {
+        fontFamily: 'nunitobold',
+        fontSize: 15,
+        alignSelf: 'flex-start',
+        color: 'lightslategrey',
+        margin: 5
+
     },
     title: {
         fontFamily: 'nunitobold',
-        fontSize: 18,
-        marginTop: 5,
+        fontSize: 25,
+        marginTop: 10,
         marginBottom: 5,
+        marginStart: 20
     },
     description: {
-        fontFamily: 'nunitoregular',
+        fontFamily: 'nunitobold',
         fontSize: 15,
-        marginTop: 5,
+        marginTop: 10,
+        marginBottom: 5,
+        marginStart: 20,
         color: 'dimgray'
     },
     body: {
@@ -307,8 +350,20 @@ export const Poststyle_Status = StyleSheet.create({
         marginTop: 5
     },
     imageavatar: {
+        width: 30,
+        height:30,
+        borderRadius: 15
+    },
+    _like_button: {
+       color: 'black'
+    },
+    like_button: {
+        color: 'maroon'
+    },
+
+    imageavatar_detai: {
         width: 50,
-        height: 50,
+        height:50,
         borderRadius: 15
     },
     imagepost: {
@@ -358,19 +413,26 @@ export const Poststyle_Status = StyleSheet.create({
         color: 'black'
     },
     reactnumber: {
-
         fontFamily: 'nunitobold',
         fontSize: 15,
-        textAlign: 'center',
-        color: 'white',
+        
+        color: 'lightslategrey',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         textAlignVertical: 'center',
         shadowColor: 'black',
         shadowOpacity: 0.1,
         shadowRadius: 1,
 
     },
+    reactnumber_detail:{
+        marginStart: 20,
+        fontFamily: 'nunitobold',
+        fontSize: 17,
+        marginBottom: 10,
+        alignSelf: 'center'
+    },
+
     buttontext1: {
         marginTop: 5,
         marginStart: 5,

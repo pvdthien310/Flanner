@@ -7,6 +7,7 @@ import { Poststyle_Knowledge, images, Poststyle } from '../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 
 const DetailKnowledge = ({ route, navigation }) => {
+    
 
     const { item } = route.params;
 
@@ -28,7 +29,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                     <UserInfo>
                         <Image source={images.avatars[item.avatar]} style={Poststyle_Knowledge.imageavatar} />
                         <UserInfoText>
-                            <Text style={Poststyle_Knowledge.name}> {item.name}</Text>
+                            <Text style={Poststyle_Knowledge.name}> {item.username}</Text>
                             <Text style={Poststyle_Knowledge.posttime}> {item.posttime}</Text>
                         </UserInfoText>
                     </UserInfo>
