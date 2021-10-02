@@ -59,6 +59,30 @@ StatusRoute.post('/update', (req, res) => {
     
     
 })
+StatusRoute.post('/update/:id/:number/true', (req, res) => {
+    let _number = parseInt(req.params.number) + 1;
+
+    Status.findByIdAndUpdate(req.params.id, {"react" : true,"reactNumber" : _number.toString()},{new: true})
+        .then((data) => {
+            res.send(data)
+        }).catch(err => {
+            console.log(err)
+        })
+    
+    
+})
+StatusRoute.post('/update/:id/:number/false', (req, res) => {
+    let _number = parseInt(req.params.number) - 1;
+
+    Status.findByIdAndUpdate(req.params.id, {"react" : false,"reactNumber" : _number.toString()},{new: true})
+        .then((data) => {
+           res.send(data)
+        }).catch(err => {
+            console.log(err)
+        })
+    
+    
+})
 
 //Get a member by ID
 StatusRoute.get('/:id', (req,res) => {

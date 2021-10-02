@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView,ActivityIndicator } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -7,56 +7,102 @@ import { Poststyle_Status, images, Poststyle } from '../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 const DetailStatus = ({ route, navigation }) => {
 
     const { item } = route.params;
-    const [reactnumber, setReactnumber] = useState(parseInt(item.reactNumber))
-    const [pressed, setPressed] = useState(item.react)
+    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(true)
+    // const [reactnumber, setReactnumber] = useState(null)
+    const [pressed, setPressed] = useState(false)
+
+    const fetchData = () => {
+        const url = 'http://192.168.0.103:3000/api/status/' + item._id.toString();
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                setData(result)
+                setLoading(false)
+                // setReactnumber(parseInt(result.reactNumber))
+                setPressed(result.react)
+            }).catch(err => console.log('Error'));
+    }
+
+    useEffect(() => {
+        fetchData();
+        
+    },[])
 
     const pressgobackHandler = () => {
         navigation.goBack();
-        console.log('aaaaaaaaaaaaaaaaaaaaa')
     }
 
-    const PressHandle = () => {
-    
-        if (pressed == true) setReactnumber(reactnumber - 1);
-        else setReactnumber(reactnumber + 1)
+  
 
-        fetch("http://192.168.0.103:3000/api/status/update", {
+    const PressHandle = () => {    
+       let numberReact = data.reactNumber;
+       const url_true = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() +'/' + numberReact.toString()+ '/true';
+       const url_false = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() +'/' + numberReact.toString()+ '/false';
+
+       
+       if (pressed == true)
+       {
+           console.log(url_false)
+        fetch(url_false, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: item._id,
-                username: item.username,
-                body: item.body,
-                title:item.title,
-                description: item.description,
-                avatar: item.avatar,
-                posttime: item.posttime,
-                listImage: item.listImage,
-                react: pressed,
-                reactNumber: reactnumber.toString()
-            })
+                'Content-Type': 'application/json',
+                
+            }
         }).then(res => {
             if (!res.ok) {
                 throw Error('Loi phat sinh')
             }
             else
+            {
                 return res.json()
-        }).then(data => {
-            console.log(data)
+            }
+        }).then((result) => {
+            setData(result)
+            setPressed(result.react)
         }).catch(err => {
             console.log("error", err)
         })
+       }
+       else if (pressed == false){
+        fetch(url_true, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+            {
+                return res.json()
+            }
+        }).then(result => {
+            setData(result)
+            setPressed(result.react)
+        }).catch(err => {
+            console.log("error", err)
+        })
+       }
+
+       
+        // if (pressed == true) setReactnumber(reactnumber - 1);
+        // else setReactnumber(reactnumber + 1)
        
     }
     return (
-        <SafeAreaView style={styles.post}>
+        <View >
+        {
+            loading ?  <ActivityIndicator size="small" color="#0000ff" /> 
+            :
+            <SafeAreaView style={styles.post}>
 
 
             <TouchableOpacity onPress={pressgobackHandler}>
@@ -75,7 +121,7 @@ const DetailStatus = ({ route, navigation }) => {
                         horizontal={true}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
-                        data={item.listImage}
+                        data={data.listImage}
                         renderItem={({ item }) => (
                             <View>
                                 <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
@@ -90,23 +136,20 @@ const DetailStatus = ({ route, navigation }) => {
 
 
                 <PostText>
-                    <Text style={Poststyle_Status.posttime_detail}>{item.posttime}</Text>
+                    <Text style={Poststyle_Status.posttime_detail}>{data.posttime}</Text>
 
-                    <Text style={Poststyle_Status.title_detail}>{item.title}</Text>
-                    <Text style={Poststyle_Status.description_detail}>{item.description}</Text>
+                    <Text style={Poststyle_Status.title_detail}>{data.title}</Text>
+                    <Text style={Poststyle_Status.description_detail}>{data.description}</Text>
                     <View style={{ borderRadius: 10, backgroundColor: 'lightgray', padding: 5, marginTop: 10, marginStart: 10 }}>
-                        <Text style={Poststyle_Status.body_detail}>{item.body}</Text>
+                        <Text style={Poststyle_Status.body_detail}>{data.body}</Text>
                     </View>
 
 
                 </PostText>
 
-                <Text style={Poststyle_Status.reactnumber_detail}>{reactnumber} Likes</Text>
+                <Text style={Poststyle_Status.reactnumber_detail}>{data.reactNumber} Likes</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent: 'space-around', margin: 10}}>
-                    <TouchableOpacity onPress= {async () => {
-                        await setPressed(!pressed)
-                        PressHandle()
-                    }} >
+                    <TouchableOpacity onPress= {PressHandle} >
                         <Ionicons  name="heart" size={35} style = { pressed? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                     </TouchableOpacity>
                     <TouchableOpacity >
@@ -154,7 +197,9 @@ const DetailStatus = ({ route, navigation }) => {
 
 
         </SafeAreaView>
-
+        }
+     
+     </View>
     )
 
 }
