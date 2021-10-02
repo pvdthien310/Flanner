@@ -48,8 +48,13 @@ import {
 } from '../components/renderComponent'
 
 import { GiftedChat } from "react-native-gifted-chat";
+import {io} from 'socket.io-client/dist/socket.io';
 
 const Discussion = ({ route, navigation }) => {
+    var socket = io()
+    socket = io("http://localhost:3000", {jsonp: false})
+
+    const user = route.params;
     // const { itemName, itemPic } = route.params;
     // const [inputMessage, setMessage] = useState('');
 
@@ -223,7 +228,7 @@ const Discussion = ({ route, navigation }) => {
 
             <GiftedChat 
                 messages={messages}
-                user={Linh1}
+                user={user ==='Linh1'? Linh1: Linh2}
 
                 alwaysShowSend
                 onSend={messages => onSend(messages)}

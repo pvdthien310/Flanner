@@ -6,6 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Discussion from './../screens/Discussion';
 import Chat from './../screens/FlannerChat';
+import { startClock } from 'react-native-reanimated';
+import ChooseUser from '../screens/chooseUser';
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
@@ -56,6 +58,7 @@ const ChatStackNavigator = () => {
     return(
         <Stack.Navigator screenOptions={screenOptionStyle} >
             <Stack.Screen name='Fess' component={BottomTabNavigator} options={{headerShown: false}} />
+            <Stack.Screen name="ChooseUser" component={ChooseUser}/>
             <Stack.Screen name='Discussion' component={Discussion}/>
         </Stack.Navigator>
     )

@@ -91,11 +91,12 @@ const Chat = (props) => {
                                                 uri={item.avatar_url}
                                                 count={Math.floor(Math.random() * 3)}
                                                 onPress={()=>{
-                                                    props.navigation.navigate('Discussion',{
-                                                        itemId:item.id,
-                                                        itemName:item.login,
-                                                        itemPic:item.avatar_url
-                                                    });
+                                                    // props.navigation.navigate('Discussion',{
+                                                    //     itemId:item.id,
+                                                    //     itemName:item.login,
+                                                    //     itemPic:item.avatar_url
+                                                    // });
+                                                    props.navigation.navigate('ChooseUser');
                                                 }}
                                             />
                                     ))}
