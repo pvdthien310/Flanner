@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, CheckBox } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +8,26 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function SignInScreen({ navigation }) {
+
+    const [data1, setData1] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    const fetchData = () => {
+        const headers = { 'Content-Type': 'application/json' }
+        fetch('http://localhost:3000/api/user', { headers })
+            .then(res => res.json())
+            .then(result => {
+                setData1(result)
+                setLoading(false)
+                console.log(data1)
+            }).catch(err => console.log('Error'));
+    }
+
+    useEffect(() => {
+        fetchData();
+    }
+        , [])
+
 
     const [data, setData] = useState({
         user: '',
