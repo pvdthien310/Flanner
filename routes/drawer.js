@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import ChatStackNavigator from './../Fess/navigations/Navigator';
+import ChatStackNavigator from '../screens/Fess/navigations/Navigator'
 
 
 function HomeScreen({ navigation }) {

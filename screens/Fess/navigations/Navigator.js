@@ -1,11 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Profile from './../screens/Profile';
+import Profile from '../../../components/Fess/Profiles'
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import Discussion from './../screens/Discussion';
-import Chat from './../screens/FlannerChat';
+import Discussion from './../Discussion';
+import Chat from './../FlannerChat';
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {

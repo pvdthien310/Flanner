@@ -20,8 +20,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-import { Linh1, Linh2 } from './data'
-import { color } from 'react-native-reanimated';
+import { Linh1, Linh2 } from './TestData/data'
 
 export const renderBubble = (props) => {
     return (
@@ -69,7 +68,7 @@ export const renderSend = (props) => {
 
 export const scrollToBottomComponent = () => {
     return (
-        <AntDesign name="caretdown" size={24} color='black' />
+        <AntDesign name="caretdown" size={25} color='black' />
     );
 }
 

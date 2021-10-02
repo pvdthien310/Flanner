@@ -6,12 +6,12 @@ import React, {
 export const Linh1 = {
     _id: 1,
     name: 'Linh Nguyen',
-    avatar: require('../../avatar/linh1.jpg'),
+    avatar: require('../TestData/avatar/linh1.jpg'),
 }
 export const Linh2 = {
     _id: 2,
     name: 'Khanh Linh',
-    avatar: require('../../avatar/linh2.jpg'),
+    avatar: require('../TestData/avatar/linh2.jpg'),
 }
 
 export const messageData = [

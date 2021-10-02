@@ -25,14 +25,14 @@ import {
 } from 'react-native-gesture-handler';
 
 import Icon from '@expo/vector-icons/AntDesign';
-import LastWatch from '../components/LastWatch';
-import Received from '../components/Received';
-import Sent from '../components/Sent';
-import Data from '../dummy/Data.json';
-import Input from '../components/Input';
+import LastWatch from './../../components/Fess/LastWatch';
+import Received from './../../components/Fess/Received';
+import Sent from './../../components/Fess/Sent';
+import Data from '../Fess/TestData/dummy/Data.json';
+import Input from './../../components/Fess/LastWatch';
 import * as ImagePicker from 'expo-image-picker';
 
-import { messageData, Linh1, Linh2 } from '../components/data';
+import { messageData, Linh1, Linh2 } from './TestData/data';
 
 import {
     renderAvatar,
@@ -45,7 +45,7 @@ import {
     scrollToBottomComponent,
     renderDay
 
-} from '../components/renderComponent'
+} from './renderComponent'
 
 import { GiftedChat } from "react-native-gifted-chat";
 
@@ -125,13 +125,17 @@ const Discussion = ({ route, navigation }) => {
             return;
         }
 
-        let pickerResult = await ImagePicker.launchCameraAsync();
+        let pickerResult = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            
+        });
 
         if (pickerResult.cancelled === true) {
             return;
         }
 
         onSend({
+            _id: Math.floor(Math.random() * 10000000000000000000),
             image: pickerResult.uri,
             user: Linh1,
         });
@@ -148,6 +152,7 @@ const Discussion = ({ route, navigation }) => {
         let pickerResult = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
+            
         });
 
         if (pickerResult.cancelled === true) {
@@ -155,11 +160,10 @@ const Discussion = ({ route, navigation }) => {
         }
 
         onSend({
+            _id: Math.floor(Math.random() * 10000000000000000000),
             image: pickerResult.uri,
             user: Linh1
-        });
-
-        
+        });        
     };
 
     const renderActions = () => {

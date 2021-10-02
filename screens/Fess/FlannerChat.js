@@ -3,8 +3,8 @@ import { View, Text, ActivityIndicator, StyleSheet, Animated, Image } from 'reac
 import { LinearGradient } from 'expo-linear-gradient'
 import { Entypo, MaterialIcons } from '@expo/vector-icons'
 import { ScrollView } from 'react-native-gesture-handler'
-import Profiles from '../components/Profiles'
-import Messages from '../components/Messages'
+import Profiles from '../../components/Fess/Profile'
+import Messages from '../../components/Fess/Messages'
 
 const Chat = (props) => {
     const URL = `https://api.github.com/users`;  //Tap cac user 
