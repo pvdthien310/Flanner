@@ -8,9 +8,8 @@ import { Montserrat_800ExtraBold } from "@expo-google-fonts/montserrat";
 export default function App() {
  let [fontsLoaded] = useFonts({
     capricaScript: require('./assets/fonts/CAPRICA_SCRIPT.ttf'),
-    Montserrat_700Bold,
-    Montserrat_600SemiBold,
-    Montserrat_800ExtraBold
+    nunitobold: require('./assets/fonts/Nunito-Bold.ttf'),
+    nunitoregular: require('./assets/fonts/Nunito-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
