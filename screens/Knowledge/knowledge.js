@@ -7,7 +7,7 @@ const Knowledge = ({ navigation }) => {
     const [loading, setLoading] = useState(true)
 
     const fetchData = () => {
-        fetch('http://192.168.0.103:3000/api/knowledge')
+        fetch('http://localhost:3000/api/knowledge')
             .then(res => res.json())
             .then(result => {
                 setData(result)

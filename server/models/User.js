@@ -15,16 +15,15 @@ const UserSchema = new mongoose.Schema({
     },
     contact: {
         type: String,
-        require: true,
         default: ""
     },
     address: {
         type: String,
-        require: true
+        default: ""
     },
     profilePic: {
         type: String,
-        require: true
+        default: ""
     }
 })
 module.exports = mongoose.model("User", UserSchema);

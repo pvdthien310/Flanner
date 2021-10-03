@@ -8,13 +8,11 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function SignInScreen({ navigation }) {
-
     const [data1, setData1] = useState([])
     const [loading, setLoading] = useState(true)
 
     const fetchData = () => {
-        const headers = { 'Content-Type': 'application/json' }
-        fetch('http://localhost:3000/api/user', { headers })
+        fetch('http://192.168.1.6:3000/api/user')
             .then(res => res.json())
             .then(result => {
                 setData1(result)
@@ -27,7 +25,6 @@ export default function SignInScreen({ navigation }) {
         fetchData();
     }
         , [])
-
 
     const [data, setData] = useState({
         user: '',

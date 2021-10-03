@@ -6,6 +6,29 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 
 export default function SignUpScreen({ navigation }) {
+
+    const _submitData = () => {
+        fetch("http://192.168.1.6:3000/api/user/send-data", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: 'thfrhg',
+                password: '123',
+                name: 'thuc ne',
+                contact: '123456',
+                address: 'soc trang',
+                profilePic: 'dsgfh'
+            })
+        }).then(res => res.json())
+            .then(data => {
+
+            }).catch(err => {
+                console.log("error", err)
+            })
+    }
+
     const [data, setData] = useState({
         user: '',
         password: '',
@@ -89,7 +112,7 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} >
+                <TouchableOpacity style={styles.signInBtn} onPress={_submitData}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
