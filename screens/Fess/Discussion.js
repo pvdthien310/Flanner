@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     username: {
         //color: "#000119",
         color: 'white',
-        //fontFamily: 'Montserrat_700Bold',
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 20,
         flex: 1,
         textAlign: 'center'
