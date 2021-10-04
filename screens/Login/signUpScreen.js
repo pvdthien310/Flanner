@@ -14,7 +14,7 @@ export default function SignUpScreen({ navigation }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: 'thfrhg',
+                email: '1952@gmail.com',
                 password: '123',
                 name: 'thuc ne',
                 contact: '123456',
@@ -22,9 +22,8 @@ export default function SignUpScreen({ navigation }) {
                 profilePic: 'dsgfh'
             })
         }).then(res => res.json())
-            .then(data => {
-
-            }).catch(err => {
+            .then(data => { })
+            .catch(err => {
                 console.log("error", err)
             })
     }
