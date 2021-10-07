@@ -1,6 +1,7 @@
 import * as React from 'react';
 import LoginStack from './routes/loginStack';
 import { useFonts } from 'expo-font';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 export default function App() {
   const [loaded] = useFonts({
@@ -13,7 +14,10 @@ export default function App() {
     return null;
   }
   return (
-    <LoginStack />
+    <RootSiblingParent>
+      <LoginStack />
+    </RootSiblingParent>
+
   );
 }
 

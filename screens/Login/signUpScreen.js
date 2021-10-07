@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Alert } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
+import Toast from 'react-native-root-toast';
 
 export default function SignUpScreen({ navigation }) {
 
@@ -29,7 +30,8 @@ export default function SignUpScreen({ navigation }) {
     }
 
     const [data, setData] = useState({
-        user: '',
+        name: '',
+        email: '',
         password: '',
         confirm: '',
         showPassword: false,
@@ -37,21 +39,58 @@ export default function SignUpScreen({ navigation }) {
         checkUser: false,
     });
 
-    const TextInputChange = (val) => {
-        if (val.length != 0) {
-            setData({
-                ...data,
-                email: val,
-                checkUser: true
-            })
-        }
-        else {
+    const EmailChange = (val) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(val) === false) {
             setData({
                 ...data,
                 email: val,
                 checkUser: false
             })
         }
+        else {
+            setData({
+                ...data,
+                email: val,
+                checkUser: true
+            })
+        }
+
+
+    }
+
+    const PasswordChange = (val) => {
+        setData({
+            ...data,
+            password: val
+        })
+
+    }
+    const ConfirmPasswordChange = (val) => {
+        setData({
+            ...data,
+            confirm: val
+        })
+    }
+    const NameChange = (val) => {
+        setData({
+            ...data,
+            name: val
+        })
+    }
+
+    const signInHandle = () => {
+        console.log(data)
+        if (data.name == "" || data.email == "" || data.password == "" || data.confirm == "") {
+            let toast = Toast.show('This is a message', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        }
+
     }
     return (
         <View style={styles.container}>
@@ -64,12 +103,24 @@ export default function SignUpScreen({ navigation }) {
                 <Text style={styles.signInTxt}>Sign Up</Text>
                 <View>
                     <View style={styles.border}></View>
+                    <Text style={styles.accountTxt}> Name</Text>
+                    <View style={styles.accountView}>
+                        <TextInput
+                            style={styles.accountEdt}
+                            placeholder='Type your name'
+                            onChangeText={(val) => NameChange(val)}
+                        />
+                    </View>
+                </View>
+
+                <View>
+                    <View style={styles.border}></View>
                     <Text style={styles.accountTxt}> Email</Text>
                     <View style={styles.accountView}>
                         <TextInput
                             style={styles.accountEdt}
                             placeholder='Type your email'
-                            onChangeText={(val) => TextInputChange(val)}
+                            onChangeText={(val) => EmailChange(val)}
                         />
                         {data.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
                     </View>
@@ -83,6 +134,7 @@ export default function SignUpScreen({ navigation }) {
                             style={styles.passwordEdt}
                             placeholder='Type your password'
                             secureTextEntry={!data.showPassword}
+                            onChangeText={(val) => PasswordChange(val)}
                         />
                         <Ionicons
                             name={data.showPassword ? "eye-outline" : "eye-off-outline"}
@@ -101,6 +153,7 @@ export default function SignUpScreen({ navigation }) {
                             style={styles.passwordEdt}
                             placeholder='Confirm your password'
                             secureTextEntry={!data.showConfirm}
+                            onChangeText={(val) => ConfirmPasswordChange(val)}
                         />
                         <Ionicons
                             name={data.showConfirm ? "eye-outline" : "eye-off-outline"}
@@ -111,7 +164,7 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} onPress={_submitData}>
+                <TouchableOpacity style={styles.signInBtn} onPress={signInHandle}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
