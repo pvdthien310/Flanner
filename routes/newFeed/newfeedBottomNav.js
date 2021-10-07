@@ -8,6 +8,9 @@ import { KnowledgeStack } from './knowledgeStack';
 import { StatusStack } from './statusStack';
 import Addpost from '../../screens/Addpost/addKnowledge';
 import AddStatus from '../../screens/Addpost/addStatus';
+import { HandleAndNotificationStack } from './handleAndNotificationStack';
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 
 const Tab = createBottomTabNavigator();
@@ -20,7 +23,7 @@ const CustomAddPostButton = ({ children, onPress }) => (
 
         onPress={() => {
             console.log(user)
-            navigation.navigate('Add', { user })
+            navigation.navigate('Add');
         }}
 
         style={{
@@ -147,7 +150,7 @@ export const BottomNavigator = (props) => {
                         </View>
                     )
                 }} />
-            <Tab.Screen name="Add" component={AddStatus}
+            <Tab.Screen name="Add" component={HandleAndNotificationStack}
 
                 options={{
                     headerTitle: () => <HeaderNews navigation={navigation} title='Add Post' />,
@@ -190,6 +193,8 @@ export const BottomNavigator = (props) => {
                             }
                             }
                         />
+                       
+
                         <Text style={{
                             color: focused ? '#ffffff' : '#748c94',
                             fontSize: focused ? 12 : 10

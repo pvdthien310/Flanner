@@ -1,6 +1,6 @@
 const initState = {
     data: [],
-    loading: false
+    loading: true
 }
 
 export const reducer = (state = initState, action) => {

@@ -8,7 +8,10 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 const { height } = Dimensions.get("screen");
-export default function Addpost({ route, navigation }) {
+
+
+
+export default function AddKnowledge({ route, navigation }) {
 
     const { name, age, avatar } = {name : 'Thien Pham', age : '20', avatar : '1'};
     let temp = 0;

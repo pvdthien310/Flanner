@@ -18,7 +18,7 @@ const DetailStatus = ({ route, navigation }) => {
     const [pressed, setPressed] = useState(false)
 
     const fetchData = () => {
-        const url = 'http://192.168.0.106:3000/api/status/' + item._id.toString();
+        const url = 'http://192.168.0.105:3000/api/status/' + item._id.toString();
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -42,8 +42,8 @@ const DetailStatus = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() + '/' + numberReact.toString() + '/true';
-        const url_false = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() + '/' + numberReact.toString() + '/false';
+        const url_true = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/' + numberReact.toString() + '/true';
+        const url_false = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/' + numberReact.toString() + '/false';
 
 
         if (pressed == true) {

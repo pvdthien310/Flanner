@@ -9,7 +9,7 @@ const Status = ({ navigation }) => {
     const [loading, setLoading] = useState(true)
 
     const fetchData = () => {
-        fetch('http://192.168.0.106:3000/api/status')
+        fetch('http://192.168.0.105:3000/api/status')
             .then(res => res.json())
             .then(result => {
                 setData(result)
