@@ -7,10 +7,10 @@ const Knowledge = ({ navigation }) => {
     // const [data, setData] = useState([])
     // const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
-    const [data, loading] = useSelector(state => { return state })
+    const { data, loading } = useSelector(state => { return state })
 
     const fetchData = () => {
-        fetch('http://192.168.0.103:3000/api/knowledge')
+        fetch('http://192.168.0.106:3000/api/knowledge')
             .then(res => res.json())
             .then(result => {
                 // setData(result)
