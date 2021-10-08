@@ -4,9 +4,10 @@ import { useFonts } from 'expo-font';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { reducer } from './reducer/knowledgeReducer'
+import  RootReducer from './reducer/rootReducer'
 
 
-const store = createStore(reducer);
+const store = createStore(RootReducer);
 
 export default function App() {
   const [loaded] = useFonts({

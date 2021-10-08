@@ -1,9 +1,10 @@
 const initState = {
     data: [],
+    user:{},
     loading: true
 }
 
- const KnowledgeReducer = (state = initState, action) => {
+ const UserReducer = (state = initState, action) => {
 
     if (action.type == 'ADD_DATA') {
 
@@ -11,6 +12,18 @@ const initState = {
         const newState = {
             ...state,
             data: action.payload
+        }
+
+        return newState;
+
+    }
+    
+    if (action.type == 'ADD_USER') {
+
+        
+        const newState = {
+            ...state,
+            user: action.payload
         }
 
         return newState;
@@ -27,4 +40,4 @@ const initState = {
 
     return state;
 }
-export default KnowledgeReducer;
+export default UserReducer;

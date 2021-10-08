@@ -36,10 +36,13 @@ export const DrawerStack = (props) => {
 
     return (
         <Drawer.Navigator initialRouteName="Home" 
+        screenOptions= {{
+            headerTintColor: 'black',
+        }}
         drawerContent = {(props) => <CustomDrawer {...props}/> } >
            
-            <Drawer.Screen name = "Drawer" component = {BottomNavigator} options= {{ headerShown : false}}/>
-            <Drawer.Screen name = "Notification Stack"component = {NotificationTab} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Notification'  /> }} />
+            <Drawer.Screen name = "NewsFeed" component = {BottomNavigator} options= {{ headerShown : false}}/>
+            <Drawer.Screen name = "Notification" component = {NotificationTab} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Notification'  /> }} />
             <Drawer.Screen name = "User Information" component = {MainInfor} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'  /> }}/>
 
         </Drawer.Navigator>
