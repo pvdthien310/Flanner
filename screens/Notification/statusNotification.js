@@ -6,22 +6,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/core';
 
 
-const Notification = ({ navigation }) => {
-    const pressgobackHandler = () => {
-        navigation.goBack();
-    }
+const StatusNotification = ({ navigation }) => {
+  
    
     return (
         <View style={styles.container}>
             
           <Text>Notification</Text>
-          <TouchableOpacity onPress={pressgobackHandler}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Ionicons style={{ marginBottom: 15 }} name="chevron-back" size={30} color="black" />
-                    </View>
-
-
-                </TouchableOpacity>
+      
         </View>
 
     )
@@ -37,4 +29,4 @@ const styles = StyleSheet.create({
     },
    
 });
-export default Notification;
+export default StatusNotification;

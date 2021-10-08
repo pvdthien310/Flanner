@@ -18,6 +18,7 @@ StatusRoute.post('/delete', (req, res) => {
 StatusRoute.post('/send-data', (req,res) => {
     const newStatus = new Status({
         username: req.body.username,
+        userID: req.body.userID,
         body: req.body.body,
         title : req.body.title,
         description: req.body.description,
@@ -42,6 +43,7 @@ StatusRoute.post('/send-data', (req,res) => {
 StatusRoute.post('/update', (req, res) => {
     Status.findByIdAndUpdate(req.body.id, {
         username: req.body.username,
+        userID: req.body.userID,
         body: req.body.body,
         title : req.body.title,
         description: req.body.description,

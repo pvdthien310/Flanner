@@ -18,6 +18,7 @@ KnowledgeRoute.post('/delete', (req, res) => {
 KnowledgeRoute.post('/send-data', (req,res) => {
     const newKnowledge = new Knowledge({
         username: req.body.username,
+        userID: req.body.userID,
         body: req.body.body,
         avatar: req.body.avatar,
         posttime: req.body.posttime,
@@ -40,6 +41,7 @@ KnowledgeRoute.post('/send-data', (req,res) => {
 KnowledgeRoute.post('/update', (req, res) => {
     Knowledge.findByIdAndUpdate(req.body.id, {
         username: req.body.username,
+        userID: req.body.userID,
         body: req.body.body,
         avatar: req.body.avatar,
         posttime: req.body.posttime,
@@ -58,7 +60,7 @@ KnowledgeRoute.post('/update', (req, res) => {
 
 //Get a member by ID
 KnowledgeRoute.get('/:id', (req,res) => {
-    Knowledge.findById(req.body.id)
+    Knowledge.findById(req.params.id)
     .then(data => res.send(data))
     .catch(err => console.log(err))
 })

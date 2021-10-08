@@ -23,7 +23,7 @@ const CustomAddPostButton = ({ children, onPress }) => (
 
         onPress={() => {
             console.log(user)
-            navigation.navigate('Add');
+            navigation.navigate('Add Post');
         }}
 
         style={{

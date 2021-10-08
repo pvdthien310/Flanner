@@ -6,6 +6,10 @@ const KnowledgeSchema = new mongoose.Schema({
         required:true,
         min: 1 ,
         max: 20,
+    }, 
+    userID:{
+        type:String,
+        required:true,
     },
     body:{
         type:String,

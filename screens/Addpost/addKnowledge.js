@@ -52,13 +52,14 @@ export default function AddKnowledge({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://192.168.0.103:3000/api/knowledge/send-data", {
+        fetch("http://192.168.0.105:3000/api/knowledge/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 username: name,
+                userID: 'pvdthien310',
                 body: textinput,
                 avatar: avatar,
                 posttime: d.toUTCString(),

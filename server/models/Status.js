@@ -5,6 +5,10 @@ const StatusSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    userID:{
+        type:String,
+        required:true,
+    },
     body:{
         type:String,
         required:true,

@@ -10,7 +10,7 @@ export const HandleAndNotificationStack = (props) => {
     const { navigation } = props
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='Notification' component={MakeDesision} />
+            <Stack.Screen name='Add Post' component={MakeDesision} />
             <Stack.Screen name='Add Knowledge' component={AddKnowledge} />
             <Stack.Screen name='Add Status' component={AddStatus} />
 

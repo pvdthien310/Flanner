@@ -60,7 +60,7 @@ export default function AddStatus({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://192.168.0.103:3000/api/status/send-data", {
+        fetch("http://192.168.0.105:3000/api/status/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -68,6 +68,7 @@ export default function AddStatus({ route, navigation }) {
             body: JSON.stringify({
                 username: name,
                 body: body,
+                userID: 'pvdthien310',
                 title : title,
                 description: description,
                 avatar: avatar,

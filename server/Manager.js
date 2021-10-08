@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser')
 const KnowledgeRoute = require('./routes/knowledgeRoute')
-const StatusRoute = require('./routes/statusRoute')
+const StatusRoute = require('./routes/statusRoute');
+const NotificationRoute = require('./routes/notificationRoute');
 
 
 /// Process file json and env
@@ -25,6 +26,8 @@ mongoose.connection.on("error", () => {
 /// Handle All API 
 app.use("/api/knowledge", KnowledgeRoute )
 app.use("/api/status", StatusRoute )
+app.use("/api/notification", NotificationRoute )
+
 
 
 

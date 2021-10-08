@@ -39,7 +39,7 @@ export const HeaderNews = ({ navigation, title }) => {
                 </View>
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} >
-                <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Notification Stack')}>
                     <Ionicons name="notifications" size={28} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('User Information')}>
@@ -47,6 +47,25 @@ export const HeaderNews = ({ navigation, title }) => {
                 </TouchableOpacity>
             </View>
         </ImageBackground>
+
+    )
+}
+export const HeaderDrawer = ({ navigation, title }) => {
+    const openMenu = () => {
+        navigation.openDrawer();
+    }
+    const pressgobackHandler = () => {
+        navigation.goBack();
+    }
+    return (
+        <View  style={styles.headerDrawer}>
+             {/* <TouchableOpacity onPress={pressgobackHandler}>
+                    <View style={{ flexDirection: 'row' }}>
+                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                    </View>
+                </TouchableOpacity> */}
+                <Text style={styles.headerText}>{title}</Text>
+        </View>
 
     )
 }
@@ -60,6 +79,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 0,
+
+    },
+    headerDrawer: {
+        width: '120%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: 0,
+        marginStart: 0
     },
     headerText: {
         fontWeight: 'bold',
