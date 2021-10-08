@@ -1,19 +1,39 @@
 const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
-    email: {
+    userID: {
         type: String,
         require: true
     },
-    password: {
+    phoneNumber: {
         type: String,
-        require: true
+        default: ""
     },
     name: {
         type: String,
         require: true
     },
-    contact: {
+    doB: {
+        type: String,
+        default: ""
+    },
+    avatar: {
+        type: String,
+        default: ""
+    },
+    email: {
+        type: String,
+        require: true
+    },
+    friendArray: {
+        type: String,
+        default: ""
+    },
+    password: {
+        type: String,
+        require: true
+    },
+    score: {
         type: String,
         default: ""
     },
@@ -21,9 +41,15 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    profilePic: {
+    position: {
         type: String,
-        default: ""
+        require: true,
+        default: "0"
+    },
+    reportedNum: {
+        type: String,
+        default: "0"
     }
+
 })
 module.exports = mongoose.model("User", UserSchema);

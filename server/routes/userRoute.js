@@ -20,12 +20,18 @@ UserRoute.get('/', (req, res) => {
 
 UserRoute.post('/update', (req, res) => {
     User.findByIdAndUpdate(req.body.id, {
-        email: req.body.email,
-        password: req.body.password,
+        userID: req.body.userID,
+        phoneNumber: req.body.phoneNumber,
         name: req.body.name,
-        contact: req.body.contact,
+        doB: req.body.doB,
+        avatar: req.body.avatar,
+        email: req.body.email,
+        friendArray: req.body.friendArray,
+        password: req.body.password,
+        score: req.body.score,
         address: req.body.address,
-        profilePic: req.body.profilePic
+        position: req.body.position,
+        reportedNum: req.body.reportedNum,
     })
         .then((data) => {
             console.log(data)
@@ -38,12 +44,18 @@ UserRoute.post('/update', (req, res) => {
 
 UserRoute.post('/send-data', (req, res) => {
     const newUser = new User({
-        email: req.body.email,
-        password: req.body.password,
+        userID: req.body.userID,
+        phoneNumber: req.body.phoneNumber,
         name: req.body.name,
-        contact: req.body.contact,
+        doB: req.body.doB,
+        avatar: req.body.avatar,
+        email: req.body.email,
+        friendArray: req.body.friendArray,
+        password: req.body.password,
+        score: req.body.score,
         address: req.body.address,
-        profilePic: req.body.profilePic
+        position: req.body.position,
+        reportedNum: req.body.reportedNum,
     })
 
     newUser.save()

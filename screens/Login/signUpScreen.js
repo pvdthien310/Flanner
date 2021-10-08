@@ -9,18 +9,24 @@ import Toast from 'react-native-root-toast';
 export default function SignUpScreen({ navigation }) {
 
     const _submitData = () => {
-        fetch("http://192.168.1.6:3000/api/user/send-data", {
+        fetch("http://192.168.1.5:3000/api/user/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: '1952@gmail.com',
-                password: '123',
-                name: 'thuc ne',
-                contact: '123456',
-                address: 'soc trang',
-                profilePic: 'dsgfh'
+                userID: 'kjhtyg',
+                phoneNumber: '0987654433',
+                name: 'thuc',
+                doB: '',
+                avatar: 'req.body.avatar',
+                email: 'req.body.email',
+                friendArray: 'req.body.friendArray',
+                password: 'req.body.password',
+                score: 'req.body.score',
+                address: 'req.body.address',
+                position: 'req.body.position',
+                reportedNum: 'req.body.reportedNum',
             })
         }).then(res => res.json())
             .then(data => { })
@@ -186,7 +192,7 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
+                <TouchableOpacity style={styles.signInBtn} onPress={(_submitData)}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
