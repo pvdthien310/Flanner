@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import ChatStackNavigator from '../screens/Fess/navigations/Navigator'
 import { CustomDrawer } from '../custom/customDrawer';
 import { BottomNavigator } from './newFeed/newfeedBottomNav';
 import MainInfor from '../screens/InformationUser/mainInfo';
@@ -35,6 +37,8 @@ export const DrawerStack = (props) => {
     const { navigation } = props
 
     return (
+        
+            
         <Drawer.Navigator initialRouteName="Home" 
         screenOptions= {{
             headerTintColor: 'black',
@@ -44,7 +48,7 @@ export const DrawerStack = (props) => {
             <Drawer.Screen name = "NewsFeed" component = {BottomNavigator} options= {{ headerShown : false}}/>
             <Drawer.Screen name = "Notification" component = {NotificationTab} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Notification'  /> }} />
             <Drawer.Screen name = "User Information" component = {MainInfor} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'  /> }}/>
-
+            <Drawer.Screen name="Flâner Chat" component={ChatStackNavigator} options={{ headerShown: false }} />
         </Drawer.Navigator>
     );
 }

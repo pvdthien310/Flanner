@@ -6,6 +6,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 
 export default function SplashScreen({ navigation }) {
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>

@@ -8,6 +8,7 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function SignInScreen({ navigation }) {
+
     const [data, setData] = useState({
         user: '',
         password: '',
