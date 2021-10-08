@@ -2,6 +2,7 @@ import * as React from 'react';
 import LoginStack from './routes/loginStack';
 import { useFonts } from 'expo-font';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import ConfirmEmail from './screens/Login/confirmEmail';
 
 export default function App() {
   const [loaded] = useFonts({

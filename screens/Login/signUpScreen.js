@@ -80,18 +80,40 @@ export default function SignUpScreen({ navigation }) {
     }
 
     const signInHandle = () => {
-        console.log(data)
         if (data.name == "" || data.email == "" || data.password == "" || data.confirm == "") {
-            let toast = Toast.show('This is a message', {
+            let toast = Toast.show('Please fill out your information', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
                 shadow: true,
                 animation: true,
                 hideOnPress: true,
             });
+            return
         }
-
+        if (!data.checkUser) {
+            let toast = Toast.show('Email is incorrect', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+        if (data.confirm != data.password) {
+            let toast = Toast.show('Confirm password is incorrect', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+        navigation.navigate('ConfirmEmail')
     }
+
+
     return (
         <View style={styles.container}>
             <Animatable.View style={styles.header} animation='zoomInRight' >
@@ -164,7 +186,7 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} onPress={signInHandle}>
+                <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
@@ -175,7 +197,7 @@ export default function SignUpScreen({ navigation }) {
 
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 170 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 120 }}
                     onPress={() => navigation.navigate('SignInScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
