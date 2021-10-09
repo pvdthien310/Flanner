@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import ChatStackNavigator from '../screens/Fess/navigations/Navigator'
+
 import { CustomDrawer } from '../custom/customDrawer';
 import { BottomNavigator } from './newFeed/newfeedBottomNav';
 
@@ -30,6 +32,8 @@ const Drawer = createDrawerNavigator();
 
 export const DrawerStack = () => {
     return (
+        
+            
         <Drawer.Navigator initialRouteName="Home" 
         screenOptions = {{
             headerShown: false
@@ -37,6 +41,8 @@ export const DrawerStack = () => {
         drawerContent = {(props) => <CustomDrawer {...props}/> } >
            
             <Drawer.Screen name = "Drawer" component = {BottomNavigator}/>
+            <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+            <Drawer.Screen name="Flâner Chat" component={ChatStackNavigator} options={{ headerShown: false }} />
         </Drawer.Navigator>
     );
 }

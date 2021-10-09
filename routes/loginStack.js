@@ -16,7 +16,6 @@ export default function LoginStack() {
     return (
         <NavigationContainer>
             <Stack.Navigator >
-
                 <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
                     headerShown: false
                 }} />
