@@ -8,17 +8,25 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 const { height } = Dimensions.get("screen");
-
-
-
-export default function AddKnowledge({ route, navigation }) {
+export default function AddStatus({ route, navigation }) {
 
     const { name, age, avatar } = {name : 'Thien Pham', age : '20', avatar : '1'};
     let temp = 0;
     const [image, setImage] = useState([]);
-    const [textinput, setTextinput] = useState('');
-    const Add = (val) => {
-        setTextinput(val);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [body, setBody] = useState('');
+
+    const AddTitle = (val) => {
+        setTitle(val);
+
+    }
+    const AddDescription = (val) => {
+        setDescription(val);
+
+    }
+    const AddBody = (val) => {
+        setBody(val);
 
     }
     const [picture, setPicture] = useState([]);
@@ -52,19 +60,21 @@ export default function AddKnowledge({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://192.168.0.105:3000/api/knowledge/send-data", {
+        fetch("http://localhost:3000/api/status/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 username: name,
+                body: body,
                 userID: 'pvdthien310',
-                body: textinput,
+                title : title,
+                description: description,
                 avatar: avatar,
                 posttime: d.toUTCString(),
                 listImage: picture,
-                react: 'false',
+                react: [],
                 reactNumber: '0'
             })
         }).then(res => {
@@ -177,11 +187,38 @@ export default function AddKnowledge({ route, navigation }) {
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
                     <TextInput
                         multiline={true}
-                        style={styles.body}
-                        onChangeText={Add}
+                        style={styles.title_topic}
+                        onChangeText={AddTitle}
+                        
                     ></TextInput>
                     <View style={styles.bodytitle}>
-                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Share your experience.</Text>
+                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>What is your topic.</Text>
+                    </View>
+
+
+                </View>
+                <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
+                    <TextInput
+                        multiline={true}
+                        style={styles.description}
+                        onChangeText={AddDescription}
+                        
+                    ></TextInput>
+                    <View style={styles.bodytitle}>
+                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Descript about your topic.</Text>
+                    </View>
+
+
+                </View>
+                <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
+                    <TextInput
+                        multiline={true}
+                        style={styles.body}
+                        onChangeText={AddBody}
+                        
+                    ></TextInput>
+                    <View style={styles.bodytitle}>
+                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>What is your topic.</Text>
                     </View>
 
 
@@ -225,8 +262,8 @@ export default function AddKnowledge({ route, navigation }) {
                 <TouchableOpacity onPress={SendNewpost}>
                     <View style={styles.postbutton}
                     >
-                        <Text style={{ fontFamily: 'nunitobold', fontSize: 15 }}>Post</Text>
-                        <Ionicons name="ios-send" size={24} color="black" style={{ marginStart: 10 }} />
+                        <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                        <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
                     </View>
                 </TouchableOpacity>
             </ScrollView>
@@ -313,7 +350,45 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 1 },
         borderRadius: 10,
         flex: 1,
-        height: height * 0.3,
+        height: height * 0.2,
+        marginTop: 30,
+        marginStart: 10,
+        marginEnd: 10,
+        paddingTop: 20,
+        paddingStart: 20,
+        paddingEnd: 20,
+        fontFamily: 'nunitoregular',
+        fontSize: 15,
+        borderWidth: 0.3
+    },
+    description: {
+        backgroundColor: 'ghostwhite',
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+        shadowOffset: { width: 1, height: 1 },
+        borderRadius: 10,
+        flex: 1,
+        height: height * 0.1,
+        marginTop: 30,
+        marginStart: 10,
+        marginEnd: 10,
+        paddingTop: 20,
+        paddingStart: 20,
+        paddingEnd: 20,
+        fontFamily: 'nunitoregular',
+        fontSize: 15,
+        borderWidth: 0.3
+    },
+    title_topic: {
+        backgroundColor: 'ghostwhite',
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+        shadowOffset: { width: 1, height: 1 },
+        borderRadius: 10,
+        flex: 1,
+        height: height * 0.08,
         marginTop: 30,
         marginStart: 10,
         marginEnd: 10,
@@ -330,7 +405,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowOpacity: 0.2,
         shadowRadius: 10,
-        margin: 10,
+        marginTop: 10,
+        marginStart: 10,
+        marginEnd: 10,
         shadowColor: 'black',
         shadowOffset: { width: 1, height: 1 },
         padding: 5,
@@ -361,17 +438,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowOpacity: 0.3,
         shadowRadius: 2,
-        margin: 10,
+        marginEnd: 10,
         shadowColor: 'black',
         shadowOffset: { width: 1, height: 1 },
-        padding: 10,
-        backgroundColor: 'lightgrey',
+        padding: 12,
+        backgroundColor: 'black',
         flexDirection: 'row',
         alignItems: 'center',
-
         alignSelf: 'flex-end'
-
-
     }
 
 

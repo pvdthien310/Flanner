@@ -1,8 +1,8 @@
 import * as  React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Status from '../../screens/Status/status'
-import StatusMember from '../../components/statusMember'
-import DetailStatus from '../../screens/Status/detailstatus'
+import DetailStatus from '../../screens/Status/detailStatus'
+import statusMember from '../../components/statusMember'
 const Stack = createNativeStackNavigator()
 
 export const StatusStack = (props) => {
@@ -11,7 +11,7 @@ export const StatusStack = (props) => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Status' component={Status} />
             <Stack.Screen name='Status Detail' component={DetailStatus} />
-            <Stack.Screen name='Status Member' component={StatusMember} />
+            <Stack.Screen name='Status Member' component={statusMember} />
         </Stack.Navigator>
     )
 }

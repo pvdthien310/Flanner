@@ -42,7 +42,7 @@ const MakeDesision = ({ navigation }) => {
                             style={[styles.button, styles.buttonStatus]}
                             onPress={() => {
                                 setModalVisible(!modalVisible)
-                                navigation.navigate('Add Knowledge');
+                                navigation.navigate('Add Status');
                             }}
                         >
                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingStart: 5, paddingEnd: 5 }}>
@@ -63,7 +63,7 @@ const MakeDesision = ({ navigation }) => {
                             style={[styles.button, styles.buttonKnowledge]}
                             onPress={() => {
                                 setModalVisible(!modalVisible)
-                                navigation.navigate('Add Status');
+                                navigation.navigate('Add Knowledge');
                             }}
                         >
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingStart: 5, paddingEnd: 5 }}>

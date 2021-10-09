@@ -1,7 +1,7 @@
 import * as  React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Knowledge from '../../screens/Knowledge/knowledge'
-import DetailKnowledge from '../../screens/Knowledge/detailknowledge'
+import DetailKnowledge from '../../screens/Knowledge/detailKnowledge'
 import KnowledgeMember from '../../components/knowledgeMember'
 const Stack = createNativeStackNavigator()
 

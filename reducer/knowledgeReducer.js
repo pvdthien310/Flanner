@@ -7,7 +7,7 @@ const initState = {
 
     if (action.type == 'ADD_DATA') {
 
-        
+        console.log('aaa')
         const newState = {
             ...state,
             data: action.payload

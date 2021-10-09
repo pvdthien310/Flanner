@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { globalStyles } from '../../styles/global';
-import StatusMember from '../../components/statusMember';
-
+import StatusMember from '../../components/statusMember'
+import { useSelector, useDispatch } from 'react-redux';
 const Status = ({ navigation }) => {
-
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(true)
+    // const [data, setData] = useState([])
+    // const [loading, setLoading] = useState(true)
+    const dispatch = useDispatch()
+    const { data, loading } = useSelector(state => { return state.Knowledge })
 
     const fetchData = () => {
-        fetch('http://192.168.0.105:3000/api/status')
+        
+        fetch('http://192.168.0.106:3000/api/status')
             .then(res => res.json())
             .then(result => {
-                setData(result)
-                setLoading(false)
+                // setData(result)
+                // setLoading(false)
+                dispatch({ type: 'ADD_DATA', payload: result })
+                dispatch({ type: 'SET_LOADING', payload: false })
             }).catch(err => console.log('Error'));
     }
 
@@ -21,7 +25,6 @@ const Status = ({ navigation }) => {
         fetchData();
     }
         , [])
-
 
     return (
         <View style={globalStyles.container}>
@@ -39,11 +42,7 @@ const Status = ({ navigation }) => {
                         refreshing={loading}
                     />
             }
-
-
         </View>
-
     )
-
 }
 export default Status;
