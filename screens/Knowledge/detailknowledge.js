@@ -27,12 +27,13 @@ const DetailKnowledge = ({ route, navigation }) => {
             .then(result => {
                 setData(result)
                 setLoading(false)
-                // setReactnumber(parseInt(result.reactNumber))
-                console.log(user.userID)
-                // for (var i = 0; i < result.react.length; i++){
-                //     if (result.react[i].userId ==)
-                // }
-                setPressed(result.react)
+                
+                console.log(result)
+
+                if ((result.react).indexOf(user.userID) != -1)
+                
+                    setPressed(true)
+                else setPressed(false)
             }).catch(err => console.log('Error'));
     }
 
@@ -49,8 +50,8 @@ const DetailKnowledge = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/true';
-        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false';
+        const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false/'  + user.userID.toString();
 
 
         if (pressed == true) {
@@ -70,7 +71,10 @@ const DetailKnowledge = ({ route, navigation }) => {
                 }
             }).then((result) => {
                 setData(result)
-                setPressed(result.react)
+                if ((result.react).indexOf(user.userID) != -1)
+                
+                setPressed(true)
+            else setPressed(false)
             }).catch(err => {
                 console.log("error", err)
             })
@@ -90,7 +94,10 @@ const DetailKnowledge = ({ route, navigation }) => {
                 }
             }).then(result => {
                 setData(result)
-                setPressed(result.react)
+                if ((result.react).indexOf(user.userID) != -1)
+                
+                setPressed(true)
+            else setPressed(false)
             }).catch(err => {
                 console.log("error", err)
             })
