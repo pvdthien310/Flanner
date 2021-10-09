@@ -1,7 +1,7 @@
 import * as  React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Status from '../../screens/Status/status'
-import DetailStatus from '../../screens/Status/detailStatus'
+ import DetailStatus from '../../screens/Status/detailstatus'
 import statusMember from '../../components/statusMember'
 const Stack = createNativeStackNavigator()
 

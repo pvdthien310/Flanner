@@ -1,7 +1,7 @@
 import * as  React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Knowledge from '../../screens/Knowledge/knowledge'
-import DetailKnowledge from '../../screens/Knowledge/detailKnowledge'
+import DetailKnowledge from '../../screens/Knowledge/detailknowledge'
 import KnowledgeMember from '../../components/knowledgeMember'
 const Stack = createNativeStackNavigator()
 
@@ -12,7 +12,6 @@ export const KnowledgeStack = (props) => {
             <Stack.Screen name='Knowledge' component={Knowledge} />
             <Stack.Screen name='KnowLedge Detail' component={DetailKnowledge} />
             <Stack.Screen name='Knowledge Member' component={KnowledgeMember} />
-
         </Stack.Navigator>
     )
 }
