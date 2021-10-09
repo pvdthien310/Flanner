@@ -1,6 +1,6 @@
 const initState = {
     data: [],
-    user:{ userID: 'pvdthien310'},
+    user:{ userID: 'pvdthien310', name: 'Thien Pham',avatar : '1'},
     loading: true
 }
 

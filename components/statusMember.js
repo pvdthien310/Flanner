@@ -6,48 +6,124 @@ import { images, imagespost, Poststyle } from '../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 const StatusMember = ({ item, navigation }) => {
-    const [pressed, setPressed] = useState(item.react)
+
+    const {user}  = useSelector(state => state.User)
+    const [pressed, setPressed] = useState(false)
     const [reactnumber, setReactnumber] = useState(parseInt(item.reactNumber))
     const imagenumber = item.listImage.length
 
-    const reactPressHandle = () => {
-        console.log(item)
-        if (pressed == true) setReactnumber(reactnumber - 1);
-        else setReactnumber(reactnumber + 1)
+    const LoadData = () => {
+        const url = 'http://192.168.0.106:3000/api/status/' + item._id.toString();
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                if ((result.react).indexOf(user.userID) != -1)
+                
+                    setPressed(true)
+                else setPressed(false)
+                setReactnumber()
+            }).catch(err => console.log('Error'));
+    }
 
-        fetch("http://192.168.0.103:3000/api/status/update", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: item._id,
-                username: item.username,
-                body: item.body,
-                avatar: item.avatar,
-                posttime: item.posttime,
-                listImage: item.listImage,
-                react: !pressed,
-                reactNumber: reactnumber.toString()
-            })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
+    // const reactPressHandle = () => {
+    //     console.log(item)
+    //     if (pressed == true) setReactnumber(reactnumber - 1);
+    //     else setReactnumber(reactnumber + 1)
+
+    //     fetch("http://192.168.0.103:3000/api/status/update", {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             id: item._id,
+    //             username: item.username,
+    //             body: item.body,
+    //             avatar: item.avatar,
+    //             posttime: item.posttime,
+    //             listImage: item.listImage,
+    //             react: !pressed,
+    //             reactNumber: reactnumber.toString()
+    //         })
+    //     }).then(res => {
+    //         if (!res.ok) {
+    //             throw Error('Loi phat sinh')
+    //         }
+    //         else
+    //             return res.json()
+    //     }).then(data => {
+    //         // console.log(data)
+    //     }).catch(err => {
+    //         console.log("error", err)
+    //     })
+    // }
+
+    
+        const PressHandle = () => {
+            //let numberReact = item.reactNumber;
+            const url_true = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/true/' + user.userID.toString();
+            const url_false = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/false/'  + user.userID.toString();
+    
+    
+            if (pressed == true) {
+                console.log(url_false)
+                fetch(url_false, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+    
+                    }
+                }).then(res => {
+                    if (!res.ok) {
+                        throw Error('Loi phat sinh')
+                    }
+                    else {
+                        return res.json()
+                    }
+                }).then((result) => {
+                    if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+                setReactnumber(result.reactNumber)
+
+                }).catch(err => {
+                    console.log("error", err)
+                })
             }
-            else
-                return res.json()
-        }).then(data => {
-            // console.log(data)
-        }).catch(err => {
-            console.log("error", err)
-        })
+            else if (pressed == false) {
+                console.log(url_true)
+
+                fetch(url_true, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => {
+                    if (!res.ok) {
+                        throw Error('Loi phat sinh')
+                    }
+                    else {
+                        return res.json()
+                    }
+                }).then(result => {
+                    if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+                setReactnumber(result.reactNumber)
+
+                }).catch(err => {
+                    console.log("error", err)
+                })
+            }
     }
 
     useEffect(() => {
         console.log('render post')
-        console.log(item.listImage.length)
+       
     })
 
     return (
@@ -86,13 +162,7 @@ const StatusMember = ({ item, navigation }) => {
             </ReactNumber>
             <InteractionWrapper style={Poststyle.interactionwrapper}>
                 <TouchableOpacity style={Poststyle.buttonpost}
-                    onPress={() => {
-                        setPressed(!pressed)
-                        reactPressHandle();
-                        // if (pressed == false)
-                        //     setReactnumber(reactnumber + 1)
-                        // else setReactnumber(reactnumber - 1)
-                    }}>
+                    onPress={PressHandle}>
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
                     <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
                 </TouchableOpacity>

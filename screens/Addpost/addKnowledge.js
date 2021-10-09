@@ -1,21 +1,30 @@
 import * as React from 'react';
 import { useState, useEffect} from 'react';
-import { StyleSheet, Alert, Text, View, ScrollView, SafeAreaView, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Alert, Text, View, ScrollView, SafeAreaView,TouchableWithoutFeedback, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { images } from '../../styles/poststyle'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/core';
+import { MaterialIcons } from '@expo/vector-icons';
+
+
+
 
 
 
 const { height } = Dimensions.get("screen");
-export default function AddStatus({ route, navigation }) {
+export default function AddKnowledge({ route, navigation }) {
 
-    const { name, age, avatar } = {name : 'Thien Pham', age : '20', avatar : '1'};
-    let temp = 0;
+    const {user}  = useSelector(state => state.User)
     const [image, setImage] = useState([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [body, setBody] = useState('');
+
+    const pressgobackHandler = () => {
+        navigation.goBack();
+    }
 
     const AddTitle = (val) => {
         setTitle(val);
@@ -48,7 +57,7 @@ export default function AddStatus({ route, navigation }) {
             .then(data => {
                 //console.log(data.url);
                 setPicture((current) => {
-                    return [...current, { uri: data.url, key: Math.random().toString() }]
+                    return [...current, { url: data.url, key: Math.random().toString(),uri: photo.uri }]
                 });
                 console.log(picture)
             }).catch(err => {
@@ -60,18 +69,18 @@ export default function AddStatus({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://localhost:3000/api/knowledge/send-data", {
+        fetch("http://192.168.0.106:3000/api/knowledge/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: name,
+                username: user.userID,
                 body: body,
-                userID: 'pvdthien310',
+                userID: user.name,
                 title : title,
                 description: description,
-                avatar: avatar,
+                avatar: user.avatar,
                 posttime: d.toUTCString(),
                 listImage: picture,
                 react: [],
@@ -84,7 +93,7 @@ export default function AddStatus({ route, navigation }) {
             else
                 return res.json()
         }).then(data => {
-            console.log(data)
+            // console.log(data)
         }).catch(err => {
             console.log("error", err)
         })
@@ -138,10 +147,18 @@ export default function AddStatus({ route, navigation }) {
     };
 
     const DeleteImagelist = (key) => {
+        const deletedimg = image.filter(member => member.key == key )
+        console.log(deletedimg)
+        console.log(deletedimg[0].uri)
         setImage(() => {
             return image.filter(member => member.key != key)
+        })
+        setPicture(() => {
+            return picture.filter(member =>member.uri != deletedimg[0].uri)
+        })
+        
 
-        });
+     
     };
 
     const openCamera = async () => {
@@ -149,7 +166,7 @@ export default function AddStatus({ route, navigation }) {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
         if (permissionResult.granted === false) {
-            alert("You've refused to allow this appp to access your camera!");
+            alert("You've refused to allow this app to access your camera!");
             return;
         }
 
@@ -175,33 +192,48 @@ export default function AddStatus({ route, navigation }) {
     return (
 
         <SafeAreaView style={styles.post} >
+            <View style ={{flexDirection: 'row'}}>
+            <TouchableOpacity style ={{width: 45}} onPress={pressgobackHandler}>
+                            <View style={{ flexDirection: 'row', margin: 10,width: 40 }}>
+                                <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                            </View>
+            </TouchableOpacity>
+            <View style ={{flexDirection: 'row',flex: 1,justifyContent:'center',alignItems:'center'}}>
+                <Text style ={styles.namepage}> Add Knowledge</Text>
+            </View>
+                
+            </View>
             <View style={styles.userinfo} >
-                <Image source={images.avatars[avatar]} style={styles.imageavatar} />
+                <Image source={images.avatars[user.avatar]} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
-                    <Text style={styles.username} > Hello {name} , </Text>
+                    <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>
                 </View>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-
+              
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
                     <TextInput
                         multiline={true}
                         style={styles.title_topic}
                         onChangeText={AddTitle}
+                        placeholder = "Write a title..."
                         
                     ></TextInput>
                     <View style={styles.bodytitle}>
-                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>What is your topic.</Text>
+                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>What is your title.</Text>
                     </View>
 
 
                 </View>
+                
+
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
                     <TextInput
                         multiline={true}
                         style={styles.description}
                         onChangeText={AddDescription}
+                        placeholder = "Write a description..."
                         
                     ></TextInput>
                     <View style={styles.bodytitle}>
@@ -210,15 +242,17 @@ export default function AddStatus({ route, navigation }) {
 
 
                 </View>
+               
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
                     <TextInput
                         multiline={true}
                         style={styles.body}
                         onChangeText={AddBody}
+                        placeholder = "Write your body..."
                         
                     ></TextInput>
                     <View style={styles.bodytitle}>
-                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>What is your topic.</Text>
+                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Topic body.</Text>
                     </View>
 
 
@@ -248,7 +282,6 @@ export default function AddStatus({ route, navigation }) {
                         <View style={{ flexDirection: 'column' }}>
                             <Image style={styles.image} source={{ uri: item.uri }} />
                             <TouchableOpacity style={{ position: 'absolute' }} onPress={() => {
-                                //console.log(item.key)
                                 DeleteImagelist(item.key)
                             }}>
                                 <Ionicons name="close-circle" size={24} color="black" style={{ margin: 5 }} />
@@ -266,7 +299,10 @@ export default function AddStatus({ route, navigation }) {
                         <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
                     </View>
                 </TouchableOpacity>
+          
             </ScrollView>
+          
+
         </SafeAreaView>
 
 
@@ -285,11 +321,15 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 10,
         marginVertical: 10,
-        marginBottom: 120,
+        marginBottom: 110,
         padding: 12,
         flex: 1
 
 
+    },
+    namepage:{
+        fontSize: 20,
+        fontFamily: 'nunitobold'
     },
     headerImage: {
 
@@ -298,31 +338,35 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch'
     },
     imageavatar: {
-        width: 65,
-        height: 65,
+        width: 45,
+        height: 45,
         borderRadius: 15,
         alignItems: 'center',
     },
     username: {
-        fontSize: 20,
+        fontSize: 15,
         fontFamily: 'nunitobold',
 
     },
     title: {
-        fontSize: 17,
+        fontSize: 12,
         fontFamily: 'nunitobold',
 
     },
     userinfo: {
-        padding: 10,
+        padding: 5,
         flexDirection: 'row',
-        margin: 10,
+        margin: 5,
+        marginBottom: 10,
         shadowColor: 'black',
         shadowOpacity: 0.2,
         shadowRadius: 2,
         shadowOffset: { width: 1, height: 1 },
         borderRadius: 10,
-        backgroundColor: 'ghostwhite'
+        backgroundColor: 'ghostwhite',
+        justifyContent:'center',
+        alignSelf:'center'
+        
 
 
     },

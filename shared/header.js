@@ -39,7 +39,7 @@ export const HeaderNews = ({ navigation, title }) => {
                 </View>
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} >
-                <TouchableOpacity onPress={() => navigation.navigate('Notification Stack')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
                     <Ionicons name="notifications" size={28} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('User Information')}>

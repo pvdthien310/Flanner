@@ -26,7 +26,7 @@ StatusRoute.post('/send-data', (req,res) => {
         react: req.body.react,
         reactNumber: req.body.reactNumber 
     })
-
+    console.log(newStatus)
     newStatus.save()
     .then((data) => {
         console.log(data)
@@ -75,6 +75,39 @@ StatusRoute.get('/', (req, res) => {
             console.log(err)
         })
 })
+
+//Update 
+StatusRoute.post('/update/:id/:number/true/:userID', (req, res) => {
+    let _number = parseInt(req.params.number) + 1;
+
+    Status.findByIdAndUpdate(req.params.id, {"reactNumber" : _number.toString()},{new: true})
+        .then((data) => {
+            Status.findByIdAndUpdate(req.params.id,
+                { "$push": { "react": req.params.userID } },
+                { "new": true, "upsert": true }
+        
+            ).then((data) => res.send(data))
+            .catch(err => console.log(err))
+        }).catch(err => {
+            console.log(err)
+        })
+})
+StatusRoute.post('/update/:id/:number/false/:userID', (req, res) => {
+    let _number = parseInt(req.params.number) - 1;
+
+    Status.findByIdAndUpdate(req.params.id, {"reactNumber" : _number.toString()},{new: true})
+    .then((data) => {
+        Status.findByIdAndUpdate(req.params.id,
+            { "$pull": { "react": req.params.userID } },
+            { "new": true, "upsert": true }
+    
+        ).then((data) => res.send(data))
+        .catch(err => console.log(err))
+    }).catch(err => {
+        console.log(err)
+    })   
+})
+
 
 
 module.exports = StatusRoute

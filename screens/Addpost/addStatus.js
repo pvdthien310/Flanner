@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect} from 'react';
-import { StyleSheet, Alert, Text, View, ScrollView, SafeAreaView, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, ActivityIndicator,Alert, Text, View,TouchableWithoutFeedback ,ScrollView, SafeAreaView, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard } from 'react-native';
 import { images } from '../../styles/poststyle'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { MaterialIcons } from '@expo/vector-icons';
+
+
 
 
 
@@ -11,18 +15,22 @@ const { height } = Dimensions.get("screen");
 
 
 
-export default function AddKnowledge({ route, navigation }) {
+export default function AddStatus({ route, navigation }) {
 
-    const { name, age, avatar } = {name : 'Thien Pham', age : '20', avatar : '1'};
-    let temp = 0;
+    const {user}  = useSelector(state => state.User)
     const [image, setImage] = useState([]);
     const [textinput, setTextinput] = useState('');
+    const [loading,setLoading] = useState(false)
     const Add = (val) => {
         setTextinput(val);
 
     }
-    const array = [];
     const [picture, setPicture] = useState([]);
+
+
+    const pressgobackHandler = () => {
+        navigation.goBack();
+    }
     const HandleUpImages = (photo) => {
         console.log('In here !!!')
         const data = new FormData();
@@ -53,19 +61,20 @@ export default function AddKnowledge({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://localhost:3000/api/knowledge/send-data", {
+        fetch("http://192.168.0.106:3000/api/status/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: name,
-                userID: name,
+                username: user.name,
+                userID: user.userID,
                 body: textinput,
-                avatar: avatar,
+                avatar: user.avatar,
                 posttime: d.toUTCString(),
                 listImage: picture,
-                reactNumber: '0'
+                reactNumber: '0',
+                react: [],
             })
         }).then(res => {
             if (!res.ok) {
@@ -165,10 +174,23 @@ export default function AddKnowledge({ route, navigation }) {
     return (
 
         <SafeAreaView style={styles.post} >
+            
+            <View style ={{flexDirection: 'row'}}>
+            <TouchableOpacity style ={{width: 45}} onPress={pressgobackHandler}>
+                            <View style={{ flexDirection: 'row', margin: 10,width: 40 }}>
+                                <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                            </View>
+            </TouchableOpacity>
+            <View style ={{flexDirection: 'row',flex: 1,justifyContent:'center',alignItems:'center'}}>
+                <Text style ={styles.namepage}> Add Status</Text>
+            </View>
+            </View>
+
+               
             <View style={styles.userinfo} >
-                <Image source={images.avatars[avatar]} style={styles.imageavatar} />
+                <Image source={images.avatars[user.avatar]} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
-                    <Text style={styles.username} > Hello {name} , </Text>
+                    <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>
                 </View>
             </View>
@@ -179,6 +201,7 @@ export default function AddKnowledge({ route, navigation }) {
                         multiline={true}
                         style={styles.body}
                         onChangeText={Add}
+                        placeholder= "Write a caption..."
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Share your experience.</Text>
@@ -225,8 +248,8 @@ export default function AddKnowledge({ route, navigation }) {
                 <TouchableOpacity onPress={SendNewpost}>
                     <View style={styles.postbutton}
                     >
-                        <Text style={{ fontFamily: 'nunitobold', fontSize: 15 }}>Post</Text>
-                        <Ionicons name="ios-send" size={24} color="black" style={{ marginStart: 10 }} />
+                        <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                        <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
                     </View>
                 </TouchableOpacity>
             </ScrollView>
@@ -248,11 +271,15 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 10,
         marginVertical: 10,
-        marginBottom: 120,
+        marginBottom: 110,
         padding: 12,
         flex: 1
 
 
+    },
+    namepage:{
+      fontFamily: 'nunitobold',
+      fontSize: 20 ,
     },
     headerImage: {
 
@@ -313,7 +340,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 1 },
         borderRadius: 10,
         flex: 1,
-        height: height * 0.3,
+        height: height * 0.25,
         marginTop: 30,
         marginStart: 10,
         marginEnd: 10,
@@ -361,14 +388,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowOpacity: 0.3,
         shadowRadius: 2,
-        margin: 10,
+        marginEnd: 10,
         shadowColor: 'black',
         shadowOffset: { width: 1, height: 1 },
-        padding: 10,
-        backgroundColor: 'lightgrey',
+        padding: 12,
+        backgroundColor: 'black',
         flexDirection: 'row',
         alignItems: 'center',
-
         alignSelf: 'flex-end'
 
 
