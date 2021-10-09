@@ -3,11 +3,11 @@ const initState = {
     loading: true
 }
 
- const KnowledgeReducer = (state = initState, action) => {
+ const StatusReducer = (state = initState, action) => {
 
-    if (action.type == 'ADD_DATA_KNOWLEDGE') {
+    if (action.type == 'ADD_DATA_STATUS') {
 
-      
+        console.log('aaa')
         const newState = {
             ...state,
             data: action.payload
@@ -16,7 +16,7 @@ const initState = {
         return newState;
 
     }
-    if (action.type == 'SET_LOADING_KNOWLEDGE') {
+    if (action.type == 'SET_LOADING_STATUS') {
         
         const newState = {
             ...state,
@@ -27,4 +27,4 @@ const initState = {
 
     return state;
 }
-export default KnowledgeReducer;
+export default StatusReducer;

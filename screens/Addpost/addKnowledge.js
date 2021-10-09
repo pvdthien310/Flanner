@@ -60,7 +60,7 @@ export default function AddStatus({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://localhost:3000/api/status/send-data", {
+        fetch("http://localhost:3000/api/knowledge/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

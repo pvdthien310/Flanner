@@ -7,7 +7,7 @@ const Status = ({ navigation }) => {
     // const [data, setData] = useState([])
     // const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
-    const { data, loading } = useSelector(state => { return state.Knowledge })
+    const { data, loading } = useSelector(state => { return state.Status })
 
     const fetchData = () => {
         
@@ -16,8 +16,8 @@ const Status = ({ navigation }) => {
             .then(result => {
                 // setData(result)
                 // setLoading(false)
-                dispatch({ type: 'ADD_DATA', payload: result })
-                dispatch({ type: 'SET_LOADING', payload: false })
+                dispatch({ type: 'ADD_DATA_STATUS', payload: result })
+                dispatch({ type: 'SET_LOADING_STATUS', payload: false })
             }).catch(err => console.log('Error'));
     }
 
