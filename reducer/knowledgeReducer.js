@@ -12,11 +12,27 @@ const initState = {
             ...state,
             data: action.payload
         }
-        console.log(newState)
+        // console.log(newState)
 
         return newState;
 
     }
+    if (action.type == 'UPDATE_KNOWLEDGE_MEMBER')
+    {
+        let newdata = state.data;
+        newdata = newdata.map(member => {
+            if (member._id == action.payload._id)
+                return action.payload
+            else return member
+        })
+        const newState = {
+            ...state,
+            data: newdata
+        }
+        return newState;
+
+    }
+
     if (action.type == 'SET_LOADING_KNOWLEDGE') {
         
         const newState = {

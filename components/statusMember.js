@@ -13,7 +13,7 @@ const StatusMember = ({ item, navigation }) => {
 
     const {user}  = useSelector(state => state.User)
     const [pressed, setPressed] = useState(false)
-    const [reactnumber, setReactnumber] = useState(parseInt(item.reactNumber))
+     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
 
     const LoadData = () => {
@@ -25,7 +25,7 @@ const StatusMember = ({ item, navigation }) => {
                 
                     setPressed(true)
                 else setPressed(false)
-                setReactnumber()
+                 setReactnumber(result.react.length)
             }).catch(err => console.log('Error'));
     }
 
@@ -61,6 +61,66 @@ const StatusMember = ({ item, navigation }) => {
     //         console.log("error", err)
     //     })
     // }
+    const PressHandle1 = () => {
+        let numberReact = data.reactNumber;
+        const url_true = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+
+
+        if (pressed == true) {
+            console.log(url_false)
+            fetch(url_false, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(res => {
+                if (!res.ok) {
+                    throw Error('Loi phat sinh')
+                }
+                else {
+                    return res.json()
+                }
+            }).then((result) => {
+                //  console.log(result)
+                // setData(result)
+                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+                if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
+        else if (pressed == false) {
+            fetch(url_true, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                if (!res.ok) {
+                    throw Error('Loi phat sinh')
+                }
+                else {
+                    return res.json()
+                }
+            }).then(result => {
+                // setData(result)
+                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+                if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
+
+
+        // if (pressed == true) setReactnumber(reactnumber - 1);
+        // else setReactnumber(reactnumber + 1)
+
+    }
 
     
         const PressHandle = () => {

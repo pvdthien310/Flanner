@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const DetailKnowledge = ({ route, navigation }) => {
 
+    const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
     const [data, setData] = useState(null)
@@ -27,11 +28,8 @@ const DetailKnowledge = ({ route, navigation }) => {
             .then(result => {
                 setData(result)
                 setLoading(false)
-
-                console.log(result)
-
+                // console.log(result)
                 if ((result.react).indexOf(user.userID) != -1)
-
                     setPressed(true)
                 else setPressed(false)
             }).catch(err => console.log('Error'));
@@ -39,11 +37,72 @@ const DetailKnowledge = ({ route, navigation }) => {
 
     useEffect(() => {
         fetchData();
-
     }, [])
+    
 
     const pressgobackHandler = () => {
         navigation.goBack();
+    }
+
+    const PressHandle1 = () => {
+        let numberReact = data.reactNumber;
+        const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
+
+
+        if (pressed == true) {
+            console.log(url_false)
+            fetch(url_false, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(res => {
+                if (!res.ok) {
+                    throw Error('Loi phat sinh')
+                }
+                else {
+                    return res.json()
+                }
+            }).then((result) => {
+                //  console.log(result)
+                setData(result)
+                dispatch({type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result})
+                if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
+        else if (pressed == false) {
+            fetch(url_true, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                if (!res.ok) {
+                    throw Error('Loi phat sinh')
+                }
+                else {
+                    return res.json()
+                }
+            }).then(result => {
+                setData(result)
+                dispatch({type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result})
+                if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
+
+
+        // if (pressed == true) setReactnumber(reactnumber - 1);
+        // else setReactnumber(reactnumber + 1)
+
     }
 
 
@@ -72,7 +131,6 @@ const DetailKnowledge = ({ route, navigation }) => {
             }).then((result) => {
                 setData(result)
                 if ((result.react).indexOf(user.userID) != -1)
-
                     setPressed(true)
                 else setPressed(false)
             }).catch(err => {
@@ -164,9 +222,9 @@ const DetailKnowledge = ({ route, navigation }) => {
 
                             </PostText>
 
-                            <Text style={Poststyle_Status.reactnumber_detail}>{data.reactNumber} Likes</Text>
+                            <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
-                                <TouchableOpacity onPress={PressHandle} >
+                                <TouchableOpacity onPress={PressHandle1} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
                                 <TouchableOpacity >

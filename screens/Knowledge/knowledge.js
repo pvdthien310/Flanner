@@ -9,15 +9,14 @@ import { useFocusEffect } from '@react-navigation/native';
 
 
 const Knowledge = ({ navigation }) => {
+    const [,forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
-    console.log(data)
     const fetchData = () => {
         fetch('http://192.168.0.106:3000/api/knowledge')
             .then(res => res.json())
             .then(result => {
-                // setData(result)
-                // setLoading(false)
+                console.log('reset')
                 dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: result })
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
             }).catch(err => console.log('Error'));
@@ -25,6 +24,9 @@ const Knowledge = ({ navigation }) => {
     useEffect(() => {
         fetchData();}
         ,[])
+
+    useEffect(() => {
+        forceRerender}, [data])
         
     return (
         <View style={globalStyles.container}>

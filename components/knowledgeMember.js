@@ -8,10 +8,11 @@ import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 
 const KnowledgeMember = ({ item, navigation }) => {
-    const [reactnumber, setReactnumber] = useState(parseInt(item.reactNumber))
+     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
+    // console.log( item.title +' : ' +  item.react)
     useEffect(() => {
-        setReactnumber(item.reactNumber)
+        setReactnumber(item.react.length)
     },[item])
 
     return (

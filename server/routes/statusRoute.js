@@ -108,6 +108,30 @@ StatusRoute.post('/update/:id/:number/false/:userID', (req, res) => {
     })   
 })
 
+StatusRoute.post('/update/:id/true/:userID', (req, res) => {
+    Status.findByIdAndUpdate(req.params.id,
+        { "$push": { "react": req.params.userID } },
+        { "new": true, "upsert": true }
+    ).then((data) => {
+        console.log(data.react)      
+        res.send(data)}
+        )
+        .catch(err => console.log(err))
+})
+
+
+StatusRoute.post('/update/:id/false/:userID', (req, res) => {
+    Status.findByIdAndUpdate(req.params.id,
+        { "$pull": { "react": req.params.userID } },
+        { "new": true, "upsert": true }
+    ).then((data) => {
+        res.send(data)  
+        console.log(data.react)      
+    })
+        .catch(err => console.log(err))
+})
+
+
 
 
 module.exports = StatusRoute
