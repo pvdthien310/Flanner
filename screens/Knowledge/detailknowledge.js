@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const DetailKnowledge = ({ route, navigation }) => {
 
-    const {user}  = useSelector(state => state.User)
+    const { user } = useSelector(state => state.User)
     const { item } = route.params;
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -27,11 +27,11 @@ const DetailKnowledge = ({ route, navigation }) => {
             .then(result => {
                 setData(result)
                 setLoading(false)
-                
+
                 console.log(result)
 
                 if ((result.react).indexOf(user.userID) != -1)
-                
+
                     setPressed(true)
                 else setPressed(false)
             }).catch(err => console.log('Error'));
@@ -51,7 +51,7 @@ const DetailKnowledge = ({ route, navigation }) => {
     const PressHandle = () => {
         let numberReact = data.reactNumber;
         const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false/'  + user.userID.toString();
+        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {
@@ -72,9 +72,9 @@ const DetailKnowledge = ({ route, navigation }) => {
             }).then((result) => {
                 setData(result)
                 if ((result.react).indexOf(user.userID) != -1)
-                
-                setPressed(true)
-            else setPressed(false)
+
+                    setPressed(true)
+                else setPressed(false)
             }).catch(err => {
                 console.log("error", err)
             })
@@ -95,9 +95,9 @@ const DetailKnowledge = ({ route, navigation }) => {
             }).then(result => {
                 setData(result)
                 if ((result.react).indexOf(user.userID) != -1)
-                
-                setPressed(true)
-            else setPressed(false)
+
+                    setPressed(true)
+                else setPressed(false)
             }).catch(err => {
                 console.log("error", err)
             })
@@ -115,13 +115,19 @@ const DetailKnowledge = ({ route, navigation }) => {
                     :
                     <SafeAreaView style={styles.post}>
 
-
-                        <TouchableOpacity onPress={pressgobackHandler}>
-                            <View style={{ flexDirection: 'row', margin: 10 }}>
-                                {/* <Ionicons name="chevron-back" size={30} color="black" /> */}
-                                <MaterialIcons name="keyboard-backspace" size={35} color="black" />
+                        <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                            <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
+                                <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
+                                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={{   
+                                        fontFamily: 'nunitobold',
+                                        fontSize: 25,
+                                }}> Detail </Text>
                             </View>
-                        </TouchableOpacity>
+                        </View>
 
                         <ScrollView style={{ margin: 10, marginBottom: 50 }} showsVerticalScrollIndicator={false}>
 

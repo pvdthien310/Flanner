@@ -4,12 +4,13 @@ import { globalStyles } from '../../styles/global';
 import StatusMember from '../../components/statusMember';
 import KnowledgeMember from '../../components/knowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 
 const Knowledge = ({ navigation }) => {
 
-    // const [data, setData] = useState([])
-    // const [loading, setLoading] = useState(true)
+    
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
     const fetchData = () => {
@@ -27,7 +28,6 @@ const Knowledge = ({ navigation }) => {
         fetchData();
     }
         , [])
-
 
     return (
         <View style={globalStyles.container}>

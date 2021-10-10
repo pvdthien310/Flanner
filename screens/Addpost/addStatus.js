@@ -23,7 +23,6 @@ export default function AddStatus({ route, navigation }) {
     const [loading,setLoading] = useState(false)
     const Add = (val) => {
         setTextinput(val);
-
     }
     const [picture, setPicture] = useState([]);
 
@@ -32,7 +31,7 @@ export default function AddStatus({ route, navigation }) {
         navigation.goBack();
     }
     const HandleUpImages = (photo) => {
-        console.log('In here !!!')
+        setLoading(true)
         const data = new FormData();
         data.append("file", photo)
         data.append("upload_preset", "fyjwewqj")
@@ -49,18 +48,18 @@ export default function AddStatus({ route, navigation }) {
             .then(data => {
                 //console.log(data.url);
                 setPicture((current) => {
-                    return [...current, { uri: data.url, key: Math.random().toString() }]
+                    return [...current, { url: data.url, key: Math.random().toString(),uri: photo.uri  }]
                 });
-                console.log(picture)
+                // console.log(picture)
+                setLoading(false)
             }).catch(err => {
                 Alert.alert("Error While Uploading Image");
             })
 
     }
     const SendNewpost = () => {
-        // temp = Math.random();
+        setLoading(true)
         const d = new Date();
-
         fetch("http://192.168.0.106:3000/api/status/send-data", {
             method: 'POST',
             headers: {
@@ -83,11 +82,12 @@ export default function AddStatus({ route, navigation }) {
             else
                 return res.json()
         }).then(data => {
-            // console.log(data)
+          
         }).catch(err => {
             console.log("error", err)
         })
-
+       
+        navigation.goBack();
         navigation.navigate('Knowledge');
 
     }
@@ -137,10 +137,17 @@ export default function AddStatus({ route, navigation }) {
     };
 
     const DeleteImagelist = (key) => {
+        setLoading(true)
+        const deletedimg = image.filter(member => member.key == key )
+        console.log(deletedimg)
+        console.log(deletedimg[0].uri)
         setImage(() => {
             return image.filter(member => member.key != key)
-
-        });
+        })
+        setPicture(() => {
+            return picture.filter(member =>member.uri != deletedimg[0].uri)
+        })
+        setLoading(false)
     };
 
     const openCamera = async () => {
@@ -198,6 +205,7 @@ export default function AddStatus({ route, navigation }) {
 
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
                     <TextInput
+                    clearButtonMode = 'always'
                         multiline={true}
                         style={styles.body}
                         onChangeText={Add}
@@ -245,13 +253,28 @@ export default function AddStatus({ route, navigation }) {
 
 
                 />
-                <TouchableOpacity onPress={SendNewpost}>
-                    <View style={styles.postbutton}
+                 {loading ? 
+                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
+                
+                 <ActivityIndicator size="small" color="black" /> 
+                <TouchableOpacity activeOpacity ={1}>
+                    <View style={styles.postbutton1}
                     >
                         <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
                         <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
                     </View>
                 </TouchableOpacity>
+                </View>
+                : 
+                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
+               <TouchableOpacity onPress={SendNewpost} >
+                   <View style={styles.postbutton}
+                   >
+                       <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                       <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                   </View>
+               </TouchableOpacity>
+               </View> }
             </ScrollView>
         </SafeAreaView>
 
@@ -398,6 +421,21 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end'
 
 
+    },
+    postbutton1: {
+        borderRadius: 10,
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        marginEnd: 10,
+        marginStart: 10,
+        marginBottom: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 1, height: 1 },
+        padding: 12,
+        backgroundColor: 'dimgrey',
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-end'
     }
 
 

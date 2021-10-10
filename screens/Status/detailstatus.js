@@ -5,6 +5,8 @@ import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Poststyle_Knowledge, images, Poststyle } from '../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 const DetailStatus = ({ route, navigation }) => {
     
@@ -17,13 +19,19 @@ const DetailStatus = ({ route, navigation }) => {
     return (
         <View style={globalStyles.container}>
             <Post>
-                <TouchableOpacity onPress={pressgobackHandler}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Ionicons style={{ marginBottom: 15 }} name="chevron-back" size={30} color="black" />
-                    </View>
-
-
-                </TouchableOpacity>
+            <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                            <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
+                                <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
+                                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={{   
+                                        fontFamily: 'nunitobold',
+                                        fontSize: 25,
+                                }}> Detail </Text>
+                            </View>
+                        </View>
 
                 <ScrollView>
                     <UserInfo>
