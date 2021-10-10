@@ -9,24 +9,24 @@ import Toast from 'react-native-root-toast';
 export default function SignUpScreen({ navigation }) {
 
     const _submitData = () => {
-        fetch("http://192.168.1.5:3000/api/user/send-data", {
+        fetch("http://192.168.1.6:3000/api/user/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userID: 'kjhtyg',
-                phoneNumber: '0987654433',
-                name: 'thuc',
-                doB: '',
-                avatar: 'req.body.avatar',
-                email: 'req.body.email',
-                friendArray: 'req.body.friendArray',
-                password: 'req.body.password',
-                score: 'req.body.score',
-                address: 'req.body.address',
-                position: 'req.body.position',
-                reportedNum: 'req.body.reportedNum',
+                userID: 'IK1P3Y',
+                phoneNumber: '0987634665',
+                name: 'Linh Nguyen',
+                doB: '15/07/2001',
+                avatar: '',
+                email: '19520145@gm.uit.edu.vn',
+                friendArray: '',
+                password: '123456',
+                score: '0',
+                address: 'Soc Trang',
+                position: '0',
+                reportedNum: '0',
             })
         }).then(res => res.json())
             .then(data => { })

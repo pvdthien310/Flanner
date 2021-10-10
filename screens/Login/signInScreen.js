@@ -12,7 +12,7 @@ export default function SignInScreen({ navigation }) {
     const [loading, setLoading] = useState(true)
 
     const fetchData = () => {
-        fetch('http://192.168.1.5:3000/api/user')
+        fetch('http://192.168.1.6:3000/api/user')
             .then(res => res.json())
             .then(result => {
                 setData1(result)
