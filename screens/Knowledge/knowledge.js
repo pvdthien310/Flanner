@@ -9,10 +9,9 @@ import { useFocusEffect } from '@react-navigation/native';
 
 
 const Knowledge = ({ navigation }) => {
-
-    
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
+    console.log(data)
     const fetchData = () => {
         fetch('http://192.168.0.106:3000/api/knowledge')
             .then(res => res.json())
@@ -23,12 +22,10 @@ const Knowledge = ({ navigation }) => {
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
             }).catch(err => console.log('Error'));
     }
-
     useEffect(() => {
-        fetchData();
-    }
-        , [])
-
+        fetchData();}
+        ,[])
+        
     return (
         <View style={globalStyles.container}>
             {
@@ -45,11 +42,7 @@ const Knowledge = ({ navigation }) => {
                         refreshing={loading}
                     />
             }
-
-
         </View>
-
     )
-
 }
 export default Knowledge;

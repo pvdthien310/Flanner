@@ -10,18 +10,13 @@ import react from 'react';
 const KnowledgeMember = ({ item, navigation }) => {
     const [reactnumber, setReactnumber] = useState(parseInt(item.reactNumber))
     const imagenumber = item.listImage.length
-
-
-
     useEffect(() => {
-        console.log('render post')
-        console.log(item.listImage.length)
-    })
+        setReactnumber(item.reactNumber)
+    },[item])
 
     return (
         <Post >
         <PostImage>
-            {/* <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text> */}
             <Text style={Poststyle_Status.posttime}>{item.posttime}</Text>
             <FlatList
                 scrollEnabled={true}

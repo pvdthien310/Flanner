@@ -12,6 +12,7 @@ const initState = {
             ...state,
             data: action.payload
         }
+        console.log(newState)
 
         return newState;
 
