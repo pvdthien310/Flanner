@@ -11,9 +11,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const StatusMember = ({ item, navigation }) => {
 
+    const dispatch = useDispatch();
     const {user}  = useSelector(state => state.User)
     const [pressed, setPressed] = useState(false)
-     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
+    const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
 
     const LoadData = () => {
@@ -28,6 +29,9 @@ const StatusMember = ({ item, navigation }) => {
                  setReactnumber(result.react.length)
             }).catch(err => console.log('Error'));
     }
+    useEffect(() => {
+        LoadData()
+    },[])
 
     // const reactPressHandle = () => {
     //     console.log(item)
@@ -62,7 +66,7 @@ const StatusMember = ({ item, navigation }) => {
     //     })
     // }
     const PressHandle1 = () => {
-        let numberReact = data.reactNumber;
+        // let numberReact = data.reactNumber;
         const url_true = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
         const url_false = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
@@ -84,10 +88,14 @@ const StatusMember = ({ item, navigation }) => {
             }).then((result) => {
                 //  console.log(result)
                 // setData(result)
+                console.log(result)
+
                 dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
+                setReactnumber(result.react.length)
+
             }).catch(err => {
                 console.log("error", err)
             })
@@ -107,10 +115,13 @@ const StatusMember = ({ item, navigation }) => {
                 }
             }).then(result => {
                 // setData(result)
+                console.log(result)
                 dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
+                setReactnumber(result.react.length)
+
             }).catch(err => {
                 console.log("error", err)
             })
@@ -222,7 +233,7 @@ const StatusMember = ({ item, navigation }) => {
             </ReactNumber>
             <InteractionWrapper style={Poststyle.interactionwrapper}>
                 <TouchableOpacity style={Poststyle.buttonpost}
-                    onPress={PressHandle}>
+                    onPress={PressHandle1}>
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
                     <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
                 </TouchableOpacity>
