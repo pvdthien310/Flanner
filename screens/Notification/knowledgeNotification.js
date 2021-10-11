@@ -36,7 +36,7 @@ const KnowledgeNotification = ({ navigation }) => {
     //     forceRerender}, [user_knowledge_notification])
         
     return (
-        <View style={globalStyles.container}>
+        <View style={styles.container}>
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
@@ -59,7 +59,7 @@ const KnowledgeNotification = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         padding: 12,
-        marginBottom: 80,
+        flex: 1
         // backgroundColor: 'black'
 
     },

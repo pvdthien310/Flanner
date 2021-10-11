@@ -33,15 +33,14 @@ const NotificationMember = ({ item, navigation }) => {
     }
 
     return (
-        <View style = {styles.frame} >
-        <TouchableOpacity onPress={() => HandelOpenPost()}>
+        <TouchableOpacity activeOpacity = { item.type == '3' ? 1 : 0.7}  onPress={() => HandelOpenPost()}>
+            <View style = {item.type == '1' ? styles.frame_1 : item.type == '2' ? styles.frame_2 : styles.frame_3  } >
             <Text style ={styles.body}>{item.postID}</Text>
             <Text style ={styles.body}>{item.message}</Text>
             <Text style ={styles.body}>{item.senderID}</Text>
             <Text style ={styles.body}>{item.type}</Text>
+            </View >
         </TouchableOpacity>
-
-        </View >
 
     )
 
@@ -49,12 +48,32 @@ const NotificationMember = ({ item, navigation }) => {
 export default react.memo(NotificationMember);
 
 const styles = StyleSheet.create({
-    frame: {
-        borderWidth: 1,
-        borderRadius: 10,
+    frame_1: {
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        borderRadius: 5,
         padding: 10,
         margin: 5,
-        backgroundColor: 'teal'
+        backgroundColor: 'lightslategrey',
+    },
+    frame_2: {
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        borderRadius: 5,
+        padding: 10,
+        margin: 5,
+        backgroundColor: 'dimgrey'
+    },
+    frame_3: {
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        borderRadius: 5,
+        padding: 10,
+        margin: 5,
+        backgroundColor: 'maroon'
     },
     body : {
         fontFamily: 'nunitoregular',
