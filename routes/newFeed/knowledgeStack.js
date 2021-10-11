@@ -10,9 +10,8 @@ export const KnowledgeStack = (props) => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Knowledge' component={Knowledge} />
-            <Stack.Screen name='KnowLedge Detail' component={DetailKnowledge} />
+            <Stack.Screen name='Knowledge Detail' component={DetailKnowledge} />
             <Stack.Screen name='Knowledge Member' component={KnowledgeMember} />
-
         </Stack.Navigator>
     )
 }

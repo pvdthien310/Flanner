@@ -4,10 +4,20 @@ const KnowledgeSchema = new mongoose.Schema({
     username:{
         type:String,
         required:true,
-        min: 1 ,
-        max: 20,
+    },
+    userID:{
+        type:String,
+        required:true,
     },
     body:{
+        type:String,
+        required:true,
+    },
+    title:{
+        type:String,
+        required:true,
+    },
+    description:{
         type:String,
         required:true,
     },
@@ -22,14 +32,12 @@ const KnowledgeSchema = new mongoose.Schema({
         type: Array,
     },
     react:{
-        type:Boolean,
-        default:false
+        type:Array,
     },
     reactNumber:{
         type:String,
     }
-},
- {timestamps:true}
+}
 );
 
 module.exports = mongoose.model("Knowledge", KnowledgeSchema);

@@ -39,7 +39,9 @@ export function UserInfoText(props) {
         <View
             style={{
                 flexDirection: 'column',
-                justifyContent: 'flex-start'
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+
             }}>
             {props.children}
 
