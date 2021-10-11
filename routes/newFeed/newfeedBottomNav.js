@@ -8,8 +8,9 @@ import { KnowledgeStack } from './knowledgeStack';
 import { StatusStack } from './statusStack';
 import Addpost from '../../screens/Addpost/addKnowledge';
 import AddStatus from '../../screens/Addpost/addStatus';
-import { HandleAndNotificationStack } from './handleAndNotificationStack';
+
 import { Ionicons } from '@expo/vector-icons'; 
+import { AddPostStack } from './addPostStack';
 
 
 
@@ -150,7 +151,7 @@ export const BottomNavigator = (props) => {
                         </View>
                     )
                 }} />
-            <Tab.Screen name="Add" component={HandleAndNotificationStack}
+            <Tab.Screen name="Add" component={AddPostStack}
 
                 options={{
                     headerTitle: () => <HeaderNews navigation={navigation} title='Add Post' />,

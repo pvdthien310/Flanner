@@ -1,34 +1,61 @@
 const initState = {
     data: [],
-    user_notification:[],
+    user_knowledge_notification:[],
+    user_status_notification:[],
+    user_system_notification:[],
     loading: true
 }
 
  const NotificationReducer = (state = initState, action) => {
 
-    if (action.type == 'ADD_DATA') {
+    if (action.type == 'ADD_DATA_NOTIFICATION') {
 
         
         const newState = {
             ...state,
-            data: action.payload
+            data: action.payload,
+        }
+        
+
+        return newState;
+
+    }
+    if (action.type == 'ADD_USER_KNOWLEDGE_NOTIFICATION') {
+        
+        
+        const newState = {
+            ...state,
+            user_knowledge_notification: action.payload
+        }
+        
+
+        return newState;
+
+    }
+    if (action.type == 'ADD_USER_STATUS_NOTIFICATION') {
+        
+        
+        const newState = {
+            ...state,
+            user_status_notification: action.payload
+        }
+        
+
+        return newState;
+
+    }
+    if (action.type == 'ADD_USER_SYSTEM_NOTIFICATION') {
+        
+        
+        const newState = {
+            ...state,
+            user_system_notification: action.payload
         }
 
         return newState;
 
     }
-    if (action.type == 'ADD_USER_NOTIFICATION') {
-
-        
-        const newState = {
-            ...state,
-            user_notification: action.payload
-        }
-
-        return newState;
-
-    }
-    if (action.type == 'SET_LOADING') {
+    if (action.type == 'SET_LOADING_NOTIFICATION') {
         
         const newState = {
             ...state,

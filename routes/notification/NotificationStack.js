@@ -1,9 +1,9 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import KnowledgeNotification from '../../screens/Notification/knowledgeNotification';
-import StatusNotification from '../../screens/Notification/statusNotification';
 import * as React from 'react';
 import {Image,View} from 'react-native'
 import SystemNotification from '../../screens/Notification/systemNotification';
+import { KnowledgeNotificationStack } from './knowledegeNotificationStack';
+import { StatusNotificationStack } from './statusNotificationStack';
 
 
 
@@ -12,7 +12,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function NotificationTab() {
   return (
     <Tab.Navigator >
-      <Tab.Screen name="Knowledge Notification" component={KnowledgeNotification}   options={{
+      <Tab.Screen name="Knowledge Notification Stack" component={KnowledgeNotificationStack}   options={{
                     tabBarShowLabel:false,
                     tabBarIcon: ({ focused }) => (
                         <View
@@ -36,7 +36,7 @@ export default function NotificationTab() {
                         </View>
                     )
                 }} />
-                      <Tab.Screen name="Status Notification" component={StatusNotification} options={{
+                      <Tab.Screen name="Status Notification Stack" component={StatusNotificationStack} options={{
                      tabBarShowLabel:false,
                     tabBarIcon: ({ focused }) => (
                         <View

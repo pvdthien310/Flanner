@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 const DetailKnowledge = ({ route, navigation }) => {
+    const [,forceRerender] = useState();
 
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
@@ -20,12 +21,17 @@ const DetailKnowledge = ({ route, navigation }) => {
     const [loading, setLoading] = useState(true)
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
+    useEffect(() => {
+        forceRerender}, [item])
 
     const fetchData = () => {
+
         const url = 'http://192.168.0.106:3000/api/knowledge/' + item._id.toString();
+        console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
+               
                 setData(result)
                 setLoading(false)
                 // console.log(result)
@@ -255,7 +261,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                             }}>
                                 <Image source={images.avatars[item.avatar]} style={Poststyle_Status.imageavatar_detai} />
                                 <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {item.username}</Text>
+                                    <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
                                     <Text style={{
                                         fontFamily: 'nunitobold',
                                         fontSize: 12,
