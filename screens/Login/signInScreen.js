@@ -6,18 +6,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function SignInScreen({ navigation }) {
-    const [data1, setData1] = useState([])
-    const [loading, setLoading] = useState(true)
-
+    // const [data1, setData1] = useState([])
+    // const [loading, setLoading] = useState(true)
+    const dispatch = useDispatch()
+    const { data, loading } = useSelector(state => { return state.User })
+    console.log(data)
     const fetchData = () => {
         fetch('http://192.168.1.6:3000/api/user')
             .then(res => res.json())
             .then(result => {
-                setData1(result)
-                setLoading(false)
-                console.log(data1)
+                dispatch({ type: 'ADD_DATA_USER', payload: result })
+                dispatch({ type: 'SET_LOADING_USER', payload: false })
             }).catch(err => console.log('Error'));
     }
 
@@ -26,12 +28,12 @@ export default function SignInScreen({ navigation }) {
     }
         , [])
 
-    const [data, setData] = useState({
-        user: '',
-        password: '',
-        showPassword: false,
-        checkUser: false
-    });
+    // const [data, setData] = useState({
+    //     user: '',
+    //     password: '',
+    //     showPassword: false,
+    //     checkUser: false
+    // });
 
     const TextInputChange = (val) => {
         if (val.length != 0) {

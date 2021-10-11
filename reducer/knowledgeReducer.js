@@ -3,11 +3,11 @@ const initState = {
     loading: true
 }
 
- const KnowledgeReducer = (state = initState, action) => {
+const KnowledgeReducer = (state = initState, action) => {
 
     if (action.type == 'ADD_DATA_KNOWLEDGE') {
 
-      
+
         const newState = {
             ...state,
             data: action.payload
@@ -17,8 +17,7 @@ const initState = {
         return newState;
 
     }
-    if (action.type == 'UPDATE_KNOWLEDGE_MEMBER')
-    {
+    if (action.type == 'UPDATE_KNOWLEDGE_MEMBER') {
         let newdata = state.data;
         newdata = newdata.map(member => {
             if (member._id == action.payload._id)
@@ -34,7 +33,7 @@ const initState = {
     }
 
     if (action.type == 'SET_LOADING_KNOWLEDGE') {
-        
+
         const newState = {
             ...state,
             loading: action.payload
