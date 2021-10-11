@@ -7,6 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
+import Toast from 'react-native-root-toast';
 
 export default function SignInScreen({ navigation }) {
     // const [data1, setData1] = useState([])
@@ -28,28 +29,99 @@ export default function SignInScreen({ navigation }) {
     }
         , [])
 
-    // const [data, setData] = useState({
-    //     user: '',
-    //     password: '',
-    //     showPassword: false,
-    //     checkUser: false
-    // });
+    const [dataTemp, setData] = useState({
+        email: '',
+        password: '',
+        showPassword: false,
+        checkUser: false,
+        checkPassword: false
+    });
 
-    const TextInputChange = (val) => {
-        if (val.length != 0) {
+    const EmailChange = (val) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(val) === false) {
             setData({
-                ...data,
-                email: val,
-                checkUser: true
-            })
-        }
-        else {
-            setData({
-                ...data,
+                ...dataTemp,
                 email: val,
                 checkUser: false
             })
         }
+        else {
+            setData({
+                ...dataTemp,
+                email: val,
+                checkUser: true
+            })
+        }
+    }
+    const PasswordChange = (val) => {
+        if (val.length < 6) {
+            setData({
+                ...dataTemp,
+                password: val,
+                checkPassword: false
+            })
+        }
+        else {
+            setData({
+                ...dataTemp,
+                password: val,
+                checkPassword: true
+            })
+        }
+    }
+
+    const _submit = () => {
+        if (!dataTemp.checkUser) {
+            let toast = Toast.show('Email invalid', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+        else if (!dataTemp.checkPassword) {
+            let toast = Toast.show('Password must be more than 5 characters', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+
+        const flag = false;
+        data.forEach(element => {
+            console.log(dataTemp.email)
+            if (element.email == dataTemp.email) {
+                if (element.password == dataTemp.password) {
+                    dispatch({ type: 'ADD_USER', payload: element })
+                    navigation.navigate('DrawerStack')
+                }
+                else {
+                    let toast = Toast.show('Password is incorrect', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    return
+                }
+            }
+            let toast = Toast.show('Email is not registered', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        });
+
     }
     return (
         <View style={styles.container}>
@@ -68,9 +140,9 @@ export default function SignInScreen({ navigation }) {
                         <TextInput
                             style={styles.accountEdt}
                             placeholder='Type your account'
-                            onChangeText={(val) => TextInputChange(val)}
+                            onChangeText={(val) => EmailChange(val)}
                         />
-                        {data.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
+                        {dataTemp.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
 
                     </View>
                 </View>
@@ -83,12 +155,13 @@ export default function SignInScreen({ navigation }) {
                             style={styles.passwordEdt}
                             placeholder='Type your password'
                             secureTextEntry={!data.showPassword}
+                            onChangeText={(val) => PasswordChange(val)}
                         />
                         <Ionicons
                             name={data.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...data, showPassword: !data.showPassword })}
+                            onPress={() => setData({ ...dataTemp, showPassword: !dataTemp.showPassword })}
                         />
                     </View>
                 </View>
@@ -104,7 +177,7 @@ export default function SignInScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} >
+                <TouchableOpacity style={styles.signInBtn} onPress={_submit}>
                     <Text style={styles.textSign}>SIGN IN</Text>
                 </TouchableOpacity>
 
