@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser')
 const KnowledgeRoute = require('./routes/knowledgeRoute')
+const UserRoute = require('./routes/userRoute')
 const StatusRoute = require('./routes/statusRoute');
 const NotificationRoute = require('./routes/notificationRoute');
 
@@ -24,9 +25,10 @@ mongoose.connection.on("error", () => {
 
 
 /// Handle All API 
-app.use("/api/knowledge", KnowledgeRoute )
-app.use("/api/status", StatusRoute )
-app.use("/api/notification", NotificationRoute )
+app.use("/api/knowledge", KnowledgeRoute)
+app.use("/api/status", StatusRoute)
+app.use("/api/user", UserRoute)
+app.use("/api/notification", NotificationRoute)
 
 
 
@@ -37,6 +39,6 @@ app.use("/api/notification", NotificationRoute )
 
 //// Open port
 const port = process.env.PORT || 3001
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log('Backends server is running!')
 });

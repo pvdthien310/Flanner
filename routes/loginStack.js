@@ -6,6 +6,7 @@ import SplashScreen from '../screens/Login/splashScreen'
 import SignInScreen from '../screens/Login/signInScreen';
 import SignUpScreen from '../screens/Login/signUpScreen';
 import ForgotPasswordScreen from '../screens/Login/forgotPasswordScreen';
+import ConfirmEmail from '../screens/Login/confirmEmail';
 import { DrawerStack } from './drawer';
 
 
@@ -15,14 +16,12 @@ export default function LoginStack() {
     return (
         <NavigationContainer>
             <Stack.Navigator >
-                <Stack.Screen name="DrawerStack" component={DrawerStack} options={{
-                    headerShown: false
-                }} />
-
                 <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
                     headerShown: false
                 }} />
-                
+                <Stack.Screen name="DrawerStack" component={DrawerStack} options={{
+                    headerShown: false
+                }} />
                 <Stack.Screen name="SignInScreen" component={SignInScreen} options={{
                     headerShown: false,
                 }} />
@@ -30,6 +29,9 @@ export default function LoginStack() {
                     headerShown: false,
                 }} />
                 <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="ConfirmEmail" component={ConfirmEmail} options={{
                     headerShown: false,
                 }} />
 
