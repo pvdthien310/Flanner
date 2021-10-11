@@ -13,7 +13,7 @@ const store = createStore(RootReducer);
 export default function App() {
  let [fontsLoaded] = useFonts({
     capricaScript: require('./assets/fonts/CAPRICA_SCRIPT.ttf'),
-    'nunitobold': require('./assets/fonts/Nunito-Bold.ttf'),
+    nunitobold: require('./assets/fonts/Nunito-Bold.ttf'),
     nunitoregular: require('./assets/fonts/Nunito-Regular.ttf'),
     // Montserrat_600SemiBold,
     // Montserrat_700Bold,

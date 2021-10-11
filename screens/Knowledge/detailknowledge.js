@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const DetailKnowledge = ({ route, navigation }) => {
     const [,forceRerender] = useState();
-
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
@@ -50,7 +49,7 @@ const DetailKnowledge = ({ route, navigation }) => {
         navigation.goBack();
     }
 
-    const PressHandle1 = () => {
+    const PressHandle = () => {
         let numberReact = data.reactNumber;
         const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
         const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
@@ -113,65 +112,65 @@ const DetailKnowledge = ({ route, navigation }) => {
 
 
 
-    const PressHandle = () => {
-        let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false/' + user.userID.toString();
+    // const PressHandle = () => {
+    //     let numberReact = data.reactNumber;
+    //     const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/true/' + user.userID.toString();
+    //     const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false/' + user.userID.toString();
 
 
-        if (pressed == true) {
-            console.log(url_false)
-            fetch(url_false, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+    //     if (pressed == true) {
+    //         console.log(url_false)
+    //         fetch(url_false, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
 
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then((result) => {
-                setData(result)
-                if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
-            })
-        }
-        else if (pressed == false) {
-            fetch(url_true, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then(result => {
-                setData(result)
-                if ((result.react).indexOf(user.userID) != -1)
+    //             }
+    //         }).then(res => {
+    //             if (!res.ok) {
+    //                 throw Error('Loi phat sinh')
+    //             }
+    //             else {
+    //                 return res.json()
+    //             }
+    //         }).then((result) => {
+    //             setData(result)
+    //             if ((result.react).indexOf(user.userID) != -1)
+    //                 setPressed(true)
+    //             else setPressed(false)
+    //         }).catch(err => {
+    //             console.log("error", err)
+    //         })
+    //     }
+    //     else if (pressed == false) {
+    //         fetch(url_true, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         }).then(res => {
+    //             if (!res.ok) {
+    //                 throw Error('Loi phat sinh')
+    //             }
+    //             else {
+    //                 return res.json()
+    //             }
+    //         }).then(result => {
+    //             setData(result)
+    //             if ((result.react).indexOf(user.userID) != -1)
 
-                    setPressed(true)
-                else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
-            })
-        }
+    //                 setPressed(true)
+    //             else setPressed(false)
+    //         }).catch(err => {
+    //             console.log("error", err)
+    //         })
+    //     }
 
 
-        // if (pressed == true) setReactnumber(reactnumber - 1);
-        // else setReactnumber(reactnumber + 1)
+    //     // if (pressed == true) setReactnumber(reactnumber - 1);
+    //     // else setReactnumber(reactnumber + 1)
 
-    }
+    // }
     return (
         <View >
             {
@@ -230,7 +229,7 @@ const DetailKnowledge = ({ route, navigation }) => {
 
                             <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
-                                <TouchableOpacity onPress={PressHandle1} >
+                                <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
                                 <TouchableOpacity >

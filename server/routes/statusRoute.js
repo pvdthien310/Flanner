@@ -109,14 +109,23 @@ StatusRoute.post('/update/:id/:number/false/:userID', (req, res) => {
 })
 
 StatusRoute.post('/update/:id/true/:userID', (req, res) => {
-    Status.findByIdAndUpdate(req.params.id,
-        { "$push": { "react": req.params.userID } },
-        { "new": true, "upsert": true }
-    ).then((data) => {
-        console.log(data.react)      
+    Status.findById(req.params.id)
+    .then(data => {
+        if ((data.react).indexOf(req.params.userID) == -1)
+        {
+            Status.findByIdAndUpdate(req.params.id,
+                { "$push": { "react": req.params.userID } },
+                { "new": true, "upsert": true }
+            ).then((data) => {
+                // console.log(data.react)      
+                res.send(data)}
+                )
+                .catch(err => console.log(err))
+        }
+        else          
         res.send(data)}
         )
-        .catch(err => console.log(err))
+    .catch(err => console.log(err))
 })
 
 

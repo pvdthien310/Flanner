@@ -207,10 +207,10 @@ const StatusMember = ({ item, navigation }) => {
                 </UserInfoText>
             </UserInfo>
             <PostText>
-                <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}>
+                {/* <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}> */}
                     <Text style={Poststyle.body}>{item.body}</Text>
                   
-                </TouchableOpacity>
+                {/* </TouchableOpacity> */}
             </PostText>
             <PostImage>
                 <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>

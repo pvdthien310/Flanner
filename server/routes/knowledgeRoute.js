@@ -97,24 +97,43 @@ KnowledgeRoute.post('/update', (req, res) => {
 
 
 KnowledgeRoute.post('/update/:id/true/:userID', (req, res) => {
-    Knowledge.findByIdAndUpdate(req.params.id,
-        { "$push": { "react": req.params.userID } },
-        { "new": true, "upsert": true }
-    ).then((data) => {
-        console.log(data.react)      
+    Knowledge.findById(req.params.id)
+    .then(data => {
+        if ((data.react).indexOf(req.params.userID) == -1)
+        {
+            // console.log(data)
+            Knowledge.findByIdAndUpdate(req.params.id,
+                { "$push": { "react": req.params.userID } },
+                { "new": true, "upsert": true }
+            ).then((data) => {
+                // console.log(data.react)      
+                res.send(data)}
+                )
+                .catch(err => console.log(err))
+        }
+        else          
         res.send(data)}
         )
-        .catch(err => console.log(err))
+    .catch(err => console.log(err))
+    // Knowledge.findByIdAndUpdate(req.params.id,
+    //     { "$push": { "react": req.params.userID } },
+    //     { "new": true, "upsert": true }
+    // ).then((data) => {
+    //     console.log(data.react)      
+    //     res.send(data)}
+    //     )
+    //     .catch(err => console.log(err))
 })
 
 
 KnowledgeRoute.post('/update/:id/false/:userID', (req, res) => {
+
     Knowledge.findByIdAndUpdate(req.params.id,
         { "$pull": { "react": req.params.userID } },
         { "new": true, "upsert": true }
     ).then((data) => {
         res.send(data)  
-        console.log(data.react)      
+        // console.log(data.react)      
     })
         .catch(err => console.log(err))
 })

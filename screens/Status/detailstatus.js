@@ -3,11 +3,13 @@ import { StyleSheet, Text, View, Button, Image, FlatList, ActivityIndicator } fr
 import { globalStyles } from '../../styles/global';
 import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Poststyle_Knowledge, images, Poststyle } from '../../styles/poststyle';
+import { Poststyle_Knowledge, images, Poststyle,Poststyle_Status } from '../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 
 
@@ -37,6 +39,67 @@ const DetailStatus = ({ route, navigation }) => {
                     setPressed(true)
                 else setPressed(false)
             }).catch(err => console.log('Error'));
+    }
+
+    const PressHandle = () => {
+        let numberReact = data.reactNumber;
+        const url_true = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+
+
+        if (pressed == true) {
+            console.log(url_false)
+            fetch(url_false, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(res => {
+                if (!res.ok) {
+                    throw Error('Loi phat sinh')
+                }
+                else {
+                    return res.json()
+                }
+            }).then((result) => {
+                //  console.log(result)
+                setData(result)
+                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+                if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
+        else if (pressed == false) {
+            fetch(url_true, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                if (!res.ok) {
+                    throw Error('Loi phat sinh')
+                }
+                else {
+                    return res.json()
+                }
+            }).then(result => {
+                setData(result)
+                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+                if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
+
+
+        // if (pressed == true) setReactnumber(reactnumber - 1);
+        // else setReactnumber(reactnumber + 1)
+
     }
 
     useEffect(() => {
@@ -92,7 +155,15 @@ const DetailStatus = ({ route, navigation }) => {
 
                                 )}
                                 keyExtractor={item => item.key} />
-                            <Text style={Poststyle_Knowledge.reactnumber_detail}>{data.react.length} Likes</Text>
+                            <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
+                                <TouchableOpacity onPress={PressHandle}>
+                                    <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
+                                </TouchableOpacity>
+                                <TouchableOpacity >
+                                    <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
+                                </TouchableOpacity>
+                            </View>
                         </ScrollView>
 
                     </Post>

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const Status = ({ navigation }) => {
     // const [data, setData] = useState([])
     // const [loading, setLoading] = useState(true)
+    const [,forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Status })
 
@@ -25,6 +26,8 @@ const Status = ({ navigation }) => {
         fetchData();
     }
         , [])
+        useEffect(() => {
+            forceRerender}, [data])
 
     return (
         <View style={globalStyles.container}>
