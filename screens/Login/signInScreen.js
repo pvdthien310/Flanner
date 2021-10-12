@@ -8,13 +8,14 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-root-toast';
+import { AsyncStorage } from 'react-native';
+import base64 from 'react-native-base64'
 
 export default function SignInScreen({ navigation }) {
     // const [data1, setData1] = useState([])
     // const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.User })
-    console.log(data)
     const fetchData = () => {
         fetch('http://192.168.1.6:3000/api/user')
             .then(res => res.json())
@@ -23,11 +24,32 @@ export default function SignInScreen({ navigation }) {
                 dispatch({ type: 'SET_LOADING_USER', payload: false })
             }).catch(err => console.log('Error'));
     }
+    _storeData = async () => {
+        try {
+            await AsyncStorage.setItem('email', 'a');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    _retrieveData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('saveAccount');
+            if (value !== null) {
+                console.log(value);
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         fetchData();
+        _storeData();
+        _retrieveData();
     }
         , [])
+
 
     const [dataTemp, setData] = useState({
         email: '',
@@ -93,11 +115,13 @@ export default function SignInScreen({ navigation }) {
             return
         }
 
-        const flag = false;
+        let flag = false;
         data.forEach(element => {
-            console.log(dataTemp.email)
-            if (element.email == dataTemp.email) {
-                if (element.password == dataTemp.password) {
+            if (element.email === dataTemp.email) {
+                flag = true;
+                console.log(dataTemp.email + '  ' + element.email)
+                console.log(dataTemp.password + '  ' + element.password)
+                if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
                     navigation.navigate('DrawerStack')
                 }
@@ -109,9 +133,13 @@ export default function SignInScreen({ navigation }) {
                         animation: true,
                         hideOnPress: true,
                     });
+
                     return
                 }
             }
+
+        });
+        if (!flag) {
             let toast = Toast.show('Email is not registered', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
@@ -119,8 +147,7 @@ export default function SignInScreen({ navigation }) {
                 animation: true,
                 hideOnPress: true,
             });
-            return
-        });
+        }
 
     }
     return (
