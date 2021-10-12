@@ -5,6 +5,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { images, Poststyle } from '../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 
 
@@ -24,6 +26,8 @@ export default function Header({ navigation, title }) {
     )
 }
 export const HeaderNews = ({ navigation, title }) => {
+    const { user } = useSelector(state => state.User)
+
     const openMenu = () => {
         navigation.openDrawer();
     }
@@ -43,7 +47,7 @@ export const HeaderNews = ({ navigation, title }) => {
                     <Ionicons name="notifications" size={28} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('User Information')}>
-                    <Image source={images.avatars['2']} style={styles.imageavatar} />
+                    <Image source={images.avatars[user.avatar]} style={styles.imageavatar} />
                 </TouchableOpacity>
             </View>
         </ImageBackground>
@@ -51,6 +55,7 @@ export const HeaderNews = ({ navigation, title }) => {
     )
 }
 export const HeaderDrawer = ({ navigation, title }) => {
+
     const openMenu = () => {
         navigation.openDrawer();
     }

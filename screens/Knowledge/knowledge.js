@@ -21,8 +21,19 @@ const Knowledge = ({ navigation }) => {
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
             }).catch(err => console.log('Error'));
     }
+
+    const fetchNewData = () => {
+        fetch('http://192.168.0.106:3000/api/knowledge/load-data/random')
+            .then(res => res.json())
+            .then(result => {
+                console.log('reset')
+                dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: result })
+                dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
+            }).catch(err => console.log('Error'));
+    }
     useEffect(() => {
-        fetchData();
+        // fetchData();
+        fetchNewData();
     }
         , [])
 
@@ -42,7 +53,7 @@ const Knowledge = ({ navigation }) => {
                             <KnowledgeMember item={item} navigation={navigation} />
                         )}
                         keyExtractor={item => item._id}
-                        onRefresh={() => fetchData()}
+                        onRefresh={() => fetchNewData()}
                         refreshing={loading}
                     />
             }

@@ -155,5 +155,13 @@ KnowledgeRoute.get('/', (req, res) => {
             console.log(err)
         })
 })
+KnowledgeRoute.get('/load-data/random', (req, res) => {
+    Knowledge.aggregate([{$sample: {size : 10}}])
+        .then(data => {
+            res.send(data)
+        }).catch(err => {
+            console.log(err)
+        })
+})
 
 module.exports = KnowledgeRoute

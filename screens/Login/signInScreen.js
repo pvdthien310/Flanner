@@ -17,7 +17,7 @@ export default function SignInScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.User })
     const fetchData = () => {
-        fetch('http://192.168.1.6:3000/api/user')
+        fetch('http://192.168.0.106:3000/api/user')
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_DATA_USER', payload: result })
@@ -185,7 +185,7 @@ export default function SignInScreen({ navigation }) {
                             onChangeText={(val) => PasswordChange(val)}
                         />
                         <Ionicons
-                            name={data.showPassword ? "eye-outline" : "eye-off-outline"}
+                            name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
                             onPress={() => setData({ ...dataTemp, showPassword: !dataTemp.showPassword })}

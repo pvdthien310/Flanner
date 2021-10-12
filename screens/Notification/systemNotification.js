@@ -13,16 +13,20 @@ const SystemNotification = ({ navigation }) => {
     const { user } = useSelector(state => state.User)
     // const [,forceRerender] = useState();
     const { user_system_notification, loading } = useSelector(state => { return state.Notification })
+    const [loading2, setLoading2] = useState(false)
+
     // console.log(data)
     const url = 'http://192.168.0.106:3000/api/notification/load-data/' + user.userID + '/system';
     const fetchData = () => {
         console.log(url)
+        setLoading2(true)
 
         fetch(url)
             .then(res => res.json())
             .then(result => {             
                 dispatch({ type: 'ADD_USER_SYSTEM_NOTIFICATION', payload: result })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
+                setLoading2(false)
             }).catch(err => console.log('Error'));
     }
     useEffect(() => {
@@ -35,18 +39,46 @@ const SystemNotification = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {
-                loading ? <ActivityIndicator size="small" color="#0000ff" />
-                    :
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        data={user_system_notification}
-                        renderItem={({ item }) => (
-                            <NotificationMember item={item} navigation={navigation} />
-                        )}
-                        keyExtractor={item => item._id}
-                        onRefresh={() => fetchData()}
-                        refreshing={loading}
-                    />
+                 loading ? <ActivityIndicator size="small" color="#0000ff" />
+                 :
+                 <View style={{flex: 1, justifyContent: 'center',backgroundColor: 'white'}}>
+                     {user_system_notification.length == 0 ?
+                         <View style={{
+                             alignItems: 'center',
+                             justifyContent: 'center', flexDirection: 'column'
+                         }}>
+                             <Image source={require('../../assets/icon/NoError.png')}
+                                 resizeMode='contain'
+                                 style={{
+                                     width: 80,
+                                     height: 80,
+                                     marginBottom: 5,
+                                 }
+                                 }
+                             />
+                             <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom:10}}>Không có báo cáo lỗi nào cả. Bạn rất tuyệt vời !</Text>
+                             <TouchableOpacity style= {{marginBottom: 10}} onPress = {() => fetchData()}>
+                                    <View style ={{backgroundColor: 'teal', borderRadius: 5,padding: 5, paddingStart: 10, paddingEnd: 10}}>
+                                        <Text style ={{fontFamily: 'nunitobold', fontSize: 17,color:'white'}} >Refresh</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                {
+                                    loading2 ?  <ActivityIndicator size="small" color="#000000" /> : null
+                                }
+                         </View>
+                         :
+                         <FlatList
+                             showsVerticalScrollIndicator={false}
+                             data={user_system_notification}
+                             renderItem={({ item }) => (
+                                 <NotificationMember item={item} navigation={navigation} />
+                             )}
+                             keyExtractor={item => item._id}
+                             onRefresh={() => fetchData()}
+                             refreshing={loading}
+                         />
+                     }
+                 </View>
             }
         </View>
     )
