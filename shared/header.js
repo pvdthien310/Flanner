@@ -47,7 +47,7 @@ export const HeaderNews = ({ navigation, title }) => {
                     <Ionicons name="notifications" size={28} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('User Information')}>
-                    <Image source={images.avatars[user.avatar]} style={styles.imageavatar} />
+                    <Image source={{uri: user.avatar}} style={styles.imageavatar} />
                 </TouchableOpacity>
             </View>
         </ImageBackground>

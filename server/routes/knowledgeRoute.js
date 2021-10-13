@@ -146,6 +146,12 @@ KnowledgeRoute.get('/:id', (req, res) => {
         .catch(err => console.log(err))
 })
 
+KnowledgeRoute.get('/load-data/:userID', (req,res) => {
+    Knowledge.find({userID : req.params.userID})
+    .then(data => res.send(data))
+    .catch(err => console.log(err))
+})
+
 /// Get all members
 KnowledgeRoute.get('/', (req, res) => {
     Knowledge.find({})
@@ -155,7 +161,7 @@ KnowledgeRoute.get('/', (req, res) => {
             console.log(err)
         })
 })
-KnowledgeRoute.get('/load-data/random', (req, res) => {
+KnowledgeRoute.get('/load-data/newsfeed/random', (req, res) => {
     Knowledge.aggregate([{$sample: {size : 10}}])
         .then(data => {
             res.send(data)

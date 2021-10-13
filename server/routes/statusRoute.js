@@ -65,6 +65,14 @@ StatusRoute.get('/:id', (req,res) => {
     .catch(err => console.log(err))
 })
 
+
+StatusRoute.get('/load-data/:userID', (req,res) => {
+    Status.find({userID : req.params.userID})
+    .then(data => res.send(data))
+    .catch(err => console.log(err))
+})
+
+
 /// Get all members
 StatusRoute.get('/', (req, res) => {
     Status.find({})

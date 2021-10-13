@@ -15,15 +15,35 @@ export default function SignInScreen({ navigation }) {
     // const [data1, setData1] = useState([])
     // const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
-    const { data, loading } = useSelector(state => { return state.User })
+    const { data, loading, user } = useSelector(state => { return state.User })
     const fetchData = () => {
         fetch('http://192.168.0.106:3000/api/user')
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_DATA_USER', payload: result })
                 dispatch({ type: 'SET_LOADING_USER', payload: false })
+              
             }).catch(err => console.log('Error'));
     }
+    // const fetchKnowledgeData = () => {
+    //     const url = 'http://192.168.0.106:3000/api/knowledge/load-data/' + user.userID
+    //     console.log(url)
+    //     fetch(url)
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+    //         }).catch(err => console.log('Error'));
+    // }
+    // const fetchStatusData = () => {
+    //     const url = 'http://192.168.0.106:3000/api/status/load-data/' + user.userID
+    //     console.log(url)
+    //     fetch(url)
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             dispatch({ type: 'ADD_USER_STATUS', payload: result })
+    //         }).catch(err => console.log('Error'));
+    // }
+
     _storeData = async () => {
         try {
             await AsyncStorage.setItem('email', 'a');
@@ -123,6 +143,8 @@ export default function SignInScreen({ navigation }) {
                 console.log(dataTemp.password + '  ' + element.password)
                 if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
+                        // fetchKnowledgeData()
+                        // fetchStatusData()                      
                     navigation.navigate('DrawerStack')
                 }
                 else {

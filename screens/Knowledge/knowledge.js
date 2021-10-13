@@ -12,28 +12,50 @@ const Knowledge = ({ navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
-    const fetchData = () => {
-        fetch('http://192.168.0.106:3000/api/knowledge')
+    const { user } = useSelector(state => { return state.User })
+
+    // const fetchData = () => {
+    //     fetch('http://192.168.0.106:3000/api/knowledge')
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             console.log('reset')
+    //             dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: result })
+    //             dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
+    //         }).catch(err => console.log('Error'));
+    // }
+    const fetchKnowledgeData = () => {
+        const url = 'http://192.168.0.106:3000/api/knowledge/load-data/' + user.userID
+        console.log(url)
+        fetch(url)
             .then(res => res.json())
             .then(result => {
-                console.log('reset')
-                dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: result })
-                dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+            }).catch(err => console.log('Error'));
+    }
+    const fetchStatusData = () => {
+        const url = 'http://192.168.0.106:3000/api/status/load-data/' + user.userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                dispatch({ type: 'ADD_USER_STATUS', payload: result })
             }).catch(err => console.log('Error'));
     }
 
     const fetchNewData = () => {
-        fetch('http://192.168.0.106:3000/api/knowledge/load-data/random')
+        fetch('http://192.168.0.106:3000/api/knowledge/load-data/newsfeed/random')
             .then(res => res.json())
             .then(result => {
                 console.log('reset')
-                dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: result })
+                dispatch({ type:  'ADD_DATA_KNOWLEDGE', payload: result })
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
             }).catch(err => console.log('Error'));
     }
     useEffect(() => {
         // fetchData();
         fetchNewData();
+        fetchKnowledgeData();
+        fetchStatusData();
     }
         , [])
 

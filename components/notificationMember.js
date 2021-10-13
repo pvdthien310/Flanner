@@ -16,32 +16,19 @@ const NotificationMember = ({ item, navigation }) => {
     const dispatch = useDispatch()
     const user_data = useSelector(state => { return state.User })
     const knowledge_data = useSelector(state => { return state.Knowledge })
+    const status_data = useSelector(state => { return state.Status })
     const sender = user_data.data.filter(member => member.userID == item.senderID)
-    const post = knowledge_data.data.filter(member => member._id == item.postID)
-
+    let post;
+    if (item.type == 1)
+     post = knowledge_data.user_knowledge.filter(member => member._id == item.postID)
+    else if (item.type == 2)
+     post = status_data.user_status.filter(member => member._id == item.postID)
+    
     console.log(sender[0])
-    console.log(post[0])
-    console.log(item.postID)
-    console.log('   ')
-
-
-
-    // const url_1 = 'http://192.168.0.106:3000/api/knowledge/' + item.postID;
-    // const url_2 = 'http://192.168.0.106:3000/api/knowledge/' + item.postID;
-    // const url_3 = 'http://192.168.0.106:3000/api/knowledge/' + item.postID;
-    // const user_url = 'http://192.168.0.106:3000/api/knowledge/' + item.postID;
-
-    // const fetchData = () => {
-    //     console.log(url)
-
-    //     fetch(url)
-    //         .then(res => res.json())
-    //         .then(result => {             
-    //             dispatch({ type: 'ADD_USER_KNOWLEDGE_NOTIFICATION', payload: result })
-    //             dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
-    //             const sender = user_data.data.filter(member => member.userID == item.senderID)
-    //         }).catch(err => console.log('Error'));
-    // }
+    console.log('postID :',item.postID)
+    knowledge_data.user_knowledge.forEach(Element => console.log(Element._id))
+    console.log(post)
+    
     const HandelOpenPost = () => {
         if (item.type == '2')
             navigation.navigate('Status Detail Notification', { item: { _id: item.postID } });
@@ -84,7 +71,7 @@ const NotificationMember = ({ item, navigation }) => {
                     <Text style={styles.body}><Text style={{ color: 'black', fontFamily: 'nunitobold' }}>{sender[0].name}</Text> {item.message}</Text>
                 </View>
                 
-                {/* {
+                {
                     post[0].listImage ? 
                  <Image source={{ uri: post[0].listImage[0].url }}
                     resizeMode='stretch'
@@ -96,7 +83,7 @@ const NotificationMember = ({ item, navigation }) => {
                     }
                     }
                 />
-                : */}
+                :
                 <Image source={require('../assets/icon/postPhoto.png')}
                 resizeMode='contain'
                 style={{
@@ -107,7 +94,7 @@ const NotificationMember = ({ item, navigation }) => {
                 }
                 }
             />
-            {/* } */}
+             }
              </View > 
         </TouchableOpacity>
 

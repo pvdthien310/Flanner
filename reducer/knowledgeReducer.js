@@ -1,6 +1,7 @@
 const initState = {
     data: [],
-    loading: true
+    loading: true,
+    user_knowledge: []
 }
 
 const KnowledgeReducer = (state = initState, action) => {
@@ -12,8 +13,16 @@ const KnowledgeReducer = (state = initState, action) => {
             ...state,
             data: action.payload
         }
-        // console.log(newState)
+        return newState;
 
+    }
+    if (action.type == 'ADD_USER_KNOWLEDGE') {
+
+
+        const newState = {
+            ...state,
+            user_knowledge: action.payload
+        }
         return newState;
 
     }

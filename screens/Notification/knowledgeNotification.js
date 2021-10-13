@@ -16,15 +16,21 @@ const KnowledgeNotification = ({ navigation }) => {
     const { user } = useSelector(state => state.User)
     // const [,forceRerender] = useState();
     const { user_knowledge_notification, loading } = useSelector(state => { return state.Notification })
+    const [loading2, setLoading2] = useState(false)
+
     // console.log(data)
     const url = 'http://192.168.0.106:3000/api/notification/load-data/' + user.userID + '/knowledge';
     const fetchData = () => {
         console.log(url)
+        setLoading2(true)
+
         fetch(url)
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_USER_KNOWLEDGE_NOTIFICATION', payload: result })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
+                setLoading2(false)
+
             }).catch(err => console.log('Error'));
     }
     useEffect(() => {
@@ -55,12 +61,15 @@ const KnowledgeNotification = ({ navigation }) => {
                                     }
                                     }
                                 />
-                                <Text style ={{fontFamily: 'nunitobold', fontSize: 17}}>Tích cực đăng bài để nhận thông báo bạn nhé !</Text>
-                                <TouchableOpacity>
-                                    <View>
-                                        <Text>Refresh</Text>
+                               <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10}}>Tích cực đăng bài để nhận thông báo bạn nhé !</Text>
+                            <TouchableOpacity style= {{marginBottom: 10}} onPress = {() => fetchData()}>
+                                    <View style ={{backgroundColor: 'teal', borderRadius: 5,padding: 5, paddingStart: 10, paddingEnd: 10}}>
+                                        <Text style ={{fontFamily: 'nunitobold', fontSize: 17,color:'white'}} >Refresh</Text>
                                     </View>
                                 </TouchableOpacity>
+                                {
+                                    loading2 ?  <ActivityIndicator size="small" color="#000000" /> : null
+                                }
                             </View>
                             :
                             <FlatList

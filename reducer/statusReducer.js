@@ -1,10 +1,20 @@
 const initState = {
     data: [],
-    loading: true
+    loading: true,
+    user_status: []
 }
 
  const StatusReducer = (state = initState, action) => {
 
+    if (action.type == 'ADD_USER_STATUS') {
+        // console.log('aaa')
+        const newState = {
+            ...state,
+            user_status: action.payload
+        }
+        return newState;
+    }
+    
     if (action.type == 'ADD_DATA_STATUS') {
         // console.log('aaa')
         const newState = {
@@ -13,6 +23,7 @@ const initState = {
         }
         return newState;
     }
+
 
     if (action.type == 'UPDATE_STATUS_MEMBER')
     {
