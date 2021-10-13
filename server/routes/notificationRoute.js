@@ -110,7 +110,7 @@ NotificationRoute.get('/load-data/:userID/system', (req,res) => {
 NotificationRoute.post('/delete', (req, res) => {
     Notification.deleteMany({userID : req.body.userID, postID: req.body.postID, senderID: req.body.senderID, action : req.body.action, type: req.body.type})
         .then((data) => {
-             res.send(data)
+            //  res.send(data)
             res.send("Delete Success")
         }).catch(err => {
             console.log("error", err)

@@ -40,6 +40,60 @@ const DetailStatus = ({ route, navigation }) => {
                 else setPressed(false)
             }).catch(err => console.log('Error'));
     }
+    const sendNotification = () => {
+
+        fetch("http://192.168.0.106:3000/api/notification/send-data", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: item.userID,
+                message: 'Đã thích bài viết của bạn',
+                postID: item._id,
+                senderID: user.userID,
+                type: '2',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+
+    }
+    const removeNotification = () => {
+  
+        fetch("http://192.168.0.106:3000/api/notification/delete", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: item.userID,
+                postID: item._id,
+                senderID: user.userID,
+                type: '2',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+    }
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
@@ -63,6 +117,7 @@ const DetailStatus = ({ route, navigation }) => {
                 }
             }).then((result) => {
                 //  console.log(result)
+                removeNotification()
                 setData(result)
                 dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
                 if ((result.react).indexOf(user.userID) != -1)
@@ -86,6 +141,7 @@ const DetailStatus = ({ route, navigation }) => {
                     return res.json()
                 }
             }).then(result => {
+                sendNotification()
                 setData(result)
                 dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
                 if ((result.react).indexOf(user.userID) != -1)

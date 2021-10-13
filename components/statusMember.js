@@ -33,38 +33,61 @@ const StatusMember = ({ item, navigation }) => {
         LoadData()
     },[])
 
-    // const reactPressHandle = () => {
-    //     console.log(item)
-    //     if (pressed == true) setReactnumber(reactnumber - 1);
-    //     else setReactnumber(reactnumber + 1)
+    const sendNotification = () => {
 
-    //     fetch("http://192.168.0.103:3000/api/status/update", {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             id: item._id,
-    //             username: item.username,
-    //             body: item.body,
-    //             avatar: item.avatar,
-    //             posttime: item.posttime,
-    //             listImage: item.listImage,
-    //             react: !pressed,
-    //             reactNumber: reactnumber.toString()
-    //         })
-    //     }).then(res => {
-    //         if (!res.ok) {
-    //             throw Error('Loi phat sinh')
-    //         }
-    //         else
-    //             return res.json()
-    //     }).then(data => {
-    //         // console.log(data)
-    //     }).catch(err => {
-    //         console.log("error", err)
-    //     })
-    // }
+        fetch("http://192.168.0.106:3000/api/notification/send-data", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: item.userID,
+                message: 'Đã thích bài viết của bạn',
+                postID: item._id,
+                senderID: user.userID,
+                type: '2',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+
+    }
+    const removeNotification = () => {
+  
+        fetch("http://192.168.0.106:3000/api/notification/delete", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: item.userID,
+                postID: item._id,
+                senderID: user.userID,
+                type: '2',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+    }
+
     const PressHandle1 = () => {
         // let numberReact = data.reactNumber;
         const url_true = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
@@ -89,6 +112,7 @@ const StatusMember = ({ item, navigation }) => {
                 //  console.log(result)
                 // setData(result)
                 console.log(result)
+                removeNotification()
 
                 dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
                 if ((result.react).indexOf(user.userID) != -1)
@@ -116,6 +140,7 @@ const StatusMember = ({ item, navigation }) => {
             }).then(result => {
                 // setData(result)
                 console.log(result)
+                sendNotification()
                 dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
