@@ -32,9 +32,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userID: item.userID,
+                userID: data.userID,
                 message: 'Đã thích bài viết của bạn',
-                postID: item._id,
+                postID: data._id,
                 senderID: user.userID,
                 type: '1',
                 action: 'React'
@@ -60,8 +60,8 @@ const DetailKnowledge = ({ route, navigation }) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userID: item.userID,
-                postID: item._id,
+                userID: data.userID,
+                postID: data._id,
                 senderID: user.userID,
                 type: '1',
                 action: 'React'
