@@ -16,7 +16,10 @@ EmailRoute.post('/', (req, res) => {
         subject: req.body.subject,
         html: req.body.html
     }
+    console.log(newEmail)
+    console.log(value)
     sendMail({ value })
+
 
 })
 

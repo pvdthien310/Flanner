@@ -19,7 +19,7 @@ export default function SignUpScreen({ navigation }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from: 'flanerapplication<trithuc23232@gmail.com>',
+                from: 'flanerapplication <trithuc23232@gmail.com>',
                 to: 'trithuc23232@gmail.com',
                 subject: 'Verify code',
                 html: 'Your verify code is: '
