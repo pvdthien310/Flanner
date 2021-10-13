@@ -26,16 +26,43 @@ export default function SignInScreen({ navigation }) {
     }
     _storeData = async () => {
         try {
-            await AsyncStorage.setItem('email', 'a');
+            await AsyncStorage.setItem('email', dataTemp.email);
+            await AsyncStorage.setItem('password', dataTemp.password);
+            if (isSelected)
+                await AsyncStorage.setItem('remember', 'true');
+            else
+                await AsyncStorage.setItem('remember', 'false');
         } catch (error) {
             console.log(error);
         }
     };
+    const [saveData, setSaveData] = useState({
+        email: '',
+        password: '',
+    })
+    const [isSelected, setSelection] = useState(false);
     _retrieveData = async () => {
         try {
-            const value = await AsyncStorage.getItem('saveAccount');
-            if (value !== null) {
-                console.log(value);
+            const email = await AsyncStorage.getItem('email');
+            const password = await AsyncStorage.getItem('password');
+            const remember = await AsyncStorage.getItem('remember');
+            if (email !== null && password !== null && remember === 'true') {
+                setSaveData({
+                    email: email,
+                    password: password,
+                })
+                if (remember === 'true')
+                    setSelection(true)
+                else
+                    setSelection(false)
+
+                setData({
+                    ...dataTemp,
+                    email: email,
+                    password: password,
+                    checkUser: true,
+                    checkPassword: true
+                })
             }
         }
         catch (error) {
@@ -45,7 +72,6 @@ export default function SignInScreen({ navigation }) {
 
     useEffect(() => {
         fetchData();
-        _storeData();
         _retrieveData();
     }
         , [])
@@ -56,7 +82,7 @@ export default function SignInScreen({ navigation }) {
         password: '',
         showPassword: false,
         checkUser: false,
-        checkPassword: false
+        checkPassword: false,
     });
 
     const EmailChange = (val) => {
@@ -93,7 +119,10 @@ export default function SignInScreen({ navigation }) {
         }
     }
 
+
+
     const _submit = () => {
+
         if (!dataTemp.checkUser) {
             let toast = Toast.show('Email invalid', {
                 duration: Toast.durations.SHORT,
@@ -119,10 +148,9 @@ export default function SignInScreen({ navigation }) {
         data.forEach(element => {
             if (element.email === dataTemp.email) {
                 flag = true;
-                console.log(dataTemp.email + '  ' + element.email)
-                console.log(dataTemp.password + '  ' + element.password)
                 if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
+                    _storeData()
                     navigation.navigate('DrawerStack')
                 }
                 else {
@@ -133,7 +161,6 @@ export default function SignInScreen({ navigation }) {
                         animation: true,
                         hideOnPress: true,
                     });
-
                     return
                 }
             }
@@ -168,6 +195,7 @@ export default function SignInScreen({ navigation }) {
                             style={styles.accountEdt}
                             placeholder='Type your account'
                             onChangeText={(val) => EmailChange(val)}
+                            defaultValue={saveData.email}
                         />
                         {dataTemp.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
 
@@ -181,11 +209,12 @@ export default function SignInScreen({ navigation }) {
                         <TextInput
                             style={styles.passwordEdt}
                             placeholder='Type your password'
-                            secureTextEntry={!data.showPassword}
+                            secureTextEntry={!dataTemp.showPassword}
                             onChangeText={(val) => PasswordChange(val)}
+                            defaultValue={saveData.password}
                         />
                         <Ionicons
-                            name={data.showPassword ? "eye-outline" : "eye-off-outline"}
+                            name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
                             onPress={() => setData({ ...dataTemp, showPassword: !dataTemp.showPassword })}
@@ -195,7 +224,11 @@ export default function SignInScreen({ navigation }) {
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <CheckBox />
+                        <CheckBox
+                            value={isSelected}
+                            onValueChange={setSelection}
+                            tintColors={{ true: 'black', false: 'black' }}
+                        />
                         <Text>Remember me</Text>
                     </View>
 
@@ -208,7 +241,7 @@ export default function SignInScreen({ navigation }) {
                     <Text style={styles.textSign}>SIGN IN</Text>
                 </TouchableOpacity>
 
-                <View style={{ marginTop: 20 }}>
+                {/* <View style={{ marginTop: 20 }}>
                     <View style={{ borderBottomColor: 'grey', borderWidth: 0.3, opacity: 0.5, marginTop: 11 }}></View>
                     <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
                 </View>
@@ -216,10 +249,10 @@ export default function SignInScreen({ navigation }) {
                 <TouchableOpacity style={styles.facebookGoogleBtn}>
                     <AntDesign name="google" size={24} color="black" />
                     <Text style={styles.googleTxt}>Login with Google</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 110 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 110, flex: 1, alignItems: 'flex-end', marginBottom: 120 }}
                     onPress={() => navigation.navigate('SignUpScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>

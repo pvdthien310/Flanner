@@ -73,11 +73,14 @@ const styles = StyleSheet.create({
     title: {
         color: 'black',
         fontSize: 30,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     text: {
         color: 'grey',
         marginTop: 5,
+        color: 'lightslategrey',
+        fontFamily: 'nunitoregular'
+
     },
     button: {
         alignItems: 'flex-end',
@@ -93,6 +96,7 @@ const styles = StyleSheet.create({
     },
     textSign: {
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'nunitoregular'
     }
 })

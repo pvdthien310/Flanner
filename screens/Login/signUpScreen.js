@@ -5,37 +5,14 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Alert 
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-root-toast';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function SignUpScreen({ navigation }) {
 
-    const _submitData = () => {
-        fetch("http://192.168.1.6:3000/api/user/send-data", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userID: 'IK1P3Y',
-                phoneNumber: '0987634665',
-                name: 'Linh Nguyen',
-                doB: '15/07/2001',
-                avatar: '',
-                email: '19520145@gm.uit.edu.vn',
-                friendArray: '',
-                password: '123456',
-                score: '0',
-                address: 'Soc Trang',
-                position: '0',
-                reportedNum: '0',
-            })
-        }).then(res => res.json())
-            .then(data => { })
-            .catch(err => {
-                console.log("error", err)
-            })
-    }
+    const dispatch = useDispatch()
+    const { data, loading } = useSelector(state => { return state.User })
 
-    const [data, setData] = useState({
+    const [dataTemp, setDataTemp] = useState({
         name: '',
         email: '',
         password: '',
@@ -43,50 +20,57 @@ export default function SignUpScreen({ navigation }) {
         showPassword: false,
         showConfirm: false,
         checkUser: false,
+        checkPassword: false
     });
 
     const EmailChange = (val) => {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(val) === false) {
-            setData({
-                ...data,
+            setDataTemp({
+                ...dataTemp,
                 email: val,
                 checkUser: false
             })
         }
         else {
-            setData({
-                ...data,
+            setDataTemp({
+                ...dataTemp,
                 email: val,
                 checkUser: true
             })
         }
-
-
     }
 
     const PasswordChange = (val) => {
-        setData({
-            ...data,
-            password: val
-        })
+        if (val.length < 6)
+            setDataTemp({
+                ...dataTemp,
+                password: val,
+                checkPassword: false
+            })
+        else
+            setDataTemp({
+                ...dataTemp,
+                password: val,
+                checkPassword: true
+            })
 
     }
     const ConfirmPasswordChange = (val) => {
-        setData({
-            ...data,
+        setDataTemp({
+            ...dataTemp,
             confirm: val
         })
     }
     const NameChange = (val) => {
-        setData({
-            ...data,
+        setDataTemp({
+            ...dataTemp,
             name: val
         })
     }
 
     const signInHandle = () => {
-        if (data.name == "" || data.email == "" || data.password == "" || data.confirm == "") {
+        if (dataTemp.name == "" || dataTemp.email == "" || dataTemp.password == "" || dataTemp.confirm == "") {
             let toast = Toast.show('Please fill out your information', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
@@ -96,8 +80,8 @@ export default function SignUpScreen({ navigation }) {
             });
             return
         }
-        if (!data.checkUser) {
-            let toast = Toast.show('Email is incorrect', {
+        if (!dataTemp.checkPassword) {
+            let toast = Toast.show('Password must be more than 5 characters', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
                 shadow: true,
@@ -106,7 +90,8 @@ export default function SignUpScreen({ navigation }) {
             });
             return
         }
-        if (data.confirm != data.password) {
+
+        if (dataTemp.confirm != dataTemp.password) {
             let toast = Toast.show('Confirm password is incorrect', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
@@ -116,9 +101,33 @@ export default function SignUpScreen({ navigation }) {
             });
             return
         }
-        navigation.navigate('ConfirmEmail')
-    }
+        let flag = false
+        data.forEach(element => {
+            if (element.email === dataTemp.email) {
+                let toast = Toast.show('Email is already in use', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+                flag = true
+                return
+            }
+        });
+        if (!flag) {
+            navigation.navigate('ConfirmEmail')
 
+        }
+
+    }
+    const valueMail = {
+        from: 'flanerapplication <trithuc23232@gmail.com>',
+        to: 'trithuc23232@gmail.com',
+        subject: "hello",
+        text: 'thuc ne',
+        html: '<h1>thuc ne html</h1>'
+    }
 
     return (
         <View style={styles.container}>
@@ -150,7 +159,7 @@ export default function SignUpScreen({ navigation }) {
                             placeholder='Type your email'
                             onChangeText={(val) => EmailChange(val)}
                         />
-                        {data.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
+                        {dataTemp.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
                     </View>
                 </View>
 
@@ -161,14 +170,14 @@ export default function SignUpScreen({ navigation }) {
                         <TextInput
                             style={styles.passwordEdt}
                             placeholder='Type your password'
-                            secureTextEntry={!data.showPassword}
+                            secureTextEntry={!dataTemp.showPassword}
                             onChangeText={(val) => PasswordChange(val)}
                         />
                         <Ionicons
-                            name={data.showPassword ? "eye-outline" : "eye-off-outline"}
+                            name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...data, showPassword: !data.showPassword })}
+                            onPress={() => setDataTemp({ ...dataTemp, showPassword: !dataTemp.showPassword })}
                         />
                     </View>
                 </View>
@@ -180,19 +189,19 @@ export default function SignUpScreen({ navigation }) {
                         <TextInput
                             style={styles.passwordEdt}
                             placeholder='Confirm your password'
-                            secureTextEntry={!data.showConfirm}
+                            secureTextEntry={!dataTemp.showConfirm}
                             onChangeText={(val) => ConfirmPasswordChange(val)}
                         />
                         <Ionicons
-                            name={data.showConfirm ? "eye-outline" : "eye-off-outline"}
+                            name={dataTemp.showConfirm ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...data, showConfirm: !data.showConfirm })}
+                            onPress={() => setDataTemp({ ...dataTemp, showConfirm: !dataTemp.showConfirm })}
                         />
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} onPress={(_submitData)}>
+                <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
