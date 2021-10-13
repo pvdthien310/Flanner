@@ -7,6 +7,7 @@ const KnowledgeRoute = require('./routes/knowledgeRoute')
 const UserRoute = require('./routes/userRoute')
 const StatusRoute = require('./routes/statusRoute');
 const NotificationRoute = require('./routes/notificationRoute');
+const EmailRoute = require('./routes/emailRoute')
 
 
 /// Process file json and env
@@ -29,7 +30,7 @@ app.use("/api/knowledge", KnowledgeRoute)
 app.use("/api/status", StatusRoute)
 app.use("/api/user", UserRoute)
 app.use("/api/notification", NotificationRoute)
-
+app.use("/api/sendEmail", EmailRoute)
 
 
 

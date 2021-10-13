@@ -1,5 +1,6 @@
 const UserRoute = require('express').Router();
 const User = require("../models/User")
+const sendMail = require("../../gmail-api/sendEmail")
 
 //Get a member by ID
 UserRoute.get('/:id', (req, res) => {
@@ -7,12 +8,19 @@ UserRoute.get('/:id', (req, res) => {
         .then(data => res.send(data))
         .catch(err => console.log(err))
 })
+const value = {
+    from: 'flanerapplication <trithuc23232@gmail.com>',
+    to: '19522321@gm.uit.edu.vn',
+    subject: "hello",
+    html: 'shin ne html'
+}
 
 /// Get all members
 UserRoute.get('/', (req, res) => {
     User.find({})
         .then(data => {
             res.send(data)
+            //sendMail({ value })
         }).catch(err => {
             console.log(err)
         })

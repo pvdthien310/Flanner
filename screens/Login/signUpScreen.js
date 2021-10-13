@@ -12,6 +12,25 @@ export default function SignUpScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.User })
 
+    const sendEmail = () => {
+        fetch("http://192.168.1.9:3000/api/sendEmail", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: 'flanerapplication<trithuc23232@gmail.com>',
+                to: 'trithuc23232@gmail.com',
+                subject: 'Verify code',
+                html: 'Your verify code is: '
+            })
+        }).then(res => res.json())
+            .then(data => { })
+            .catch(err => {
+                console.log("error", err)
+            })
+    }
+
     const [dataTemp, setDataTemp] = useState({
         name: '',
         email: '',
@@ -201,7 +220,7 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
+                <TouchableOpacity style={styles.signInBtn} onPress={(sendEmail)}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
