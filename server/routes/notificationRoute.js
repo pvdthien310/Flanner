@@ -4,15 +4,17 @@ const Notification = require("../models/Notification")
 
 
 /// Delete member
-NotificationRoute.post('/delete', (req, res) => {
-    Notification.findByIdAndRemove(req.body.id)
-        .then((data) => {
-            console.log("Delete Success")
-            res.send("delete")
-        }).catch(err => {
-            console.log("error", err)
-        })
-})
+// NotificationRoute.post('/delete', (req, res) => {
+//     Notification.findByIdAndRemove(req.body.id)
+//         .then((data) => {
+//             console.log("Delete Success")
+//             res.send("delete")
+//         }).catch(err => {
+//             console.log("error", err)
+//         })
+// })
+
+
 
 /// Add new member
 NotificationRoute.post('/send-data', (req,res) => {
@@ -34,6 +36,25 @@ NotificationRoute.post('/send-data', (req,res) => {
         console.log('Error')
     })
 })
+// NotificationRoute.post('/comment/send-data', (req,res) => {
+//     const newNotification = new Notification({
+//         userID: req.body.userID,
+//         message: req.body.message,
+//         postID: req.body.postID,
+//         senderID: req.body.senderID,
+//         type: req.body.type,
+//         action: req.body.action
+//     })
+
+//     newNotification.save()
+//     .then((data) => {
+//         //console.log(data)
+//         res.send("Add Success")
+//     })
+//     .catch(err => {
+//         console.log('Error')
+//     })
+// })
 
 /// Update member by ID
 NotificationRoute.post('/update', (req, res) => {
@@ -86,9 +107,10 @@ NotificationRoute.get('/load-data/:userID/system', (req,res) => {
 
 // delete a notification
 
-NotificationRoute.post('/delete/:action', (req, res) => {
-    Notification.deleteMany({userID : req.body.userID, postID: req.body.postID, senderID: req.body.senderID, action : req.params.action, type: req.body.type})
+NotificationRoute.post('/delete', (req, res) => {
+    Notification.deleteMany({userID : req.body.userID, postID: req.body.postID, senderID: req.body.senderID, action : req.body.action, type: req.body.type})
         .then((data) => {
+             res.send(data)
             res.send("Delete Success")
         }).catch(err => {
             console.log("error", err)

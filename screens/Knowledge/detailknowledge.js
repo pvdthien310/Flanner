@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 const DetailKnowledge = ({ route, navigation }) => {
-    const [,forceRerender] = useState();
+    const [, forceRerender] = useState();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
@@ -21,7 +21,63 @@ const DetailKnowledge = ({ route, navigation }) => {
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
     useEffect(() => {
-        forceRerender}, [item])
+        forceRerender
+    }, [item])
+
+    const sendNotification = () => {
+
+        fetch("http://192.168.0.106:3000/api/notification/send-data", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: item.userID,
+                message: 'Đã thích bài viết của bạn',
+                postID: item._id,
+                senderID: user.userID,
+                type: '1',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+
+    }
+    const removeNotification = () => {
+  
+        fetch("http://192.168.0.106:3000/api/notification/delete", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: item.userID,
+                postID: item._id,
+                senderID: user.userID,
+                type: '1',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+    }
 
     const fetchData = () => {
 
@@ -30,7 +86,7 @@ const DetailKnowledge = ({ route, navigation }) => {
         fetch(url)
             .then(res => res.json())
             .then(result => {
-               
+
                 setData(result)
                 setLoading(false)
                 // console.log(result)
@@ -43,7 +99,7 @@ const DetailKnowledge = ({ route, navigation }) => {
     useEffect(() => {
         fetchData();
     }, [])
-    
+
 
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -71,8 +127,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                 }
             }).then((result) => {
                 //  console.log(result)
+                removeNotification()
                 setData(result)
-                dispatch({type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result})
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -94,8 +151,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                     return res.json()
                 }
             }).then(result => {
+                sendNotification()
                 setData(result)
-                dispatch({type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result})
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -178,16 +236,16 @@ const DetailKnowledge = ({ route, navigation }) => {
                     :
                     <SafeAreaView style={styles.post}>
 
-                        <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
                                 <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
                                     <MaterialIcons name="keyboard-backspace" size={30} color="black" />
                                 </View>
                             </TouchableOpacity>
                             <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{   
-                                        fontFamily: 'nunitobold',
-                                        fontSize: 25,
+                                <Text style={{
+                                    fontFamily: 'nunitobold',
+                                    fontSize: 25,
                                 }}> Detail </Text>
                             </View>
                         </View>
