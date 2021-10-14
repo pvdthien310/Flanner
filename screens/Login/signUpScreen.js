@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Alert } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -12,25 +12,15 @@ export default function SignUpScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.User })
 
-    const sendEmail = () => {
-        fetch("http://192.168.1.9:3000/api/sendEmail", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                from: 'flanerapplication <trithuc23232@gmail.com>',
-                to: 'trithuc23232@gmail.com',
-                subject: 'Verify code',
-                html: 'Your verify code is: '
-            })
-        }).then(res => res.json())
-            .then(data => { })
-            .catch(err => {
-                console.log("error", err)
-            })
+    function makeId() {
+        let result = '';
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let charactersLength = characters.length;
+        for (let i = 0; i < 6; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result
     }
-
     const [dataTemp, setDataTemp] = useState({
         name: '',
         email: '',
@@ -39,8 +29,29 @@ export default function SignUpScreen({ navigation }) {
         showPassword: false,
         showConfirm: false,
         checkUser: false,
-        checkPassword: false
+        checkPassword: false,
+        verifyCode: makeId()
     });
+
+
+    const sendEmail = () => {
+        fetch("http://192.168.1.9:3000/api/sendEmail", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: 'flanerapplication <trithuc23232@gmail.com>',
+                to: dataTemp.email,
+                subject: 'Verify code',
+                html: 'Your verify code is: ' + dataTemp.verifyCode
+            })
+        }).then(res => res.json())
+            .then(data => { })
+            .catch(err => {
+                console.log("error", err)
+            })
+    }
 
     const EmailChange = (val) => {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -135,8 +146,19 @@ export default function SignUpScreen({ navigation }) {
             }
         });
         if (!flag) {
-            navigation.navigate('ConfirmEmail')
-
+            setDataTemp({
+                ...dataTemp,
+                verifyCode: makeId()
+            })
+            sendEmail()
+            let toast = Toast.show('We just sent you a verify code', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            navigation.navigate('ConfirmEmail', { dataTemp })
         }
 
     }
@@ -220,7 +242,7 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} onPress={(sendEmail)}>
+                <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}

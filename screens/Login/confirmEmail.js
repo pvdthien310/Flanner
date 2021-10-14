@@ -3,26 +3,69 @@ import { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
+import Toast from 'react-native-root-toast';
+import base64 from 'react-native-base64'
 
-export default function ConfirmEmail({ navigation }) {
+export default function ConfirmEmail({ route, navigation }) {
 
-    const _submitData = () => {
-        fetch("http://192.168.1.6:3000/api/user/send-data", {
+    const {
+        name,
+        email,
+        password,
+        confirm,
+        showPassword,
+        showConfirm,
+        checkUser,
+        checkPassword,
+        verifyCode
+    } = route.params.dataTemp
+
+    const sendEmail = () => {
+        fetch("http://192.168.1.9:3000/api/sendEmail", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userID: 'IK1P3Y',
-                phoneNumber: '0987634665',
-                name: 'Linh Nguyen',
-                doB: '15/07/2001',
+                from: 'flanerapplication <trithuc23232@gmail.com>',
+                to: email,
+                subject: 'Verify code',
+                html: 'Your verify code is: '
+            })
+        }).then(res => res.json())
+            .then(data => { })
+            .catch(err => {
+                console.log("error", err)
+            })
+    }
+
+    function makeUserId() {
+        let temp = ''
+        let i = 0
+
+        while (email.charAt(i) != '@') {
+            temp += email.charAt(i)
+            i++;
+        }
+        return temp;
+    }
+    const _submitData = () => {
+        fetch("http://192.168.1.9:3000/api/user/send-data", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: makeUserId(),
+                phoneNumber: '',
+                name: name,
+                doB: '',
                 avatar: '',
-                email: '19520145@gm.uit.edu.vn',
+                email: email,
                 friendArray: '',
-                password: '123456',
+                password: base64.encode(password),
                 score: '0',
-                address: 'Soc Trang',
+                address: '',
                 position: '0',
                 reportedNum: '0',
             })
@@ -33,6 +76,36 @@ export default function ConfirmEmail({ navigation }) {
             })
     }
 
+    const confirmHandle = (value) => {
+        let result = ''
+        result += value.key1
+        result += value.key2
+        result += value.key3
+        result += value.key4
+        result += value.key5
+        result += value.key6
+
+        if (result != verifyCode) {
+            let toast = Toast.show('Incorrect verify code', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        }
+        else {
+            _submitData()
+            let toast = Toast.show('Sign up successfully', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            navigation.navigate('DrawerStack')
+        }
+    }
     return (
         <View style={styles.container}>
             <Image
@@ -46,7 +119,10 @@ export default function ConfirmEmail({ navigation }) {
             </Text>
             <Formik
                 initialValues={{ key1: '', key2: '', key3: '', key4: '', key5: '', key6: '' }}
-                onSubmit={values => console.log(values)}
+                onSubmit={values => {
+                    console.log(values)
+                    confirmHandle(values)
+                }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values }) => (
                     <View>
