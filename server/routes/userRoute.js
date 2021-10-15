@@ -4,7 +4,7 @@ const sendMail = require("../../gmail-api/sendEmail")
 
 //Get a member by ID
 UserRoute.get('/:id', (req, res) => {
-    User.findById(req.body.id)
+    User.findById(req.body.userID)
         .then(data => res.send(data))
         .catch(err => console.log(err))
 })
@@ -27,13 +27,12 @@ UserRoute.get('/', (req, res) => {
 })
 
 UserRoute.post('/update', (req, res) => {
-    User.findByIdAndUpdate(req.body.id, {
+    User.findByIdAndUpdate(req.body.email, {
         userID: req.body.userID,
         phoneNumber: req.body.phoneNumber,
         name: req.body.name,
         doB: req.body.doB,
         avatar: req.body.avatar,
-        email: req.body.email,
         friendArray: req.body.friendArray,
         password: req.body.password,
         score: req.body.score,
