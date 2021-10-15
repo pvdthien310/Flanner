@@ -8,6 +8,7 @@ import { BottomNavigator } from './newFeed/newfeedBottomNav';
 import MainInfor from '../screens/InformationUser/mainInfo';
 import NotificationTab from './notification/NotificationStack';
 import Header, { HeaderDrawer, HeaderNews } from '../shared/header';
+import { UserInformationStack } from './userInformation/userInformationStack';
 
 function HomeScreen({ navigation }) {
     return (
@@ -44,11 +45,13 @@ export const DrawerStack = (props) => {
             headerTintColor: 'black',
         }}
         drawerContent = {(props) => <CustomDrawer {...props}/> } >
-           
             <Drawer.Screen name = "NewsFeed" component = {BottomNavigator} options= {{ headerShown : false}}/>
             <Drawer.Screen name = "Notification" component = {NotificationTab} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Notification'  /> }} />
-            <Drawer.Screen name = "User Information" component = {MainInfor} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'  /> }}/>
             <Drawer.Screen name="Flâner Chat" component={ChatStackNavigator} options={{ headerShown: false }} />
+            <Drawer.Screen name = "User Information Stack" component = {UserInformationStack} 
+            options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'/> },
+            {drawerLabel:()=>null}
+    }/>
         </Drawer.Navigator>
     );
 }
