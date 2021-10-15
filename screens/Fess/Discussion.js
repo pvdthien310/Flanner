@@ -33,6 +33,9 @@ import Input from './../../components/Fess/LastWatch';
 import * as ImagePicker from 'expo-image-picker';
 
 import { messageData, Linh1, Linh2 } from './TestData/data';
+import { ChatUser } from './server/model/ChatUser';
+import { Messages } from './server/model/Message';
+import { RoomChat } from './server/model/RoomChat';
 
 import {
     renderAvatar,
@@ -50,6 +53,10 @@ import {
 import { GiftedChat } from "react-native-gifted-chat";
 import { db } from '../../firebase/firebase';
 import { addDoc, collection, setDoc, doc } from "firebase/firestore/lite"; 
+import {
+    addNewMessage
+} from "./server/service/messageService.js"
+import { add } from 'react-native-reanimated';
 
 const Discussion = ({ route, navigation }) => {
     // const { itemName, itemPic } = route.params;
@@ -208,14 +215,30 @@ const Discussion = ({ route, navigation }) => {
     }
 
     const addNewDoc = async ()=>{
-        const collectionRef = doc(db, "users","con2");
+        const collectionRef = doc(db, "users/con2", "abc");
         const payload = {name:"lady", email: "@@@@@@@@laydyyyyyyy"}
         await setDoc(collectionRef, payload);
     }
 
     const onSend = useCallback((messages = []) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-        addNewDoc()
+
+        const roomId = "BrgzgFBSbGI0zLUNEQaY_YqeU6w77gpbwakUoqKc0"
+        //addNewDoc()
+        const {
+            _id,
+            text,
+            createdAt,
+            user
+        } = messages[0]
+         
+         addNewMessage(
+            _id,
+            text,
+            createdAt,
+            user,
+            roomId
+         )
         
       }, [])
 
