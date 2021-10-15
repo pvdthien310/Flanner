@@ -48,6 +48,8 @@ import {
 } from './renderComponent'
 
 import { GiftedChat } from "react-native-gifted-chat";
+import { db } from '../../firebase/firebase';
+import { addDoc, collection, setDoc, doc } from "firebase/firestore/lite"; 
 
 const Discussion = ({ route, navigation }) => {
     // const { itemName, itemPic } = route.params;
@@ -113,7 +115,7 @@ const Discussion = ({ route, navigation }) => {
     //     </LinearGradient>
     // )
 
-    const [messages, setMessages] = useState(messageData);
+    const [messages, setMessages] = useState();
 
     useEffect(() => { messages }, [])
 
@@ -205,8 +207,16 @@ const Discussion = ({ route, navigation }) => {
         });
     }
 
+    const addNewDoc = async ()=>{
+        const collectionRef = doc(db, "users","con2");
+        const payload = {name:"lady", email: "@@@@@@@@laydyyyyyyy"}
+        await setDoc(collectionRef, payload);
+    }
+
     const onSend = useCallback((messages = []) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+        addNewDoc()
+        
       }, [])
 
     return (
