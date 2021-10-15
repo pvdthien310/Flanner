@@ -146,6 +146,15 @@ export default function ForgotPasswordScreen({ navigation }) {
             });
             navigation.navigate('ConfirmEmailForgot', { dataForgot })
         }
+        else {
+            let toast = Toast.show('Email is not registered', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        }
     }
 
     return (
@@ -184,7 +193,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                             name={dataForgot.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...dataForgot, showPassword: !dataForgot.showPassword })}
+                            onPress={() => setDataForgot({ ...dataForgot, showPassword: !dataForgot.showPassword })}
                         />
                     </View>
                 </View>

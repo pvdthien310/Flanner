@@ -32,32 +32,17 @@ export default function ConfirmEmailForgot({ route, navigation }) {
         });
     }
         , [])
-    const sendEmail = () => {
-        fetch("http://192.168.1.9:3000/api/sendEmail", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                from: 'flanerapplication <trithuc23232@gmail.com>',
-                to: email,
-                subject: 'Verify code',
-                html: 'Your verify code is: '
-            })
-        }).then(res => res.json())
-            .then(data => { })
-            .catch(err => {
-                console.log("error", err)
-            })
-    }
+
 
     const _ResetData = () => {
-        fetch("http://192.168.1.9:3000/api/user/update", {
+
+        fetch('http://192.168.1.9:3000/api/user/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: user._id,
                 userID: user.userID,
                 phoneNumber: user.phoneNumber,
                 name: user.name,

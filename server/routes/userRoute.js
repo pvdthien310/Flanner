@@ -27,12 +27,13 @@ UserRoute.get('/', (req, res) => {
 })
 
 UserRoute.post('/update', (req, res) => {
-    User.findByIdAndUpdate(req.body.email, {
+    User.findByIdAndUpdate(req.body.id, {
         userID: req.body.userID,
         phoneNumber: req.body.phoneNumber,
         name: req.body.name,
         doB: req.body.doB,
         avatar: req.body.avatar,
+        email: req.body.email,
         friendArray: req.body.friendArray,
         password: req.body.password,
         score: req.body.score,
@@ -45,8 +46,6 @@ UserRoute.post('/update', (req, res) => {
         }).catch(err => {
             console.log(err)
         })
-
-
 })
 
 UserRoute.post('/send-data', (req, res) => {
