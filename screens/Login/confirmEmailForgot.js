@@ -1,73 +1,60 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
 import Toast from 'react-native-root-toast';
 import base64 from 'react-native-base64'
+import { useSelector, useDispatch } from 'react-redux';
 
-export default function ConfirmEmail({ route, navigation }) {
+export default function ConfirmEmailForgot({ route, navigation }) {
+    const dispatch = useDispatch()
+    const { data, loading } = useSelector(state => { return state.User })
 
     const {
-        name,
         email,
         password,
-        confirm,
         showPassword,
-        showConfirm,
         checkUser,
-        checkPassword,
-        verifyCode
-    } = route.params.dataTemp
+        verifyCode,
+        confirm,
+        checkPassword
+    } = route.params.dataForgot
 
-    const sendEmail = () => {
-        fetch("http://192.168.1.9:3000/api/sendEmail", {
+    const [user, setUser] = useState()
+
+    useEffect(() => {
+        data.forEach(element => {
+            if (element.email === email) {
+                setUser(element)
+                return
+            }
+        });
+    }
+        , [])
+
+
+    const _ResetData = () => {
+
+        fetch('http://192.168.1.9:3000/api/user/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from: 'flanerapplication <trithuc23232@gmail.com>',
-                to: email,
-                subject: 'Verify code',
-                html: 'Your verify code is: '
-            })
-        }).then(res => res.json())
-            .then(data => { })
-            .catch(err => {
-                console.log("error", err)
-            })
-    }
-
-    function makeUserId() {
-        let temp = ''
-        let i = 0
-
-        while (email.charAt(i) != '@') {
-            temp += email.charAt(i)
-            i++;
-        }
-        return temp;
-    }
-    const _submitData = () => {
-        fetch("http://192.168.1.9:3000/api/user/send-data", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userID: makeUserId(),
-                phoneNumber: '',
-                name: name,
-                doB: '',
-                avatar: '',
+                id: user._id,
+                userID: user.userID,
+                phoneNumber: user.phoneNumber,
+                name: user.name,
+                doB: user.doB,
+                avatar: user.avatar,
                 email: email,
-                friendArray: '',
+                friendArray: user.friendArray,
                 password: base64.encode(password),
-                score: '0',
-                address: '',
-                position: '0',
-                reportedNum: '0',
+                score: user.score,
+                address: user.address,
+                position: user.position,
+                reportedNum: user.reportedNum,
             })
         }).then(res => res.json())
             .then(data => { })
@@ -95,15 +82,16 @@ export default function ConfirmEmail({ route, navigation }) {
             });
         }
         else {
-            _submitData()
-            let toast = Toast.show('Sign up successfully', {
+            _ResetData()
+            let toast = Toast.show('Reset successfully', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
                 shadow: true,
                 animation: true,
                 hideOnPress: true,
             });
-            navigation.navigate('DrawerStack')
+            console.log(password)
+            navigation.navigate('SignInScreen')
         }
     }
     return (

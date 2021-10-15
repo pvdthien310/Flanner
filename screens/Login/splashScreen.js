@@ -1,12 +1,39 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Animated } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { EvilIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
+import { AsyncStorage } from 'react-native';
 
 export default function SplashScreen({ navigation }) {
+    _retrieveData = async () => {
+        try {
+            const temp = await AsyncStorage.getItem('newUser');
 
+            if (temp !== null) {
+                navigation.navigate('SignInScreen')
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    _storeData = async () => {
+        try {
+            await AsyncStorage.setItem('newUser', 'true');
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        _retrieveData();
+        _storeData();
+
+    }
+        , [])
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -73,11 +100,14 @@ const styles = StyleSheet.create({
     title: {
         color: 'black',
         fontSize: 30,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     text: {
         color: 'grey',
         marginTop: 5,
+        color: 'lightslategrey',
+        fontFamily: 'nunitoregular'
+
     },
     button: {
         alignItems: 'flex-end',
@@ -93,6 +123,7 @@ const styles = StyleSheet.create({
     },
     textSign: {
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'nunitoregular'
     }
 })

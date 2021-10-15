@@ -4,7 +4,8 @@ import { StyleSheet } from 'react-native';
 export const globalStyles = StyleSheet.create({
     container: {
         padding: 12,
-        marginBottom: 80
+        marginBottom: 80,
+        backgroundColor: 'white'
 
     },
     container2: {

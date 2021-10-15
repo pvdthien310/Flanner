@@ -6,48 +6,176 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import Toast from 'react-native-root-toast';
+import { AsyncStorage } from 'react-native';
+import base64 from 'react-native-base64'
 
 export default function SignInScreen({ navigation }) {
-    const [data1, setData1] = useState([])
-    const [loading, setLoading] = useState(true)
-
+    // const [data1, setData1] = useState([])
+    // const [loading, setLoading] = useState(true)
+    const dispatch = useDispatch()
+    const { data, loading } = useSelector(state => { return state.User })
     const fetchData = () => {
-        fetch('http://192.168.1.5:3000/api/user')
+        fetch('http://192.168.1.9:3000/api/user')
             .then(res => res.json())
             .then(result => {
-                setData1(result)
-                setLoading(false)
-                console.log(data1)
+                dispatch({ type: 'ADD_DATA_USER', payload: result })
+                dispatch({ type: 'SET_LOADING_USER', payload: false })
             }).catch(err => console.log('Error'));
     }
+    _storeData = async () => {
+        try {
+            await AsyncStorage.setItem('email', dataTemp.email);
+            await AsyncStorage.setItem('password', dataTemp.password);
+            if (isSelected)
+                await AsyncStorage.setItem('remember', 'true');
+            else
+                await AsyncStorage.setItem('remember', 'false');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const [saveData, setSaveData] = useState({
+        email: '',
+        password: '',
+    })
+    const [isSelected, setSelection] = useState(false);
+    _retrieveData = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const password = await AsyncStorage.getItem('password');
+            const remember = await AsyncStorage.getItem('remember');
+            if (email !== null && password !== null && remember === 'true') {
+                setSaveData({
+                    email: email,
+                    password: password,
+                })
+                if (remember === 'true')
+                    setSelection(true)
+                else
+                    setSelection(false)
+
+                setData({
+                    ...dataTemp,
+                    email: email,
+                    password: password,
+                    checkUser: true,
+                    checkPassword: true
+                })
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         fetchData();
+        _retrieveData();
     }
         , [])
 
-    const [data, setData] = useState({
-        user: '',
+
+    const [dataTemp, setData] = useState({
+        email: '',
         password: '',
         showPassword: false,
-        checkUser: false
+        checkUser: false,
+        checkPassword: false,
     });
 
-    const TextInputChange = (val) => {
-        if (val.length != 0) {
+    const EmailChange = (val) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(val) === false) {
             setData({
-                ...data,
-                email: val,
-                checkUser: true
-            })
-        }
-        else {
-            setData({
-                ...data,
+                ...dataTemp,
                 email: val,
                 checkUser: false
             })
         }
+        else {
+            setData({
+                ...dataTemp,
+                email: val,
+                checkUser: true
+            })
+        }
+    }
+    const PasswordChange = (val) => {
+        if (val.length < 6) {
+            setData({
+                ...dataTemp,
+                password: val,
+                checkPassword: false
+            })
+        }
+        else {
+            setData({
+                ...dataTemp,
+                password: val,
+                checkPassword: true
+            })
+        }
+    }
+
+
+
+    const _submit = () => {
+
+        if (!dataTemp.checkUser) {
+            let toast = Toast.show('Email invalid', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+        else if (!dataTemp.checkPassword) {
+            let toast = Toast.show('Password must be more than 5 characters', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+
+        let flag = false;
+        data.forEach(element => {
+            if (element.email === dataTemp.email) {
+                flag = true;
+                if (element.password == base64.encode(dataTemp.password)) {
+                    dispatch({ type: 'ADD_USER', payload: element })
+                    _storeData()
+                    navigation.navigate('DrawerStack')
+                }
+                else {
+                    let toast = Toast.show('Password is incorrect', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    return
+                }
+            }
+
+        });
+        if (!flag) {
+            let toast = Toast.show('Email is not registered', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        }
+
     }
     return (
         <View style={styles.container}>
@@ -66,9 +194,10 @@ export default function SignInScreen({ navigation }) {
                         <TextInput
                             style={styles.accountEdt}
                             placeholder='Type your account'
-                            onChangeText={(val) => TextInputChange(val)}
+                            onChangeText={(val) => EmailChange(val)}
+                            defaultValue={saveData.email}
                         />
-                        {data.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
+                        {dataTemp.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
 
                     </View>
                 </View>
@@ -80,20 +209,26 @@ export default function SignInScreen({ navigation }) {
                         <TextInput
                             style={styles.passwordEdt}
                             placeholder='Type your password'
-                            secureTextEntry={!data.showPassword}
+                            secureTextEntry={!dataTemp.showPassword}
+                            onChangeText={(val) => PasswordChange(val)}
+                            defaultValue={saveData.password}
                         />
                         <Ionicons
-                            name={data.showPassword ? "eye-outline" : "eye-off-outline"}
+                            name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...data, showPassword: !data.showPassword })}
+                            onPress={() => setData({ ...dataTemp, showPassword: !dataTemp.showPassword })}
                         />
                     </View>
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <CheckBox />
+                        <CheckBox
+                            value={isSelected}
+                            onValueChange={setSelection}
+                            tintColors={{ true: 'black', false: 'black' }}
+                        />
                         <Text>Remember me</Text>
                     </View>
 
@@ -102,11 +237,11 @@ export default function SignInScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} >
+                <TouchableOpacity style={styles.signInBtn} onPress={_submit}>
                     <Text style={styles.textSign}>SIGN IN</Text>
                 </TouchableOpacity>
 
-                <View style={{ marginTop: 20 }}>
+                {/* <View style={{ marginTop: 20 }}>
                     <View style={{ borderBottomColor: 'grey', borderWidth: 0.3, opacity: 0.5, marginTop: 11 }}></View>
                     <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
                 </View>
@@ -114,10 +249,10 @@ export default function SignInScreen({ navigation }) {
                 <TouchableOpacity style={styles.facebookGoogleBtn}>
                     <AntDesign name="google" size={24} color="black" />
                     <Text style={styles.googleTxt}>Login with Google</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 110 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 110, flex: 1, alignItems: 'flex-end', marginBottom: 120 }}
                     onPress={() => navigation.navigate('SignUpScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>

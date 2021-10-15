@@ -8,6 +8,15 @@ import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
 import { Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import { Montserrat_800ExtraBold } from "@expo-google-fonts/montserrat";
 
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { reducer } from './reducer/knowledgeReducer'
+import RootReducer from './reducer/rootReducer'
+// import { useFonts } from "@expo-google-fonts/montserrat";
+// import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
+// import { Montserrat_700Bold } from "@expo-google-fonts/montserrat";
+// import { Montserrat_800ExtraBold } from "@expo-google-fonts/montserrat";
+const store = createStore(RootReducer);
 export default function App() {
   let [fontsLoaded] = useFonts({
     capricaScript: require('./assets/fonts/CAPRICA_SCRIPT.ttf'),
@@ -25,7 +34,9 @@ export default function App() {
   }
   return (
     <RootSiblingParent>
-      <LoginStack />
+      <Provider store={store}>
+        <LoginStack />
+      </Provider>
     </RootSiblingParent>
 
   );
