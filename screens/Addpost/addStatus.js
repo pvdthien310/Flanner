@@ -60,7 +60,7 @@ export default function AddStatus({ route, navigation }) {
     const SendNewpost = () => {
         setLoading(true)
         const d = new Date();
-        fetch("http://192.168.0.106:3000/api/status/send-data", {
+        fetch("http://192.168.0.104:3000/api/status/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

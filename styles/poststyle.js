@@ -35,8 +35,8 @@ export const Poststyle = StyleSheet.create({
         marginTop: 5
     },
     imageavatar: {
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
         borderRadius: 15
     },
     imagepost: {

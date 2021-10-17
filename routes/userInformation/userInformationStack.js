@@ -8,7 +8,7 @@ export const UserInformationStack = (props) => {
     const { navigation } = props
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='User Information' component= {MainInfor} />
+            <Stack.Screen name='User Dashboard' component= {MainInfor} />
         </Stack.Navigator>
     )
 }

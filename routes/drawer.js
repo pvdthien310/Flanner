@@ -48,8 +48,8 @@ export const DrawerStack = (props) => {
             <Drawer.Screen name = "NewsFeed" component = {BottomNavigator} options= {{ headerShown : false}}/>
             <Drawer.Screen name = "Notification" component = {NotificationTab} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Notification'  /> }} />
             <Drawer.Screen name="Flâner Chat" component={ChatStackNavigator} options={{ headerShown: false }} />
-            <Drawer.Screen name = "User Information Stack" component = {UserInformationStack} 
-            options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'/> },
+            <Drawer.Screen name = "User Information" component = {UserInformationStack} 
+            options = { { headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'/> },
             {drawerLabel:()=>null}
     }/>
         </Drawer.Navigator>

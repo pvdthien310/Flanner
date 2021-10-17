@@ -17,7 +17,7 @@ export default function SignInScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading, user } = useSelector(state => { return state.User })
     const fetchData = () => {
-        fetch('http://192.168.0.106:3000/api/user')
+        fetch('http://192.168.0.104:3000/api/user')
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_DATA_USER', payload: result })

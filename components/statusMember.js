@@ -18,7 +18,7 @@ const StatusMember = ({ item, navigation }) => {
     const imagenumber = item.listImage.length
 
     const LoadData = () => {
-        const url = 'http://192.168.0.106:3000/api/status/' + item._id.toString();
+        const url = 'http://192.168.0.104:3000/api/status/' + item._id.toString();
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -35,7 +35,7 @@ const StatusMember = ({ item, navigation }) => {
 
     const sendNotification = () => {
 
-        fetch("http://192.168.0.106:3000/api/notification/send-data", {
+        fetch("http://192.168.0.104:3000/api/notification/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ const StatusMember = ({ item, navigation }) => {
     }
     const removeNotification = () => {
   
-        fetch("http://192.168.0.106:3000/api/notification/delete", {
+        fetch("http://192.168.0.104:3000/api/notification/delete", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -90,8 +90,8 @@ const StatusMember = ({ item, navigation }) => {
 
     const PressHandle1 = () => {
         // let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_true = 'http://192.168.0.104:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.104:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {
@@ -161,8 +161,8 @@ const StatusMember = ({ item, navigation }) => {
     
         const PressHandle = () => {
             //let numberReact = item.reactNumber;
-            const url_true = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/true/' + user.userID.toString();
-            const url_false = 'http://192.168.0.106:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/false/'  + user.userID.toString();
+            const url_true = 'http://192.168.0.104:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/true/' + user.userID.toString();
+            const url_false = 'http://192.168.0.104:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/false/'  + user.userID.toString();
     
     
             if (pressed == true) {

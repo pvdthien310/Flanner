@@ -74,7 +74,7 @@ export default function AddKnowledge({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://192.168.0.106:3000/api/knowledge/send-data", {
+        fetch("http://192.168.0.104:3000/api/knowledge/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
