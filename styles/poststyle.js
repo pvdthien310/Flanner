@@ -293,9 +293,9 @@ export const Poststyle_Status = StyleSheet.create({
 
     },
     title_detail: {
-        fontFamily: 'Gemunu Libre',
+        fontFamily: 'robotobold',
         fontWeight: 'bold',
-        fontSize: 45,
+        fontSize: 42,
         marginTop: 10,
         marginBottom: 10
     },
@@ -307,7 +307,7 @@ export const Poststyle_Status = StyleSheet.create({
         borderRadius: 10
     },
     description_detail: {
-        fontFamily: 'nunitoregular',
+        fontFamily: 'robotoregular',
         fontSize: 20,
         marginTop: 5,
         color: 'dimgray',
@@ -330,7 +330,7 @@ export const Poststyle_Status = StyleSheet.create({
 
     },
     title: {
-        fontFamily: 'nunitobold',
+        fontFamily: 'robotobold',
         fontSize: 25,
         marginTop: 10,
         marginBottom: 5,

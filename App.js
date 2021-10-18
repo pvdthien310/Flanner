@@ -22,7 +22,7 @@ export default function App() {
     capricaScript: require('./assets/fonts/CAPRICA_SCRIPT.ttf'),
     nunitobold: require('./assets/fonts/Nunito_Bold.ttf'),
     nunitoregular: require('./assets/fonts/Nunito_Regular.ttf'),
-    robotobold: require('./assets/fonts/RobotoSlabBlod.ttf'),
+    robotobold: require('./assets/fonts/RobotoSlabBold.ttf'),
     robotoregular: require('./assets/fonts/RobotoSlabRegular.ttf'),
 
     // 'nunito-bold': require('./assets/fonts/Nunito-Bold.ttf'),

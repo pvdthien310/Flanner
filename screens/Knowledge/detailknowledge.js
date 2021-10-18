@@ -244,13 +244,13 @@ const DetailKnowledge = ({ route, navigation }) => {
                             </TouchableOpacity>
                             <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{
-                                    fontFamily: 'nunitobold',
+                                    fontFamily: 'robotobold',
                                     fontSize: 25,
                                 }}> Detail </Text>
                             </View>
                         </View>
 
-                        <ScrollView style={{ margin: 10, marginBottom: 50 }} showsVerticalScrollIndicator={false}>
+                        <ScrollView style={{ margin: 10, marginBottom: 60 }} showsVerticalScrollIndicator={false}>
 
                             <View style={{ alignItems: 'flex-start', marginTop: 5 }}>
                                 <FlatList
@@ -308,7 +308,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
-                                backgroundColor: 'dimgrey',
+                                backgroundColor: 'grey',
                                 shadowOffset: { width: 1, height: 1 },
                                 shadowColor: 'black',
                                 shadowOpacity: 0.2,
@@ -316,7 +316,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={images.avatars[item.avatar]} style={Poststyle_Status.imageavatar_detai} />
+                                <Image source={{uri: data.avatar}} style={Poststyle_Status.imageavatar_detai} />
                                 <UserInfoText>
                                     <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
                                     <Text style={{
@@ -364,10 +364,5 @@ const styles = StyleSheet.create({
         shadowRadius: 0,
         marginBottom: 120,
         margin: 5
-
-
-
-
-
     },
 })

@@ -190,7 +190,7 @@ const DetailStatus = ({ route, navigation }) => {
 
                         <ScrollView>
                             <UserInfo>
-                                <Image source={images.avatars[item.avatar]} style={Poststyle_Knowledge.imageavatar} />
+                                <Image source={{uri: data.avatar}} style={Poststyle_Knowledge.imageavatar} />
                                 <UserInfoText>
                                     <Text style={Poststyle_Knowledge.name}> {data.username}</Text>
                                     <Text style={Poststyle_Knowledge.posttime}> {data.posttime}</Text>

@@ -225,7 +225,7 @@ const StatusMember = ({ item, navigation }) => {
     return (
         <Post >
             <UserInfo>
-                <Image source={images.avatars[item.avatar]} style={Poststyle.imageavatar} />
+                <Image source={{uri: item.avatar}} style={Poststyle.imageavatar} />
                 <UserInfoText>
                     <Text style={Poststyle.name}> {item.username}</Text>
                     <Text style={Poststyle.posttime}> {item.posttime}</Text>

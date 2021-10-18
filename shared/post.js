@@ -19,6 +19,7 @@ export function UserInfo(props) {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                alignItems:'center',
                 backgroundColor: 'ghostwhite',
                 shadowOffset: { width: 1, height: 1 },
                 shadowColor: 'black',
@@ -40,7 +41,7 @@ export function UserInfoText(props) {
             style={{
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
-                alignItems: 'center'
+                
 
             }}>
             {props.children}
