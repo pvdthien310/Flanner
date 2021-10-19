@@ -54,7 +54,9 @@ import { GiftedChat } from "react-native-gifted-chat";
 import { db } from '../../firebase/firebase';
 import { addDoc, collection, setDoc, doc } from "firebase/firestore/lite"; 
 import {
-    addNewMessage
+    addNewTextMessage,
+    addNewImageMessage,
+    uploadImage
 } from "./server/service/messageService.js"
 import { add } from 'react-native-reanimated';
 
@@ -121,6 +123,17 @@ const Discussion = ({ route, navigation }) => {
     //         />
     //     </LinearGradient>
     // )
+    const roomId = "BrgzgFBSbGI0zLUNEQaY_YqeU6w77gpbwakUoqKc0"
+
+    function makeId() {
+        let result = '';
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let charactersLength = characters.length;
+        for (let i = 0; i < 10; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result
+    }
 
     const [messages, setMessages] = useState();
 
@@ -134,20 +147,21 @@ const Discussion = ({ route, navigation }) => {
             return;
         }
 
-        let pickerResult = await ImagePicker.launchCameraAsync({
+        var pickerResult = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            
+            base64: true
         });
 
         if (pickerResult.cancelled === true) {
             return;
         }
 
-        onSend({
-            _id: Math.floor(Math.random() * 10000000000000000000),
+        onSend([],{
+            _id: makeId(),
             image: pickerResult.uri,
             user: Linh1,
-        });
+            createdAt: new Date()
+        });   
     }
 
     const openPhotoLibary = async () => {
@@ -158,21 +172,23 @@ const Discussion = ({ route, navigation }) => {
             return;
         }
 
-        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+        var pickerResult = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            
+            base64: true
         });
 
         if (pickerResult.cancelled === true) {
             return;
         }
 
-        onSend({
-            _id: Math.floor(Math.random() * 10000000000000000000),
+        onSend([],{
+            _id: makeId(),
             image: pickerResult.uri,
-            user: Linh1
-        });        
+            user: Linh1,
+            createdAt: new Date()
+        });     
+    
     };
 
     const renderActions = () => {
@@ -214,31 +230,47 @@ const Discussion = ({ route, navigation }) => {
         });
     }
 
-    const addNewDoc = async ()=>{
-        const collectionRef = doc(db, "users/con2", "abc");
-        const payload = {name:"lady", email: "@@@@@@@@laydyyyyyyy"}
-        await setDoc(collectionRef, payload);
-    }
+    // const addNewDoc = async ()=>{
+    //     const collectionRef = doc(db, "users/con2", "abc");
+    //     const payload = {name:"lady", email: "@@@@@@@@laydyyyyyyy"}
+    //     await setDoc(collectionRef, payload);
+    // }
 
-    const onSend = useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    const onSend = useCallback((messages = [], imgMess) => {
+        
+        //console.log(imgMess)
+        setMessages(previousMessages => GiftedChat.append(
+            previousMessages, 
+            messages!=""? messages: imgMess
+            )
+        )
 
-        const roomId = "BrgzgFBSbGI0zLUNEQaY_YqeU6w77gpbwakUoqKc0"
-        //addNewDoc()
+        if (messages != ""){
         const {
-            _id,
             text,
             createdAt,
             user
         } = messages[0]
-         
-         addNewMessage(
-            _id,
+
+        //console.log("messages: " + messages[0])
+
+        addNewTextMessage(
             text,
             createdAt,
             user,
             roomId
          )
+    } 
+    else{
+        const {
+            _id,
+            image,
+            user,
+            createdAt
+        } = imgMess
+
+        addNewImageMessage(_id, image, createdAt, user, roomId)
+    }
         
       }, [])
 
@@ -263,7 +295,7 @@ const Discussion = ({ route, navigation }) => {
                 user={Linh1}
 
                 alwaysShowSend
-                onSend={messages => onSend(messages)}
+                onSend={messages => onSend(messages, null)}
                 onLongPress={onLongPress}
 
                 scrollToBottom
