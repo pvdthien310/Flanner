@@ -56,7 +56,7 @@ import { addDoc, collection, setDoc, doc } from "firebase/firestore/lite";
 import {
     addNewTextMessage,
     addNewImageMessage,
-    uploadImage
+    //uploadImage
 } from "./server/service/messageService.js"
 import { add } from 'react-native-reanimated';
 

@@ -1,20 +1,26 @@
-import {initializeApp} from 'firebase/app'
-import {getAuth} from 'firebase/auth'
-import {getFirestore} from 'firebase/firestore/lite'
-import { getStorage } from "firebase/storage";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+import {getStorage} from 'firebase/storage'
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-   apiKey: "AIzaSyBdMDAs_6Hw1ednL-ojAtlIri3dixkcpZg",
-  authDomain: "flaner-chat.firebaseapp.com",
-  databaseURL: "https://flaner-chat-default-rtdb.firebaseio.com",
-  projectId: "flaner-chat",
-  storageBucket: "flaner-chat.appspot.com",
-  messagingSenderId: "1067876081635",
-  appId: "1:1067876081635:web:f705992b6567e100610ad6"
+  apiKey: "AIzaSyADFZWhwytDCfIWvV1K05HpG-cOLN0TjLQ",
+  authDomain: "flaner-b142b.firebaseapp.com",
+  databaseURL: "https://flaner-b142b-default-rtdb.firebaseio.com",
+  projectId: "flaner-b142b",
+  storageBucket: "flaner-b142b.appspot.com",
+  messagingSenderId: "1002203190771",
+  appId: "1:1002203190771:web:8c837ce5ea99c6c9d82e86",
+  measurementId: "G-FH5T00PZJT"
 };
 
-const fess = initializeApp(firebaseConfig);
-const db = getFirestore(fess);
-const store = getStorage(fess)
-// const auth = getAuth();
-export  {db, store};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const store = getStorage(app);
+
+export {database, store}
