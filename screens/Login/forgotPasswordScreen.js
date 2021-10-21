@@ -34,7 +34,7 @@ export default function ForgotPasswordScreen({ navigation }) {
     });
 
     const sendEmail = () => {
-        fetch("http://192.168.1.9:3000/api/sendEmail", {
+        fetch("http://192.168.1.5:3000/api/sendEmail", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -228,7 +228,7 @@ export default function ForgotPasswordScreen({ navigation }) {
 
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 170 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 250 }}
                     onPress={() => navigation.navigate('SignInScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
