@@ -56,8 +56,8 @@ import { addDoc, collection, setDoc, doc } from "firebase/firestore/lite";
 import {
     addNewTextMessage,
     addNewImageMessage,
-    //uploadImage
-} from "./server/service/messageService.js"
+    fetchAllChatRoom
+} from "./server/service/chatroomService.js"
 import { add } from 'react-native-reanimated';
 
 const Discussion = ({ route, navigation }) => {
@@ -123,8 +123,10 @@ const Discussion = ({ route, navigation }) => {
     //         />
     //     </LinearGradient>
     // )
-    const roomId = "BrgzgFBSbGI0zLUNEQaY_YqeU6w77gpbwakUoqKc0"
 
+
+    //const roomId = "BrgzgFBSbGI0zLUNEQaY_YqeU6w77gpbwakUoqKc0"
+    const roomId="thuc_linh"
     function makeId() {
         let result = '';
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -255,11 +257,14 @@ const Discussion = ({ route, navigation }) => {
         //console.log("messages: " + messages[0])
 
         addNewTextMessage(
+            makeId(),
             text,
             createdAt,
             user,
             roomId
          )
+
+        
     } 
     else{
         const {

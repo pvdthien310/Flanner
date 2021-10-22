@@ -5,9 +5,10 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons'
 import { ScrollView } from 'react-native-gesture-handler'
 import Profiles from '../../components/Fess/Profile'
 import Messages from '../../components/Fess/Messages'
+import { fetchAllChatRoom } from './server/service/chatroomService'
 
 const Chat = (props) => {
-    const URL = `https://api.github.com/users`;  //Tap cac user 
+    //const URL = `https://api.github.com/users`;  //Tap cac user 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true)
     
@@ -18,6 +19,7 @@ const Chat = (props) => {
         const getData = async () => {
             const resp = await fetch(URL);
             const data = await resp.json();
+
             setData(data);
             setLoading(false);
         };
@@ -87,8 +89,8 @@ const Chat = (props) => {
                                     data.map((item, index) => (
                                             <Messages
                                                 key={item.id}
-                                                username={item.login}
-                                                uri={item.avatar_url}
+                                                // username={item.login}
+                                                // uri={item.avatar_url}
                                                 count={Math.floor(Math.random() * 3)}
                                                 onPress={()=>{
                                                     props.navigation.navigate('Discussion',{
