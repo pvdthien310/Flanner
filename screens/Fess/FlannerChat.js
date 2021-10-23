@@ -6,24 +6,33 @@ import { ScrollView } from 'react-native-gesture-handler'
 import Profiles from '../../components/Fess/Profile'
 import Messages from '../../components/Fess/Messages'
 import { fetchAllChatRoom } from './server/service/chatroomService'
+import { getAllUser } from './server/service/userServices'
 
 const Chat = (props) => {
-    //const URL = `https://api.github.com/users`;  //Tap cac user 
+    const URL = `https://api.github.com/users`;  //Tap cac user 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true)
+    const[listUser, setListUser] = useState([])
     
     const pan = useRef(new Animated.ValueXY()).current;
     const list = useRef(new Animated.ValueXY()).current;
 
     useEffect(function() {
         const getData = async () => {
-            const resp = await fetch(URL);
-            const data = await resp.json();
+            // const resp = await fetch(URL);
+            // const data = await resp.json();
+
+            const data = await fetchAllChatRoom('linh')
+            const listUser = await getAllUser()
+
+            console.log(data)
+            console.log(listUser)
 
             setData(data);
+            setListUser(listUser)
             setLoading(false);
         };
-        getData();
+        getData()
 
         Animated.timing(pan, {
             toValue:{x:-400,y:0},
@@ -38,6 +47,7 @@ const Chat = (props) => {
         }).start();
 
     }, [])
+
 
     console.log(data.login)
 
@@ -63,9 +73,9 @@ const Chat = (props) => {
                             {
                                 data.map((item, index) => (
                                     <Profiles
-                                        key={item.id}
-                                        username={item.login}
-                                        uri={item.avatar_url}
+                                        key={1}
+                                       // username={item.login}
+                                       // uri={item.avatar_url}
                                     />
                                 ))
                             }
@@ -88,15 +98,80 @@ const Chat = (props) => {
                                 {
                                     data.map((item, index) => (
                                             <Messages
-                                                key={item.id}
-                                                // username={item.login}
-                                                // uri={item.avatar_url}
+                                                key = {item['_id']}
+
+                                                username={()=>{
+                                                        console.log(item['listUser'][1])
+                                                        let getId = ""
+                                                        if (item['listUser'][0] == 'linh')
+                                                            getId = item['listUser'][1]
+                                                        else
+                                                            getId = item['listUser'][0]
+
+                                                        listUser.forEach(user =>{
+                                                            if (user['_id'] == getId){
+                                                            console.log(user['name'])
+                                                                return user['name']
+                                                            }
+                                                        })
+                                                    }
+                                                }
+                                                  
+                                            
+                                                uri = { ()=>{
+                                                    console.log(item['listUser'][1])
+                                                    let getId = ""
+                                                    if (item['listUser'][0] == 'linh')
+                                                        getId = item['listUser'][1]
+                                                    else
+                                                        getId = item['listUser'][0]
+
+                                                    listUser.forEach(user =>{
+                                                        if (user['_id'] == getId){
+                                                            console.log(user['avatar'])
+                                                            return user['avatar']
+                                                        }
+                                                    })
+                                                }
+                                                }
+
+                                              
                                                 count={Math.floor(Math.random() * 3)}
                                                 onPress={()=>{
+                                                    // props.navigation.navigate('Discussion',{
+                                                    //     itemId:item.id,
+                                                    //     itemName:item.login,
+                                                    //     itemPic:item.avatar_url
+                                                    // });
+
+                                                    // let getId = ""
+                                                    // if (item['listUser'][0] == 'linh')
+                                                    //     getId = item['listUser'][1]
+                                                    // else
+                                                    //     getId = item['listUser'][0]
+
+                                                    // listUser.forEach(user =>{
+                                                    //     if (user['_id'] == getId)
+                                                    //         console.log(user['name'])
+                                                    // })
+
+                                                    // listUser.forEach(user =>{
+                                                    //     if (user['_id'] == getId)
+                                                    //         console.log(user['avatar'])
+                                                    // })
+
+                                                    // console.log(item['Messages'])
+
+                                                    //  let mess =[]
+
+                                                    // for (var i = 0; i< Object.keys(item['Messages']).length; i++)
+                                                    //     mess.push(item['Messages'][i])
+                                                    
+                                                    // console.log(mess)
+
                                                     props.navigation.navigate('Discussion',{
-                                                        itemId:item.id,
-                                                        itemName:item.login,
-                                                        itemPic:item.avatar_url
+                                                        // roomChat: item,
+                                                        // mess: mess,
                                                     });
                                                 }}
                                             />

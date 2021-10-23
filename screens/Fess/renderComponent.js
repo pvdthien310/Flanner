@@ -19,7 +19,6 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-
 import { Linh1, Linh2 } from './TestData/data'
 
 export const renderBubble = (props) => {
@@ -68,7 +67,7 @@ export const renderSend = (props) => {
 
 export const scrollToBottomComponent = () => {
     return (
-        <AntDesign name="caretdown" size={25} color='black' />
+        <AntDesign name="downcircle" size={40} color="black" />
     );
 }
 

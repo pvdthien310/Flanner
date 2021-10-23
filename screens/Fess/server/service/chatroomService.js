@@ -51,7 +51,8 @@ export const addNewTextMessage = async(_id,_text, _createdAt, _user, roomId )=>{
     update(ref(db,'/ChatRoom/' + roomId ), updateSeen)
 
     //Thêm tin nhắn 
-    await set(ref(db, 'ChatRoom/'+ roomId +'/Messages/'+_id), {
+    await set(ref(db, 'ChatRoom/'+ roomId +'/Messages/'), {
+        _id: _id,
         createdAt: messageInfo._createdAt.toString(),
         text: messageInfo._text,
         user: messageInfo._user
@@ -89,6 +90,7 @@ export const addNewImageMessage =  async (_id,_image, _createdAt, _user, roomId 
     const url = await uploadImage(_id, _image, roomId)
 
     set(ref(db, "ChatRoom/"+roomId+"/Messages/"+_id), {
+        _id: _id,
         createdAt: messageInfo._createdAt.toString(),
         image: url,
         user: messageInfo._user
@@ -101,20 +103,28 @@ export const fetchAllChatRoom = async (_userId)=>{
     const allData =[]
     await onValue(ref(db, 'ChatRoom'),
         (snapshot) => {
-            snapshot.forEach((childSnapshot ) =>{
-                if (childSnapshot.key.includes(_userId)){
-                    const roomChat = {
-                        _id,
-                        object
+           snapshot.forEach((childSnapshot ) =>{
+               if (childSnapshot.key.includes(_userId)){
+                    const dt = {
+                        _id: '',
+                        listUser: [],
+                        listUnSeen: [],
+                        lasttime: '',
+                        Messages: '',
+
                     }
-                    roomChat._id = childSnapshot.key
-                    roomChat.object = childSnapshot
-                    allData.push(roomChat)
-                }
-            });
-            console.log(allData)
+                    dt._id = childSnapshot.key
+                    dt.listUser = childSnapshot.child("listUser").val()
+                    dt.listUnSeen = childSnapshot.child("listUnSeen").val()
+                    dt.lasttime = childSnapshot.child("lasttime").val()
+                    dt.Messages = childSnapshot.child("Messages").val()
+                  allData.push(dt)
+               }
+           });
+           
          }
     );
+
     return allData
 }
 

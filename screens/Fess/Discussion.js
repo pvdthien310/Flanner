@@ -10,6 +10,7 @@ import {
     Image,
     StyleSheet,
     Clipboard,
+    SafeAreaView,
 } from 'react-native';
 
 import {
@@ -52,16 +53,18 @@ import {
 
 import { GiftedChat } from "react-native-gifted-chat";
 import { db } from '../../firebase/firebase';
-import { addDoc, collection, setDoc, doc } from "firebase/firestore/lite"; 
+import { addDoc, collection, setDoc, doc } from "firebase/firestore/lite";
 import {
     addNewTextMessage,
     addNewImageMessage,
     fetchAllChatRoom
 } from "./server/service/chatroomService.js"
 import { add } from 'react-native-reanimated';
+import { fetchUserData, getAllUser } from './server/service/userServices';
+import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 
 const Discussion = ({ route, navigation }) => {
-    // const { itemName, itemPic } = route.params;
+    const { roomChat, mess } = route.params;
     // const [inputMessage, setMessage] = useState('');
 
     // const send = () => {
@@ -126,7 +129,7 @@ const Discussion = ({ route, navigation }) => {
 
 
     //const roomId = "BrgzgFBSbGI0zLUNEQaY_YqeU6w77gpbwakUoqKc0"
-    const roomId="thuc_linh"
+    const roomId = "thien_linh"
     function makeId() {
         let result = '';
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -158,12 +161,12 @@ const Discussion = ({ route, navigation }) => {
             return;
         }
 
-        onSend([],{
+        onSend([], {
             _id: makeId(),
             image: pickerResult.uri,
             user: Linh1,
             createdAt: new Date()
-        });   
+        });
     }
 
     const openPhotoLibary = async () => {
@@ -184,13 +187,13 @@ const Discussion = ({ route, navigation }) => {
             return;
         }
 
-        onSend([],{
+        onSend([], {
             _id: makeId(),
             image: pickerResult.uri,
             user: Linh1,
             createdAt: new Date()
-        });     
-    
+        });
+
     };
 
     const renderActions = () => {
@@ -201,13 +204,13 @@ const Discussion = ({ route, navigation }) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={openPhotoLibary}>
-                    <FontAwesome name="photo" size={24} color='black' style={{ marginLeft: 8, marginRight: 5, marginBottom: 1}} />
+                    <FontAwesome name="photo" size={24} color='black' style={{ marginLeft: 8, marginRight: 5, marginBottom: 1 }} />
                 </TouchableOpacity>
             </View>
         );
     };
 
-    const onDelete = (message) =>{
+    const onDelete = (message) => {
         console.log(message)
         setMessages(previousMessages => previousMessages.filter(mess => mess._id !== message._id))
     }
@@ -239,86 +242,96 @@ const Discussion = ({ route, navigation }) => {
     // }
 
     const onSend = useCallback((messages = [], imgMess) => {
-        
+
         //console.log(imgMess)
         setMessages(previousMessages => GiftedChat.append(
-            previousMessages, 
-            messages!=""? messages: imgMess
-            )
+            previousMessages,
+            messages != "" ? messages : imgMess
+        )
         )
 
-        if (messages != ""){
-        const {
-            text,
-            createdAt,
-            user
-        } = messages[0]
+        if (messages != "") {
+            const {
+                text,
+                createdAt,
+                user
+            } = messages[0]
 
-        //console.log("messages: " + messages[0])
+            //console.log("messages: " + messages[0])
 
-        addNewTextMessage(
-            makeId(),
-            text,
-            createdAt,
-            user,
-            roomId
-         )
+            addNewTextMessage(
+                makeId(),
+                text,
+                createdAt,
+                user,
+                roomId
+            )
 
-        
-    } 
-    else{
-        const {
-            _id,
-            image,
-            user,
-            createdAt
-        } = imgMess
+            //fetchAllChatRoom('linh')
 
-        addNewImageMessage(_id, image, createdAt, user, roomId)
-    }
-        
-      }, [])
+            //console.log(mess)
+
+            //fetchUserData('linh')
+
+        }
+        else {
+            const {
+                _id,
+                image,
+                user,
+                createdAt
+            } = imgMess
+
+            addNewImageMessage(_id, image, createdAt, user, roomId)
+        }
+
+    }, [])
 
     return (
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                >
-                    <Icon name='left'
-                        //color='#000119'
-                        color='white'
-                        size={24} />
-                </TouchableOpacity>
-                <Text style={styles.username}>{Linh2.name}</Text>
-                <Image source={Linh2.avatar}
-                    style={styles.avatar} />
-            </View>
+                <View style={styles.headerContainer}>
+                    <TouchableOpacity
+                        onPress={() => navigation.goBack()}
+                    >
+                        <Icon name='left'
+                            //color='#000119'
+                            marginLeft='20'
+                            color='white'
+                            size={24} />
+                    </TouchableOpacity>
+                    <Text style={styles.username}>{Linh2.name}</Text>
+                    <Image source={Linh2.avatar}
+                        style={styles.avatar} />
+                </View>
 
-            <GiftedChat 
-                messages={messages}
-                user={Linh1}
+                <GiftedChat
+                    messages={messages}
+                    // user  = {{
+                    //     _id: 'linh'
+                    // }}
 
-                alwaysShowSend
-                onSend={messages => onSend(messages, null)}
-                onLongPress={onLongPress}
+                    user={Linh1}
 
-                scrollToBottom
-                scrollToBottomComponent={scrollToBottomComponent}
+                    alwaysShowSend
+                    onSend={messages => onSend(messages, null)}
+                    onLongPress={onLongPress}
 
-                renderBubble={renderBubble}
-                renderSend={renderSend}
-                renderActions={renderActions}
-                renderInputToolbar={renderInputToolbar}
-                renderTime={renderTime}
-                renderDay = {renderDay}
-                renderAvatar={renderAvatar}
-                renderUsernameOnMessage={true}
-                renderChatEmpty={renderChatEmpty}
-                renderMessageText={renderMessageText}
-            />
+                    scrollToBottom
+                    scrollToBottomComponent={scrollToBottomComponent}
 
+                    renderBubble={renderBubble}
+                    renderSend={renderSend}
+                    renderActions={renderActions}
+                    renderInputToolbar={renderInputToolbar}
+                    renderTime={renderTime}
+                    renderDay={renderDay}
+                    renderAvatar={renderAvatar}
+                    renderUsernameOnMessage={true}
+                    renderChatEmpty={renderChatEmpty}
+                    renderMessageText={renderMessageText}
+                />
         </View>
+
     )
 }
 export default Discussion;
@@ -360,6 +373,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         borderColor: 'white',
         borderWidth: 2,
+        marginRight: 10
     }
 
 })
