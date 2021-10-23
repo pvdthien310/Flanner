@@ -41,7 +41,6 @@ export const CustomDrawer = (props) => {
                 <TouchableOpacity
                     style={{
                         margin: 3,
-                        
                         shadowOffset: { width: 1, height: 1 },
                         shadowColor: 'black',
                         shadowOpacity: 0.5,

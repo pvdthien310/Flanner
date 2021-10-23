@@ -210,7 +210,7 @@ export default function AddKnowledge({ route, navigation }) {
                 
             </View>
             <View style={styles.userinfo} >
-                <Image source={images.avatars[user.avatar]} style={styles.imageavatar} />
+                <Image source={{uri: user.avatar}} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
                     <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>

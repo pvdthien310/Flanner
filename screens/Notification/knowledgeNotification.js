@@ -61,7 +61,7 @@ const KnowledgeNotification = ({ navigation }) => {
                                     }
                                     }
                                 />
-                               <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10}}>Tích cực đăng bài để nhận thông báo bạn nhé !</Text>
+                               <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10}}>Let post actively to receive notifications !</Text>
                             <TouchableOpacity style= {{marginBottom: 10}} onPress = {() => fetchData()}>
                                     <View style ={{backgroundColor: 'teal', borderRadius: 5,padding: 5, paddingStart: 10, paddingEnd: 10}}>
                                         <Text style ={{fontFamily: 'nunitobold', fontSize: 17,color:'white'}} >Refresh</Text>

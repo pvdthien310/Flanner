@@ -13,6 +13,6 @@ const initState = {
         }
         return newState;
     }
-        return initState;
+        return state;
 }
 export default DrawerControllerReducer;

@@ -29,7 +29,7 @@ const MainInfor = ({ navigation, item }) => {
                         shadowOffset: { width: 1, height: 1 },
                         shadowColor: 'black',
                         shadowOpacity: 0.5,
-                    }} source={require('../../assets/test3.jpg')} ></Image>
+                    }} source={{uri: 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t1.6435-9/237498188_2983267661947770_9080019827205383360_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=AIS73g2JsSoAX-TDAMK&tn=OWFEEFA8zz7WKCKv&_nc_ht=scontent.fsgn5-10.fna&oh=be1a8f97703c2e4fcfbae6554d304382&oe=6197CFE7'}} ></Image>
                     <View style={{
                         backgroundColor: 'white',
                         alignSelf: 'center',
@@ -161,7 +161,7 @@ const MainInfor = ({ navigation, item }) => {
                     }}>
                         <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                                <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}> Jessica Pham</Text>
+                                <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}> Thien Pham</Text>
                                 <Image source={require('../../assets/overrall.png')}
                                     resizeMode='contain'
                                     style={{
@@ -195,7 +195,7 @@ const MainInfor = ({ navigation, item }) => {
                     <TouchableOpacity style={{ position: 'absolute', marginTop: 5, marginStart: 5 }} onPress={pressgobackHandler}>
                         <View style={{ flexDirection: 'row', marginBottom: 15, justifyContent: 'center', alignItems: 'center' }}>
                             <Ionicons name="chevron-back" size={30} color="white" />
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Jessica Pham</Text>
+                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Thien Pham</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

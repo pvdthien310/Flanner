@@ -56,7 +56,7 @@ const SystemNotification = ({ navigation }) => {
                                  }
                                  }
                              />
-                             <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom:10}}>Không có báo cáo lỗi nào cả. Bạn rất tuyệt vời !</Text>
+                             <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom:10}}>No reports at all. You are awesome !</Text>
                              <TouchableOpacity style= {{marginBottom: 10}} onPress = {() => fetchData()}>
                                     <View style ={{backgroundColor: 'teal', borderRadius: 5,padding: 5, paddingStart: 10, paddingEnd: 10}}>
                                         <Text style ={{fontFamily: 'nunitobold', fontSize: 17,color:'white'}} >Refresh</Text>
