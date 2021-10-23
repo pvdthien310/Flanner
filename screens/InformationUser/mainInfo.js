@@ -183,7 +183,9 @@ const MainInfor = ({ navigation, item }) => {
                                 shadowColor: 'black',
                                 shadowOpacity: 0.5,
                             }}>
-                                <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text>
+                                {/* <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text> */}
+                                <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Edit Profile</Text>
+
                             </View>
                         </TouchableOpacity>
                     </View>

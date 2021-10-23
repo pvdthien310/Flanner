@@ -33,7 +33,7 @@ export const CustomDrawer = (props) => {
                         shadowOffset: { width: 1, height: 1 },
                     }}>
                         <Image style={Poststyle.imageavatar} source={require('../assets/logo/logo.png')} />
-                        <Text style={styles.appname}>Flanner</Text>
+                        <Text style={styles.appname}>Flâner</Text>
                     </View>
                 </TouchableOpacity>
                 {_chosen != 0 ? 
