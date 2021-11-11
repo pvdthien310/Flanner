@@ -157,7 +157,7 @@ KnowledgeRoute.get('/:id', (req, res) => {
 KnowledgeRoute.get('/load-data/:userID', (req,res) => {
     Knowledge.find({userID : req.params.userID})
     .then(data => {
-        console.log(data)
+        // console.log(data)
      res.send(data)})
     .catch(err => console.log(err))
 })

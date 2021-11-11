@@ -23,9 +23,12 @@ const KnowledgeReducer = (state = initState, action) => {
             ...state,
             user_knowledge: action.payload
         }
+        console.log('do day ne thang ngu')
+        console.log(newState.user_knowledge)
         return newState;
 
     }
+   
     if (action.type == 'UPDATE_KNOWLEDGE_MEMBER') {
         let newdata = state.data;
         newdata = newdata.map(member => {
@@ -42,7 +45,7 @@ const KnowledgeReducer = (state = initState, action) => {
 
     }
     if (action.type == 'DELETE_USER_KNOWLEDGE_MEMBER') {
-        let newdata = state.data;
+        let newdata = state.user_knowledge;
         newdata = newdata.filter(member => member._id != action.payload._id)
        
         const newState = {
@@ -60,6 +63,7 @@ const KnowledgeReducer = (state = initState, action) => {
             else return member
         })
         
+        // console.log(newdata)
         const newState = {
             ...state,
             user_knowledge: newdata

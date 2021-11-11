@@ -78,7 +78,8 @@ const UserKnowledgeMember = ({ item, navigation }) => {
         }).then(res => {
             if (!res.ok) {
                 console.log(res)
-                fetchKnowledgeData()
+                dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
+                // fetchKnowledgeData()
                 throw Error('Loi phat sinh')
                 
             }

@@ -29,7 +29,7 @@ const Knowledge = ({ navigation }) => {
         fetch(url)
             .then(res => res.json())
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
             }).catch(err => console.log('Error'));
     }

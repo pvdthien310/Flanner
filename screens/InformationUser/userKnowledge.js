@@ -27,15 +27,21 @@ const UserKnowledge = ({ navigation }) => {
         forceRerender
     }, [user_knowledge])
 
+    
+    
+    
+    
+
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.104:3000/api/knowledge/load-data/' + user.userID
+        const url = 'http://192.168.0.105:3000/api/knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
             }).catch(err => console.log('Error'));
+       
     }
     return (
         <View style={styles.container}>
@@ -48,8 +54,33 @@ const UserKnowledge = ({ navigation }) => {
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
+                    <View  style={{flex: 1, justifyContent: 'center',backgroundColor: 'white'}}>
+                    {
+                        user_knowledge.length == 0 ? 
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center', flexDirection: 'column'
+                        }}>
+                            <Image source={require('../../assets/icon/NoNotification2.png')}
+                                resizeMode='contain'
+                                style={{
+                                    width: 80,
+                                    height: 80,
+                                    marginBottom: 5,
+                                }
+                                }
+                            />
+                           <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10}}>There's no post to display !</Text>
+                        <TouchableOpacity style= {{marginBottom: 10}} onPress = {() => fetchKnowledgeData()}>
+                                <View style ={{backgroundColor: 'teal', borderRadius: 5,padding: 5, paddingStart: 10, paddingEnd: 10}}>
+                                    <Text style ={{fontFamily: 'nunitobold', fontSize: 17,color:'white'}} >Refresh</Text>
+                                </View>
+                            </TouchableOpacity>
+                           
+                        </View>
+                        :
+                    
                     <FlatList
-                       
                         showsVerticalScrollIndicator={false}
                         data={user_knowledge}
                         renderItem={({ item }) => (
@@ -59,7 +90,10 @@ const UserKnowledge = ({ navigation }) => {
                         onRefresh={() => fetchKnowledgeData()}
                         refreshing={loading}
                     />
+                        }
+                        </View>
             }
+           
         </View>
 
     )

@@ -17,7 +17,7 @@ export default function SignInScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading, user } = useSelector(state => { return state.User })
     const fetchData = () => {
-        fetch('http://192.168.0.104:3000/api/user')
+        fetch('http://192.168.0.105:3000/api/user')
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_DATA_USER', payload: result })
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 25,
         backgroundColor: 'white',
-        width: 60,
+        width: 65,
         zIndex: 1,
         marginTop: 15
     },
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 25,
         backgroundColor: 'white',
-        width: 70,
+        width: 75,
         zIndex: 1,
         marginTop: 15
     },

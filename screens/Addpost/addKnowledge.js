@@ -18,12 +18,26 @@ const { height } = Dimensions.get("screen");
 export default function AddKnowledge({ route, navigation }) {
 
     const {user}  = useSelector(state => state.User)
+    const {user_knowledge}  = useSelector(state => state.Knowledge)
     const [image, setImage] = useState([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [body, setBody] = useState('');
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch()
+    
 
+    const fetchKnowledgeData = () => {
+        const url = 'http://192.168.0.105:3000/api/knowledge/load-data/' + user.userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                 console.log(result)
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+            }).catch(err => console.log('Error'));
+       
+    }
 
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -74,7 +88,20 @@ export default function AddKnowledge({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://192.168.0.104:3000/api/knowledge/send-data", {
+        const newPost = {
+                username: user.name,
+                body: body,
+                userID: user.userID,
+                title : title,
+                description: description,
+                avatar: user.avatar,
+                posttime: d.toUTCString(),
+                listImage: picture,
+                react: [],
+                reactNumber: '0'
+        }
+
+        fetch("http://192.168.0.105:3000/api/knowledge/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -92,17 +119,16 @@ export default function AddKnowledge({ route, navigation }) {
                 reactNumber: '0'
             })
         }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-                return res.json()
+            
+            return res.json()                
         }).then(data => {
-            // console.log(data)
-        }).catch(err => {
+           
+        }).catch(err => {        
+            fetchKnowledgeData   
             console.log("error", err)
         })
-
+       
+        
         navigation.goBack();
         navigation.navigate('Knowledge');
 
@@ -143,7 +169,7 @@ export default function AddKnowledge({ route, navigation }) {
             const name = Math.random().toString();
             const source = { uri, type, name }
             HandleUpImages(source)
-            console.log(source)
+            // console.log(source)
             setImage((current) => {
                 return [...current, { uri: result.uri, key: result.key = Math.random().toString() }]
             });
@@ -155,8 +181,8 @@ export default function AddKnowledge({ route, navigation }) {
     const DeleteImagelist = (key) => {
         setLoading(true)
         const deletedimg = image.filter(member => member.key == key )
-        console.log(deletedimg)
-        console.log(deletedimg[0].uri)
+        // console.log(deletedimg)
+        // console.log(deletedimg[0].uri)
         setImage(() => {
             return image.filter(member => member.key != key)
         })
