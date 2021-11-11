@@ -46,7 +46,7 @@ const NotificationMember = ({ item, navigation }) => {
                   
                     
                 <Image source={{ uri: sender[0].avatar }}
-                    resizeMode='stretch'
+                    resizeMode='center'
                     style={{
                         width: 50,
                         height: 50,
@@ -57,7 +57,7 @@ const NotificationMember = ({ item, navigation }) => {
                 />
                 :
                 <Image source={require('../assets/icon/userPhoto.png')}
-                resizeMode='contain'
+                resizeMode='stretch'
                 style={{
                     width: 50,
                     height: 50,

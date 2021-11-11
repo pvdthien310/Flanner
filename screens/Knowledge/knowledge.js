@@ -24,26 +24,29 @@ const Knowledge = ({ navigation }) => {
     //         }).catch(err => console.log('Error'));
     // }
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.104:3000/api/knowledge/load-data/' + user.userID
+        const url = 'http://192.168.0.105:3000/api/knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
+                console.log(result)
                 dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
             }).catch(err => console.log('Error'));
     }
     const fetchStatusData = () => {
-        const url = 'http://192.168.0.104:3000/api/status/load-data/' + user.userID
+        const url = 'http://192.168.0.105:3000/api/status/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_USER_STATUS', payload: result })
+                dispatch({ type: 'SET_LOADING_STATUS', payload: false })
+
             }).catch(err => console.log('Error'));
     }
 
     const fetchNewData = () => {
-        fetch('http://192.168.0.104:3000/api/knowledge/load-data/newsfeed/random')
+        fetch('http://192.168.0.105:3000/api/knowledge/load-data/newsfeed/random')
             .then(res => res.json())
             .then(result => {
                 console.log('reset')
@@ -53,8 +56,8 @@ const Knowledge = ({ navigation }) => {
     }
     useEffect(() => {
         // fetchData();
-        fetchNewData();
         fetchKnowledgeData();
+        fetchNewData();
         fetchStatusData();
     }
         , [])

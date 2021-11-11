@@ -1,7 +1,11 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { max } from 'react-native-reanimated'
 import { Poststyle } from '../styles/poststyle'
+
+const { height } = Dimensions.get("screen");
+const logoHeight = height * 0.5;
+
 
 export default function Post(props) {
     return (

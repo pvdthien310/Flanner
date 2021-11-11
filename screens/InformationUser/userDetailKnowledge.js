@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
-import { globalStyles } from '../../styles/global';
 import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Poststyle_Status, images, Poststyle } from '../../styles/poststyle';
@@ -11,13 +10,13 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-const DetailKnowledge = ({ route, navigation }) => {
+const UserDetailKnowledge = ({ route, navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
-    const [data, setData] = useState(route.params.item)
-    const [loading,setLoading] = useState(true)
+    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(true)
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
     useEffect(() => {
@@ -89,7 +88,7 @@ const DetailKnowledge = ({ route, navigation }) => {
 
                 setData(result)
                 setLoading(false)
-                 console.log(result)
+                // console.log(result)
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -129,7 +128,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                 //  console.log(result)
                 removeNotification()
                 setData(result)
-                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
+                dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -153,7 +152,7 @@ const DetailKnowledge = ({ route, navigation }) => {
             }).then(result => {
                 sendNotification()
                 setData(result)
-                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
+                dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -308,7 +307,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
-                                backgroundColor: 'grey',
+                                backgroundColor: 'black',
                                 shadowOffset: { width: 1, height: 1 },
                                 shadowColor: 'black',
                                 shadowOpacity: 0.2,
@@ -316,13 +315,13 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={{uri: data.avatar}} style={Poststyle_Status.imageavatar_detai} />
+                                <Image source={{uri: user.avatar}} style={Poststyle_Status.imageavatar_detai} />
                                 <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
+                                    <Text style={Poststyle_Status._name_detail}> {user.name}</Text>
                                     <Text style={{
                                         fontFamily: 'nunitobold',
                                         fontSize: 12,
-                                        marginStart: 5,
+                                        marginStart: 15,
                                         marginTop: 5,
                                         color: 'white'
                                     }}> Author</Text>
@@ -342,7 +341,7 @@ const DetailKnowledge = ({ route, navigation }) => {
 
 }
 
-export default DetailKnowledge;
+export default UserDetailKnowledge;
 
 const styles = StyleSheet.create({
     rating: {

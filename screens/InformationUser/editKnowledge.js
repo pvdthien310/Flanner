@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect} from 'react';
-import {StyleSheet, Alert, Text, View, ScrollView, SafeAreaView,TouchableWithoutFeedback, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Alert, Text, View, ScrollView, SafeAreaView, TouchableWithoutFeedback, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { images } from '../../styles/poststyle'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,15 +15,30 @@ import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 
 
 const { height } = Dimensions.get("screen");
-export default function AddKnowledge({ route, navigation }) {
+export default function EditKnowledge({ route, navigation }) {
+    
+    const GetDetail = (type) => {
+        if (route.params) {
+            switch (type) {
+                case 'title':
+                    return route.params.item.title
+                case 'description':
+                    return route.params.item.description
+                case 'body':
+                    return route.params.item.body
+                case 'image':
+                    return route.params.item.listImage
+            }
+        }
+    }
 
-    const {user}  = useSelector(state => state.User)
-    const [image, setImage] = useState([]);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [body, setBody] = useState('');
+    const { user } = useSelector(state => state.User)
+    const [image, setImage] = useState(GetDetail('image'));
+    const [title, setTitle] = useState(GetDetail('title'));
+    const [description, setDescription] = useState(GetDetail('description'));
+    const [body, setBody] = useState(GetDetail('body'));
     const [loading, setLoading] = useState(false);
-
+    const dispatch = useDispatch()
 
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -41,10 +56,9 @@ export default function AddKnowledge({ route, navigation }) {
         setBody(val);
 
     }
-    const [picture, setPicture] = useState([]);
+    const [picture, setPicture] = useState(GetDetail('image'));
     const HandleUpImages = (photo) => {
         setLoading(true)
-        console.log('In here !!!')
         const data = new FormData();
         data.append("file", photo)
         data.append("upload_preset", "fyjwewqj")
@@ -59,36 +73,56 @@ export default function AddKnowledge({ route, navigation }) {
             }
         }).then(res => res.json())
             .then(data => {
-                //console.log(data.url);
                 setPicture((current) => {
-                    return [...current, { url: data.url, key: Math.random().toString(),uri: photo.uri }]
+                    return [...current, { url: data.url, key: Math.random().toString(), uri: photo.uri }]
                 });
-                // console.log(picture)
                 setLoading(false)
             }).catch(err => {
                 Alert.alert("Error While Uploading Image");
             })
 
     }
-    const SendNewpost = () => {
-        // temp = Math.random();
-        const d = new Date();
+    const fetchKnowledgeData = () => {
+        const url = 'http://192.168.0.104:3000/api/knowledge/load-data/' + user.userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+            }).catch(err => console.log('Error'));
+    }
+    const EditPost = () => {
+        // const d = new Date();
+        const updateditem = {
+            _id: route.params.item._id,
+            username: user.name,
+            body: body,
+            userID: user.userID,
+            title: title,
+            description: description,
+            avatar: user.avatar,
+            posttime: route.params.item.posttime,
+            listImage: picture,
+            react: route.params.item.react,
+            reactNumber: '0'
+        }
 
-        fetch("http://192.168.0.104:3000/api/knowledge/send-data", {
+        fetch("http://192.168.0.104:3000/api/knowledge/update", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: route.params.item._id,
                 username: user.name,
                 body: body,
                 userID: user.userID,
-                title : title,
+                title: title,
                 description: description,
                 avatar: user.avatar,
-                posttime: d.toUTCString(),
+                posttime: route.params.item.posttime,
                 listImage: picture,
-                react: [],
+                react: route.params.item.react,
                 reactNumber: '0'
             })
         }).then(res => {
@@ -96,16 +130,16 @@ export default function AddKnowledge({ route, navigation }) {
                 throw Error('Loi phat sinh')
             }
             else
+            {     
                 return res.json()
+            }               
         }).then(data => {
-            // console.log(data)
+           
         }).catch(err => {
             console.log("error", err)
-        })
-
+        })        
+        fetchKnowledgeData();
         navigation.goBack();
-        navigation.navigate('Knowledge');
-
     }
 
 
@@ -132,39 +166,29 @@ export default function AddKnowledge({ route, navigation }) {
         });
 
 
-
-
-        //console.log(result);
-
         if (!result.cancelled) {
-            console.log(result);
             const uri = result.uri;
             const type = result.type;
             const name = Math.random().toString();
             const source = { uri, type, name }
             HandleUpImages(source)
-            console.log(source)
             setImage((current) => {
                 return [...current, { uri: result.uri, key: result.key = Math.random().toString() }]
             });
-
-            //console.log(image)
         }
     };
 
-    const DeleteImagelist = (key) => {
+    const DeleteImagelist = (uri) => {
         setLoading(true)
-        const deletedimg = image.filter(member => member.key == key )
-        console.log(deletedimg)
-        console.log(deletedimg[0].uri)
         setImage(() => {
-            return image.filter(member => member.key != key)
+            return image.filter(member => member.uri != uri)
         })
         setPicture(() => {
-            return picture.filter(member =>member.uri != deletedimg[0].uri)
+            return picture.filter(member => member.uri != uri)
         })
         setLoading(false)
     };
+
 
     const openCamera = async () => {
         // Ask the user for the permission to access the camera
@@ -176,15 +200,10 @@ export default function AddKnowledge({ route, navigation }) {
         }
 
         const result = await ImagePicker.launchCameraAsync();
-
-        // Explore the result
-        //console.log(result);
-
         if (!result.cancelled) {
             setImage((current) => {
                 return [...current, { uri: result.uri, key: result.key = Math.random().toString() }]
             });
-            //console.log(result.uri);
         }
     }
 
@@ -197,36 +216,37 @@ export default function AddKnowledge({ route, navigation }) {
     return (
 
         <SafeAreaView style={styles.post} >
-            
-            <View style ={{flexDirection: 'row'}}>
-            <TouchableOpacity style ={{width: 45}} onPress={pressgobackHandler}>
-                            <View style={{ flexDirection: 'row', margin: 10,width: 40 }}>
-                                <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                            </View>
-            </TouchableOpacity>
-            <View style ={{flexDirection: 'row',flex: 1,justifyContent:'center',alignItems:'center'}}>
-                <Text style ={styles.namepage}> Add Knowledge</Text>
-            </View>
-                
+
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
+                    <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
+                        <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                    </View>
+                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginEnd: 10 }}>
+                    <Text style={styles.namepage}> Edit Knowledge</Text>
+                </View>
+
             </View>
             <View style={styles.userinfo} >
-                <Image source={{uri: user.avatar}} style={styles.imageavatar} />
+                <Image source={{ uri: user.avatar }} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
                     <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>
                 </View>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-           
-          
-              
+
+
+
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
                     <TextInput
                         multiline={true}
                         style={styles.title_topic}
                         onChangeText={AddTitle}
-                        placeholder = "Write a title..."
+                        value ={title}
                         
+
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>What is your title.</Text>
@@ -234,16 +254,18 @@ export default function AddKnowledge({ route, navigation }) {
 
 
                 </View>
-                
+
 
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
-                    
+
                     <TextInput
                         multiline={true}
                         style={styles.description}
                         onChangeText={AddDescription}
-                        placeholder = "Write a description..."
+                        value ={description}
+
                         
+
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Descript about your topic.</Text>
@@ -251,14 +273,16 @@ export default function AddKnowledge({ route, navigation }) {
 
 
                 </View>
-               
+
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
                     <TextInput
                         multiline={true}
                         style={styles.body}
                         onChangeText={AddBody}
-                        placeholder = "Write your body..."
-                        
+                        value ={body}
+
+                       
+
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Topic body.</Text>
@@ -291,7 +315,7 @@ export default function AddKnowledge({ route, navigation }) {
                         <View style={{ flexDirection: 'column' }}>
                             <Image style={styles.image} source={{ uri: item.uri }} />
                             <TouchableOpacity style={{ position: 'absolute' }} onPress={() => {
-                                DeleteImagelist(item.key)
+                                DeleteImagelist(item.uri)
                             }}>
                                 <Ionicons name="close-circle" size={24} color="black" style={{ margin: 5 }} />
 
@@ -301,32 +325,32 @@ export default function AddKnowledge({ route, navigation }) {
 
 
                 />
-                 {loading ? 
-                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
-                
-                 <ActivityIndicator size="small" color="black" /> 
-                <TouchableOpacity activeOpacity ={1}>
-                    <View style={styles.postbutton1}
-                    >
-                        <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
-                        <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                {loading ?
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+
+                        <ActivityIndicator size="small" color="black" />
+                        <TouchableOpacity activeOpacity={1}>
+                            <View style={styles.postbutton1}
+                            >
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                                <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                </View>
-                : 
-                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
-               <TouchableOpacity onPress={SendNewpost} >
-                   <View style={styles.postbutton}
-                   >
-                       <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
-                       <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
-                   </View>
-               </TouchableOpacity>
-               </View> }
-                
-          
+                    :
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={EditPost} >
+                            <View style={styles.postbutton}
+                            >
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Saved</Text>
+                                <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>}
+
+
             </ScrollView>
-          
+
 
         </SafeAreaView>
 
@@ -352,7 +376,7 @@ const styles = StyleSheet.create({
 
 
     },
-    namepage:{
+    namepage: {
         fontSize: 20,
         fontFamily: 'nunitobold'
     },
@@ -389,9 +413,9 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 1 },
         borderRadius: 10,
         backgroundColor: 'ghostwhite',
-        justifyContent:'center',
-        alignSelf:'center'
-        
+        justifyContent: 'center',
+        alignSelf: 'center'
+
 
 
     },

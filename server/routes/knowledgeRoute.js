@@ -7,8 +7,7 @@ const Knowledge = require("../models/Knowledge")
 KnowledgeRoute.post('/delete', (req, res) => {
     Knowledge.findByIdAndRemove(req.body.id)
         .then((data) => {
-            console.log("Delete Success")
-            res.send("delete")
+            res.send("delete lien")
         }).catch(err => {
             console.log("error", err)
         })
@@ -58,8 +57,6 @@ KnowledgeRoute.post('/update', (req, res) => {
         }).catch(err => {
             console.log(err)
         })
-
-
 })
 // KnowledgeRoute.post('/update/:id/:number/true/:userID', (req, res) => {
 //     let _number = parseInt(req.params.number) + 1;
@@ -137,6 +134,17 @@ KnowledgeRoute.post('/update/:id/false/:userID', (req, res) => {
     })
         .catch(err => console.log(err))
 })
+KnowledgeRoute.post('/update/:id', (req, res) => {
+
+    Knowledge.findByIdAndUpdate(req.params.id,req.params,
+        { "new": true, "upsert": true }
+    ).then((data) => {
+        res.send(data)  
+        // console.log(data.react)      
+    })
+        .catch(err => console.log(err))
+})
+
 
 
 //Get a member by ID
@@ -148,7 +156,9 @@ KnowledgeRoute.get('/:id', (req, res) => {
 
 KnowledgeRoute.get('/load-data/:userID', (req,res) => {
     Knowledge.find({userID : req.params.userID})
-    .then(data => res.send(data))
+    .then(data => {
+        console.log(data)
+     res.send(data)})
     .catch(err => console.log(err))
 })
 

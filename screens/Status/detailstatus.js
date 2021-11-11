@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -169,11 +169,12 @@ const DetailStatus = ({ route, navigation }) => {
 
     return (
 
-        <View style={globalStyles.container}>
+        <View >
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
-                    <Post>
+                    <SafeAreaView style ={styles.post}>
+                    
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
                                 <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
@@ -188,11 +189,11 @@ const DetailStatus = ({ route, navigation }) => {
                             </View>
                         </View>
 
-                        <ScrollView>
-                            <UserInfo>
-                                <Image source={{uri: data.avatar}} style={Poststyle_Knowledge.imageavatar} />
+                        <ScrollView style ={{padding:10}}>
+                            <UserInfo >
+                                <Image source={{uri: user.avatar}} style={Poststyle_Knowledge.imageavatar} />
                                 <UserInfoText>
-                                    <Text style={Poststyle_Knowledge.name}> {data.username}</Text>
+                                    <Text style={Poststyle_Knowledge.name}> {user.name}</Text>
                                     <Text style={Poststyle_Knowledge.posttime}> {data.posttime}</Text>
                                 </UserInfoText>
                             </UserInfo>
@@ -207,7 +208,7 @@ const DetailStatus = ({ route, navigation }) => {
                                 data={data.listImage}
                                 renderItem={({ item }) => (
                                     // <Image style={Poststyle.imagepost} source={imagespost.imagepost[item.image]} />
-                                    <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                                    <Image style={Poststyle.imagepost_detailstatus} source={{ uri: item.uri }} />
 
                                 )}
                                 keyExtractor={item => item.key} />
@@ -222,7 +223,8 @@ const DetailStatus = ({ route, navigation }) => {
                             </View>
                         </ScrollView>
 
-                    </Post>
+                    
+                    </SafeAreaView>
             }
         </View>
 
@@ -241,5 +243,16 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#eee',
 
-    }
+    },
+    post: {
+        borderRadius: 0,
+        elevation: 3,
+        backgroundColor: 'white',
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        shadowRadius: 0,
+        marginBottom: 120,
+        margin: 5
+    },
 })

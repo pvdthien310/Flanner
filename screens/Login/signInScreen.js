@@ -143,9 +143,10 @@ export default function SignInScreen({ navigation }) {
                 console.log(dataTemp.password + '  ' + element.password)
                 if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
+                    
                         // fetchKnowledgeData()
                         // fetchStatusData()                      
-                    navigation.navigate('DrawerStack')
+                     navigation.navigate('DrawerStack')
                 }
                 else {
                     let toast = Toast.show('Password is incorrect', {

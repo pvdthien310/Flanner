@@ -33,9 +33,36 @@ const KnowledgeReducer = (state = initState, action) => {
                 return action.payload
             else return member
         })
+       
         const newState = {
             ...state,
             data: newdata
+        }
+        return newState;
+
+    }
+    if (action.type == 'DELETE_USER_KNOWLEDGE_MEMBER') {
+        let newdata = state.data;
+        newdata = newdata.filter(member => member._id != action.payload._id)
+       
+        const newState = {
+            ...state,
+            user_knowledge: newdata
+        }
+        return newState;
+
+    }
+    if (action.type == 'UPDATE_USER_KNOWLEDGE_MEMBER') {
+        let newdata = state.user_knowledge;
+        newdata = newdata.map(member => {
+            if (member._id == action.payload._id)
+                return action.payload
+            else return member
+        })
+        
+        const newState = {
+            ...state,
+            user_knowledge: newdata
         }
         return newState;
 

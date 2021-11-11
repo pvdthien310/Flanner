@@ -12,12 +12,17 @@ import { useSelector, useDispatch } from 'react-redux';
 export const CustomDrawer = (props) => {
     const dispatch = useDispatch();
      const { _chosen } = useSelector(state => state.DrawerController)
+     const { user } = useSelector(state => state.User)
+
     const { navigation } = props
     const [, forceRerender] = useState();
     useEffect(() => {
         console.log('re render')
         forceRerender
     }, [_chosen])
+    useEffect(() => {
+        forceRerender
+    }, [user.avatar])
     
     return (
         <View style={{ flex: 1}}>
@@ -55,11 +60,11 @@ export const CustomDrawer = (props) => {
                     }}>
                     <View style={styles.info}>
                         <View>
-                            <Text style={styles.textstyle}>Thien Pham</Text>
-                            <Text style={styles.textstyle1}>pvdthien@gmail.com</Text>
+                            <Text style={styles.textstyle}>{user.name}</Text>
+                            <Text style={styles.textstyle1}>{user.email}</Text>
                         </View>
                         <Image source={{
-                            uri: 'https://i.pinimg.com/originals/d0/52/45/d05245eec289068e4c9ed777df16ec4f.jpg'
+                            uri: user.avatar
                         }}
                             style={styles.avatar}
                         />
@@ -78,11 +83,11 @@ export const CustomDrawer = (props) => {
                 activeOpacity={0.7} >
                 <View style={styles.info}>
                     <View>
-                        <Text style={{...styles.textstyle, color: 'white'}}>Thien Pham</Text>
-                        <Text style={styles.textstyle1}>pvdthien@gmail.com</Text>
+                        <Text style={{...styles.textstyle, color: 'white'}}>{user.name}</Text>
+                        <Text style={styles.textstyle1}>{user.email}</Text>
                     </View>
                     <Image source={{
-                        uri: 'https://i.pinimg.com/originals/d0/52/45/d05245eec289068e4c9ed777df16ec4f.jpg'
+                        uri: user.avatar
                     }}
                         style={styles.avatar}
                     />
@@ -213,7 +218,8 @@ const styles = StyleSheet.create({
     },
     textstyle1: {
         fontFamily: 'nunitobold',
-        color: 'lightslategrey'
+        color: 'lightslategrey',
+        fontSize: 12
     },
     appname: {
         fontFamily: 'nunitobold',

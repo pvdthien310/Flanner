@@ -66,6 +66,7 @@ const StatusNotification = ({ navigation }) => {
                         </View>
                         :
                         <FlatList
+                        
                             showsVerticalScrollIndicator={false}
                             data={user_status_notification}
                             renderItem={({ item }) => (
@@ -86,7 +87,7 @@ const StatusNotification = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         padding: 12,
-        flex: 1
+        flex: 1,
         // backgroundColor: 'black'
 
     },

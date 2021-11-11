@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 export const images = {
     avatars: {
@@ -17,6 +17,11 @@ export const imagespost = {
         '4': require('../assets/imagepost/imagepost1.jpg'),
     }
 }
+
+const { height,width } = Dimensions.get("screen");
+const logoHeight = height * 0.5;
+
+
 export const Poststyle = StyleSheet.create({
     name: {
         fontFamily: 'nunitobold',
@@ -100,6 +105,15 @@ export const Poststyle = StyleSheet.create({
         shadowRadius: 1,
 
     },
+    imagepost_detailstatus: {
+        height: 300,
+        width: width*0.95,
+        resizeMode: 'stretch',
+        margin: 5,
+        flex: 1,
+        borderRadius: 10
+
+    },
 
     buttontext1: {
         marginTop: 5,
@@ -159,8 +173,8 @@ export const Poststyle_Knowledge = StyleSheet.create({
     },
     body_detail: {
         fontFamily: 'nunitoregular',
-        fontSize: 18,
-        marginTop: 5
+        fontSize: 15,
+        marginTop: 10
     },
     imageavatar: {
         width: 50,
@@ -175,6 +189,8 @@ export const Poststyle_Knowledge = StyleSheet.create({
         flex: 1
 
     },
+    
+
     imagenumber: {
         textAlign: 'right',
         fontFamily: 'nunitobold',

@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/core';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 const { height } = Dimensions.get("screen");
@@ -14,6 +15,23 @@ const logoHeight = height * 0.5;
 
 const MainInfor = ({ navigation, item }) => {
 
+    const dispatch = useDispatch()
+    const {user} = useSelector(state => state.User)
+    const {user_knowledge} = useSelector(state => state.Knowledge)
+    const {user_status} = useSelector(state => state.Status)
+    const [postNumber,setPostNumber] = useState(user_knowledge.length + user_status.length);
+    
+    useEffect(() => 
+    CountPost
+    ,[user_knowledge,user_status])
+
+    useEffect(() => 
+    CountPost
+    ,[])
+    
+    const CountPost = () => {
+        setPostNumber(user_knowledge.length + user_status.length)
+    }
     const pressgobackHandler = () => {
         navigation.goBack();
     }
@@ -29,7 +47,7 @@ const MainInfor = ({ navigation, item }) => {
                         shadowOffset: { width: 1, height: 1 },
                         shadowColor: 'black',
                         shadowOpacity: 0.5,
-                    }} source={{uri: 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t1.6435-9/237498188_2983267661947770_9080019827205383360_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=AIS73g2JsSoAX-TDAMK&tn=OWFEEFA8zz7WKCKv&_nc_ht=scontent.fsgn5-10.fna&oh=be1a8f97703c2e4fcfbae6554d304382&oe=6197CFE7'}} ></Image>
+                    }} source={{uri: user.avatar}} ></Image>
                     <View style={{
                         backgroundColor: 'white',
                         alignSelf: 'center',
@@ -58,7 +76,7 @@ const MainInfor = ({ navigation, item }) => {
                             paddingEnd: 10,
                         }}>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>60</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{postNumber}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Post</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
@@ -66,7 +84,7 @@ const MainInfor = ({ navigation, item }) => {
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Following</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>540</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.score}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Score</Text>
                             </View>
                         </View>
@@ -89,17 +107,23 @@ const MainInfor = ({ navigation, item }) => {
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity >
+                                <TouchableOpacity onPress={() => 
+                                    navigation.navigate('User Information', {
+                                        screen: 'User Knowledge Stack'})} >
                                     <View style={styles.button1}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity >
+                                <TouchableOpacity onPress={() => 
+                                    navigation.navigate('User Information', {
+                                        screen: 'User Status Stack'})}  >
                                     <View style={styles.button2}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity >
+                                <TouchableOpacity onPress={() => 
+                                    navigation.navigate('User Information', {
+                                        screen: 'User Post Stack'})} >
                                     <View style={styles.button3}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Saved</Text>
                                     </View>
@@ -132,11 +156,11 @@ const MainInfor = ({ navigation, item }) => {
                     }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Ionicons style ={{marginEnd: 10}} name="location" size={24} color="white" />
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Califonia</Text>
+                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.address}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <FontAwesome5 style ={{marginEnd : 10}} name="birthday-cake" size={22} color="white" />
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>27, August, 1998</Text>
+                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.doB}</Text>
                         </View>
 
 
@@ -161,7 +185,7 @@ const MainInfor = ({ navigation, item }) => {
                     }}>
                         <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                                <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}> Thien Pham</Text>
+                                <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{user.name}</Text>
                                 <Image source={require('../../assets/overrall.png')}
                                     resizeMode='contain'
                                     style={{
@@ -174,7 +198,9 @@ const MainInfor = ({ navigation, item }) => {
                             </View>
                             <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}> Fashion Model</Text>
                         </View>
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress = {()=>  
+                        navigation.navigate('User Information', {
+                        screen: 'Edit Profile'})}>
                             <View style={{
                                 borderRadius: 20,
                                 padding: 7,
@@ -192,12 +218,11 @@ const MainInfor = ({ navigation, item }) => {
 
                     </View>
                    
-                    <TouchableOpacity style={{ position: 'absolute', marginTop: 5, marginStart: 5 }} onPress={pressgobackHandler}>
+                    {/* <TouchableOpacity style={{ position: 'absolute', marginTop: 5, marginStart: 15 }} onPress = {CountPost} >
                         <View style={{ flexDirection: 'row', marginBottom: 15, justifyContent: 'center', alignItems: 'center' }}>
-                            <Ionicons name="chevron-back" size={30} color="white" />
                             <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Thien Pham</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </ScrollView>
         </View>
