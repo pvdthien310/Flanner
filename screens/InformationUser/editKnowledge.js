@@ -83,7 +83,7 @@ export default function EditKnowledge({ route, navigation }) {
 
     }
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.105:3000/api/knowledge/load-data/' + user.userID
+        const url = 'http://192.168.0.102:3000/api/knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -107,7 +107,7 @@ export default function EditKnowledge({ route, navigation }) {
             reactNumber: '0'
         }
 
-        fetch("http://192.168.0.105:3000/api/knowledge/update", {
+        fetch("http://192.168.0.102:3000/api/knowledge/update", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

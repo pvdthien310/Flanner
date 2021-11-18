@@ -18,16 +18,16 @@ const NotificationMember = ({ item, navigation }) => {
     const knowledge_data = useSelector(state => { return state.Knowledge })
     const status_data = useSelector(state => { return state.Status })
     const sender = user_data.data.filter(member => member.userID == item.senderID)
-    let post;
+    let post = undefined;
     if (item.type == 1)
      post = knowledge_data.user_knowledge.filter(member => member._id == item.postID)
     else if (item.type == 2)
      post = status_data.user_status.filter(member => member._id == item.postID)
     
-    console.log(sender[0])
-    console.log('postID :',item.postID)
-    knowledge_data.user_knowledge.forEach(Element => console.log(Element._id))
-    console.log(post)
+    // console.log(sender[0])
+    // console.log('postID :',item.postID)
+    // knowledge_data.user_knowledge.forEach(Element => console.log(Element._id))
+    console.log(post[0])
     
     const HandelOpenPost = () => {
         if (item.type == '2')
@@ -72,11 +72,11 @@ const NotificationMember = ({ item, navigation }) => {
                 </View>
                 
                 {
-                    post[0].listImage ? 
-                 <Image source={{ uri: post[0].listImage[0].url }}
+                  (post[0] != undefined ) ? 
+                 <Image source={{ uri: post[0].listImage.length > 0 ? post[0].listImage[0].url : '../assets/icon/postPhoto.png' }}
                     resizeMode='stretch'
                     style={{
-                        width: 50,
+                        width: post[0].listImage.length > 0 ? 50 : 0,
                         height: 50,
                         marginBottom: 5,
                         borderRadius: 10
@@ -141,8 +141,11 @@ const styles = StyleSheet.create({
     },
     body: {
         fontFamily: 'nunitoregular',
-        fontSize: 15,
-        color: 'white'
+        fontSize: 17,
+        color: 'white',
+        alignSelf:'center',
+        
+        
     },
     imagepost: {
         height: 50,

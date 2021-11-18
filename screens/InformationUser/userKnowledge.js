@@ -26,14 +26,8 @@ const UserKnowledge = ({ navigation }) => {
     useEffect(() => {
         forceRerender
     }, [user_knowledge])
-
-    
-    
-    
-    
-
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.105:3000/api/knowledge/load-data/' + user.userID
+        const url = 'http://192.168.0.102:3000/api/knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())

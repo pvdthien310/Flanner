@@ -117,6 +117,18 @@ NotificationRoute.post('/delete', (req, res) => {
         })
 })
 
+///delete
+NotificationRoute.post('/deletebypostid/:postID', (req, res) => {
+    Notification.deleteMany({postID: req.params.postID})
+        .then((data) => {
+            //  res.send(data)
+            res.send("Delete Success")
+        }).catch(err => {
+            console.log("error", err)
+        })
+})
+
+
 
 // add a notification
 

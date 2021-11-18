@@ -25,7 +25,7 @@ const UserDetailKnowledge = ({ route, navigation }) => {
 
     const sendNotification = () => {
 
-        fetch("http://192.168.0.105:3000/api/notification/send-data", {
+        fetch("http://192.168.0.102:3000/api/notification/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ const UserDetailKnowledge = ({ route, navigation }) => {
     }
     const removeNotification = () => {
   
-        fetch("http://192.168.0.105:3000/api/notification/delete", {
+        fetch("http://192.168.0.102:3000/api/notification/delete", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ const UserDetailKnowledge = ({ route, navigation }) => {
 
     const fetchData = () => {
 
-        const url = 'http://192.168.0.105:3000/api/knowledge/' + item._id.toString();
+        const url = 'http://192.168.0.102:3000/api/knowledge/' + item._id.toString();
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -106,8 +106,8 @@ const UserDetailKnowledge = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.105:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.105:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_true = 'http://192.168.0.102:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.102:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {

@@ -20,6 +20,19 @@ const initState = {
         return newState;
 
     }
+
+    if (action.type == 'DELETE_KNOWLEDGE_NOTIFICATION_BY_POSTID') {
+
+        let newdata = state.user_knowledge_notification;
+        newdata = newdata.filter(member => member.postID != action.payload._id)
+       
+        const newState = {
+            ...state,
+            user_knowledge_notification: newdata
+        }
+        return newState;
+
+    }
     if (action.type == 'ADD_USER_KNOWLEDGE_NOTIFICATION') {
         
         
