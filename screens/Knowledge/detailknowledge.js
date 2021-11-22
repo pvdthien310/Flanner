@@ -17,10 +17,10 @@ const DetailKnowledge = ({ route, navigation }) => {
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
     const [data, setData] = useState(route.params.item)
-    const [loading,setLoading] = useState(true)
-    const [isNull,setIsNull]= useState(false)
+    const [loading, setLoading] = useState(true)
+    const [isNull, setIsNull] = useState(false)
 
-   
+
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
     useEffect(() => {
@@ -29,7 +29,7 @@ const DetailKnowledge = ({ route, navigation }) => {
 
     const sendNotification = () => {
 
-        fetch("http://192.168.0.102:3000/api/notification/send-data", {
+        fetch("http://192.168.0.100:3000/api/notification/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,8 +56,8 @@ const DetailKnowledge = ({ route, navigation }) => {
 
     }
     const removeNotification = () => {
-  
-        fetch("http://192.168.0.102:3000/api/notification/delete", {
+
+        fetch("http://192.168.0.100:3000/api/notification/delete", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -84,20 +84,20 @@ const DetailKnowledge = ({ route, navigation }) => {
 
     const fetchData = () => {
 
-        const url = 'http://192.168.0.102:3000/api/knowledge/' + item._id.toString();
+        const url = 'http://192.168.0.100:3000/api/knowledge/' + item._id.toString();
         console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
                 setData(result)
                 setLoading(false)
-                 console.log(result)
+                // console.log(result)
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
             }).catch(err => {
-                 setIsNull(true)
-                 
+                setIsNull(true)
+
                 console.log('Error')
             });
     }
@@ -113,8 +113,8 @@ const DetailKnowledge = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.102:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.102:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_true = 'http://192.168.0.100:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.100:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {
@@ -237,9 +237,9 @@ const DetailKnowledge = ({ route, navigation }) => {
     // }
     return (
         <View >
-            
+
             {
-                loading ? <ActivityIndicator marginTop = {80} size="small" color="#0000ff" />
+                loading ? <ActivityIndicator marginTop={80} size="small" color="#0000ff" />
                     :
                     <SafeAreaView style={styles.post}>
 
@@ -291,8 +291,10 @@ const DetailKnowledge = ({ route, navigation }) => {
 
 
                             </PostText>
+                            <TouchableOpacity  onPress={() => navigation.navigate('Knowledge Show React User', { data })} >
+                                <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} likes</Text>
 
-                            <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
+                            </TouchableOpacity>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
                                 <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
@@ -323,7 +325,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={{uri: data.avatar}} style={Poststyle_Status.imageavatar_detai} />
+                                <Image source={{ uri: data.avatar }} style={Poststyle_Status.imageavatar_detai} />
                                 <UserInfoText>
                                     <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
                                     <Text style={{
@@ -344,35 +346,35 @@ const DetailKnowledge = ({ route, navigation }) => {
                     </SafeAreaView>
             }
             {
-                isNull == false ? null : 
-                <View style={{                   
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                     flexDirection: 'column',
-                     alignSelf:'center',
-                     marginTop: 80
-                }}>
-                    
-                    <Image source={require('../../assets/icon/error.png')}
-                        resizeMode='contain'
-                        style={{
-                            width: 80,
-                            height: 80,
-                            marginBottom: 5,
-                        }
-                        }
-                    />
-                   <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10}}>The Post Does Not Exist !</Text>
-                   <TouchableOpacity style={{ width: 100, backgroundColor:'wheat', borderRadius: 10 }} onPress={pressgobackHandler}>
-                                <View style={{ flexDirection: 'row', margin: 10, width: 80, alignItems: 'center',alignSelf:'center' ,justifyContent:'space-between' }}>
-                                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                                    <Text style ={{fontFamily: 'nunitobold', fontSize: 17}}>Back</Text>
-                                </View>
-                    </TouchableOpacity>
+                isNull == false ? null :
+                    <View style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        alignSelf: 'center',
+                        marginTop: 80
+                    }}>
 
-                </View>
+                        <Image source={require('../../assets/icon/error.png')}
+                            resizeMode='contain'
+                            style={{
+                                width: 80,
+                                height: 80,
+                                marginBottom: 5,
+                            }
+                            }
+                        />
+                        <Text style={{ fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10 }}>The Post Does Not Exist !</Text>
+                        <TouchableOpacity style={{ width: 100, backgroundColor: 'wheat', borderRadius: 10 }} onPress={pressgobackHandler}>
+                            <View style={{ flexDirection: 'row', margin: 10, width: 80, alignItems: 'center', alignSelf: 'center', justifyContent: 'space-between' }}>
+                                <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 17 }}>Back</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                    </View>
             }
-           
+
 
         </View>
     )

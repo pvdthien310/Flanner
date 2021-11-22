@@ -446,7 +446,8 @@ export const Poststyle_Status = StyleSheet.create({
         fontFamily: 'nunitobold',
         fontSize: 17,
         marginBottom: 10,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     buttontext1: {

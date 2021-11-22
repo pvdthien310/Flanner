@@ -18,6 +18,14 @@ UserRoute.get('/', (req, res) => {
         })
 })
 
+UserRoute.get('/load-user-by-userID/:userID', (req,res) => {
+    User.find({userID : req.params.userID})
+    .then(data => {
+        // console.log(data)
+     res.send(data)})
+    .catch(err => console.log(err))
+})
+
 UserRoute.post('/update', (req, res) => {
     User.findByIdAndUpdate(req.body.id, {
         userID: req.body.userID,
