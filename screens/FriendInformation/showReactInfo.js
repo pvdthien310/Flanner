@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/core';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
+import ReactMember from '../../components/ShowReactUser/reactMember';
 
 
 const { height } = Dimensions.get("screen");
@@ -31,9 +32,7 @@ const ShowReactInfo = ({ route, navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 data={data.react}
                 renderItem={({ item }) => (
-                    <View>
-                       <Text>{item}</Text>
-                    </View>
+                  <ReactMember item = {item} navigation = {navigation}></ReactMember>
                 )}
                 keyExtractor={item => item} />
             <Text>React User</Text>
