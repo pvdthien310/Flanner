@@ -24,7 +24,7 @@ const Knowledge = ({ navigation }) => {
     //         }).catch(err => console.log('Error'));
     // }
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.100:3000/api/knowledge/load-data/' + user.userID
+        const url = 'http://192.168.0.103:3000/api/knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -34,7 +34,7 @@ const Knowledge = ({ navigation }) => {
             }).catch(err => console.log('Error'));
     }
     const fetchStatusData = () => {
-        const url = 'http://192.168.0.100:3000/api/status/load-data/' + user.userID
+        const url = 'http://192.168.0.103:3000/api/status/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -46,7 +46,7 @@ const Knowledge = ({ navigation }) => {
     }
 
     const fetchNewData = () => {
-        fetch('http://192.168.0.100:3000/api/knowledge/load-data/newsfeed/random')
+        fetch('http://192.168.0.103:3000/api/knowledge/load-data/newsfeed/random')
             .then(res => res.json())
             .then(result => {
                 console.log('reset')

@@ -13,7 +13,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 
-const DetailStatus = ({ route, navigation }) => {
+const NotiDetailStatus = ({ route, navigation }) => {
 
 
     const dispatch = useDispatch();
@@ -268,7 +268,7 @@ const DetailStatus = ({ route, navigation }) => {
     )
 
 }
-export default DetailStatus;
+export default NotiDetailStatus;
 const styles = StyleSheet.create({
     rating: {
         flexDirection: 'row',

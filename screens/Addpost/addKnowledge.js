@@ -101,7 +101,7 @@ export default function AddKnowledge({ route, navigation }) {
                 reactNumber: '0'
         }
 
-        fetch("http://192.168.0.102:3000/api/knowledge/send-data", {
+        fetch("http://192.168.0.103:3000/api/knowledge/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ export default function AddKnowledge({ route, navigation }) {
             console.log("error", err)
         })
        
-        
+        fetchKnowledgeData()
         navigation.goBack();
         navigation.navigate('Knowledge');
 

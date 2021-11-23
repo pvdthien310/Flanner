@@ -41,6 +41,19 @@ const initState = {
 
     }
 
+    if (action.type == 'DELETE_USER_STATUS_MEMBER') {
+        let newdata = state.user_status;
+        newdata = newdata.filter(member => member._id != action.payload._id)
+       
+        const newState = {
+            ...state,
+            user_status: newdata
+        }
+        console.log('vao day r ')
+        return newState;
+
+    }
+
 
     if (action.type == 'SET_LOADING_STATUS') {
         

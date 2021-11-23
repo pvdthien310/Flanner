@@ -18,7 +18,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
     const dispatch = useDispatch()
 
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.102:3000/api/knowledge/load-data/' + user.userID
+        const url = 'http://192.168.0.103:3000/api/knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -57,7 +57,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
             react: item.react,
             reactNumber: '0'
         }
-        fetch("http://192.168.0.102:3000/api/knowledge/delete", {
+        fetch("http://192.168.0.103:3000/api/knowledge/delete", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,43 +76,40 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                 reactNumber: '0'
             })
         }).then(res => {
-            if (!res.ok) {
-                
-                
+                console.log(res.ok)
                 dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
-                // fetchKnowledgeData()
                 throw Error('Loi phat sinh')      
-            }    
-        }).then(data => {   
-            // DeleteNoti()                   
+               
+        }).then(data => {                   
         }).catch(err => {
             console.log("error", err)
         })       
+        fetchKnowledgeData()
        
     }
 
-    const DeleteNoti = () => {
-        const url = 'http://192.168.0.102:3000/api/notification/deletebypostid/' + item._id
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: item
-        }).then(res => {
-            if (!res.ok) {
+    // const DeleteNoti = () => {
+    //     const url = 'http://192.168.0.102:3000/api/notification/deletebypostid/' + item._id
+    //     fetch(url, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: item
+    //     }).then(res => {
+    //         if (!res.ok) {
                 
                 
-                dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
-                // fetchKnowledgeData()
-                throw Error('Loi phat sinh')      
-            }    
-        }).then(data => {   
-            DeleteNoti()                   
-        }).catch(err => {
-            console.log("error", err)
-        })       
-    }
+    //             dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
+    //             // fetchKnowledgeData()
+    //             throw Error('Loi phat sinh')      
+    //         }    
+    //     }).then(data => {   
+    //         DeleteNoti()                   
+    //     }).catch(err => {
+    //         console.log("error", err)
+    //     })       
+    // }
     
     useEffect(() => {
         setReactnumber(item.react.length)

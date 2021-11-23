@@ -14,7 +14,7 @@ const StatusNotification = ({ navigation }) => {
     const { user } = useSelector(state => state.User)
     const { user_status_notification, loading } = useSelector(state => { return state.Notification })
     const [loading2, setLoading2] = useState(false)
-    const url = 'http://192.168.0.102:3000/api/notification/load-data/' + user.userID + '/status';
+    const url = 'http://192.168.0.103:3000/api/notification/load-data/' + user.userID + '/status';
     const fetchData = () => {
         console.log(url)
         setLoading2(true)

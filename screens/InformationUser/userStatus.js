@@ -18,6 +18,7 @@ const logoHeight = height * 0.5;
 
 
 const UserStatus = ({ navigation }) => {
+    const [, forceRerender] = useState();
     const dispatch = useDispatch()
     const { user_status, data, loading } = useSelector(state => { return state.Status })
     const {user} = useSelector(state => {return state.User})
@@ -26,15 +27,20 @@ const UserStatus = ({ navigation }) => {
         console.log(user_status)
         navigation.goBack();
     }
+    useEffect(() => {
+        forceRerender
+    }, [user_status])
+    const url = 'http://192.168.0.103:3000/api/status/load-data/' + user.userID
+    console.log(url)
     const fetchStatusData = () => {
-        const url = 'http://192.168.0.105:3000/api/status/load-data/' + user.userID
-        console.log(url)
+        
+       
+        
         fetch(url)
             .then(res => res.json())
             .then(result => {
+                console.log(result)
                 dispatch({ type: 'ADD_USER_STATUS', payload: result })
-                dispatch({ type: 'SET_LOADING_STATUS', payload: false })
-
             }).catch(err => console.log('Error'));
     }
     return (
@@ -81,7 +87,7 @@ const UserStatus = ({ navigation }) => {
                             <UserStatusMember item={item} navigation={navigation} />
                         )}
                         keyExtractor={item => item._id}
-                        onRefresh={() => fetchStatusData}
+                        onRefresh={() => fetchStatusData()}
                         refreshing={loading}
                     />
                         }

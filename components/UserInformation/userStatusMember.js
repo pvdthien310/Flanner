@@ -30,12 +30,62 @@ const UserStatusMember = ({ item, navigation }) => {
           onPress: () => console.log("Cancel Pressed"),
         
         },
-        { text: "OK", onPress: () => console.log("OK Pressed") }
+        { text: "OK", onPress: () => DeleteStatus() }
       ]
     );
+    const fetchStatusData = () => {
+        const url = 'http://192.168.0.103:3000/api/status/load-data/' + user.userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                dispatch({ type: 'ADD_USER_STATUS', payload: result })
+            }).catch(err => console.log('Error'));
+    }
+    
+    const DeleteStatus = () => {
+        const deletedObject = {
+                id: item._id,
+                username: user.username,
+                userID: user.userID,
+                body: item.body,
+                avatar: user.avatar,
+                posttime: item.posttime,
+                listImage: item.listImage,
+                reactNumber: '0',
+                react: item.react
+        }
+        fetch("http://192.168.0.103:3000/api/status/delete", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: item._id,
+                username: user.username,
+                userID: user.userID,
+                body: item.body,
+                avatar: user.avatar,
+                posttime: item.posttime,
+                listImage: item.listImage,
+                reactNumber: '0',
+                react: item.react
+            })
+        }).then(res => {
+            if (!res.ok) {             
+                dispatch({ type: 'DELETE_USER_STATUS_MEMBER', payload: deletedObject })
+                throw Error('Loi phat sinh')      
+            }    
+        }).then(data => {                   
+        }).catch(err => {
+            console.log("error", err)
+        })       
+        fetchStatusData()
+       
+    }
     
     const LoadData = () => {
-        const url = 'http://192.168.0.105:3000/api/status/' + item._id.toString();
+        const url = 'http://192.168.0.103:3000/api/status/' + item._id.toString();
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -52,14 +102,14 @@ const UserStatusMember = ({ item, navigation }) => {
 
     const sendNotification = () => {
 
-        fetch("http://192.168.0.105:3000/api/notification/send-data", {
+        fetch("http://192.168.0.103:3000/api/notification/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 userID: item.userID,
-                message: 'Đã thích bài viết của bạn',
+                message: ' liked your status',
                 postID: item._id,
                 senderID: user.userID,
                 type: '2',
@@ -80,7 +130,7 @@ const UserStatusMember = ({ item, navigation }) => {
     }
     const removeNotification = () => {
   
-        fetch("http://192.168.0.105:3000/api/notification/delete", {
+        fetch("http://192.168.0.103:3000/api/notification/delete", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -105,10 +155,10 @@ const UserStatusMember = ({ item, navigation }) => {
         })
     }
 
-    const PressHandle1 = () => {
+    const PressHandle = () => {
         // let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_true = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {
@@ -176,63 +226,8 @@ const UserStatusMember = ({ item, navigation }) => {
     }
 
     
-        const PressHandle = () => {
-            //let numberReact = item.reactNumber;
-            const url_true = 'http://192.168.0.104:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/true/' + user.userID.toString();
-            const url_false = 'http://192.168.0.104:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/false/'  + user.userID.toString();
     
     
-            if (pressed == true) {
-                console.log(url_false)
-                fetch(url_false, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-    
-                    }
-                }).then(res => {
-                    if (!res.ok) {
-                        throw Error('Loi phat sinh')
-                    }
-                    else {
-                        return res.json()
-                    }
-                }).then((result) => {
-                    if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-                setReactnumber(result.reactNumber)
-
-                }).catch(err => {
-                    console.log("error", err)
-                })
-            }
-            else if (pressed == false) {
-                console.log(url_true)
-
-                fetch(url_true, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(res => {
-                    if (!res.ok) {
-                        throw Error('Loi phat sinh')
-                    }
-                    else {
-                        return res.json()
-                    }
-                }).then(result => {
-                    if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-                setReactnumber(result.reactNumber)
-
-                }).catch(err => {
-                    console.log("error", err)
-                })
-            }
-    }
 
     useEffect(() => {
         console.log('render post')
@@ -242,7 +237,7 @@ const UserStatusMember = ({ item, navigation }) => {
     return (
         <Post >
              <View style={{ flexDirection: 'row',justifyContent:'flex-end',alignSelf:'flex-end' ,alignContent: 'flex-end',borderRadius:10, borderColor: 'black',borderWidth:1, paddingStart:5, paddingEnd:5,marginBottom:5 }}>
-                        <TouchableOpacity  style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                        <TouchableOpacity onPress= {() => navigation.navigate('User Edit Status',{item})}  style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                             <MaterialIcons name="edit" size={24} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress= {createTwoButtonAlert} style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -281,7 +276,7 @@ const UserStatusMember = ({ item, navigation }) => {
             </ReactNumber>
             <InteractionWrapper style={Poststyle.interactionwrapper}>
                 <TouchableOpacity style={Poststyle.buttonpost}
-                    onPress={PressHandle1}>
+                    onPress={PressHandle}>
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
                     <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
                 </TouchableOpacity>

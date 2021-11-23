@@ -4,8 +4,7 @@ const StatusSchema = new mongoose.Schema({
     username:{
         type:String,
         required:true,
-        min: 1 ,
-        max: 20,
+    
     }, 
     userID:{
         type:String,

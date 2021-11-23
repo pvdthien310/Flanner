@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,FlatList } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,FlatList, SafeAreaView } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import StatusMember from '../../components/statusMember';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/core';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -18,12 +18,22 @@ const ShowReactInfo = ({ route, navigation }) => {
     const pressgobackHandler = () => {
         navigation.goBack();
     }
-    console.log(data)
+   
     return (
-        <View style={styles.container}>
-            <TouchableOpacity onPress={pressgobackHandler}>
-                <Text> Back </Text>
-            </TouchableOpacity>
+        <SafeAreaView style={styles.container}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
+                                <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
+                                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={{
+                                    fontFamily: 'robotobold',
+                                    fontSize: 25,
+                                }}> Likes </Text>
+                            </View>
+                        </View>
             <FlatList
 
                 scrollEnabled={true}
@@ -35,8 +45,8 @@ const ShowReactInfo = ({ route, navigation }) => {
                   <ReactMember item = {item} navigation = {navigation}></ReactMember>
                 )}
                 keyExtractor={item => item} />
-            <Text>React User</Text>
-        </View>
+            
+        </SafeAreaView>
 
     )
 
