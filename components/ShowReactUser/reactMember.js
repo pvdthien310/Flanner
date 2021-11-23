@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
+import {Alert, StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber1 } from '../../shared/post'
 import { UserInfo } from '../../shared/post'
 import { images, imagespost, Poststyle, Poststyle_Status } from '../../styles/poststyle'
@@ -7,10 +7,35 @@ import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { URL_local } from '../../constant.js';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ReactMember = ({ item, navigation }) => {
-    const [user, setUser] = useState(item)
+    const [host, setHost] = useState(item)
     const [, forceRerender] = useState();
+    const dispatch = useDispatch()
+    const { user } = useSelector(state => { return state.User })
+
+    const createTwoButtonAlert = () =>
+    Alert.alert(
+        "Notification",
+      "Do you want to navigate your profile?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+        },
+        { text: "OK", onPress: () => NavigateToCurrentUserProfile()         
+        }
+      ]
+    );
+
+    const NavigateToCurrentUserProfile = () => {
+        navigation.navigate('User Information', {
+            screen: 'User Dashboard',
+            params: { user: 'jane' },
+        })
+        dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+    }
 
     const fetchData = () => {
         const url = URL_local + 'user/load-user-by-userID/' + item.toString();
@@ -18,7 +43,7 @@ const ReactMember = ({ item, navigation }) => {
         fetch(url)
             .then(res => res.json())
             .then(result => {
-                setUser(result)
+                setHost(result)
                 console.log(result)
             }).catch(err => {
                 console.log('Error')
@@ -29,17 +54,30 @@ const ReactMember = ({ item, navigation }) => {
         fetchData();
     }, [])
     useEffect(() => {
-       forceRerender
-       
-    }, [user])
+        forceRerender
+
+    }, [host])
     return (
-        <TouchableOpacity activeOpacity={1} onPress= {() => console.log(user)} >
-           
-            
+        <TouchableOpacity activeOpacity={1} onPress={() => {
+
+            if (host.length > 0) {
+                if (host[0].email != user.email) {
+                    navigation.push(
+                        'Knowledge Friend Profile',
+                        { item: host })
+                }
+                else {
+                   createTwoButtonAlert()
+                }
+            }
+        }
+        }>
+
+
             <View style={styles.frame_1} >
                 {
-                    user.length > 0 ?
-                        <Image source={{ uri: user[0].avatar}}
+                    host.length > 0 ?
+                        <Image source={{ uri: host[0].avatar }}
                             resizeMode='center'
                             style={{
                                 width: 50,
@@ -60,20 +98,20 @@ const ReactMember = ({ item, navigation }) => {
                             }
                             }
                         />
-                } 
-                {
-                user.length > 0 ? 
-                    <View style ={{ padding: 10, flexShrink: 1}}>
-                    <Text style={styles.body}>{user[0].name} </Text>
-                </View>
-                :
-                <View style ={{ padding: 10, flexShrink: 1}}>
-                <Text style={styles.body}>{item} </Text>
-                </View>
                 }
-                  
+                {
+                    host.length > 0 ?
+                        <View style={{ padding: 10, flexShrink: 1 }}>
+                            <Text style={styles.body}>{host[0].name} </Text>
+                        </View>
+                        :
+                        <View style={{ padding: 10, flexShrink: 1 }}>
+                            <Text style={styles.body}>{item} </Text>
+                        </View>
+                }
+
             </View >
-            
+
         </TouchableOpacity>
 
     )
@@ -97,7 +135,7 @@ const styles = StyleSheet.create({
         fontFamily: 'nunitobold',
         fontSize: 17,
         color: 'black',
-        alignSelf:'center', 
+        alignSelf: 'center',
     },
     imagepost: {
         height: 50,

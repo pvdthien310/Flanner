@@ -42,7 +42,7 @@ const ShowReactInfo = ({ route, navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 data={data.react}
                 renderItem={({ item }) => (
-                  <ReactMember item = {item} navigation = {navigation}></ReactMember>
+                  <ReactMember item = {item} navigation = {navigation} ></ReactMember>
                 )}
                 keyExtractor={item => item} />
             

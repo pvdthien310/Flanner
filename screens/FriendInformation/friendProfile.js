@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import StatusMember from '../../components/statusMember';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/core';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -13,32 +13,60 @@ const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const FriendInfo = ({ navigation, item }) => {
+const FriendInfo = ({ navigation, route }) => {
 
+    const {item} = route.params;
+    
+    
     const dispatch = useDispatch()
     const {user} = useSelector(state => state.User)
-    const {user_knowledge} = useSelector(state => state.Knowledge)
-    const {user_status} = useSelector(state => state.Status)
-    const [postNumber,setPostNumber] = useState(user_knowledge.length + user_status.length);
+    const [knowledge, setKnowledge] = useState([])
+    const [status, setStatus] = useState([])
+    const [postNumber,setPostNumber] = useState(knowledge.length + status.length);
     
     useEffect(() => 
     CountPost
-    ,[user_knowledge,user_status])
+    ,[knowledge,status])
 
     useEffect(() => 
     CountPost
     ,[])
+    const fetchKnowledgeData = () => {
+        const url = 'http://192.168.0.103:3000/api/knowledge/load-data/' + item[0].userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+              setKnowledge(result)
+            }).catch(err => console.log('Error'));
+    }
+    const fetchStatusData = () => {
+        const url = 'http://192.168.0.103:3000/api/status/load-data/' + item[0].userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                setStatus(result)
+            }).catch(err => console.log('Error'));
+    }
+
+    useEffect(() => {
+        // fetchData();
+        fetchKnowledgeData();
+        fetchStatusData();
+    },[])
     
     const CountPost = () => {
-        setPostNumber(user_knowledge.length + user_status.length)
+        setPostNumber(knowledge.length + status.length)
     }
     const pressgobackHandler = () => {
         navigation.goBack();
     }
     return (
-        <View style={styles.container}>
-            <ScrollView>
+        <SafeAreaView style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
+               
                     <Image style={{
                         height: height * 0.58, width: '100%',
                         borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -47,7 +75,7 @@ const FriendInfo = ({ navigation, item }) => {
                         shadowOffset: { width: 1, height: 1 },
                         shadowColor: 'black',
                         shadowOpacity: 0.5,
-                    }} source={{uri: user.avatar}} ></Image>
+                    }} source={{uri: item[0].avatar}} ></Image>
                     <View style={{
                         backgroundColor: 'white',
                         alignSelf: 'center',
@@ -84,7 +112,7 @@ const FriendInfo = ({ navigation, item }) => {
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Following</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.score}</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{item[0].score}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Score</Text>
                             </View>
                         </View>
@@ -107,27 +135,17 @@ const FriendInfo = ({ navigation, item }) => {
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={() => 
-                                    navigation.navigate('User Information', {
-                                        screen: 'User Knowledge Stack'})} >
+                                <TouchableOpacity >
                                     <View style={styles.button1}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => 
-                                    navigation.navigate('User Information', {
-                                        screen: 'User Status Stack'})}  >
+                                <TouchableOpacity  >
                                     <View style={styles.button2}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => 
-                                    navigation.navigate('User Information', {
-                                        screen: 'User Post Stack'})} >
-                                    <View style={styles.button3}>
-                                        <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Saved</Text>
-                                    </View>
-                                </TouchableOpacity>
+                               
 
 
 
@@ -156,11 +174,11 @@ const FriendInfo = ({ navigation, item }) => {
                     }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Ionicons style ={{marginEnd: 10}} name="location" size={24} color="white" />
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.address}</Text>
+                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{item[0].address}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <FontAwesome5 style ={{marginEnd : 10}} name="birthday-cake" size={22} color="white" />
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.doB}</Text>
+                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{item[0].doB}</Text>
                         </View>
 
 
@@ -185,7 +203,7 @@ const FriendInfo = ({ navigation, item }) => {
                     }}>
                         <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                                <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{user.name}</Text>
+                                <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{item[0].name}</Text>
                                 <Image source={require('../../assets/overrall.png')}
                                     resizeMode='contain'
                                     style={{
@@ -198,9 +216,7 @@ const FriendInfo = ({ navigation, item }) => {
                             </View>
                             <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}> Fashion Model</Text>
                         </View>
-                        <TouchableOpacity onPress = {()=>  
-                        navigation.navigate('User Information', {
-                        screen: 'Edit Profile'})}>
+                        <TouchableOpacity >
                             <View style={{
                                 borderRadius: 20,
                                 padding: 7,
@@ -210,7 +226,7 @@ const FriendInfo = ({ navigation, item }) => {
                                 shadowOpacity: 0.5,
                             }}>
                                 {/* <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text> */}
-                                <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Edit Profile</Text>
+                                <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text>
 
                             </View>
                         </TouchableOpacity>
@@ -223,9 +239,15 @@ const FriendInfo = ({ navigation, item }) => {
                             <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Thien Pham</Text>
                         </View>
                     </TouchableOpacity> */}
+                     <TouchableOpacity onPress={pressgobackHandler} style={{  alignItems: 'flex-start', position: 'absolute', padding: 10}} >
+                        <View style={{ flexDirection: 'row', marginBottom: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
+                            <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                            <Text style={{ color: 'black', fontSize: 20, fontFamily: 'nunitobold', margin: 5 }}>{item[0].name}</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
 
     )
 
@@ -236,6 +258,7 @@ const styles = StyleSheet.create({
         paddingStart: 10,
         paddingEnd: 10,
         paddingTop: 5,
+        marginBottom: 90,
         flex: 1,
         backgroundColor: 'whitesmoke'
 
