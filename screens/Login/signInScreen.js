@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-root-toast';
 import { AsyncStorage } from 'react-native';
 import base64 from 'react-native-base64'
+import { URL_local } from '../../constant.js';
 
 export default function SignInScreen({ navigation }) {
     // const [data1, setData1] = useState([])
@@ -17,7 +18,9 @@ export default function SignInScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading, user } = useSelector(state => { return state.User })
     const fetchData = () => {
-        fetch('http://192.168.0.103:3000/api/user')
+        const url = URL_local + 'user'
+        console.log(url)
+        fetch(url)      
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_DATA_USER', payload: result })

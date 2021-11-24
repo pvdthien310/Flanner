@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import '../constant.js'
 
 
 const StatusMember = ({ item, navigation }) => {
@@ -18,7 +19,8 @@ const StatusMember = ({ item, navigation }) => {
     const imagenumber = item.listImage.length
 
     const LoadData = () => {
-        const url = 'http://192.168.0.105:3000/api/status/' + item._id.toString();
+       
+        const url = URL_local + 'status/' + item._id.toString();
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -34,8 +36,8 @@ const StatusMember = ({ item, navigation }) => {
     },[])
 
     const sendNotification = () => {
-
-        fetch("http://192.168.0.105:3000/api/notification/send-data", {
+        const url = URL_local + 'notification/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,8 +64,8 @@ const StatusMember = ({ item, navigation }) => {
 
     }
     const removeNotification = () => {
-  
-        fetch("http://192.168.0.105:3000/api/notification/delete", {
+        const url = URL_local + 'notification/delete'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -90,8 +92,9 @@ const StatusMember = ({ item, navigation }) => {
 
     const PressHandle1 = () => {
         // let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        
+        const url_true =  URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = URL_local + 'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {

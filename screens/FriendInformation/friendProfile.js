@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/core';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../constant';
 
 
 const { height } = Dimensions.get("screen");
@@ -32,7 +33,7 @@ const FriendInfo = ({ navigation, route }) => {
     CountPost
     ,[])
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.103:3000/api/knowledge/load-data/' + item[0].userID
+        const url = URL_local + 'knowledge/load-data/' + item[0].userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -41,7 +42,7 @@ const FriendInfo = ({ navigation, route }) => {
             }).catch(err => console.log('Error'));
     }
     const fetchStatusData = () => {
-        const url = 'http://192.168.0.103:3000/api/status/load-data/' + item[0].userID
+        const url = URL_local + 'status/load-data/' + item[0].userID
         console.log(url)
         fetch(url)
             .then(res => res.json())

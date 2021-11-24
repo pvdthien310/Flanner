@@ -32,7 +32,7 @@ const ReactMember = ({ item, navigation }) => {
     const NavigateToCurrentUserProfile = () => {
         navigation.navigate('User Information', {
             screen: 'User Dashboard',
-            params: { user: 'jane' },
+            params: { user: '' },
         })
         dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
     }

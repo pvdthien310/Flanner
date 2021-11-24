@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/core';
 import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
+import { URL_local } from '../../constant';
 
 
 const { height } = Dimensions.get("screen");
@@ -66,7 +67,7 @@ export default function EditStatus({ route, navigation }) {
 
     }
     const fetchStatusData = () => {
-        const url = 'http://192.168.0.103:3000/api/status/load-data/' + user.userID
+        const url = URL_local + 'status/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -88,7 +89,8 @@ export default function EditStatus({ route, navigation }) {
             reactNumber: '0'
         }
 
-        fetch("http://192.168.0.103:3000/api/status/update", {
+        const url = URL_local + 'status/update'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

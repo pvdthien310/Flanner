@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/core';
 import { useSelector, useDispatch } from 'react-redux';
 import NotificationMember from '../../components/notificationMember';
+import { URL_local } from '../../constant';
 
 
 const SystemNotification = ({ navigation }) => {
@@ -16,7 +17,7 @@ const SystemNotification = ({ navigation }) => {
     const [loading2, setLoading2] = useState(false)
 
     // console.log(data)
-    const url = 'http://192.168.0.102:3000/api/notification/load-data/' + user.userID + '/system';
+    const url = URL_local +'notification/load-data/' + user.userID  + '/system';
     const fetchData = () => {
         console.log(url)
         setLoading2(true)

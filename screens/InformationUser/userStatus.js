@@ -9,6 +9,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import UserStatusMember from '../../components/UserInformation/userStatusMember';
 import { MaterialIcons } from '@expo/vector-icons';
+import { URL_local } from '../../constant';
 
 
 
@@ -30,7 +31,7 @@ const UserStatus = ({ navigation }) => {
     useEffect(() => {
         forceRerender
     }, [user_status])
-    const url = 'http://192.168.0.103:3000/api/status/load-data/' + user.userID
+    const url = URL_local +  'status/load-data/' + user.userID
     console.log(url)
     const fetchStatusData = () => {
         

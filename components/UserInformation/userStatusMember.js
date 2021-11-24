@@ -9,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../constant';
 
 
 const UserStatusMember = ({ item, navigation }) => {
@@ -34,7 +35,7 @@ const UserStatusMember = ({ item, navigation }) => {
       ]
     );
     const fetchStatusData = () => {
-        const url = 'http://192.168.0.103:3000/api/status/load-data/' + user.userID
+        const url = URL_local + 'status/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -55,7 +56,8 @@ const UserStatusMember = ({ item, navigation }) => {
                 reactNumber: '0',
                 react: item.react
         }
-        fetch("http://192.168.0.103:3000/api/status/delete", {
+        const url = URL_local + 'status/delete'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -85,7 +87,7 @@ const UserStatusMember = ({ item, navigation }) => {
     }
     
     const LoadData = () => {
-        const url = 'http://192.168.0.103:3000/api/status/' + item._id.toString();
+        const url = URL_local +  'status/' + item._id.toString();
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -101,8 +103,8 @@ const UserStatusMember = ({ item, navigation }) => {
     },[])
 
     const sendNotification = () => {
-
-        fetch("http://192.168.0.103:3000/api/notification/send-data", {
+        const url = URL_local + 'notification/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -130,7 +132,8 @@ const UserStatusMember = ({ item, navigation }) => {
     }
     const removeNotification = () => {
   
-        fetch("http://192.168.0.103:3000/api/notification/delete", {
+        const url = URL_local + 'notification/delete'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -157,8 +160,8 @@ const UserStatusMember = ({ item, navigation }) => {
 
     const PressHandle = () => {
         // let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.103:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = URL_local + 'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {

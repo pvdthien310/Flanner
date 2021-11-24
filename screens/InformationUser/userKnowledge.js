@@ -9,6 +9,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import UserKnowledgeMember from '../../components/UserInformation/userKnowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
+import { URL_local } from '../../constant';
 
 
 const { height } = Dimensions.get("screen");
@@ -27,7 +28,7 @@ const UserKnowledge = ({ navigation }) => {
         forceRerender
     }, [user_knowledge])
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.103:3000/api/knowledge/load-data/' + user.userID
+        const url = URL_local + 'knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())

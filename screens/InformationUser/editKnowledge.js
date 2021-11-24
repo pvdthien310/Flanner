@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/core';
 import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
+import { URL_local } from '../../constant';
 
 
 
@@ -83,7 +84,7 @@ export default function EditKnowledge({ route, navigation }) {
 
     }
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.102:3000/api/knowledge/load-data/' + user.userID
+        const url = URL_local + 'knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -107,7 +108,8 @@ export default function EditKnowledge({ route, navigation }) {
             reactNumber: '0'
         }
 
-        fetch("http://192.168.0.102:3000/api/knowledge/update", {
+        const url = URL_local + 'knowledge/update'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

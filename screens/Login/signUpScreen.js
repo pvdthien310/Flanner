@@ -5,11 +5,13 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Alert 
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-root-toast';
+import { URL_local } from '../../constant';
 
 export default function SignUpScreen({ navigation }) {
 
     const _submitData = () => {
-        fetch("http://192.168.1.6:3000/api/user/send-data", {
+        const url = URL_local + 'user/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
+import { URL_local } from '../../constant';
 
 const UserKnowledgeMember = ({ item, navigation }) => {
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
@@ -18,7 +19,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
     const dispatch = useDispatch()
 
     const fetchKnowledgeData = () => {
-        const url = 'http://192.168.0.103:3000/api/knowledge/load-data/' + user.userID
+        const url = URL_local + 'knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -57,7 +58,8 @@ const UserKnowledgeMember = ({ item, navigation }) => {
             react: item.react,
             reactNumber: '0'
         }
-        fetch("http://192.168.0.103:3000/api/knowledge/delete", {
+        const url = URL_local + 'knowledge/delete'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
