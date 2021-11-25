@@ -6,31 +6,158 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import Toast from 'react-native-root-toast';
 
 export default function ForgotPasswordScreen({ navigation }) {
-    const [data, setData] = useState({
-        user: '',
+    const { data, loading } = useSelector(state => { return state.User })
+
+    function makeId() {
+        let result = '';
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let charactersLength = characters.length;
+        for (let i = 0; i < 6; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result
+    }
+
+    const [dataForgot, setDataForgot] = useState({
+        email: '',
         password: '',
         showPassword: false,
-        checkUser: false
+        showConfirmPassword: false,
+        checkUser: false,
+        verifyCode: makeId(),
+        password: '',
+        confirm: '',
+        checkPassword: false
     });
 
-    const TextInputChange = (val) => {
-        if (val.length != 0) {
-            setData({
-                ...data,
-                email: val,
-                checkUser: true
+    const sendEmail = () => {
+        fetch("http://192.168.1.5:3000/api/sendEmail", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: 'flanerapplication <trithuc23232@gmail.com>',
+                to: dataForgot.email,
+                subject: 'Verify code',
+                html: 'Your verify code is: ' + dataForgot.verifyCode
             })
-        }
-        else {
-            setData({
-                ...data,
+        }).then(res => res.json())
+            .then(data => { })
+            .catch(err => {
+                console.log("error", err)
+            })
+    }
+
+    const EmailChange = (val) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(val) === false) {
+            setDataForgot({
+                ...dataForgot,
                 email: val,
                 checkUser: false
             })
         }
+        else {
+            setDataForgot({
+                ...dataForgot,
+                email: val,
+                checkUser: true
+            })
+        }
     }
+    const PasswordChange = (val) => {
+        if (val.length < 6)
+            setDataForgot({
+                ...dataForgot,
+                password: val,
+                checkPassword: false
+            })
+        else
+            setDataForgot({
+                ...dataForgot,
+                password: val,
+                checkPassword: true
+            })
+
+    }
+    const ConfirmPasswordChange = (val) => {
+        setDataForgot({
+            ...dataForgot,
+            confirm: val
+        })
+    }
+
+    const _resetHandle = () => {
+        if (dataForgot.email == "" || dataForgot.password == "" || dataForgot.confirm == "") {
+            let toast = Toast.show('Please fill out your information', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+        if (!dataForgot.checkPassword) {
+            let toast = Toast.show('Password must be more than 5 characters', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+
+        if (dataForgot.confirm != dataForgot.password) {
+            let toast = Toast.show('Confirm password is incorrect', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+
+        let flag = false
+        data.forEach(element => {
+            if (element.email === dataForgot.email) {
+                flag = true
+                return
+            }
+        });
+        if (flag) {
+            setDataForgot({
+                ...dataForgot,
+                verifyCode: makeId()
+            })
+            sendEmail()
+            let toast = Toast.show('We just sent you a verify code', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            navigation.navigate('ConfirmEmailForgot', { dataForgot })
+        }
+        else {
+            let toast = Toast.show('Email is not registered', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Animatable.View style={styles.header} animation='zoomInRight' >
@@ -47,21 +174,9 @@ export default function ForgotPasswordScreen({ navigation }) {
                         <TextInput
                             style={styles.accountEdt}
                             placeholder='Type your email'
-                            onChangeText={(val) => TextInputChange(val)}
+                            onChangeText={(val) => EmailChange(val)}
                         />
-                        {data.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
-                    </View>
-                </View>
-
-                <View style={{ marginTop: 5 }}>
-                    <View style={styles.border}></View>
-                    <Text style={styles.verifyTxt}> Verify Code</Text>
-                    <View style={styles.passwordView}>
-                        <TextInput
-                            style={styles.passwordEdt}
-                            placeholder='Type your verify code'
-                            secureTextEntry={!data.showPassword}
-                        />
+                        {dataForgot.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
                     </View>
                 </View>
 
@@ -71,14 +186,15 @@ export default function ForgotPasswordScreen({ navigation }) {
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
-                            secureTextEntry={!data.showPassword}
+                            secureTextEntry={!dataForgot.showPassword}
                             placeholder="Type new password"
+                            onChangeText={(val) => PasswordChange(val)}
                         />
                         <Ionicons
-                            name={data.showPassword ? "eye-outline" : "eye-off-outline"}
+                            name={dataForgot.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...data, showPassword: !data.showPassword })}
+                            onPress={() => setDataForgot({ ...dataForgot, showPassword: !dataForgot.showPassword })}
                         />
                     </View>
                 </View>
@@ -90,29 +206,30 @@ export default function ForgotPasswordScreen({ navigation }) {
                         <TextInput
                             style={styles.passwordEdt}
                             placeholder='Confirm your password'
-                            secureTextEntry={!data.showPassword}
+                            secureTextEntry={!dataForgot.showConfirmPassword}
+                            onChangeText={(val) => ConfirmPasswordChange(val)}
                         />
                         <Ionicons
-                            name={data.showPassword ? "eye-outline" : "eye-off-outline"}
+                            name={dataForgot.showConfirmPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setData({ ...data, showPassword: !data.showPassword })}
+                            onPress={() => setDataForgot({ ...dataForgot, showConfirmPassword: !dataForgot.showConfirmPassword })}
                         />
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signInBtn} >
+                <TouchableOpacity style={styles.signInBtn} onPress={_resetHandle} >
                     <LinearGradient
                         colors={['black', 'dimgray']}
                         style={styles.signIn}
                     >
-                        <Text style={styles.textSign}>Sign Up</Text>
+                        <Text style={styles.textSign}>Reset password</Text>
                     </LinearGradient>
                 </TouchableOpacity>
 
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 170 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 250 }}
                     onPress={() => navigation.navigate('SignInScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>

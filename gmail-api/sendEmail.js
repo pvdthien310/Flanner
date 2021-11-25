@@ -9,7 +9,7 @@ const REFRESH_TOKEN = '1//046NeSXEdgj6oCgYIARAAGAQSNwF-L9IrvNlByHvTWe9QlpRstgMuo
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
 
-async function sendMail({ value }) {
+module.exports = async function sendMail({ value }) {
     try {
         const accessToken = await oAuth2Client.getAccessToken()
         const transport = nodemailer.createTransport({
@@ -38,19 +38,21 @@ async function sendMail({ value }) {
             html: value.html
         }
         const result = await transport.sendMail(mailOption)
+        console.log(result)
         return result
+
     }
     catch (error) {
         return error
     }
 }
-const value = {
-    from: 'flanerapplication <trithuc23232@gmail.com>',
-    to: '19522321@gm.uit.edu.vn',
-    subject: "hello",
-    text: 'thuc ne',
-    html: '<h1>thuc ne html</h1>'
-}
-sendMail({ value })
-    .then((result) => console.log('Email send...', result))
-    .catch((error) => console.log(error.message))
+
+// const value = {
+//     from: 'flanerapplication <trithuc23232@gmail.com>',
+//     to: '19522321@gm.uit.edu.vn',
+//     subject: "hello",
+//     html: 'thuc ne hdddddtml'
+// }
+// sendMail({ value })
+//     .then((result) => console.log('Email send...', result))
+//     .catch((error) => console.log(error.message))
