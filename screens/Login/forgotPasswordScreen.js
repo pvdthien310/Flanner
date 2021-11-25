@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: 42,
         zIndex: 1,
-        marginTop: 20
+        marginTop: 17
     },
     accountEdt: {
         paddingLeft: 20,
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         backgroundColor: 'white',
         width: 110,
-        marginTop: 20
+        marginTop: 17
     },
     confirmTxt: {
         fontWeight: 'bold',
@@ -329,7 +329,8 @@ const styles = StyleSheet.create({
     },
     passwordEdt: {
         paddingLeft: 20,
-        flex: 1
+        flex: 1,
+        marginTop:10
     },
     signInBtn: {
         alignItems: 'flex-end',
