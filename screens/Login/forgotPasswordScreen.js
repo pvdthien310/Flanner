@@ -193,6 +193,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                         <Ionicons
                             name={dataForgot.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
+                            style = {{marginEnd: 10}}
                             color="black"
                             onPress={() => setDataForgot({ ...dataForgot, showPassword: !dataForgot.showPassword })}
                         />
@@ -210,6 +211,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                             onChangeText={(val) => ConfirmPasswordChange(val)}
                         />
                         <Ionicons
+                        style = {{marginEnd: 10}}
                             name={dataForgot.showConfirmPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
@@ -294,7 +296,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: 42,
         zIndex: 1,
-        marginTop: 15
+        marginTop: 20
     },
     accountEdt: {
         paddingLeft: 20,
@@ -315,14 +317,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 30,
         backgroundColor: 'white',
-        width: 100,
-        marginTop: 15
+        width: 110,
+        marginTop: 20
     },
     confirmTxt: {
         fontWeight: 'bold',
         marginLeft: 30,
         backgroundColor: 'white',
-        width: 123,
+        width: 130,
         marginTop: 15
     },
     passwordEdt: {
@@ -338,7 +340,7 @@ const styles = StyleSheet.create({
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50,
+        borderRadius: 20,
         flexDirection: 'row'
     },
     textSign: {

@@ -206,7 +206,7 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{ marginTop: 5 }}>
+                <View style={{ marginTop: 10 }}>
                     <View style={styles.border}></View>
                     <Text style={styles.passwordTxt}> Password</Text>
                     <View style={styles.passwordView}>
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         borderWidth: 1,
         borderRadius: 10,
-        marginTop: 25,
+        marginTop: 20,
         position: 'absolute',
         top: 0,
         height: height * 0.06,
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
         marginLeft: 25,
         backgroundColor: 'white',
         width: 70,
-        marginTop: 15
+        
     },
     passwordEdt: {
         paddingLeft: 13,
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 25,
         backgroundColor: 'white',
-        width: 123,
+        width: 135,
         marginTop: 15
     },
     signInBtn: {
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50,
+        borderRadius: 20,
         flexDirection: 'row'
     },
     textSign: {

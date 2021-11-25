@@ -238,6 +238,7 @@ export default function SignInScreen({ navigation }) {
                             defaultValue={saveData.password}
                         />
                         <Ionicons
+                        style= {{alignSelf: 'center', marginEnd: 10}}
                             name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
@@ -358,7 +359,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: 75,
         zIndex: 1,
-        marginTop: 15
+        marginTop: 20
     },
     passwordEdt: {
         paddingLeft: 13,
