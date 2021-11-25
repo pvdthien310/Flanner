@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import StatusMember from '../../components/statusMember';
-import KnowledgeMember from '../../components/knowledgeMember';
+import KnowledgeMember from '../../components/Knowledge/knowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import '../../constant.js'
@@ -14,6 +14,7 @@ const Knowledge = ({ navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
+    
     const { user } = useSelector(state => { return state.User })
 
     const fetchKnowledgeData = () => {

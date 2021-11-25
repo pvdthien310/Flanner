@@ -221,7 +221,7 @@ export default function SignInScreen({ navigation }) {
                             onChangeText={(val) => EmailChange(val)}
                             defaultValue={saveData.email}
                         />
-                        {dataTemp.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
+                        {dataTemp.checkUser ? <Ionicons style = {{marginEnd: 10}} name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
 
                     </View>
                 </View>
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
         position: 'absolute',
         top: 0,
-        height: height * 0.06,
+        height: height * 0.05,
         width: width * 0.85
     },
     accountTxt: {
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: 75,
         zIndex: 1,
-        marginTop: 20
+        marginTop: 17
     },
     passwordEdt: {
         paddingLeft: 13,

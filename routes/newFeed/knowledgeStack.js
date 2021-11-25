@@ -2,11 +2,14 @@ import * as  React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Knowledge from '../../screens/Knowledge/knowledge'
 import DetailKnowledge from '../../screens/Knowledge/detailknowledge'
-import KnowledgeMember from '../../components/knowledgeMember'
+import KnowledgeMember from '../../components/Knowledge/knowledgeMember'
+import KnowledgeStatusMember from '../../components/Knowledge/statusMember'
 import ShowReactInfo from '../../screens/FriendInformation/showReactInfo'
 import ReactMember from '../../components/ShowReactUser/reactMember'
 import FriendInfo from '../../screens/FriendInformation/friendProfile'
 import UserKnowledgeForNF from '../../screens/Knowledge/UserKnowledgeforNF'
+import UserStatusForNF from '../../screens/Knowledge/UserStatusforNF'
+import DetailStatus from '../../screens/Status/detailstatus'
 
 const Stack = createNativeStackNavigator()
 
@@ -21,6 +24,9 @@ export const KnowledgeStack = (props) => {
             <Stack.Screen name='Knowledge UI React User' component={ReactMember} />
             <Stack.Screen name='Knowledge Friend Profile' component={FriendInfo} />
             <Stack.Screen name='Knowledge Friend Knowledge' component={UserKnowledgeForNF} />
+            <Stack.Screen name='Knowledge Friend Status' component={UserStatusForNF} />
+            <Stack.Screen name='Knowledge Status Member' component={KnowledgeStatusMember} />
+
 
 
 
