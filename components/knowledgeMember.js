@@ -41,7 +41,7 @@ const KnowledgeMember = ({ item, navigation }) => {
         </PostImage>
 
         <PostText>
-            <TouchableOpacity onPress={() => navigation.navigate('Knowledge Detail', { item })}>
+            <TouchableOpacity onPress={() => navigation.push('Knowledge Detail', { item })}>
                 <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                     <View style = {{ flexDirection: 'row'}}>
                         <View style={{ borderRadius: 5, backgroundColor: 'teal', padding: 5, alignSelf: 'flex-start', marginStart: 20 }}>

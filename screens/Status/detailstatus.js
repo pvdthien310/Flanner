@@ -9,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { URL_local } from '../../constant';
 
 
 
@@ -28,7 +29,7 @@ const DetailStatus = ({ route, navigation }) => {
 
     const fetchData = () => {
 
-        const url = 'http://192.168.0.103:3000/api/status/' + item._id.toString();
+        const url = URL_local + 'status/' + item._id.toString();
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -48,7 +49,8 @@ const DetailStatus = ({ route, navigation }) => {
     }
     const sendNotification = () => {
 
-        fetch("http://192.168.0.103:3000/api/notification/send-data", {
+        const url = URL_local + 'notification/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,7 +78,8 @@ const DetailStatus = ({ route, navigation }) => {
     }
     const removeNotification = () => {
   
-        fetch("http://192.168.0.105:3000/api/notification/delete", {
+        const url = URL_local + 'notification/delete'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -103,9 +106,8 @@ const DetailStatus = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/false/' + user.userID.toString();
-
+        const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = URL_local +  'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
         if (pressed == true) {
             console.log(url_false)

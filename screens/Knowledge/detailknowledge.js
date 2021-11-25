@@ -292,7 +292,7 @@ const DetailKnowledge = ({ route, navigation }) => {
 
 
                             </PostText>
-                            <TouchableOpacity  onPress={() => navigation.navigate('Knowledge Show React User', { data })} >
+                            <TouchableOpacity  onPress={() => navigation.push('Knowledge Show React User', { data })} >
                                 <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} likes</Text>
 
                             </TouchableOpacity>
@@ -326,7 +326,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={{ uri: data.avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                <Image source={{ uri: data.avatarcc }} style={Poststyle_Status.imageavatar_detai} />
                                 <UserInfoText>
                                     <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
                                     <Text style={{

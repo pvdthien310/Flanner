@@ -9,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../constant';
 
 
 const NotiDetailKnowledge = ({ route, navigation }) => {
@@ -28,8 +29,8 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
     }, [item])
 
     const sendNotification = () => {
-
-        fetch("http://192.168.0.103:3000/api/notification/send-data", {
+        const url = URL_local + 'notification/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,8 +57,8 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
 
     }
     const removeNotification = () => {
-
-        fetch("http://192.168.0.103:3000/api/notification/delete", {
+        const url = URL_local + 'notification/delete'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -84,7 +85,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
 
     const fetchData = () => {
 
-        const url = 'http://192.168.0.103:3000/api/knowledge/' + item._id.toString();
+        const url = URL_local + 'knowledge/' + item._id.toString();
         console.log(url)
         fetch(url)
             .then(res => res.json())
@@ -113,9 +114,9 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.103:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.103:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
-
+        
+        const url_true = URL_local + 'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = URL_local +  'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
         if (pressed == true) {
             console.log(url_false)
