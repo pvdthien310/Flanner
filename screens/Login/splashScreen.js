@@ -124,12 +124,7 @@ export default function SplashScreen({ navigation }) {
     }
     return (
         <View style={styles.container}>
-            {/* <Animatable.Image
-                    animation={logoAnim}
-                    style={styles.logo}
-                    source={require('../../assets/flaner.png')}
-                    resizeMode='stretch'
-                    easing='ease-out-back' /> */}
+
             <Animated.FlatList
                 data={data}
                 keyExtractor={item => item.key}
@@ -214,18 +209,21 @@ export default function SplashScreen({ navigation }) {
             {/* <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
                 <Text style={styles.title}>Stay connect with everyone!</Text>
                 <Text style={styles.text}>Sign in with account</Text>
-                <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SignInScreen') }}>
-                    <LinearGradient
-                        colors={['black', 'dimgray']}
-                        style={styles.signIn}
-                    >
-                        <Text style={styles.textSign}>Get Flâner</Text>
-                        <EvilIcons name="chevron-right" size={24} color='white' />
-                    </LinearGradient>
-                </TouchableOpacity>
+               
             </Animatable.View> */}
             <Indicator scrollX={scrollX} />
-            <Text style={{ textDecorationLine: 'underline', fontStyle: 'italic', position: 'absolute', color: 'white', bottom: 80, right: 20, fontSize: 18 }}>Skip</Text>
+
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SignInScreen') }}>
+                <Text style={{ fontStyle: 'italic', color: 'white', fontSize: 18 }}>Skip</Text>
+                <EvilIcons name="chevron-right" size={24} color='white' />
+            </TouchableOpacity>
+
+            <Animatable.Image
+                animation={logoAnim}
+                style={styles.logo}
+                source={require('../../assets/flaner.png')}
+                resizeMode='stretch'
+                easing='ease-out-back' />
         </View>
     )
 }
@@ -264,8 +262,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30
     },
     logo: {
-        height: logoHeight,
-        width: logoHeight
+        height: logoHeight * 0.4,
+        width: logoHeight * 0.4,
+        position: 'absolute',
+        top: 30,
+        left: 30
+
     },
     title: {
         color: 'black',
@@ -281,7 +283,10 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'flex-end',
-        marginTop: 30
+        marginTop: 30,
+        position: 'absolute',
+        bottom: 80, right: 20,
+        flexDirection: 'row'
     },
     signIn: {
         width: 150,
@@ -289,7 +294,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50,
-        flexDirection: 'row'
+        flexDirection: 'row',
+
     },
     textSign: {
         color: 'white',
