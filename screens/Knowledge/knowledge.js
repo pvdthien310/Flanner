@@ -16,15 +16,6 @@ const Knowledge = ({ navigation }) => {
     const { data, loading } = useSelector(state => { return state.Knowledge })
     const { user } = useSelector(state => { return state.User })
 
-    // const fetchData = () => {
-    //     fetch('http://192.168.0.106:3000/api/knowledge')
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             console.log('reset')
-    //             dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: result })
-    //             dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
-    //         }).catch(err => console.log('Error'));
-    // }
     const fetchKnowledgeData = () => {
         const url = URL_local + 'knowledge/load-data/' + user.userID
         console.log(url)

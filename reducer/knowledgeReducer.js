@@ -23,8 +23,7 @@ const KnowledgeReducer = (state = initState, action) => {
             ...state,
             user_knowledge: action.payload
         }
-        console.log('do day ne thang ngu')
-        console.log(newState.user_knowledge)
+ 
         return newState;
 
     }
