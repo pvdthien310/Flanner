@@ -21,7 +21,7 @@ export default function ConfirmEmail({ route, navigation }) {
     } = route.params.dataTemp
 
     const sendEmail = () => {
-        fetch("http://192.168.1.9:3000/api/sendEmail", {
+        fetch("http://192.168.1.5:3000/api/sendEmail", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ export default function ConfirmEmail({ route, navigation }) {
         return temp;
     }
     const _submitData = () => {
-        fetch("http://192.168.1.9:3000/api/user/send-data", {
+        fetch("http://192.168.1.6:3000/api/user/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

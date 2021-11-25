@@ -26,6 +26,7 @@ export default function ForgotPasswordScreen({ navigation }) {
         email: '',
         password: '',
         showPassword: false,
+        showConfirmPassword: false,
         checkUser: false,
         verifyCode: makeId(),
         password: '',
@@ -205,14 +206,14 @@ export default function ForgotPasswordScreen({ navigation }) {
                         <TextInput
                             style={styles.passwordEdt}
                             placeholder='Confirm your password'
-                            secureTextEntry={!dataForgot.showPassword}
+                            secureTextEntry={!dataForgot.showConfirmPassword}
                             onChangeText={(val) => ConfirmPasswordChange(val)}
                         />
                         <Ionicons
-                            name={dataForgot.showPassword ? "eye-outline" : "eye-off-outline"}
+                            name={dataForgot.showConfirmPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
-                            onPress={() => setDataForgot({ ...dataForgot, showPassword: !dataForgot.showPassword })}
+                            onPress={() => setDataForgot({ ...dataForgot, showConfirmPassword: !dataForgot.showConfirmPassword })}
                         />
                     </View>
                 </View>

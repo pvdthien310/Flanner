@@ -35,7 +35,7 @@ export default function SignUpScreen({ navigation }) {
 
 
     const sendEmail = () => {
-        fetch("http://192.168.1.9:3000/api/sendEmail", {
+        fetch("http://192.168.1.5:3000/api/sendEmail", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
