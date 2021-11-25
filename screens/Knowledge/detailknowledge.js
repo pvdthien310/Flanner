@@ -9,20 +9,84 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../constant';
 
 
 const DetailKnowledge = ({ route, navigation }) => {
-
+    const [, forceRerender] = useState();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
-    const [data, setData] = useState(null)
+    const [data, setData] = useState(route.params.item)
     const [loading, setLoading] = useState(true)
+    const [isNull, setIsNull] = useState(false)
+
+
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
+    useEffect(() => {
+        forceRerender
+    }, [item])
+
+    const sendNotification = () => {
+        const url = URL_local + 'notification/send-data'
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: data.userID,
+                message: 'Đã thích bài viết của bạn',
+                postID: data._id,
+                senderID: user.userID,
+                type: '1',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+
+    }
+    const removeNotification = () => {
+        const url = URL_local + 'notification/delete'
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: data.userID,
+                postID: data._id,
+                senderID: user.userID,
+                type: '1',
+                action: 'React'
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw Error('Loi phat sinh')
+            }
+            else
+                return res.json()
+        }).then(data => {
+            // console.log(data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+    }
 
     const fetchData = () => {
-        const url = 'http://192.168.0.106:3000/api/knowledge/' + item._id.toString();
+
+        const url = URL_local + 'knowledge/' + item._id.toString();
+        console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -32,22 +96,26 @@ const DetailKnowledge = ({ route, navigation }) => {
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
-            }).catch(err => console.log('Error'));
+            }).catch(err => {
+                setIsNull(true)
+
+                console.log('Error')
+            });
     }
 
     useEffect(() => {
         fetchData();
     }, [])
-    
+
 
     const pressgobackHandler = () => {
         navigation.goBack();
     }
 
-    const PressHandle1 = () => {
+    const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_true = URL_local + 'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = URL_local +  'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {
@@ -66,8 +134,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                 }
             }).then((result) => {
                 //  console.log(result)
+                removeNotification()
                 setData(result)
-                dispatch({type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result})
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -89,8 +158,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                     return res.json()
                 }
             }).then(result => {
+                sendNotification()
                 setData(result)
-                dispatch({type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result})
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -107,87 +177,88 @@ const DetailKnowledge = ({ route, navigation }) => {
 
 
 
-    const PressHandle = () => {
-        let numberReact = data.reactNumber;
-        const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/true/' + user.userID.toString();
-        const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false/' + user.userID.toString();
+    // const PressHandle = () => {
+    //     let numberReact = data.reactNumber;
+    //     const url_true = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/true/' + user.userID.toString();
+    //     const url_false = 'http://192.168.0.106:3000/api/knowledge/update/' + item._id.toString() + '/' + numberReact.toString() + '/false/' + user.userID.toString();
 
 
-        if (pressed == true) {
-            console.log(url_false)
-            fetch(url_false, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+    //     if (pressed == true) {
+    //         console.log(url_false)
+    //         fetch(url_false, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
 
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then((result) => {
-                setData(result)
-                if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
-            })
-        }
-        else if (pressed == false) {
-            fetch(url_true, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then(result => {
-                setData(result)
-                if ((result.react).indexOf(user.userID) != -1)
+    //             }
+    //         }).then(res => {
+    //             if (!res.ok) {
+    //                 throw Error('Loi phat sinh')
+    //             }
+    //             else {
+    //                 return res.json()
+    //             }
+    //         }).then((result) => {
+    //             setData(result)
+    //             if ((result.react).indexOf(user.userID) != -1)
+    //                 setPressed(true)
+    //             else setPressed(false)
+    //         }).catch(err => {
+    //             console.log("error", err)
+    //         })
+    //     }
+    //     else if (pressed == false) {
+    //         fetch(url_true, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         }).then(res => {
+    //             if (!res.ok) {
+    //                 throw Error('Loi phat sinh')
+    //             }
+    //             else {
+    //                 return res.json()
+    //             }
+    //         }).then(result => {
+    //             setData(result)
+    //             if ((result.react).indexOf(user.userID) != -1)
 
-                    setPressed(true)
-                else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
-            })
-        }
+    //                 setPressed(true)
+    //             else setPressed(false)
+    //         }).catch(err => {
+    //             console.log("error", err)
+    //         })
+    //     }
 
 
-        // if (pressed == true) setReactnumber(reactnumber - 1);
-        // else setReactnumber(reactnumber + 1)
+    //     // if (pressed == true) setReactnumber(reactnumber - 1);
+    //     // else setReactnumber(reactnumber + 1)
 
-    }
+    // }
     return (
         <View >
+
             {
-                loading ? <ActivityIndicator size="small" color="#0000ff" />
+                loading ? <ActivityIndicator marginTop={80} size="small" color="#0000ff" />
                     :
                     <SafeAreaView style={styles.post}>
 
-                        <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
                                 <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
                                     <MaterialIcons name="keyboard-backspace" size={30} color="black" />
                                 </View>
                             </TouchableOpacity>
                             <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{   
-                                        fontFamily: 'nunitobold',
-                                        fontSize: 25,
+                                <Text style={{
+                                    fontFamily: 'robotobold',
+                                    fontSize: 25,
                                 }}> Detail </Text>
                             </View>
                         </View>
 
-                        <ScrollView style={{ margin: 10, marginBottom: 50 }} showsVerticalScrollIndicator={false}>
+                        <ScrollView style={{ margin: 10, marginBottom: 60 }} showsVerticalScrollIndicator={false}>
 
                             <View style={{ alignItems: 'flex-start', marginTop: 5 }}>
                                 <FlatList
@@ -221,10 +292,12 @@ const DetailKnowledge = ({ route, navigation }) => {
 
 
                             </PostText>
+                            <TouchableOpacity  onPress={() => navigation.push('Knowledge Show React User', { data })} >
+                                <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} likes</Text>
 
-                            <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
+                            </TouchableOpacity>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
-                                <TouchableOpacity onPress={PressHandle1} >
+                                <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
                                 <TouchableOpacity >
@@ -245,7 +318,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
-                                backgroundColor: 'dimgrey',
+                                backgroundColor: 'grey',
                                 shadowOffset: { width: 1, height: 1 },
                                 shadowColor: 'black',
                                 shadowOpacity: 0.2,
@@ -253,9 +326,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={images.avatars[item.avatar]} style={Poststyle_Status.imageavatar_detai} />
+                                <Image source={{ uri: data.avatarcc }} style={Poststyle_Status.imageavatar_detai} />
                                 <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {item.username}</Text>
+                                    <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
                                     <Text style={{
                                         fontFamily: 'nunitobold',
                                         fontSize: 12,
@@ -273,6 +346,36 @@ const DetailKnowledge = ({ route, navigation }) => {
 
                     </SafeAreaView>
             }
+            {
+                isNull == false ? null :
+                    <View style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        alignSelf: 'center',
+                        marginTop: 80
+                    }}>
+
+                        <Image source={require('../../assets/icon/error.png')}
+                            resizeMode='contain'
+                            style={{
+                                width: 80,
+                                height: 80,
+                                marginBottom: 5,
+                            }
+                            }
+                        />
+                        <Text style={{ fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10 }}>The Post Does Not Exist !</Text>
+                        <TouchableOpacity style={{ width: 100, backgroundColor: 'wheat', borderRadius: 10 }} onPress={pressgobackHandler}>
+                            <View style={{ flexDirection: 'row', margin: 10, width: 80, alignItems: 'center', alignSelf: 'center', justifyContent: 'space-between' }}>
+                                <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 17 }}>Back</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                    </View>
+            }
+
 
         </View>
     )
@@ -301,10 +404,5 @@ const styles = StyleSheet.create({
         shadowRadius: 0,
         marginBottom: 120,
         margin: 5
-
-
-
-
-
     },
 })

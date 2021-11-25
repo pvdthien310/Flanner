@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/core';
 import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
+import { URL_local } from '../../constant';
 
 
 
@@ -18,12 +19,26 @@ const { height } = Dimensions.get("screen");
 export default function AddKnowledge({ route, navigation }) {
 
     const {user}  = useSelector(state => state.User)
+    const {user_knowledge}  = useSelector(state => state.Knowledge)
     const [image, setImage] = useState([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [body, setBody] = useState('');
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch()
+    
 
+    const fetchKnowledgeData = () => {
+        const url =  URL_local + 'knowledge/load-data/' + user.userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                 console.log(result)
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+            }).catch(err => console.log('Error'));
+       
+    }
 
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -74,15 +89,29 @@ export default function AddKnowledge({ route, navigation }) {
         // temp = Math.random();
         const d = new Date();
 
-        fetch("http://192.168.0.106:3000/api/knowledge/send-data", {
+        const newPost = {
+                username: user.name,
+                body: body,
+                userID: user.userID,
+                title : title,
+                description: description,
+                avatar: user.avatar,
+                posttime: d.toUTCString(),
+                listImage: picture,
+                react: [],
+                reactNumber: '0'
+        }
+
+        const url =  URL_local +'knowledge/send-data'
+        fetch( url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: user.userID,
+                username: user.name,
                 body: body,
-                userID: user.name,
+                userID: user.userID,
                 title : title,
                 description: description,
                 avatar: user.avatar,
@@ -92,17 +121,16 @@ export default function AddKnowledge({ route, navigation }) {
                 reactNumber: '0'
             })
         }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-                return res.json()
+            
+            return res.json()                
         }).then(data => {
-            // console.log(data)
-        }).catch(err => {
+           
+        }).catch(err => {        
+            
             console.log("error", err)
         })
-
+       
+        fetchKnowledgeData()
         navigation.goBack();
         navigation.navigate('Knowledge');
 
@@ -143,7 +171,7 @@ export default function AddKnowledge({ route, navigation }) {
             const name = Math.random().toString();
             const source = { uri, type, name }
             HandleUpImages(source)
-            console.log(source)
+            // console.log(source)
             setImage((current) => {
                 return [...current, { uri: result.uri, key: result.key = Math.random().toString() }]
             });
@@ -155,8 +183,8 @@ export default function AddKnowledge({ route, navigation }) {
     const DeleteImagelist = (key) => {
         setLoading(true)
         const deletedimg = image.filter(member => member.key == key )
-        console.log(deletedimg)
-        console.log(deletedimg[0].uri)
+        // console.log(deletedimg)
+        // console.log(deletedimg[0].uri)
         setImage(() => {
             return image.filter(member => member.key != key)
         })
@@ -210,7 +238,7 @@ export default function AddKnowledge({ route, navigation }) {
                 
             </View>
             <View style={styles.userinfo} >
-                <Image source={images.avatars[user.avatar]} style={styles.imageavatar} />
+                <Image source={{uri: user.avatar}} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
                     <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>

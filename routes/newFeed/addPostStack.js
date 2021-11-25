@@ -6,7 +6,7 @@ import MakeDesision from '../../screens/Addpost/makeDesision'
 
 const Stack = createNativeStackNavigator()
 
-export const HandleAndNotificationStack = (props) => {
+export const AddPostStack = (props) => {
     const { navigation } = props
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>

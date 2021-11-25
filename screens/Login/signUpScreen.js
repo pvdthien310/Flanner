@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-root-toast';
 import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../constant';
 
 export default function SignUpScreen({ navigation }) {
 
@@ -35,7 +36,8 @@ export default function SignUpScreen({ navigation }) {
 
 
     const sendEmail = () => {
-        fetch("http://192.168.1.5:3000/api/sendEmail", {
+        const url = URL_local + 'user/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

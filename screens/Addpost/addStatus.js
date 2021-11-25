@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
+import { URL_local } from '../../constant';
 
 
 
@@ -29,6 +30,15 @@ export default function AddStatus({ route, navigation }) {
 
     const pressgobackHandler = () => {
         navigation.goBack();
+    }
+    const fetchStatusData = () => {
+        const url = URL_local + 'status/load-data/' + user.userID
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                dispatch({ type: 'ADD_USER_STATUS', payload: result })
+            }).catch(err => console.log('Error'));
     }
     const HandleUpImages = (photo) => {
         setLoading(true)
@@ -60,7 +70,8 @@ export default function AddStatus({ route, navigation }) {
     const SendNewpost = () => {
         setLoading(true)
         const d = new Date();
-        fetch("http://192.168.0.106:3000/api/status/send-data", {
+        const url = URL_local + 'status/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -86,7 +97,8 @@ export default function AddStatus({ route, navigation }) {
         }).catch(err => {
             console.log("error", err)
         })
-       
+
+        fetchStatusData()
         navigation.goBack();
         navigation.navigate('Knowledge');
 
@@ -195,7 +207,7 @@ export default function AddStatus({ route, navigation }) {
 
                
             <View style={styles.userinfo} >
-                <Image source={images.avatars[user.avatar]} style={styles.imageavatar} />
+                <Image source={{uri: user.avatar }} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
                     <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>

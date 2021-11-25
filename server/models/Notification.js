@@ -16,6 +16,10 @@ const NotificationSchema = new mongoose.Schema({
     senderID:{
         type: String,
     },
+    action:{
+        type: String,
+    }
+    ,
     type:{
         type:String,
     },

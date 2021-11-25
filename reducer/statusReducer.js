@@ -1,10 +1,20 @@
 const initState = {
     data: [],
-    loading: true
+    loading: true,
+    user_status: []
 }
 
  const StatusReducer = (state = initState, action) => {
 
+    if (action.type == 'ADD_USER_STATUS') {
+        // console.log('aaa')
+        const newState = {
+            ...state,
+            user_status: action.payload
+        }
+        return newState;
+    }
+    
     if (action.type == 'ADD_DATA_STATUS') {
         // console.log('aaa')
         const newState = {
@@ -13,6 +23,7 @@ const initState = {
         }
         return newState;
     }
+
 
     if (action.type == 'UPDATE_STATUS_MEMBER')
     {
@@ -26,6 +37,19 @@ const initState = {
             ...state,
             data: newdata
         }
+        return newState;
+
+    }
+
+    if (action.type == 'DELETE_USER_STATUS_MEMBER') {
+        let newdata = state.user_status;
+        newdata = newdata.filter(member => member._id != action.payload._id)
+       
+        const newState = {
+            ...state,
+            user_status: newdata
+        }
+        console.log('vao day r ')
         return newState;
 
     }

@@ -6,12 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 const Status = ({ navigation }) => {
     // const [data, setData] = useState([])
     // const [loading, setLoading] = useState(true)
+    const [,forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Status })
 
     const fetchData = () => {
         
-        fetch('http://192.168.0.106:3000/api/status')
+        fetch('http://192.168.0.103:3000/api/status')
             .then(res => res.json())
             .then(result => {
                 // setData(result)
@@ -25,6 +26,8 @@ const Status = ({ navigation }) => {
         fetchData();
     }
         , [])
+        useEffect(() => {
+            forceRerender}, [data])
 
     return (
         <View style={globalStyles.container}>

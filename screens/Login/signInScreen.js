@@ -10,20 +10,42 @@ import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-root-toast';
 import { AsyncStorage } from 'react-native';
 import base64 from 'react-native-base64'
+import { URL_local } from '../../constant.js';
 
 export default function SignInScreen({ navigation }) {
     // const [data1, setData1] = useState([])
     // const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
-    const { data, loading } = useSelector(state => { return state.User })
+    const { data, loading, user } = useSelector(state => { return state.User })
     const fetchData = () => {
-        fetch('http://192.168.1.5:3000/api/user')
+        const url = URL_local + 'user'
+        fetch(url)
             .then(res => res.json())
             .then(result => {
                 dispatch({ type: 'ADD_DATA_USER', payload: result })
                 dispatch({ type: 'SET_LOADING_USER', payload: false })
+
             }).catch(err => console.log('Error'));
     }
+    // const fetchKnowledgeData = () => {
+    //     const url = 'http://192.168.0.106:3000/api/knowledge/load-data/' + user.userID
+    //     console.log(url)
+    //     fetch(url)
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+    //         }).catch(err => console.log('Error'));
+    // }
+    // const fetchStatusData = () => {
+    //     const url = 'http://192.168.0.106:3000/api/status/load-data/' + user.userID
+    //     console.log(url)
+    //     fetch(url)
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             dispatch({ type: 'ADD_USER_STATUS', payload: result })
+    //         }).catch(err => console.log('Error'));
+    // }
+
     _storeData = async () => {
         try {
             await AsyncStorage.setItem('email', dataTemp.email);
@@ -151,6 +173,8 @@ export default function SignInScreen({ navigation }) {
                 if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
                     _storeData()
+                    // fetchKnowledgeData()
+                    // fetchStatusData()                      
                     navigation.navigate('DrawerStack')
                 }
                 else {
@@ -316,7 +340,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 25,
         backgroundColor: 'white',
-        width: 60,
+        width: 65,
         zIndex: 1,
         marginTop: 15
     },
@@ -332,7 +356,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 25,
         backgroundColor: 'white',
-        width: 70,
+        width: 75,
         zIndex: 1,
         marginTop: 15
     },

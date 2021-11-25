@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 export const images = {
     avatars: {
@@ -17,6 +17,11 @@ export const imagespost = {
         '4': require('../assets/imagepost/imagepost1.jpg'),
     }
 }
+
+const { height,width } = Dimensions.get("screen");
+const logoHeight = height * 0.5;
+
+
 export const Poststyle = StyleSheet.create({
     name: {
         fontFamily: 'nunitobold',
@@ -35,8 +40,8 @@ export const Poststyle = StyleSheet.create({
         marginTop: 5
     },
     imageavatar: {
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
         borderRadius: 15
     },
     imagepost: {
@@ -100,6 +105,15 @@ export const Poststyle = StyleSheet.create({
         shadowRadius: 1,
 
     },
+    imagepost_detailstatus: {
+        height: 300,
+        width: width*0.95,
+        resizeMode: 'stretch',
+        margin: 5,
+        flex: 1,
+        borderRadius: 10
+
+    },
 
     buttontext1: {
         marginTop: 5,
@@ -159,8 +173,8 @@ export const Poststyle_Knowledge = StyleSheet.create({
     },
     body_detail: {
         fontFamily: 'nunitoregular',
-        fontSize: 18,
-        marginTop: 5
+        fontSize: 15,
+        marginTop: 10
     },
     imageavatar: {
         width: 50,
@@ -175,6 +189,8 @@ export const Poststyle_Knowledge = StyleSheet.create({
         flex: 1
 
     },
+    
+
     imagenumber: {
         textAlign: 'right',
         fontFamily: 'nunitobold',
@@ -293,9 +309,9 @@ export const Poststyle_Status = StyleSheet.create({
 
     },
     title_detail: {
-        fontFamily: 'Gemunu Libre',
+        fontFamily: 'robotobold',
         fontWeight: 'bold',
-        fontSize: 45,
+        fontSize: 42,
         marginTop: 10,
         marginBottom: 10
     },
@@ -307,7 +323,7 @@ export const Poststyle_Status = StyleSheet.create({
         borderRadius: 10
     },
     description_detail: {
-        fontFamily: 'nunitoregular',
+        fontFamily: 'robotoregular',
         fontSize: 20,
         marginTop: 5,
         color: 'dimgray',
@@ -330,7 +346,7 @@ export const Poststyle_Status = StyleSheet.create({
 
     },
     title: {
-        fontFamily: 'nunitobold',
+        fontFamily: 'robotobold',
         fontSize: 25,
         marginTop: 10,
         marginBottom: 5,
@@ -430,7 +446,8 @@ export const Poststyle_Status = StyleSheet.create({
         fontFamily: 'nunitobold',
         fontSize: 17,
         marginBottom: 10,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     buttontext1: {

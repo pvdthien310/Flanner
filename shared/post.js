@@ -1,7 +1,11 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { max } from 'react-native-reanimated'
 import { Poststyle } from '../styles/poststyle'
+
+const { height } = Dimensions.get("screen");
+const logoHeight = height * 0.5;
+
 
 export default function Post(props) {
     return (
@@ -19,6 +23,7 @@ export function UserInfo(props) {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                alignItems:'center',
                 backgroundColor: 'ghostwhite',
                 shadowOffset: { width: 1, height: 1 },
                 shadowColor: 'black',
@@ -40,7 +45,7 @@ export function UserInfoText(props) {
             style={{
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
-                alignItems: 'center'
+                
 
             }}>
             {props.children}

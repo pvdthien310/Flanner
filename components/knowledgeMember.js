@@ -41,7 +41,7 @@ const KnowledgeMember = ({ item, navigation }) => {
         </PostImage>
 
         <PostText>
-            <TouchableOpacity onPress={() => navigation.navigate('Knowledge Detail', { item })}>
+            <TouchableOpacity onPress={() => navigation.push('Knowledge Detail', { item })}>
                 <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                     <View style = {{ flexDirection: 'row'}}>
                         <View style={{ borderRadius: 5, backgroundColor: 'teal', padding: 5, alignSelf: 'flex-start', marginStart: 20 }}>
@@ -72,7 +72,7 @@ const KnowledgeMember = ({ item, navigation }) => {
 
         <View style={{ flexDirection: 'row', marginStart: 20, justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={images.avatars[item.avatar]} style={Poststyle_Status.imageavatar} />
+                <Image source={{ uri: item.avatar}} style={Poststyle_Status.imageavatar} />
 
                 <Text style={Poststyle_Status._name}> {item.username}</Text>
             </View>
