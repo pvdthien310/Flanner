@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
+        marginBottom:80,
         backgroundColor: 'whitesmoke'
 
     },
