@@ -62,7 +62,9 @@ const ReactMemberForStatus = ({ item, navigation }) => {
 
             if (host.length > 0) {
                 if (host[0].email != user.email) {
-                   
+                    navigation.push(
+                        'Status Friend Profile',
+                        { item: host })
                 }
                 else {
                    createTwoButtonAlert()
