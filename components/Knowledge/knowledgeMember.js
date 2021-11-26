@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, DatePickerIOS, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber1 } from '../../shared/post'
 import { images, imagespost, Poststyle, Poststyle_Status } from '../../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
@@ -11,8 +11,20 @@ const KnowledgeMember = ({ item, navigation }) => {
     const imagenumber = item.listImage.length
     // console.log( item.title +' : ' +  item.react)
     useEffect(() => {
+        CheckNew()
         setReactnumber(item.react.length)
     },[item])
+   
+    const CheckNew = () => {
+        var postDate = new Date(item.posttime)
+        var currentDate = new Date()
+        var difference= Math.abs(currentDate-postDate);
+        let days = difference/(1000 * 3600 * 24)
+        
+        if (days >= 10) return true;
+        return false
+       
+    }
 
     return (
         <Post >
@@ -43,15 +55,19 @@ const KnowledgeMember = ({ item, navigation }) => {
             <TouchableOpacity onPress={() => navigation.push('Knowledge Detail', { item })}>
                 <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                     <View style = {{ flexDirection: 'row'}}>
+                        { CheckNew() == true ? null :
                         <View style={{ borderRadius: 5, backgroundColor: 'teal', padding: 5, alignSelf: 'flex-start', marginStart: 20 }}>
                             <Text style={{ color: 'white', fontFamily: 'nunitobold' }}>New</Text>
                         </View>
+                         }
                         {
-                            (reactnumber > 0) ?
-                                null :
+                            (item.react.length > 3) ?
+                                
                                 <View style={{ borderRadius: 5, backgroundColor: 'maroon', padding: 5, alignSelf: 'flex-start', marginStart: 10 }}>
                                     <Text style={{ color: 'white', fontFamily: 'nunitobold' }}>Hot</Text>
                                 </View>
+                                :
+                                null
                         }
                     </View>
 

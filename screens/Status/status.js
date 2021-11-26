@@ -12,7 +12,7 @@ const Status = ({ navigation }) => {
 
     const fetchData = () => {
         
-        fetch('http://192.168.0.103:3000/api/status')
+        fetch('http://192.168.0.104:3000/api/status')
             .then(res => res.json())
             .then(result => {
                 // setData(result)

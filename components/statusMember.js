@@ -8,6 +8,7 @@ import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import '../constant.js'
+import { URL_local } from '../constant.js';
 
 
 const StatusMember = ({ item, navigation }) => {
