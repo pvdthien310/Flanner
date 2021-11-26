@@ -3,6 +3,7 @@ import { View, FlatList, ActivityIndicator } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import StatusMember from '../../components/Status/statusMember'
 import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../constant';
 const Status = ({ navigation }) => {
     // const [data, setData] = useState([])
     // const [loading, setLoading] = useState(true)
@@ -11,8 +12,8 @@ const Status = ({ navigation }) => {
     const { data, loading } = useSelector(state => { return state.Status })
 
     const fetchData = () => {
-        
-        fetch('http://192.168.0.104:3000/api/status')
+        const url = URL_local + 'status'
+        fetch(url)
             .then(res => res.json())
             .then(result => {
                 // setData(result)

@@ -7,8 +7,6 @@ const initState = {
 const KnowledgeReducer = (state = initState, action) => {
 
     if (action.type == 'ADD_DATA_KNOWLEDGE') {
-
-
         const newState = {
             ...state,
             data: action.payload
@@ -17,7 +15,6 @@ const KnowledgeReducer = (state = initState, action) => {
 
     }
     if (action.type == 'ADD_USER_KNOWLEDGE') {
-
 
         const newState = {
             ...state,
@@ -43,6 +40,7 @@ const KnowledgeReducer = (state = initState, action) => {
         return newState;
 
     }
+
     if (action.type == 'DELETE_USER_KNOWLEDGE_MEMBER') {
         let newdata = state.user_knowledge;
         newdata = newdata.filter(member => member._id != action.payload._id)
