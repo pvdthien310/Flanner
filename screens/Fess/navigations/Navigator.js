@@ -5,7 +5,7 @@ import Profile from '../../../components/Fess/Profiles'
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Discussion from './../Discussion';
-import Chat from './../FlannerChat';
+import Fess from './../FlannerChat';
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
@@ -24,7 +24,7 @@ const BottomTabNavigator = () => {
         >
                  <Tab.Screen
                     name='Chat'
-                    component={Chat}
+                    component={Fess}
                     options={{
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
