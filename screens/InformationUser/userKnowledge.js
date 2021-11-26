@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal,FlatList, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,ActivityIndicator } from 'react-native';
-import { globalStyles } from '../../styles/global';
-import StatusMember from '../../components/statusMember';
-import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/core';
-import { ScrollView } from 'react-native-gesture-handler';
-import { FontAwesome5 } from '@expo/vector-icons';
 import UserKnowledgeMember from '../../components/UserInformation/userKnowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { globalStyles } from '../../styles/global';
-import StatusMember from '../../components/statusMember'
+import StatusMember from '../../components/Status/statusMember'
 import { useSelector, useDispatch } from 'react-redux';
 const Status = ({ navigation }) => {
     // const [data, setData] = useState([])

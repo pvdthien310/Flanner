@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
-import { globalStyles } from '../../styles/global';
-import StatusMember from '../../components/statusMember';
+
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/core';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { URL_local } from '../../constant';
+import { URL_local } from '../../../constant';
 
 
 const { height } = Dimensions.get("screen");
@@ -213,7 +212,7 @@ const FriendInfo = ({ navigation, route }) => {
                                             <View>
                                                 {
                                                     item[0].score > 100 ?
-                                                        <Image source={require('../../assets/overrall.png')}
+                                                        <Image source={require('../../../assets/overrall.png')}
                                                             resizeMode='contain'
                                                             style={{
                                                                 width: 25,
