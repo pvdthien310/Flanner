@@ -294,7 +294,7 @@ export const Poststyle_Status = StyleSheet.create({
     _name_detail: {
         fontFamily: 'nunitobold',
         fontSize: 15,
-        marginStart: 10,
+        marginStart: 5,
         color: 'white'
     },
     _name: {

@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, StyleSheet, Animated, Image } from 'reac
 import { LinearGradient } from 'expo-linear-gradient'
 import { Entypo, MaterialIcons } from '@expo/vector-icons'
 import { ScrollView } from 'react-native-gesture-handler'
-import Profiles from '../../components/Fess/Profile'
+import Profiles from '../../components/Fess/Profiles'
 import Messages from '../../components/Fess/Messages'
 
 const Chat = (props) => {
@@ -124,14 +124,14 @@ const styles = StyleSheet.create({
         right:0,
         top:0,
         paddingHorizontal:20,
-        paddingTop:30
+        paddingTop:50
     },
     headerContainer:{
         flexDirection:'row',
         alignItems:'center'
     },
     header:{
-        fontFamily:'Montserrat_800ExtraBold',
+        fontFamily:'nunitobold',
         color:'#FFF',
         flex:1,
         fontSize:24
@@ -154,9 +154,9 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     day:{
-        fontFamily:'Montserrat_800ExtraBold',
+        fontFamily:'nunitobold',
         color:'#000119',
         flex:1,
-        fontSize:20
+        fontSize:25
     }
 })

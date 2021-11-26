@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
     text:{
         color:'#f20045',
         fontSize:12,
-        fontFamily:'Montserrat_600SemiBold'
+        fontFamily:'nunitoregular'
     }
 })

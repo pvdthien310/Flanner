@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
         marginTop:10,
         fontSize:11,
         color:'#fff',
-        fontFamily:'Montserrat_700Bold'
+        fontFamily:'nunitobold'
     }
 })

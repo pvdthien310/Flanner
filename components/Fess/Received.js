@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         fontSize:11,
         marginHorizontal:15,
         marginTop:5,
-        fontFamily:'Montserrat_600SemiBold',
+        fontFamily:'nunitobold',
     },
     container:{
         flexDirection:'row',
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
     message:{
         fontSize:13,
         marginHorizontal:15,
-        fontFamily:'Montserrat_700Bold'
+        fontFamily:'nunitoregular'
     }
 })
