@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         borderRadius:30
     },
     input:{
-        fontFamily:'Montserrat_600SemiBold',
+        fontFamily:'nunitoregular',
         fontSize:15,
         color:'white',
         paddingHorizontal:10,

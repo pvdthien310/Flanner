@@ -13,7 +13,7 @@ const Knowledge = ({ navigation }) => {
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
     const fetchData = () => {
-        fetch('http://192.168.1.6:3000/api/knowledge')
+        fetch('http://192.168.0.103:3000/api/knowledge')
             .then(res => res.json())
             .then(result => {
                 console.log('reset')

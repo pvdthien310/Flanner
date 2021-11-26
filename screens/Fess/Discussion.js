@@ -217,6 +217,7 @@ const Discussion = ({ route, navigation }) => {
                 >
                     <Icon name='left'
                         //color='#000119'
+                        marginLeft  = {10}
                         color='white'
                         size={24} />
                 </TouchableOpacity>
@@ -260,6 +261,7 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         height: "100%",
+        paddingTop: 40
     },
     main: {
         backgroundColor: '#FFF',
@@ -279,7 +281,7 @@ const styles = StyleSheet.create({
     username: {
         //color: "#000119",
         color: 'white',
-        fontFamily: 'Montserrat_700Bold',
+        fontFamily: 'nunitobold',
         fontSize: 20,
         flex: 1,
         textAlign: 'center'
