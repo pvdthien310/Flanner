@@ -1,54 +1,33 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
-import { globalStyles } from '../../styles/global';
-import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
+import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
+import Post, { PostText, UserInfo, UserInfoText } from '../../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Poststyle_Knowledge, images, Poststyle,Poststyle_Status } from '../../styles/poststyle';
+import { Poststyle_Status, images, Poststyle } from '../../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { URL_local } from '../../constant';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../../constant';
 
 
-
-
-const NotiDetailStatus = ({ route, navigation }) => {
-
-
+const StatusNotiDetailKnowledge = ({ route, navigation }) => {
+    const [, forceRerender] = useState();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
-    const [data, setData] = useState(null)
+    const [data, setData] = useState(route.params.item)
     const [loading, setLoading] = useState(true)
-    // const [reactnumber, setReactnumber] = useState(null)
-    const [pressed, setPressed] = useState(false)
     const [isNull, setIsNull] = useState(false)
 
 
-    const fetchData = () => {
+    // const [reactnumber, setReactnumber] = useState(null)
+    const [pressed, setPressed] = useState(false)
+    useEffect(() => {
+        forceRerender
+    }, [item])
 
-        const url = URL_local + 'status/' + item._id.toString();
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-               
-                setData(result)
-                setLoading(false)
-                // console.log(result)
-                if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            }).catch(err =>
-                {
-                    setIsNull(true)
-                    console.log('Error')
-                } );
-    }
     const sendNotification = () => {
-
         const url = URL_local + 'notification/send-data'
         fetch(url, {
             method: 'POST',
@@ -57,10 +36,10 @@ const NotiDetailStatus = ({ route, navigation }) => {
             },
             body: JSON.stringify({
                 userID: data.userID,
-                message: ' liked your status',
+                message: 'Đã thích bài viết của bạn',
                 postID: data._id,
                 senderID: user.userID,
-                type: '2',
+                type: '1',
                 action: 'React'
             })
         }).then(res => {
@@ -77,7 +56,6 @@ const NotiDetailStatus = ({ route, navigation }) => {
 
     }
     const removeNotification = () => {
-  
         const url = URL_local + 'notification/delete'
         fetch(url, {
             method: 'POST',
@@ -88,7 +66,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
                 userID: data.userID,
                 postID: data._id,
                 senderID: user.userID,
-                type: '2',
+                type: '1',
                 action: 'React'
             })
         }).then(res => {
@@ -104,11 +82,40 @@ const NotiDetailStatus = ({ route, navigation }) => {
         })
     }
 
+    const fetchData = () => {
+
+        const url = URL_local + 'knowledge/' + item._id.toString();
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                setData(result)
+                setLoading(false)
+                // console.log(result)
+                if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            }).catch(err => {
+                setIsNull(true)
+
+                console.log('Error')
+            });
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+
+    const pressgobackHandler = () => {
+        navigation.goBack();
+    }
+
     const PressHandle = () => {
         let numberReact = data.reactNumber;
         
-        const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = URL_local +  'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_true = URL_local + 'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_false = URL_local +  'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
         if (pressed == true) {
             console.log(url_false)
@@ -128,7 +135,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
                 //  console.log(result)
                 removeNotification()
                 setData(result)
-                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -152,7 +159,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
             }).then(result => {
                 sendNotification()
                 setData(result)
-                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
@@ -161,29 +168,18 @@ const NotiDetailStatus = ({ route, navigation }) => {
             })
         }
 
-
-        // if (pressed == true) setReactnumber(reactnumber - 1);
-        // else setReactnumber(reactnumber + 1)
-
     }
 
-    useEffect(() => {
-        fetchData();
-    }, [])
 
-
-    const pressgobackHandler = () => {
-        navigation.goBack();
-    }
 
     return (
-
         <View >
+
             {
-                loading ? <ActivityIndicator size="small" color="#0000ff" />
+                loading ? <ActivityIndicator marginTop={80} size="small" color="#0000ff" />
                     :
-                    <SafeAreaView style ={styles.post}>
-                    
+                    <SafeAreaView style={styles.post}>
+
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
                                 <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
@@ -192,50 +188,101 @@ const NotiDetailStatus = ({ route, navigation }) => {
                             </TouchableOpacity>
                             <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{
-                                    fontFamily: 'nunitobold',
+                                    fontFamily: 'robotobold',
                                     fontSize: 25,
                                 }}> Detail </Text>
                             </View>
                         </View>
 
-                        <ScrollView style ={{padding:10}}>
-                            <UserInfo >
-                                <Image source={{uri: user.avatar}} style={Poststyle_Knowledge.imageavatar} />
-                                <UserInfoText>
-                                    <Text style={Poststyle_Knowledge.name}> {user.name}</Text>
-                                    <Text style={Poststyle_Knowledge.posttime}> {data.posttime}</Text>
-                                </UserInfoText>
-                            </UserInfo>
-                            <PostText>
-                                <Text style={Poststyle_Knowledge.body_detail}>{data.body}</Text>
-                            </PostText>
-                            <FlatList
-                                scrollEnabled={true}
-                                horizontal={true}
-                                showsVerticalScrollIndicator={false}
-                                showsHorizontalScrollIndicator={false}
-                                data={data.listImage}
-                                renderItem={({ item }) => (
-                                    // <Image style={Poststyle.imagepost} source={imagespost.imagepost[item.image]} />
-                                    <Image style={Poststyle.imagepost_detailstatus} source={{ uri: item.uri }} />
+                        <ScrollView style={{ margin: 10, marginBottom: 60 }} showsVerticalScrollIndicator={false}>
 
-                                )}
-                                keyExtractor={item => item.key} />
-                            <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
+                            <View style={{ alignItems: 'flex-start', marginTop: 5 }}>
+                                <FlatList
+
+                                    scrollEnabled={true}
+                                    horizontal={true}
+                                    showsVerticalScrollIndicator={false}
+                                    showsHorizontalScrollIndicator={false}
+                                    data={data.listImage}
+                                    renderItem={({ item }) => (
+                                        <View>
+                                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+
+                                        </View>
+
+
+                                    )}
+                                    keyExtractor={item => item.key} />
+                            </View>
+
+
+
+                            <PostText>
+                                <Text style={Poststyle_Status.posttime_detail}>{data.posttime}</Text>
+
+                                <Text style={Poststyle_Status.title_detail}>{data.title}</Text>
+                                <Text style={Poststyle_Status.description_detail}>{data.description}</Text>
+                                <View style={{ borderRadius: 10, backgroundColor: 'lightgray', padding: 5, marginTop: 10, marginStart: 10 }}>
+                                    <Text style={Poststyle_Status.body_detail}>{data.body}</Text>
+                                </View>
+
+
+                            </PostText>
+                            <TouchableOpacity onPress={() => navigation.push('Status Notification Show React User', { data })} >
+                                <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} likes</Text>
+
+                            </TouchableOpacity>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
-                                <TouchableOpacity onPress={PressHandle}>
+                                <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
                                 <TouchableOpacity >
                                     <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>
+
+
+                            <View
+                                style={{
+                                    borderBottomColor: 'lightslategrey',
+                                    borderBottomWidth: 1,
+                                    marginBottom: 10,
+                                    marginStart: 10,
+                                    marginEnd: 10
+                                }}
+                            />
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-start',
+                                backgroundColor: 'grey',
+                                shadowOffset: { width: 1, height: 1 },
+                                shadowColor: 'black',
+                                shadowOpacity: 0.2,
+                                shadowRadius: 2,
+                                borderRadius: 10,
+                                padding: 10
+                            }}>
+                                <Image source={{ uri: data.avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                <UserInfoText>
+                                    <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
+                                    <Text style={{
+                                        fontFamily: 'nunitobold',
+                                        fontSize: 12,
+                                        marginStart: 5,
+                                        marginTop: 5,
+                                        color: 'white'
+                                    }}> Author</Text>
+
+                                </UserInfoText>
+
+                            </View>
+
                         </ScrollView>
 
-                    
+
                     </SafeAreaView>
             }
-              {
+            {
                 isNull == false ? null :
                     <View style={{
                         alignItems: 'center',
@@ -245,7 +292,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
                         marginTop: 80
                     }}>
 
-                        <Image source={require('../../assets/icon/error.png')}
+                        <Image source={require('../../../assets/icon/error.png')}
                             resizeMode='contain'
                             style={{
                                 width: 80,
@@ -264,14 +311,15 @@ const NotiDetailStatus = ({ route, navigation }) => {
 
                     </View>
             }
+
+
         </View>
-
-
-
     )
 
 }
-export default NotiDetailStatus;
+
+export default StatusNotiDetailKnowledge;
+
 const styles = StyleSheet.create({
     rating: {
         flexDirection: 'row',
