@@ -36,7 +36,7 @@ export default function SignUpScreen({ navigation }) {
 
 
     const sendEmail = () => {
-        const url = URL_local + 'user/send-data'
+        const url = URL_local + 'sendEmail'
         fetch(url, {
             method: 'POST',
             headers: {
@@ -104,6 +104,16 @@ export default function SignUpScreen({ navigation }) {
     const signInHandle = () => {
         if (dataTemp.name == "" || dataTemp.email == "" || dataTemp.password == "" || dataTemp.confirm == "") {
             let toast = Toast.show('Please fill out your information', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+        if (!dataTemp.checkUser) {
+            let toast = Toast.show('Invalid email', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
                 shadow: true,

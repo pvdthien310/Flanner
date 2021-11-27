@@ -8,6 +8,7 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-root-toast';
+import { URL_local } from '../../constant.js';
 
 export default function ForgotPasswordScreen({ navigation }) {
     const { data, loading } = useSelector(state => { return state.User })
@@ -35,7 +36,8 @@ export default function ForgotPasswordScreen({ navigation }) {
     });
 
     const sendEmail = () => {
-        fetch("http://192.168.1.5:3000/api/sendEmail", {
+        const url = URL_local + 'sendEmail'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

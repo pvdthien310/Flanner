@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import Toast from 'react-native-root-toast';
 import base64 from 'react-native-base64'
 import { useSelector, useDispatch } from 'react-redux';
+import { URL_local } from '../../constant.js';
 
 export default function ConfirmEmailForgot({ route, navigation }) {
     const dispatch = useDispatch()
@@ -33,10 +34,9 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     }
         , [])
 
-
     const _ResetData = () => {
-
-        fetch('http://192.168.1.5:3000/api/user/update', {
+        const url = URL_local + 'user/update'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
