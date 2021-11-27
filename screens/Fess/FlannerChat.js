@@ -46,7 +46,7 @@ const Chat = (props) => {
        >
            <View style={styles.headerContainer}>
                 <Text style={styles.header}>Fess</Text>
-                <MaterialIcons name="add" color='#fff' size={35}/>
+                {/* <MaterialIcons name="add" color='#fff' size={35}/> */}
            </View>
            <ScrollView
                 horizontal
@@ -64,6 +64,13 @@ const Chat = (props) => {
                                         key={item.id}
                                         username={item.login}
                                         uri={item.avatar_url}
+                                        onPress={()=>{
+                                            props.navigation.navigate('Discussion',{
+                                                itemId:item.id,
+                                                itemName:item.login,
+                                                itemPic:item.avatar_url
+                                            });
+                                        }}
                                     />
                                 ))
                             }
@@ -72,10 +79,10 @@ const Chat = (props) => {
                 }
            </ScrollView>
            <View style={styles.ops}>
-                <View style={styles.col}>
+                {/* <View style={styles.col}>
                     <Text style={styles.day}>Sunday</Text>
                     <Entypo name='dots-three-horizontal' color='#000119' size={30}/>
-                </View>
+                </View> */}
                 <ScrollView>
                     {
                         loading ? 
@@ -115,6 +122,7 @@ const styles = StyleSheet.create({
     card:{
         marginLeft:400,
         width:400,
+
         flexDirection:'row'
     },
     gradient:{
@@ -138,14 +146,16 @@ const styles = StyleSheet.create({
     },
     proContainer:{
         marginRight:-20,
-        alignSelf:'center'
+        alignSelf:'center',
+        marginBottom: 50
     },
     ops:{
         borderTopLeftRadius:40,
         borderTopRightRadius:40,
         height: 580,
         backgroundColor:'#FFF',
-        marginHorizontal:-20
+        marginHorizontal:-20,
+        marginTop:-50
     },
     col:{
         flexDirection:'row',

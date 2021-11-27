@@ -1,13 +1,16 @@
 import React from 'react';
 import {View,Text,StyleSheet,Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-const Profile = ({username,uri}) => {
+const Profile = ({username,uri, onPress}) => {
     return(
+        <TouchableOpacity onPress = {onPress}>
         <View style={styles.container}>
             <Image source={{uri:uri}} style={styles.avatarStyle}/>
             <Text style={styles.nameStyle}>{username}</Text>
         </View>
+        </TouchableOpacity>
     )
 }
 export default Profile;

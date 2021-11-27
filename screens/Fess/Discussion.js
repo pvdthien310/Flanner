@@ -50,7 +50,9 @@ import {
 import { GiftedChat } from "react-native-gifted-chat";
 
 const Discussion = ({ route, navigation }) => {
-    // const { itemName, itemPic } = route.params;
+     const { itemName, itemPic, itemId } = route.params;
+
+     console.log(itemId)
     // const [inputMessage, setMessage] = useState('');
 
     // const send = () => {
@@ -113,7 +115,7 @@ const Discussion = ({ route, navigation }) => {
     //     </LinearGradient>
     // )
 
-    const [messages, setMessages] = useState(messageData);
+    const[messages, setMessages] = useState(messageData);
 
     useEffect(() => { messages }, [])
 
