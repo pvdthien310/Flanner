@@ -52,7 +52,8 @@
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
-    "stream-chat-expo": "^3.10.2"
+    "stream-chat-expo": "^3.10.2",
+    "stream-chat-react-native-core": "^3.10.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

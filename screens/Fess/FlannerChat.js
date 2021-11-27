@@ -1,22 +1,15 @@
-import React, {useState, useEffect, useRef} from 'react'
-import { View, Text, ActivityIndicator, StyleSheet, Animated, Image } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Entypo, MaterialIcons } from '@expo/vector-icons'
-import { ScrollView } from 'react-native-gesture-handler'
-import Profiles from '../../components/Fess/Profile'
-import Messages from '../../components/Fess/Messages'
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useState, useEffect} from 'react'
+import { useSelector } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import {StreamChat} from 'stream-chat'
-import {useChatContext, OverlayProvider, Channel, Chat, ChannelList} from 'stream-chat-expo'
+import {useChatContext, OverlayProvider, ChannelList} from 'stream-chat-expo'
 
-const API_KEY = "tw5mmngstvph"
-const client = StreamChat.getInstance(API_KEY);
-const Fess = (props) => {
+
+
+const Fess = ({navigation}) => {
    
  const { user } = useSelector(state => { return state.User })
- const[isReady, setIsReady] = useState("false");
- const[selectedChannel, setSelectedChannel] = useState(null);
+ const[isReady, setIsReady] = useState(false);
+ const{client} = useChatContext();
 
     useEffect( () =>
     {
@@ -26,23 +19,27 @@ const Fess = (props) => {
                     id: user.userID,
                     name: user.name,
                 },
-                client.devToken("vadim")
+                client.devToken(user.userID)
             );
             
-            const channel = client.channel("messaging", "notjustdev",{
-                name: "notJust.dev",
-            });
-            await channel.watch();
-            console.log(user.userID);
+            // const channel = client.channel("messaging", "notjustdev",{
+            //     name: "notJust.dev",
+            // });
+            // await channel.watch();
             setIsReady(true);
         };
         connectUser();
-
         return () => client.disconnectUser();
     },[]);
 
+    const filters = {
+        members: {
+            $in: [user.userID]
+        }
+    }
+
     const onChannelPressed = (channel) => {
-        setSelectedChannel(channel);
+        navigation.navigate("Channel", {channel});
     }
 
     console.log(isReady);
@@ -53,19 +50,18 @@ const Fess = (props) => {
         return(
             <SafeAreaProvider>
                 <OverlayProvider>
-                    <Chat client={client}>
-
-                        {selectedChannel ? (
-                           <Channel channel={selectedChannel}>
-                               <Text style={{ marginTop: 50 }} > Go back</Text>
-                            </Channel>
+                    <ChannelList onSelect={onChannelPressed} filters={filters} />  
+                        {/* {selectedChannel ? (
+                        //    <Channel channel={selectedChannel}>
+                        //        <MessageList />
+                        //        <MessageInput />
+                        //        <Text style={{ marginTop: 50 }} onPress={() => setSelectedChannel(null)} > Go back</Text>
+                        //     </Channel>
+                        <ChannelScreen channel={selectedChannel} />
                         ) : (
                         <ChannelList onSelect={onChannelPressed} />  
-                        )}
+                        )} */}
 
-
-
-                    </Chat>
                 </OverlayProvider>
             </SafeAreaProvider>
     )

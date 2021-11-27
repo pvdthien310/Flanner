@@ -4,8 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Profile from '../../../components/Fess/Profiles'
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import Discussion from './../Discussion';
 import Fess from './../FlannerChat';
+import ChannelScreen from './../ChannelScreen';
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
@@ -30,18 +30,18 @@ const BottomTabNavigator = () => {
                         tabBarIcon:({color,size})=>(
                             <Entypo name="chat" color={color} size={30}/>
                         ),
-                        headerShown: false
+                        headerShown: true
                     }}
                 />
                  <Tab.Screen
-                    name='Profile'
+                    name='People'
                     component={Profile}
                     options={{
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
                             <Ionicons name='ios-person' color={color} size={30}/>
                         ),
-                        headerShown: false
+                        headerShown: true
                     }}
                 />
         </Tab.Navigator>
@@ -56,7 +56,7 @@ const ChatStackNavigator = () => {
     return(
         <Stack.Navigator screenOptions={screenOptionStyle} >
             <Stack.Screen name='Fess' component={BottomTabNavigator} options={{headerShown: false}} />
-            <Stack.Screen name='Discussion' component={Discussion}/>
+            <Stack.Screen name='Channel' component={ChannelScreen} options={{headerShown: true}} />
         </Stack.Navigator>
     )
 }

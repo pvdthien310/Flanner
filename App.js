@@ -12,11 +12,19 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { reducer } from './reducer/knowledgeReducer'
 import RootReducer from './reducer/rootReducer'
+
+import {Chat} from "stream-chat-expo"
+import {StreamChat} from "stream-chat"
+
 // import { useFonts } from "@expo-google-fonts/montserrat";
 // import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
 // import { Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 // import { Montserrat_800ExtraBold } from "@expo-google-fonts/montserrat";
 const store = createStore(RootReducer);
+
+const API_KEY = "tw5mmngstvph"
+const client = StreamChat.getInstance(API_KEY);
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     capricaScript: require('./assets/fonts/CAPRICA_SCRIPT.ttf'),
@@ -37,9 +45,11 @@ export default function App() {
   }
   return (
     <RootSiblingParent>
+       <Chat client={client}>
       <Provider store={store}>
         <LoginStack />
       </Provider>
+      </Chat>
     </RootSiblingParent>
 
   );

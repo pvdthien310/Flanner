@@ -1,31 +1,43 @@
-import React from 'react';
-import {View,Text,StyleSheet,Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View,Text,StyleSheet, FlatList} from 'react-native';
+import {useChatContext} from "stream-chat-expo";
+import UserListItem from "../../components/Fess/UserListItem";
 
 
-const Profile = ({username,uri}) => {
-    return(
+const Profile = () => {
+
+    const[users, setUsers] = useState([]);
+    const[isLoading, setIsLoading] = useState(false);
+
+    const {client} = useChatContext();
+
+     const fetchUsers = async () =>{
+            setIsLoading(true);
+            const response = await client.queryUsers({});
+            setUsers(response.users);
+            setIsLoading(false);
+        };
+
+    useEffect(() =>{
+        fetchUsers();
+    },[])
+   
+    return (
         <View style={styles.container}>
-            <Image source={{uri:uri}} style={styles.avatarStyle}/>
-            <Text style={styles.nameStyle}>{username}</Text>
+            <FlatList 
+                data={users} 
+                renderItem={({ item }) => <UserListItem tempUser={item} />}
+                refreshing={isLoading}
+                onRefresh={fetchUsers} 
+                />
         </View>
     )
 }
 export default Profile;
 const styles = StyleSheet.create({
     container:{
-        alignItems:'center',
-        marginTop:20,
-        marginRight:17
+        flex: 1,
+        alignItems: 'stretch',
+        justifyContent: 'center',
     },
-    avatarStyle:{
-        width:60,
-        height:60,
-        borderRadius: 10
-    },
-    nameStyle:{
-        marginTop:10,
-        fontSize:11,
-        color:'#fff',
-        fontFamily:'Montserrat_700Bold'
-    }
 })
