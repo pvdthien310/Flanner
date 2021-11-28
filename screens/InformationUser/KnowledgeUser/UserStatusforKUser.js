@@ -1,56 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal,FlatList, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,ActivityIndicator } from 'react-native';
-import UserKnowledgeMember from '../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMember';
+import {  FlatList, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import StatusMemberForKUser from '../../../components/UserInformation/KnowledgeUserInfo/statusMember';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
-import { URL_local } from '../../constant';
-
+import { URL_local } from '../../../constant';
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const UserKnowledge = ({ navigation }) => {
+const UserStatusForKUser = ({ navigation,route }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
-    const { user_knowledge ,data, loading } = useSelector(state => { return state.Knowledge })
-    const {user} = useSelector(state => {return state.User})
+    const {user,status} = route.params
+    const [user_status, setUserStatus] = useState(status)
+    const [loading, Setloading] = useState(false)
+
     const pressgobackHandler = () => {
+        
         navigation.goBack();
     }
     useEffect(() => {
         forceRerender
-    }, [user_knowledge])
-    const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + user.userID
+    }, [user_status])
+    useEffect(() => {
+        fetchStatusData()
+    }, [])
+   
+    const fetchStatusData = () => {
+        const url = URL_local +  'status/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
-                // console.log(result)
-                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+                setUserStatus(result)      
+                Setloading(false)  
+                forceRerender()
             }).catch(err => console.log('Error'));
-       
     }
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={pressgobackHandler} style={{  alignItems: 'flex-start'}} >
-                        <View style={{ flexDirection: 'row', marginBottom: 5, justifyContent: 'center', alignItems: 'center' }}>
-                            <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                            <Text style={{ color: 'black', fontSize: 20, fontFamily: 'nunitobold', margin: 5 }}>{user.name}</Text>
-                        </View>
-                    </TouchableOpacity>
+            <TouchableOpacity onPress={pressgobackHandler} style={{ alignItems: 'flex-start' }} >
+                <View style={{ flexDirection: 'row', marginBottom: 5, justifyContent: 'center', alignItems: 'center' }}>
+                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                    <Text style={{ color: 'black', fontSize: 20, fontFamily: 'nunitobold', margin: 5 }}>{user.name}</Text>
+                </View>
+            </TouchableOpacity>
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
                     <View  style={{flex: 1, justifyContent: 'center',backgroundColor: 'white'}}>
                     {
-                        user_knowledge.length == 0 ? 
+                        user_status.length == 0 ? 
                         <View style={{
                             alignItems: 'center',
                             justifyContent: 'center', flexDirection: 'column'
                         }}>
-                            <Image source={require('../../assets/icon/NoNotification2.png')}
+                            <Image source={require('../../../assets/icon/NoNotification2.png')}
                                 resizeMode='contain'
                                 style={{
                                     width: 80,
@@ -71,18 +77,17 @@ const UserKnowledge = ({ navigation }) => {
                     
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        data={user_knowledge}
+                        data={user_status}
                         renderItem={({ item }) => (
-                            <UserKnowledgeMember item={item} navigation={navigation} />
+                            <StatusMemberForKUser item={item} navigation={navigation} />
                         )}
                         keyExtractor={item => item._id}
-                        onRefresh={() => fetchKnowledgeData()}
+                        onRefresh={() => fetchStatusData()}
                         refreshing={loading}
                     />
                         }
                         </View>
             }
-           
         </View>
 
     )
@@ -95,10 +100,8 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
-        backgroundColor: 'whitesmoke',
-        flexDirection:'column',
-        marginBottom:10
-        
+        marginBottom:80,
+        backgroundColor: 'whitesmoke'
 
     },
     button1: {
@@ -127,4 +130,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default UserKnowledge;
+export default UserStatusForKUser;

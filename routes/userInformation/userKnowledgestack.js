@@ -4,9 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MainInfor from '../../screens/InformationUser/mainInfo'
 import EditProFile from '../../screens/InformationUser/editProfile'
 import UserKnowledge from '../../screens/InformationUser/userKnowledge'
-import userKnowledgeMember from '../../components/UserInformation/userKnowledgeMember'
-import UserDetailKnowledge from '../../screens/InformationUser/userDetailKnowledge'
-import EditKnowledge from '../../screens/InformationUser/editKnowledge'
+import userKnowledgeMember from '../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMember'
+import UserDetailKnowledge from '../../screens/InformationUser/KnowledgeUser/userDetailKnowledge'
+import EditKnowledge from '../../screens/InformationUser/KnowledgeUser/editKnowledge'
+import ShowReactInfoForKnowledgeUserInfo from '../../screens/FriendInformation/KnowledgeUserInfo/showReactInfoforKUserInfo'
+import FriendInfoForKnowledgeUserInfo from '../../screens/FriendInformation/KnowledgeUserInfo/friendProfileforKUserInfo'
+import UserKnowledgeForKUSer from '../../screens/InformationUser/KnowledgeUser/UserKnowledgeforKUser'
+import UserStatusForKUser from '../../screens/InformationUser/KnowledgeUser/UserStatusforKUser'
 const Stack = createNativeStackNavigator()
 
 export const UserKnowledgeStack = (props) => {
@@ -15,9 +19,13 @@ export const UserKnowledgeStack = (props) => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='User Knowledge' component= {UserKnowledge} />
             <Stack.Screen name='User Knowledge Member' component={userKnowledgeMember} />
+            <Stack.Screen name='Knowledge User Info Show React User' component={ShowReactInfoForKnowledgeUserInfo} />
+            <Stack.Screen name='Knowledge User Info Friend Profile' component={FriendInfoForKnowledgeUserInfo} />
             <Stack.Screen name='User Detail Knowledge' component= {UserDetailKnowledge} />
             <Stack.Screen name='User Edit Knowledge' component= {EditKnowledge} />
-
+            <Stack.Screen name='User Knowledge Friend Knowledge' component={UserKnowledgeForKUSer} />
+            <Stack.Screen name='User Knowledge Friend Status' component={UserStatusForKUser} />
+            
         </Stack.Navigator>
     )
 }

@@ -11,7 +11,7 @@ export const UserStatusStack = (props) => {
     const { navigation } = props
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='User Knowledge' component= {UserStatus} />
+            <Stack.Screen name='User Status' component= {UserStatus} />
             <Stack.Screen name='User Status Member' component={userStatusMember} />
             <Stack.Screen name='User Edit Status' component= {EditStatus} />
             

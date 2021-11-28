@@ -1,34 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal,FlatList, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,ActivityIndicator } from 'react-native';
-import UserKnowledgeMember from '../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
-import { URL_local } from '../../constant';
+
+import KnowledgeMemberForKUser from '../../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMemberforFriend';
+import { URL_local } from '../../../constant';
 
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const UserKnowledge = ({ navigation }) => {
+const UserKnowledgeForKUSer = ({ navigation, route }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
-    const { user_knowledge ,data, loading } = useSelector(state => { return state.Knowledge })
-    const {user} = useSelector(state => {return state.User})
+    const {user,knowledge} = route.params
+   
+    const [user_knowledge, setUserKnowledge] = useState(knowledge)
+    const [loading, Setloading] = useState(false)
     const pressgobackHandler = () => {
         navigation.goBack();
     }
+
     useEffect(() => {
-        forceRerender
+        
     }, [user_knowledge])
+    useEffect(() => {
+        fetchKnowledgeData()
+        
+    }, [])
     const fetchKnowledgeData = () => {
         const url = URL_local + 'knowledge/load-data/' + user.userID
         console.log(url)
         fetch(url)
             .then(res => res.json())
-            .then(result => {
-                // console.log(result)
-                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+            .then(result => {      
+                setUserKnowledge(result)      
+                Setloading(false)  
+                forceRerender()
             }).catch(err => console.log('Error'));
        
     }
@@ -50,7 +59,7 @@ const UserKnowledge = ({ navigation }) => {
                             alignItems: 'center',
                             justifyContent: 'center', flexDirection: 'column'
                         }}>
-                            <Image source={require('../../assets/icon/NoNotification2.png')}
+                            <Image source={require('../../../assets/icon/NoNotification2.png')}
                                 resizeMode='contain'
                                 style={{
                                     width: 80,
@@ -67,18 +76,18 @@ const UserKnowledge = ({ navigation }) => {
                             </TouchableOpacity>
                            
                         </View>
-                        :
-                    
+                        : 
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         data={user_knowledge}
-                        renderItem={({ item }) => (
-                            <UserKnowledgeMember item={item} navigation={navigation} />
+                        renderItem={({ item }) => (                      
+                            <KnowledgeMemberForKUser item={item} navigation={navigation} />
                         )}
                         keyExtractor={item => item._id}
                         onRefresh={() => fetchKnowledgeData()}
                         refreshing={loading}
                     />
+                    
                         }
                         </View>
             }
@@ -127,4 +136,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default UserKnowledge;
+export default UserKnowledgeForKUSer;

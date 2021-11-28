@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
-import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
+import Post, { PostText, UserInfo, UserInfoText } from '../../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Poststyle_Status, images, Poststyle } from '../../styles/poststyle';
+import { Poststyle_Status, images, Poststyle } from '../../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { URL_local } from '../../constant';
+import { URL_local } from '../../../constant';
 
 
 const UserDetailKnowledge = ({ route, navigation }) => {
@@ -107,7 +107,7 @@ const UserDetailKnowledge = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        const url_true = URL_local +  'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        const url_true = URL_local + 'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
         const url_false = URL_local + 'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
@@ -284,8 +284,10 @@ const UserDetailKnowledge = ({ route, navigation }) => {
 
 
                             </PostText>
+                            <TouchableOpacity onPress={() => navigation.push('Knowledge User Info Show React User', { data })}>
+                                <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
+                            </TouchableOpacity>
 
-                            <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} Likes</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
                                 <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
@@ -316,7 +318,7 @@ const UserDetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={{uri: user.avatar}} style={Poststyle_Status.imageavatar_detai} />
+                                <Image source={{ uri: user.avatar }} style={Poststyle_Status.imageavatar_detai} />
                                 <UserInfoText>
                                     <Text style={Poststyle_Status._name_detail}> {user.name}</Text>
                                     <Text style={{

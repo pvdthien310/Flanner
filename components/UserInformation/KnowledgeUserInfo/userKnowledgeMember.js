@@ -1,8 +1,8 @@
 import React, { useState, useEffect, memo } from 'react';
 import { Alert,StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
-import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber1 } from '../../shared/post'
-import { UserInfo } from '../../shared/post'
-import { Poststyle, Poststyle_Status } from '../../styles/poststyle'
+import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber1 } from '../../../shared/post'
+import { UserInfo } from '../../../shared/post'
+import { Poststyle, Poststyle_Status } from '../../../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
-import { URL_local } from '../../constant';
+import { URL_local } from '../../../constant';
 
 const UserKnowledgeMember = ({ item, navigation }) => {
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
@@ -81,7 +81,6 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                 console.log(res.ok)
                 dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
                 throw Error('Loi phat sinh')      
-               
         }).then(data => {                   
         }).catch(err => {
             console.log("error", err)
@@ -159,7 +158,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
             </PostImage>
 
             <PostText>
-                <TouchableOpacity onPress={() => navigation.navigate('User Detail Knowledge', { item })}>
+                <TouchableOpacity onPress={() => navigation.push('User Detail Knowledge', { item })}>
                     <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ borderRadius: 5, backgroundColor: 'teal', padding: 5, alignSelf: 'flex-start', marginStart: 20 }}>
