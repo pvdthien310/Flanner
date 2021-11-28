@@ -1,10 +1,10 @@
 
 const KnowledgeRoute = require('express').Router();
-const Knowledge = require("../models/Knowledge")
+const Knowledge = require("../models/Knowledge");
 
 
 /// Delete member
-KnowledgeRoute.post('/delete', (req, res) => {
+KnowledgeRoute.post('/delete',(req, res) => {
     Knowledge.findByIdAndRemove(req.body.id)
         .then((data) => {
             res.send("delete lien")
@@ -171,7 +171,7 @@ KnowledgeRoute.get('/', (req, res) => {
             console.log(err)
         })
 })
-KnowledgeRoute.get('/load-data/newsfeed/random', (req, res) => {
+KnowledgeRoute.get('/load-data/newsfeed/random',  (req, res) => {
     Knowledge.aggregate([{$sample: {size : 10}}])
         .then(data => {
             res.send(data)

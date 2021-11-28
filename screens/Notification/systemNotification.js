@@ -12,16 +12,12 @@ const SystemNotification = ({ navigation }) => {
     
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
-    // const [,forceRerender] = useState();
     const { user_system_notification, loading } = useSelector(state => { return state.Notification })
     const [loading2, setLoading2] = useState(false)
-
-    // console.log(data)
     const url = URL_local +'notification/load-data/' + user.userID  + '/system';
     const fetchData = () => {
         console.log(url)
         setLoading2(true)
-
         fetch(url)
             .then(res => res.json())
             .then(result => {             
@@ -33,10 +29,7 @@ const SystemNotification = ({ navigation }) => {
     useEffect(() => {
         fetchData();}
         ,[])
-
-    // useEffect(() => {
-    //     forceRerender}, [user_knowledge_notification])
-        
+  
     return (
         <View style={styles.container}>
             {
