@@ -17,14 +17,14 @@ export const UserKnowledgeStack = (props) => {
     const { navigation } = props
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='User Knowledge' component= {UserKnowledge} />
-            <Stack.Screen name='User Knowledge Member' component={userKnowledgeMember} />
+            <Stack.Screen name='Knowledge User' component= {UserKnowledge} />
+            <Stack.Screen name='Knowledge User Member' component={userKnowledgeMember} />
             <Stack.Screen name='Knowledge User Info Show React User' component={ShowReactInfoForKnowledgeUserInfo} />
             <Stack.Screen name='Knowledge User Info Friend Profile' component={FriendInfoForKnowledgeUserInfo} />
-            <Stack.Screen name='User Detail Knowledge' component= {UserDetailKnowledge} />
-            <Stack.Screen name='User Edit Knowledge' component= {EditKnowledge} />
-            <Stack.Screen name='User Knowledge Friend Knowledge' component={UserKnowledgeForKUSer} />
-            <Stack.Screen name='User Knowledge Friend Status' component={UserStatusForKUser} />
+            <Stack.Screen name='Knowledge User Detail Knowledge' component= {UserDetailKnowledge} />
+            <Stack.Screen name='Knowledge User Edit Knowledge' component= {EditKnowledge} />
+            <Stack.Screen name='Knowledge User Friend Knowledge' component={UserKnowledgeForKUSer} />
+            <Stack.Screen name='Knowledge User Friend Status' component={UserStatusForKUser} />
             
         </Stack.Navigator>
     )

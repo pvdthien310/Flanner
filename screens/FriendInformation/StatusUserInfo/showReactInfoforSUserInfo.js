@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,FlatList, SafeAreaView } from 'react-native';
 import { globalStyles } from '../../../styles/global';
 import { MaterialIcons } from '@expo/vector-icons';
-import ReactMemberForKnowledgeUser from '../../../components/ShowReactUser/reactMemberforKnowledgeUserInfo';
+import ReactMemberForStatusUser from '../../../components/ShowReactUser/reactMemberforStatusUserInfo';
 
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const ShowReactInfoForKnowledgeUserInfo = ({ route, navigation }) => {
+const ShowReactInfoForStatusUserInfo = ({ route, navigation }) => {
     const { data } = route.params;
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -38,7 +38,7 @@ const ShowReactInfoForKnowledgeUserInfo = ({ route, navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 data={data.react}
                 renderItem={({ item }) => (
-                  <ReactMemberForKnowledgeUser item = {item} navigation = {navigation} ></ReactMemberForKnowledgeUser>
+                  <ReactMemberForStatusUser item = {item} navigation = {navigation} ></ReactMemberForStatusUser>
                 )}
                 keyExtractor={item => item} />
             
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default ShowReactInfoForKnowledgeUserInfo;
+export default ShowReactInfoForStatusUserInfo;

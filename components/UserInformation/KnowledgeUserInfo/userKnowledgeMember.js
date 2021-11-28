@@ -123,7 +123,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                     flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'stretch'}}>
                     <Text style={{ ...Poststyle_Status.posttime, alignSelf: 'center' }}>{item.posttime}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center',borderRadius:10, borderColor: 'black',borderWidth:1, paddingStart:5, paddingEnd:5, }}>
-                        <TouchableOpacity onPress= {() => navigation.navigate('User Edit Knowledge',{item})}  style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                        <TouchableOpacity onPress= {() => navigation.navigate('Knowledge User Edit Knowledge',{item})}  style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                             <MaterialIcons name="edit" size={24} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress= {createTwoButtonAlert} style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -158,7 +158,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
             </PostImage>
 
             <PostText>
-                <TouchableOpacity onPress={() => navigation.push('User Detail Knowledge', { item })}>
+                <TouchableOpacity onPress={() => navigation.push('Knowledge User Detail Knowledge', { item })}>
                     <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ borderRadius: 5, backgroundColor: 'teal', padding: 5, alignSelf: 'flex-start', marginStart: 20 }}>

@@ -5,7 +5,7 @@ import { images, imagespost, Poststyle, Poststyle_Status } from '../../../styles
 
 import react from 'react';
 
-const KnowledgeMemberForKUser = ({ item, navigation }) => {
+const KnowledgeMemberForSUser = ({ item, navigation }) => {
      const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
     useEffect(() => {
@@ -48,7 +48,7 @@ const KnowledgeMemberForKUser = ({ item, navigation }) => {
         </PostImage>
         
         <PostText>
-            <TouchableOpacity  onPress={() => navigation.push('Knowledge User Detail Knowledge', { item })} >
+            <TouchableOpacity  onPress={() => navigation.push('Status User Detail Knowledge', { item })} >
                 <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                     <View style = {{ flexDirection: 'row'}}>
                         { CheckNew() == true ? null :
@@ -95,4 +95,4 @@ const KnowledgeMemberForKUser = ({ item, navigation }) => {
     )
 
 }
-export default react.memo(KnowledgeMemberForKUser);
+export default react.memo(KnowledgeMemberForSUser);

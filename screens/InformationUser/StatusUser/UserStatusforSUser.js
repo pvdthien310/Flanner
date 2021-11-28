@@ -1,41 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal, FlatList, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import {  FlatList, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import StatusMemberForSUser from '../../../components/UserInformation/StatusUserInfo/statusMemberForFriend';
 import { useSelector, useDispatch } from 'react-redux';
-import UserStatusMember from '../../components/UserInformation/StatusUserInfo/userStatusMember';
 import { MaterialIcons } from '@expo/vector-icons';
-import { URL_local } from '../../constant';
-
-
-
+import { URL_local } from '../../../constant';
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const UserStatus = ({ navigation }) => {
+const UserStatusForSUser = ({ navigation,route }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
-    const { user_status, data, loading } = useSelector(state => { return state.Status })
-    const {user} = useSelector(state => {return state.User})
+    const {user,status} = route.params
+    const [user_status, setUserStatus] = useState(status)
+    const [loading, Setloading] = useState(false)
 
     const pressgobackHandler = () => {
-        console.log(user_status)
+        
         navigation.goBack();
     }
     useEffect(() => {
         forceRerender
     }, [user_status])
-    const url = URL_local +  'status/load-data/' + user.userID
-    console.log(url)
+    useEffect(() => {
+        fetchStatusData()
+    }, [])
+   
     const fetchStatusData = () => {
-        
-       
-        
+        const url = URL_local +  'status/load-data/' + user.userID
+        console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(result => {
-                console.log(result)
-                dispatch({ type: 'ADD_USER_STATUS', payload: result })
+                setUserStatus(result)      
+                Setloading(false)  
+                forceRerender()
             }).catch(err => console.log('Error'));
     }
     return (
@@ -56,7 +56,7 @@ const UserStatus = ({ navigation }) => {
                             alignItems: 'center',
                             justifyContent: 'center', flexDirection: 'column'
                         }}>
-                            <Image source={require('../../assets/icon/NoNotification2.png')}
+                            <Image source={require('../../../assets/icon/NoNotification2.png')}
                                 resizeMode='contain'
                                 style={{
                                     width: 80,
@@ -79,7 +79,7 @@ const UserStatus = ({ navigation }) => {
                         showsVerticalScrollIndicator={false}
                         data={user_status}
                         renderItem={({ item }) => (
-                            <UserStatusMember item={item} navigation={navigation} />
+                            <StatusMemberForSUser item={item} navigation={navigation} />
                         )}
                         keyExtractor={item => item._id}
                         onRefresh={() => fetchStatusData()}
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
+        marginBottom:80,
         backgroundColor: 'whitesmoke'
 
     },
@@ -129,4 +130,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default UserStatus;
+export default UserStatusForSUser;

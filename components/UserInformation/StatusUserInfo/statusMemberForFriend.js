@@ -1,93 +1,27 @@
 import React, { useState, useEffect, memo } from 'react';
-import { Alert, StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
-import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../shared/post'
-import { UserInfo } from '../../shared/post'
-import { Poststyle } from '../../styles/poststyle'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
+import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../../shared/post'
+import { UserInfo } from '../../../shared/post'
+import { images, imagespost, Poststyle } from '../../../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { URL_local } from '../../constant';
+import { URL_local } from '../../../constant';
 
 
-const UserStatusMember = ({ item, navigation }) => {
+const StatusMemberForSUser = ({ item, navigation }) => {
 
     const dispatch = useDispatch();
     const {user}  = useSelector(state => state.User)
     const [pressed, setPressed] = useState(false)
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
+    const [data, setData] = useState(item)
 
-    const createTwoButtonAlert = () =>
-    Alert.alert(
-        
-      "Notification",
-      "Do you want to delete this post?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-        
-        },
-        { text: "OK", onPress: () => DeleteStatus() }
-      ]
-    );
-    const fetchStatusData = () => {
-        const url = URL_local + 'status/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_USER_STATUS', payload: result })
-            }).catch(err => console.log('Error'));
-    }
-    
-    const DeleteStatus = () => {
-        const deletedObject = {
-                id: item._id,
-                username: user.username,
-                userID: user.userID,
-                body: item.body,
-                avatar: user.avatar,
-                posttime: item.posttime,
-                listImage: item.listImage,
-                reactNumber: '0',
-                react: item.react
-        }
-        const url = URL_local + 'status/delete'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: item._id,
-                username: user.username,
-                userID: user.userID,
-                body: item.body,
-                avatar: user.avatar,
-                posttime: item.posttime,
-                listImage: item.listImage,
-                reactNumber: '0',
-                react: item.react
-            })
-        }).then(res => {
-            if (!res.ok) {             
-                dispatch({ type: 'DELETE_USER_STATUS_MEMBER', payload: deletedObject })
-                throw Error('Loi phat sinh')      
-            }    
-        }).then(data => {                   
-        }).catch(err => {
-            console.log("error", err)
-        })       
-        fetchStatusData()
-       
-    }
-    
     const LoadData = () => {
-        const url = URL_local +  'status/' + item._id.toString();
+       
+        const url =  URL_local+ 'status/' + item._id.toString();
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -96,6 +30,7 @@ const UserStatusMember = ({ item, navigation }) => {
                     setPressed(true)
                 else setPressed(false)
                  setReactnumber(result.react.length)
+                 setData(result)
             }).catch(err => console.log('Error'));
     }
     useEffect(() => {
@@ -111,7 +46,7 @@ const UserStatusMember = ({ item, navigation }) => {
             },
             body: JSON.stringify({
                 userID: item.userID,
-                message: ' liked your status',
+                message: 'Đã thích bài viết của bạn',
                 postID: item._id,
                 senderID: user.userID,
                 type: '2',
@@ -131,7 +66,6 @@ const UserStatusMember = ({ item, navigation }) => {
 
     }
     const removeNotification = () => {
-  
         const url = URL_local + 'notification/delete'
         fetch(url, {
             method: 'POST',
@@ -158,9 +92,10 @@ const UserStatusMember = ({ item, navigation }) => {
         })
     }
 
-    const PressHandle = () => {
+    const PressHandle1 = () => {
         // let numberReact = data.reactNumber;
-        const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        
+        const url_true =  URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
         const url_false = URL_local + 'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
@@ -229,8 +164,63 @@ const UserStatusMember = ({ item, navigation }) => {
     }
 
     
+        const PressHandle = () => {
+            //let numberReact = item.reactNumber;
+            const url_true = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/true/' + user.userID.toString();
+            const url_false = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/false/'  + user.userID.toString();
     
     
+            if (pressed == true) {
+                console.log(url_false)
+                fetch(url_false, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+    
+                    }
+                }).then(res => {
+                    if (!res.ok) {
+                        throw Error('Loi phat sinh')
+                    }
+                    else {
+                        return res.json()
+                    }
+                }).then((result) => {
+                    if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+                setReactnumber(result.reactNumber)
+
+                }).catch(err => {
+                    console.log("error", err)
+                })
+            }
+            else if (pressed == false) {
+                console.log(url_true)
+
+                fetch(url_true, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => {
+                    if (!res.ok) {
+                        throw Error('Loi phat sinh')
+                    }
+                    else {
+                        return res.json()
+                    }
+                }).then(result => {
+                    if ((result.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+                setReactnumber(result.reactNumber)
+
+                }).catch(err => {
+                    console.log("error", err)
+                })
+            }
+    }
 
     useEffect(() => {
         console.log('render post')
@@ -239,24 +229,18 @@ const UserStatusMember = ({ item, navigation }) => {
 
     return (
         <Post >
-             <View style={{ flexDirection: 'row',justifyContent:'flex-end',alignSelf:'flex-end' ,alignContent: 'flex-end',borderRadius:10, borderColor: 'black',borderWidth:1, paddingStart:5, paddingEnd:5,marginBottom:5 }}>
-                        <TouchableOpacity onPress= {() => navigation.navigate('User Edit Status',{item})}  style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
-                            <MaterialIcons name="edit" size={24} color="black" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress= {createTwoButtonAlert} style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Ionicons name="close" size={30} color="maroon" />
-                        </TouchableOpacity>
-                    </View>
             <UserInfo>
-                <Image source={{uri: user.avatar}} style={Poststyle.imageavatar} />
+                <Image source={{uri: item.avatar}} style={Poststyle.imageavatar} />
                 <UserInfoText>
-                    <Text style={Poststyle.name}> {user.name}</Text>
+                    <Text style={Poststyle.name}> {item.username}</Text>
                     <Text style={Poststyle.posttime}> {item.posttime}</Text>
                 </UserInfoText>
-               
             </UserInfo>
-            <PostText>            
+            <PostText>
+                {/* <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}> */}
                     <Text style={Poststyle.body}>{item.body}</Text>
+                  
+                {/* </TouchableOpacity> */}
             </PostText>
             <PostImage>
                 <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
@@ -274,12 +258,14 @@ const UserStatusMember = ({ item, navigation }) => {
 
                 />
             </PostImage>
-            <ReactNumber>
+            <TouchableOpacity onPress ={() => navigation.push('Status User Info Show React User', { data: item })}>
+            <ReactNumber  >
                 <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
             </ReactNumber>
+            </TouchableOpacity>
             <InteractionWrapper style={Poststyle.interactionwrapper}>
                 <TouchableOpacity style={Poststyle.buttonpost}
-                    onPress={PressHandle}>
+                    onPress={PressHandle1}>
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
                     <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
                 </TouchableOpacity>
@@ -295,4 +281,4 @@ const UserStatusMember = ({ item, navigation }) => {
     )
 
 }
-export default react.memo(UserStatusMember);
+export default react.memo(StatusMemberForSUser);

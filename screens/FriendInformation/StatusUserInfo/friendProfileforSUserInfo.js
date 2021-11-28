@@ -12,7 +12,7 @@ const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const FriendInfoForKnowledgeUserInfo = ({ navigation, route }) => {
+const FriendInfoForStatusUserInfo = ({ navigation, route }) => {
 
     const { item } = route.params;
 
@@ -136,12 +136,12 @@ const FriendInfoForKnowledgeUserInfo = ({ navigation, route }) => {
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity  onPress = {() => navigation.push('Knowledge User Friend Knowledge', {user: item[0], knowledge: knowledge})}  >
+                                <TouchableOpacity  onPress = {() => navigation.push('Status User Friend Knowledge', {user: item[0], knowledge: knowledge})}  >
                                     <View style={styles.button1}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity  onPress = {() => navigation.push('Knowledge User Friend Status', {user: item[0], status: status})}   >
+                                <TouchableOpacity  onPress = {() => navigation.push('Status User Friend Status', {user: item[0], status: status})}   >
                                     <View style={styles.button2}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
                                     </View>
@@ -299,4 +299,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default FriendInfoForKnowledgeUserInfo;
+export default FriendInfoForStatusUserInfo;
