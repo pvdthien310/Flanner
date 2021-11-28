@@ -9,7 +9,6 @@ import '../../constant.js'
 import { URL_local } from '../../constant.js';
 
 
-
 const Knowledge = ({ navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
@@ -54,7 +53,7 @@ const Knowledge = ({ navigation }) => {
             .then(res => res.json())
             .then(result => {
                 console.log('reset')
-                dispatch({ type:  'ADD_DATA_KNOWLEDGE', payload: result })
+                dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: result })
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
             }).catch(err => console.log('Error'));
     }
