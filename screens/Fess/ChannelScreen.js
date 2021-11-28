@@ -14,10 +14,18 @@ const ChannelScreen = () => {
 
     const channel = route.params?.channel;
 
+const onDoubleTapMessage = ({
+  actionHandlers
+}) => {
+  actionHandlers?.toggleReaction('love')
+};
+
     return (
         <SafeAreaProvider>
             <OverlayProvider>
-                <Channel  channel={channel}>
+                <Channel  channel={channel}
+                    onDoubleTapMessage={onDoubleTapMessage}
+                >
                     <MessageList />
                     <MessageInput />
                 </Channel>

@@ -40,12 +40,27 @@ export default function App() {
     // Montserrat_800ExtraBold
   });
 
+  const themeStyle = {
+  messageSimple: {
+    content: {
+      markdown: {
+        heading1: {
+          color: 'pink',
+        },
+        inlineCode: {
+          fontSize: 10
+        }
+      },
+    },
+  },
+};
+
   if (!fontsLoaded) {
     return null;
   }
   return (
     <RootSiblingParent>
-       <Chat client={client}>
+       <Chat client={client} style={themeStyle}>
       <Provider store={store}>
         <LoginStack />
       </Provider>
