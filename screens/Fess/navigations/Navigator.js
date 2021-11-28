@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Profile from '../../../components/Fess/Profiles'
+import GlobalPeople from '../../../components/Fess/GlobalPeople'
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Fess from './../FlannerChat';
@@ -35,7 +35,7 @@ const BottomTabNavigator = () => {
                 />
                  <Tab.Screen
                     name='People'
-                    component={Profile}
+                    component={GlobalPeople}
                     options={{
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(

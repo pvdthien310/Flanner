@@ -18,14 +18,10 @@ const Fess = ({navigation}) => {
                 {
                     id: user.userID,
                     name: user.name,
+                    image: user.avatar,
                 },
                 client.devToken(user.userID)
             );
-            
-            // const channel = client.channel("messaging", "notjustdev",{
-            //     name: "notJust.dev",
-            // });
-            // await channel.watch();
             setIsReady(true);
         };
         connectUser();
@@ -51,17 +47,6 @@ const Fess = ({navigation}) => {
             <SafeAreaProvider>
                 <OverlayProvider>
                     <ChannelList onSelect={onChannelPressed} filters={filters} />  
-                        {/* {selectedChannel ? (
-                        //    <Channel channel={selectedChannel}>
-                        //        <MessageList />
-                        //        <MessageInput />
-                        //        <Text style={{ marginTop: 50 }} onPress={() => setSelectedChannel(null)} > Go back</Text>
-                        //     </Channel>
-                        <ChannelScreen channel={selectedChannel} />
-                        ) : (
-                        <ChannelList onSelect={onChannelPressed} />  
-                        )} */}
-
                 </OverlayProvider>
             </SafeAreaProvider>
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Text, StyleSheet, Pressable} from 'react-native'
+import { Image, Text, StyleSheet, Pressable, Alert} from 'react-native'
 import {useChatContext} from "stream-chat-expo"
 import { useSelector, useDispatch } from 'react-redux';
 import {useNavigation} from '@react-navigation/core'
@@ -11,18 +11,39 @@ const UserListItem = ({tempUser}) => {
 
     const navigation = useNavigation();
 
+     const createOneButtonAlert = () =>
+        Alert.alert(
+            "Impossible!",
+            "Can not create talk to yourself",
+      [
+        {
+          text: "OK",
+          onPress: () => console.log("OK Pressed"),
+          style: "cancel"
+        },
+      ]
+    );
+
     const onPress = async () => {
         if(!tempUser.id || !user.userID)
         {
             return;
         }
-        const channel = client.channel("messaging", 
+        else
         {
-            members: [tempUser.id, user.userID],
-        })
-        await channel.watch();
-
-        navigation.navigate("Channel", {channel});
+            if(tempUser.id === user.userID)
+            {
+                createOneButtonAlert();
+            }else{
+                const channel = client.channel("messaging", 
+                {
+                    members: [tempUser.id, user.userID],
+                })
+                await channel.watch();
+                navigation.navigate("Channel", {channel});
+            }
+        }
+        
     }
 
     return (

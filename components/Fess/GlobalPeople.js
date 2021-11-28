@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View,Text,StyleSheet, FlatList} from 'react-native';
 import {useChatContext} from "stream-chat-expo";
-import UserListItem from "../../components/Fess/UserListItem";
+import UserListItem from "./UserListItem";
 
 
-const Profile = () => {
+const GlobalPeople = () => {
 
     const[users, setUsers] = useState([]);
     const[isLoading, setIsLoading] = useState(false);
@@ -33,7 +33,7 @@ const Profile = () => {
         </View>
     )
 }
-export default Profile;
+export default GlobalPeople;
 const styles = StyleSheet.create({
     container:{
         flex: 1,
