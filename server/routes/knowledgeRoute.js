@@ -1,10 +1,11 @@
 
 const KnowledgeRoute = require('express').Router();
 const Knowledge = require("../models/Knowledge");
+const jwt = require('jsonwebtoken')
 
 
 /// Delete member
-KnowledgeRoute.post('/delete',(req, res) => {
+KnowledgeRoute.post('/delete', (req, res) => {
     Knowledge.findByIdAndRemove(req.body.id)
         .then((data) => {
             res.send("delete lien")
@@ -95,23 +96,24 @@ KnowledgeRoute.post('/update', (req, res) => {
 
 KnowledgeRoute.post('/update/:id/true/:userID', (req, res) => {
     Knowledge.findById(req.params.id)
-    .then(data => {
-        if ((data.react).indexOf(req.params.userID) == -1)
-        {
-            // console.log(data)
-            Knowledge.findByIdAndUpdate(req.params.id,
-                { "$push": { "react": req.params.userID } },
-                { "new": true, "upsert": true }
-            ).then((data) => {
-                // console.log(data.react)      
-                res.send(data)}
+        .then(data => {
+            if ((data.react).indexOf(req.params.userID) == -1) {
+                // console.log(data)
+                Knowledge.findByIdAndUpdate(req.params.id,
+                    { "$push": { "react": req.params.userID } },
+                    { "new": true, "upsert": true }
+                ).then((data) => {
+                    // console.log(data.react)      
+                    res.send(data)
+                }
                 )
-                .catch(err => console.log(err))
+                    .catch(err => console.log(err))
+            }
+            else
+                res.send(data)
         }
-        else          
-        res.send(data)}
         )
-    .catch(err => console.log(err))
+        .catch(err => console.log(err))
     // Knowledge.findByIdAndUpdate(req.params.id,
     //     { "$push": { "react": req.params.userID } },
     //     { "new": true, "upsert": true }
@@ -129,17 +131,17 @@ KnowledgeRoute.post('/update/:id/false/:userID', (req, res) => {
         { "$pull": { "react": req.params.userID } },
         { "new": true, "upsert": true }
     ).then((data) => {
-        res.send(data)  
+        res.send(data)
         // console.log(data.react)      
     })
         .catch(err => console.log(err))
 })
 KnowledgeRoute.post('/update/:id', (req, res) => {
 
-    Knowledge.findByIdAndUpdate(req.params.id,req.params,
+    Knowledge.findByIdAndUpdate(req.params.id, req.params,
         { "new": true, "upsert": true }
     ).then((data) => {
-        res.send(data)  
+        res.send(data)
         // console.log(data.react)      
     })
         .catch(err => console.log(err))
@@ -154,25 +156,46 @@ KnowledgeRoute.get('/:id', (req, res) => {
         .catch(err => console.log(err))
 })
 
-KnowledgeRoute.get('/load-data/:userID', (req,res) => {
-    Knowledge.find({userID : req.params.userID})
-    .then(data => {
-        // console.log(data)
-     res.send(data)})
-    .catch(err => console.log(err))
+KnowledgeRoute.get('/load-data/:userID', (req, res) => {
+    Knowledge.find({ userID: req.params.userID })
+        .then(data => {
+            // console.log(data)
+            res.send(data)
+        })
+        .catch(err => console.log(err))
 })
 
 /// Get all members
-KnowledgeRoute.get('/', (req, res) => {
+KnowledgeRoute.get('/',authenToken, (req, res) => {
     Knowledge.find({})
         .then(data => {
-            res.send(data)
+            res.send(data);
         }).catch(err => {
-            console.log(err)
+            console.log(err);
         })
 })
-KnowledgeRoute.get('/load-data/newsfeed/random',  (req, res) => {
-    Knowledge.aggregate([{$sample: {size : 10}}])
+
+function authenToken(req, res, next) {
+    const authorizationHeader = req.headers['x-access-token'];
+    const token = authorizationHeader;
+    console.log(token);
+    if (!token) {
+        res.status(401).send('Token het han');
+        return;
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+        console.log(err, data);
+        if (err) {
+            res.sendStatus(401);
+            return;
+        }
+        next();
+    })
+
+}
+
+KnowledgeRoute.get('/load-data/newsfeed/random', (req, res) => {
+    Knowledge.aggregate([{ $sample: { size: 10 } }])
         .then(data => {
             res.send(data)
         }).catch(err => {

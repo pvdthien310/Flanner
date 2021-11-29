@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator,Text, Button } from 'react-native';
 import { globalStyles } from '../../styles/global';
 
 import KnowledgeMember from '../../components/Knowledge/knowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 import '../../constant.js'
 import { URL_local } from '../../constant.js';
+
+
+
 
 
 
@@ -14,6 +16,8 @@ const Knowledge = ({ navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
+    const { accessToken } = useSelector(state => { return state.JWT })
+
     
     const { user } = useSelector(state => { return state.User })
 
@@ -50,6 +54,7 @@ const Knowledge = ({ navigation }) => {
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
             }).catch(err => console.log('Error'));
     }
+    
     useEffect(() => {
         // fetchData();
         fetchKnowledgeData();
@@ -62,8 +67,24 @@ const Knowledge = ({ navigation }) => {
         forceRerender
     }, [data])
 
+    const Load = () => {
+        // const url = URL_local + 'knowledge/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         // console.log(result)
+        //         console.log(result)
+        //     }).catch(err => console.log('Error'));
+        
+       
+    }
+    
+    
+  
     return (
         <View style={globalStyles.container}>
+            <Button title = 'ssss' onPress = {() => Load()}></Button>
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :

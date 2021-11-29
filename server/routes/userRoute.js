@@ -29,7 +29,7 @@ const value = {
     })
 } 
 /// Get all members
-UserRoute.get('/',authenToken, (req, res) => {
+UserRoute.get('/', (req, res) => {
     User.find({})
         .then(data => {
             res.send(data)
