@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import UserStatusMember from '../../components/UserInformation/StatusUserInfo/userStatusMember';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
+import StatusApi from '../../API/StatusAPI';
 
 
 
@@ -25,18 +26,21 @@ const UserStatus = ({ navigation }) => {
     useEffect(() => {
         forceRerender
     }, [user_status])
-    const url = URL_local +  'status/load-data/' + user.userID
-    console.log(url)
+    // const url = URL_local +  'status/load-data/' + user.userID
+    // console.log(url)
     const fetchStatusData = () => {
-        
-       
-        
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                console.log(result)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         console.log(result)
+        //         dispatch({ type: 'ADD_USER_STATUS', payload: result })
+        //     }).catch(err => console.log('Error'));
+
+            StatusApi.getStatusUser(user.userID)
+            .then(res => {
                 dispatch({ type: 'ADD_USER_STATUS', payload: result })
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log(err))
     }
     return (
         <View style={styles.container}>

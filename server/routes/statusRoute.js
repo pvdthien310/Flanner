@@ -1,6 +1,8 @@
 
 const StatusRoute = require('express').Router();
 const Status = require("../models/Status")
+const jwt = require('jsonwebtoken')
+
 
 
 /// Delete member
@@ -58,6 +60,24 @@ StatusRoute.post('/update', (req, res) => {
     
 })
 
+function authenToken(req, res, next) {
+    const authorizationHeader = req.headers['x-access-token'];
+    const token = authorizationHeader;
+    console.log(token);
+    if (!token) {
+        res.status(401).send('Token het han');
+        return;
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+        console.log(err, data);
+        if (err) {
+            res.sendStatus(401);
+            return;
+        }
+        next();
+    })
+}
+
 //Get a member by ID
 StatusRoute.get('/:id', (req,res) => {
     Status.findById(req.params.id)
@@ -66,7 +86,7 @@ StatusRoute.get('/:id', (req,res) => {
 })
 
 
-StatusRoute.get('/load-data/:userID', (req,res) => {
+StatusRoute.get('/load-data/:userID',authenToken, (req,res) => {
     Status.find({userID : req.params.userID})
     .then(data => res.send(data))
     .catch(err => console.log(err))

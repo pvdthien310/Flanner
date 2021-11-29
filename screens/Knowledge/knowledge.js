@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator,Text, Button } from 'react-native';
+import { View, FlatList, ActivityIndicator, Text, Button } from 'react-native';
 import { globalStyles } from '../../styles/global';
 
 import KnowledgeMember from '../../components/Knowledge/knowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
 import '../../constant.js'
 import { URL_local } from '../../constant.js';
+import KnowLedgeApi from '../../API/KnowledgeAPI';
+import StatusApi from '../../API/StatusAPI';
+import NotificationApi from '../../API/NotificationAPI';
 
 
 
@@ -16,50 +19,39 @@ const Knowledge = ({ navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Knowledge })
-    const { accessToken } = useSelector(state => { return state.JWT })
-
-    
     const { user } = useSelector(state => { return state.User })
-
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                // console.log(result)
-                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
-            }).catch(err => console.log('Error'));
+        KnowLedgeApi.getKnowledgeUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
+            })
+            .catch(err => console.log('Error'))
     }
     const fetchStatusData = () => {
-        const url = URL_local + 'status/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_USER_STATUS', payload: result })
+        StatusApi.getStatusUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_STATUS', payload: res })
                 dispatch({ type: 'SET_LOADING_STATUS', payload: false })
-
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log('Error'))
     }
 
     const fetchNewData = () => {
-        const url = URL_local + 'knowledge/load-data/newsfeed/random'
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                console.log('reset')
-                dispatch({ type:  'ADD_DATA_KNOWLEDGE', payload: result })
+        KnowLedgeApi.getRandom()
+            .then(res => {
+                dispatch({ type: 'ADD_DATA_KNOWLEDGE', payload: res })
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log(err))
+           
     }
-    
-    useEffect(() => {
-        // fetchData();
+
+    useEffect( () => {
+        
         fetchKnowledgeData();
         fetchNewData();
         fetchStatusData();
+        forceRerender
     }
         , [])
 
@@ -68,23 +60,22 @@ const Knowledge = ({ navigation }) => {
     }, [data])
 
     const Load = () => {
-        // const url = URL_local + 'knowledge/load-data/' + user.userID
-        // console.log(url)
-        // fetch(url)
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         // console.log(result)
-        //         console.log(result)
-        //     }).catch(err => console.log('Error'));
-        
-       
+        const test = {
+            userID: 'aaaaaa',
+            message: ' liked your post ',
+            postID: '11112333',
+            senderID: user.userID,
+            type: '1',
+            action: 'React'
+        }
+        NotificationApi.sendNoti(test)
+        .then(res => console.log('aaa'))
+        .catch(err => console.log(err))
     }
-    
-    
-  
+
     return (
         <View style={globalStyles.container}>
-            <Button title = 'ssss' onPress = {() => Load()}></Button>
+            <Button title = 'aaaa' onPress = {() => Load()}></Button>
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :

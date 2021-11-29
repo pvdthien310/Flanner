@@ -1,5 +1,6 @@
 
 import axios from 'axios'
+import {AsyncStorage} from 'react-native';
 import { URL_local } from '../constant.js';
 import JWTApi from './JWTAPI.js';
 
@@ -7,8 +8,6 @@ import JWTApi from './JWTAPI.js';
 // const { refreshToken } = useSelector(state => { return state.JWT })
 // const { accessToken } = useSelector(state => { return state.JWT });
 
-let refreshToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoaWVuZGkiLCJpYXQiOjE2MzgxMjEyNzl9.tj2ANRM7TQQ9GgAAAqe0vgDCUPB65-91KeDtdgK-rAI';
-let accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoaWVuZGkiLCJpYXQiOjE2MzgxMTc1MTIsImV4cCI6MTYzODExNzU0Mn0.7VyjZ6e86_Ri6kgIqsPBmRqmWfUAdtONSs36l-Tkcb8';
 
 const DatabaseClient = axios.create({
     baseURL: URL_local,
@@ -18,8 +17,8 @@ const DatabaseClient = axios.create({
 });
 
 DatabaseClient.interceptors.request.use(
-    config => {
-        const token = accessToken
+    async (config) => {
+        let token = await AsyncStorage.getItem('accessToken');
         if (token) {
             config.headers["x-access-token"] = token;
         }
@@ -29,6 +28,7 @@ DatabaseClient.interceptors.request.use(
         return Promise.reject(error)
     }
 )
+
 DatabaseClient.interceptors.response.use(
     res => {
         return res;
@@ -40,8 +40,9 @@ DatabaseClient.interceptors.response.use(
                 if (err.response.status === 401 && !originalConfig._retry) {
                     originalConfig._retry = true;
                     try {
+                        const refreshToken = await AsyncStorage.getItem('refreshToken');
                         const rs = await JWTApi.getRefreshToken(refreshToken);
-                        accessToken = rs.accessToken;
+                        await AsyncStorage.setItem('accessToken',rs.accessToken)
                         return DatabaseClient(originalConfig);
                     }
                     catch (_error) {

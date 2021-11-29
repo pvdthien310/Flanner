@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../constant';
+import KnowLedgeApi from '../../API/KnowledgeAPI';
 
 
 const DetailKnowledge = ({ route, navigation }) => {
@@ -38,7 +39,7 @@ const DetailKnowledge = ({ route, navigation }) => {
             },
             body: JSON.stringify({
                 userID: data.userID,
-                message: 'Đã thích bài viết của bạn',
+                message: ' liked your post ',
                 postID: data._id,
                 senderID: user.userID,
                 type: '1',
@@ -85,20 +86,29 @@ const DetailKnowledge = ({ route, navigation }) => {
     }
 
     const fetchData = () => {
-        const url = URL_local + 'knowledge/' + item._id.toString();
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                setData(result)
-                setLoading(false)
-                if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            }).catch(err => {
-                setIsNull(true)
-                console.log('Error')
-            });
+        // const url = URL_local + 'knowledge/' + item._id.toString();
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         setData(result)
+        //         setLoading(false)
+        //         if ((result.react).indexOf(user.userID) != -1)
+        //             setPressed(true)
+        //         else setPressed(false)
+        //     }).catch(err => {
+        //         setIsNull(true)
+        //         console.log('Error')
+        //     });
+        KnowLedgeApi.getItem(item._id.toString())
+        .then(res => {
+            setData(res)
+            setLoading(false)
+            if ((res.react).indexOf(user.userID) != -1)
+                setPressed(true)
+            else setPressed(false)
+        })
+        .catch(err => console.log(err))
     }
     const fetchHostData = () => {
         const url = URL_local + 'user/load-user-by-userID/' + item.userID;

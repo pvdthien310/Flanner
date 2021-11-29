@@ -6,6 +6,7 @@ import { useFocusEffect } from '@react-navigation/core';
 import { useSelector, useDispatch } from 'react-redux';
 import NotificationMember from '../../components/notificationMember';
 import { URL_local } from '../../constant';
+import NotificationApi from '../../API/NotificationAPI';
 
 
 const SystemNotification = ({ navigation }) => {
@@ -18,13 +19,21 @@ const SystemNotification = ({ navigation }) => {
     const fetchData = () => {
         console.log(url)
         setLoading2(true)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {             
-                dispatch({ type: 'ADD_USER_SYSTEM_NOTIFICATION', payload: result })
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {             
+        //         dispatch({ type: 'ADD_USER_SYSTEM_NOTIFICATION', payload: result })
+        //         dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
+        //         setLoading2(false)
+        //     }).catch(err => console.log('Error'));
+
+            NotificationApi.getSystem(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_SYSTEM_NOTIFICATION', payload: res })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
                 setLoading2(false)
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log(err))
     }
     useEffect(() => {
         fetchData();}

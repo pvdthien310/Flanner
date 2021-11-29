@@ -39,7 +39,7 @@ app.use('/get-refreshToken', (req, res) => {
         if (err) res.sendStatus(403);
         const accessToken = jwt.sign({ username: data.username },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: 600000 }
+            { expiresIn: '30s' }
         );
         res.json({ accessToken });
     })

@@ -176,17 +176,12 @@ export default function SignInScreen({ navigation }) {
                     _storeData()
                     JWTApi.getToken().then(
                         res => {
-                            dispatch({ type: 'ADD_JWT_DATA', payload: res })
-                            console.log(res)
-                            KnowLedgeApi.getAll().then(
-                                res => console.log('alo',res),
-                                err => console.log('al2o',err),
-                            )
+                          navigation.navigate('DrawerStack')
                         }
                     )
                     
 
-                    // navigation.navigate('DrawerStack')
+                    
                 }
                 else {
                     let toast = Toast.show('Password is incorrect', {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import NotificationApi from '../../API/NotificationAPI';
 import NotificationMember from '../../components/notificationMember'
 import { URL_local } from '../../constant';
 
@@ -21,14 +22,22 @@ const KnowledgeNotification = ({ navigation }) => {
         console.log(url)
         setLoading2(true)
 
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_USER_KNOWLEDGE_NOTIFICATION', payload: result })
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         dispatch({ type: 'ADD_USER_KNOWLEDGE_NOTIFICATION', payload: result })
+        //         dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
+        //         setLoading2(false)
+
+        //     }).catch(err => console.log('Error'));
+
+            NotificationApi.getKnowledge(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_KNOWLEDGE_NOTIFICATION', payload: res })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
                 setLoading2(false)
-
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log(err))
     }
     useEffect(() => {
         fetchData();

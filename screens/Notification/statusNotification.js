@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity,ActivityIndicator,FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import NotificationApi from '../../API/NotificationAPI';
 import NotificationMember from '../../components/notificationMember';
 import { URL_local } from '../../constant';
 
@@ -11,18 +12,27 @@ const StatusNotification = ({ navigation }) => {
     const { user } = useSelector(state => state.User)
     const { user_status_notification, loading } = useSelector(state => { return state.Notification })
     const [loading2, setLoading2] = useState(false)
-    const url = URL_local +'notification/load-data/' + user.userID + '/status';
+    const url = URL_local +'/notification/load-data/' + user.userID + '/status';
     const fetchData = () => {
         console.log(url)
         setLoading2(true)
 
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {             
-                dispatch({ type: 'ADD_USER_STATUS_NOTIFICATION', payload: result })
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {             
+        //         dispatch({ type: 'ADD_USER_STATUS_NOTIFICATION', payload: result })
+        //         dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
+        //         setLoading2(false)
+        //     }).catch(err => console.log('Error'));
+
+            NotificationApi.getStatus(user.userID)
+            .then(res => {
+                console.log(res)
+                dispatch({ type: 'ADD_USER_STATUS_NOTIFICATION', payload: res })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
                 setLoading2(false)
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log(err))
     }
     useEffect(() => {
         fetchData();}

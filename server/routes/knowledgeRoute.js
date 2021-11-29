@@ -59,40 +59,6 @@ KnowledgeRoute.post('/update', (req, res) => {
             console.log(err)
         })
 })
-// KnowledgeRoute.post('/update/:id/:number/true/:userID', (req, res) => {
-//     let _number = parseInt(req.params.number) + 1;
-
-//     Knowledge.findByIdAndUpdate(req.params.id, { "reactNumber": _number.toString() }, { new: true })
-//         .then((data) => {
-//             Knowledge.findByIdAndUpdate(req.params.id,
-//                 { "$push": { "react": req.params.userID } },
-//                 { "new": true, "upsert": true }
-
-//             ).then((data) => res.send(data))
-//                 .catch(err => console.log(err))
-//         }).catch(err => {
-//             console.log(err)
-//         })
-
-
-
-// })
-// KnowledgeRoute.post('/update/:id/:number/false/:userID', (req, res) => {
-//     let _number = parseInt(req.params.number) - 1;
-
-//     Knowledge.findByIdAndUpdate(req.params.id, { "reactNumber": _number.toString() }, { new: true })
-//         .then((data) => {
-//             Knowledge.findByIdAndUpdate(req.params.id,
-//                 { "$pull": { "react": req.params.userID } },
-//                 { "new": true, "upsert": true }
-
-//             ).then((data) => res.send(data))
-//                 .catch(err => console.log(err))
-//         }).catch(err => {
-//             console.log(err)
-//         })
-// })
-
 
 KnowledgeRoute.post('/update/:id/true/:userID', (req, res) => {
     Knowledge.findById(req.params.id)
@@ -114,14 +80,6 @@ KnowledgeRoute.post('/update/:id/true/:userID', (req, res) => {
         }
         )
         .catch(err => console.log(err))
-    // Knowledge.findByIdAndUpdate(req.params.id,
-    //     { "$push": { "react": req.params.userID } },
-    //     { "new": true, "upsert": true }
-    // ).then((data) => {
-    //     console.log(data.react)      
-    //     res.send(data)}
-    //     )
-    //     .catch(err => console.log(err))
 })
 
 
@@ -150,13 +108,13 @@ KnowledgeRoute.post('/update/:id', (req, res) => {
 
 
 //Get a member by ID
-KnowledgeRoute.get('/:id', (req, res) => {
+KnowledgeRoute.get('/:id',authenToken,  (req, res) => {
     Knowledge.findById(req.params.id)
         .then(data => res.send(data))
         .catch(err => console.log(err))
 })
 
-KnowledgeRoute.get('/load-data/:userID', (req, res) => {
+KnowledgeRoute.get('/load-data/:userID', authenToken, (req, res) => {
     Knowledge.find({ userID: req.params.userID })
         .then(data => {
             // console.log(data)
@@ -166,7 +124,7 @@ KnowledgeRoute.get('/load-data/:userID', (req, res) => {
 })
 
 /// Get all members
-KnowledgeRoute.get('/',authenToken, (req, res) => {
+KnowledgeRoute.get('/', authenToken, (req, res) => {
     Knowledge.find({})
         .then(data => {
             res.send(data);
@@ -194,7 +152,7 @@ function authenToken(req, res, next) {
 
 }
 
-KnowledgeRoute.get('/load-data/newsfeed/random', (req, res) => {
+KnowledgeRoute.get('/load-data/newsfeed/random', authenToken, (req, res) => {
     Knowledge.aggregate([{ $sample: { size: 10 } }])
         .then(data => {
             res.send(data)
