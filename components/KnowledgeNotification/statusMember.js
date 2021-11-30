@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../shared/post'
 import { UserInfo } from '../../shared/post'
-import { images, imagespost, Poststyle } from '../../styles/poststyle'
+import {  Poststyle } from '../../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';

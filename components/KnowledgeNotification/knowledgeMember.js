@@ -1,9 +1,8 @@
 import React, { useState, useEffect, memo } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, DatePickerIOS, } from 'react-native';
-import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber1 } from '../../shared/post'
-import { images, imagespost, Poststyle, Poststyle_Status } from '../../styles/poststyle'
-import { Ionicons } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
+import Post, { PostImage, PostText} from '../../shared/post'
+import {  Poststyle, Poststyle_Status } from '../../styles/poststyle'
+
 import react from 'react';
 
 const KnowledgeMemberForKnowledgeNoti = ({ item, navigation }) => {
