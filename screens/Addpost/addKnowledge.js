@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/core';
 import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { URL_local } from '../../constant';
+import KnowLedgeApi from '../../API/KnowledgeAPI';
 
 
 
@@ -29,15 +30,20 @@ export default function AddKnowledge({ route, navigation }) {
     
 
     const fetchKnowledgeData = () => {
-        const url =  URL_local + 'knowledge/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                 console.log(result)
-                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
-            }).catch(err => console.log('Error'));
-       
+        // const url =  URL_local + 'knowledge/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //          console.log(result)
+               
+        //     }).catch(err => console.log('Error'));
+            KnowLedgeApi.getKnowledgeUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
+            })
+            .catch(err => console.log('Error Load User Knowledge'))
+           
     }
 
     const pressgobackHandler = () => {
@@ -99,36 +105,40 @@ export default function AddKnowledge({ route, navigation }) {
                 posttime: d.toUTCString(),
                 listImage: picture,
                 react: [],
-                reactNumber: '0'
+                reactNumber: '0',
+                mode: 'public'
         }
 
-        const url =  URL_local +'knowledge/send-data'
-        fetch( url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: user.name,
-                body: body,
-                userID: user.userID,
-                title : title,
-                description: description,
-                avatar: user.avatar,
-                posttime: d.toUTCString(),
-                listImage: picture,
-                react: [],
-                reactNumber: '0'
-            })
-        }).then(res => {
+        // const url =  URL_local +'knowledge/send-data'
+        // fetch( url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         username: user.name,
+        //         body: body,
+        //         userID: user.userID,
+        //         title : title,
+        //         description: description,
+        //         avatar: user.avatar,
+        //         posttime: d.toUTCString(),
+        //         listImage: picture,
+        //         react: [],
+        //         reactNumber: '0'
+        //     })
+        // }).then(res => {
             
-            return res.json()                
-        }).then(data => {
+        //     return res.json()                
+        // }).then(data => {
            
-        }).catch(err => {        
+        // }).catch(err => {        
             
-            console.log("error", err)
-        })
+        //     console.log("error", err)
+        // })
+        KnowLedgeApi.AddPost(newPost)
+        .then(res => {})
+        .catch(err => console.log('Error Add New Knowledge'))
        
         fetchKnowledgeData()
         navigation.goBack();

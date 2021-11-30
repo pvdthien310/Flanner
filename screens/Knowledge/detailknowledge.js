@@ -127,7 +127,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                     setPressed(true)
                 else setPressed(false)
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setIsNull(true)
+                console.log(err)})
     }
     const fetchHostData = () => {
         // const url = URL_local + 'user/load-user-by-userID/' + item.userID;

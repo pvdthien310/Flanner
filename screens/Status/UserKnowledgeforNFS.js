@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
 import KnowledgeMemberForStatus from '../../components/Status/knowledgeMember';
+import KnowLedgeApi from '../../API/KnowledgeAPI';
 
 
 
@@ -30,15 +31,13 @@ const UserKnowledgeForNFS = ({ navigation, route }) => {
         
     }, [])
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {      
-                setUserKnowledge(result)      
+            KnowLedgeApi.getKnowledgeUser(user.userID)
+            .then(res => {
+                setUserKnowledge(res)      
                 Setloading(false)  
                 forceRerender()
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log('Error Load User Knowledge'))
        
     }
     return (

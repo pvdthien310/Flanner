@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 
 /// Delete member
-StatusRoute.post('/delete', (req, res) => {
+StatusRoute.post('/delete',authenToken, (req, res) => {
     Status.findByIdAndRemove(req.body.id)
         .then((data) => {
             console.log("Delete Success")
@@ -17,7 +17,7 @@ StatusRoute.post('/delete', (req, res) => {
 })
 
 /// Add new member
-StatusRoute.post('/send-data', (req, res) => {
+StatusRoute.post('/send-data',authenToken, (req, res) => {
     const newStatus = new Status({
         username: req.body.username,
         userID: req.body.userID,
@@ -31,7 +31,7 @@ StatusRoute.post('/send-data', (req, res) => {
     console.log(newStatus)
     newStatus.save()
         .then((data) => {
-            console.log(data)
+            // console.log(data)
             res.send("Add Success")
         })
         .catch(err => {
@@ -40,7 +40,7 @@ StatusRoute.post('/send-data', (req, res) => {
 })
 
 /// Update member by ID
-StatusRoute.post('/update', (req, res) => {
+StatusRoute.post('/update',authenToken, (req, res) => {
     Status.findByIdAndUpdate(req.body.id, {
         username: req.body.username,
         userID: req.body.userID,
@@ -52,7 +52,7 @@ StatusRoute.post('/update', (req, res) => {
         reactNumber: req.body.reactNumber
     })
         .then((data) => {
-            console.log(data)
+            // console.log(data)
         }).catch(err => {
             console.log(err)
         })
@@ -93,10 +93,10 @@ StatusRoute.get('/load-data/:userID', authenToken, (req, res) => {
 
 
 /// Get all members
-StatusRoute.get('/', (req, res) => {
+StatusRoute.get('/',authenToken, (req, res) => {
     Status.find({})
         .then(data => {
-            console.log(data)
+            // console.log(data)
             res.send(data)
         }).catch(err => {
             console.log(err)

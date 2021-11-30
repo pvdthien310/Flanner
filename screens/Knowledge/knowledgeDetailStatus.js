@@ -90,7 +90,7 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
             message: ' liked your post ',
             postID: data._id,
             senderID: user.userID,
-            type: '1',
+            type: '2',
             action: 'React'
         }).then(res => { })
             .catch(err => console.log('Error send noti'))
@@ -127,7 +127,7 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
             userID: data.userID,
             postID: data._id,
             senderID: user.userID,
-            type: '1',
+            type: '2',
             action: 'React'
         }).then(res => { })
             .catch(err => console.log('Error removed noti'))

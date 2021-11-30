@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { useState, useEffect} from 'react';
-import { StyleSheet, ActivityIndicator,Alert, Text, View,TouchableWithoutFeedback ,ScrollView, SafeAreaView, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, ActivityIndicator, Alert, Text, View, TouchableWithoutFeedback, ScrollView, SafeAreaView, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard } from 'react-native';
 import { images } from '../../styles/poststyle'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
+import StatusApi from '../../API/StatusAPI';
 
 
 
@@ -18,10 +19,10 @@ const { height } = Dimensions.get("screen");
 
 export default function AddStatus({ route, navigation }) {
 
-    const {user}  = useSelector(state => state.User)
+    const { user } = useSelector(state => state.User)
     const [image, setImage] = useState([]);
     const [textinput, setTextinput] = useState('');
-    const [loading,setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const Add = (val) => {
         setTextinput(val);
     }
@@ -32,13 +33,18 @@ export default function AddStatus({ route, navigation }) {
         navigation.goBack();
     }
     const fetchStatusData = () => {
-        const url = URL_local + 'status/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_USER_STATUS', payload: result })
-            }).catch(err => console.log('Error'));
+        // const url = URL_local + 'status/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         dispatch({ type: 'ADD_USER_STATUS', payload: result })
+        //     }).catch(err => console.log('Error'));
+        StatusApi.getStatusUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_STATUS', payload: res })
+            })
+            .catch(err => console.log(err))
     }
     const HandleUpImages = (photo) => {
         setLoading(true)
@@ -58,7 +64,7 @@ export default function AddStatus({ route, navigation }) {
             .then(data => {
                 //console.log(data.url);
                 setPicture((current) => {
-                    return [...current, { url: data.url, key: Math.random().toString(),uri: photo.uri  }]
+                    return [...current, { url: data.url, key: Math.random().toString(), uri: photo.uri }]
                 });
                 // console.log(picture)
                 setLoading(false)
@@ -68,35 +74,49 @@ export default function AddStatus({ route, navigation }) {
 
     }
     const SendNewpost = () => {
-        setLoading(true)
+        // setLoading(true)
+        
+        // const url = URL_local + 'status/send-data'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         username: user.name,
+        //         userID: user.userID,
+        //         body: textinput,
+        //         avatar: user.avatar,
+        //         posttime: d.toUTCString(),
+        //         listImage: picture,
+        //         reactNumber: '0',
+        //         react: [],
+        //     })
+        // }).then(res => {
+        //     if (!res.ok) {
+        //         throw Error('Loi phat sinh')
+        //     }
+        //     else
+        //         return res.json()
+        // }).then(data => {
+
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })
         const d = new Date();
-        const url = URL_local + 'status/send-data'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: user.name,
-                userID: user.userID,
-                body: textinput,
-                avatar: user.avatar,
-                posttime: d.toUTCString(),
-                listImage: picture,
-                reactNumber: '0',
-                react: [],
-            })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-                return res.json()
-        }).then(data => {
-          
-        }).catch(err => {
-            console.log("error", err)
+        StatusApi.AddPost({
+            username: user.name,
+            userID: user.userID,
+            body: textinput,
+            avatar: user.avatar,
+            posttime: d.toUTCString(),
+            listImage: picture,
+            reactNumber: '0',
+            react: [],
+            mode: 'public'
         })
+            .then(res => { })
+            .catch(err => console.log('Error Add New Knowledge'))
 
         fetchStatusData()
         navigation.goBack();
@@ -150,14 +170,14 @@ export default function AddStatus({ route, navigation }) {
 
     const DeleteImagelist = (key) => {
         setLoading(true)
-        const deletedimg = image.filter(member => member.key == key )
+        const deletedimg = image.filter(member => member.key == key)
         console.log(deletedimg)
         console.log(deletedimg[0].uri)
         setImage(() => {
             return image.filter(member => member.key != key)
         })
         setPicture(() => {
-            return picture.filter(member =>member.uri != deletedimg[0].uri)
+            return picture.filter(member => member.uri != deletedimg[0].uri)
         })
         setLoading(false)
     };
@@ -193,21 +213,21 @@ export default function AddStatus({ route, navigation }) {
     return (
 
         <SafeAreaView style={styles.post} >
-            
-            <View style ={{flexDirection: 'row'}}>
-            <TouchableOpacity style ={{width: 45}} onPress={pressgobackHandler}>
-                            <View style={{ flexDirection: 'row', margin: 10,width: 40 }}>
-                                <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                            </View>
-            </TouchableOpacity>
-            <View style ={{flexDirection: 'row',flex: 1,justifyContent:'center',alignItems:'center'}}>
-                <Text style ={styles.namepage}> Add Status</Text>
-            </View>
+
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
+                    <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
+                        <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                    </View>
+                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.namepage}> Add Status</Text>
+                </View>
             </View>
 
-               
+
             <View style={styles.userinfo} >
-                <Image source={{uri: user.avatar }} style={styles.imageavatar} />
+                <Image source={{ uri: user.avatar }} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
                     <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>
@@ -217,11 +237,11 @@ export default function AddStatus({ route, navigation }) {
 
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
                     <TextInput
-                    clearButtonMode = 'always'
+                        clearButtonMode='always'
                         multiline={true}
                         style={styles.body}
                         onChangeText={Add}
-                        placeholder= "Write a caption..."
+                        placeholder="Write a caption..."
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Share your experience.</Text>
@@ -265,28 +285,28 @@ export default function AddStatus({ route, navigation }) {
 
 
                 />
-                 {loading ? 
-                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
-                
-                 <ActivityIndicator size="small" color="black" /> 
-                <TouchableOpacity activeOpacity ={1}>
-                    <View style={styles.postbutton1}
-                    >
-                        <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
-                        <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                {loading ?
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+
+                        <ActivityIndicator size="small" color="black" />
+                        <TouchableOpacity activeOpacity={1}>
+                            <View style={styles.postbutton1}
+                            >
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                                <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                </View>
-                : 
-                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
-               <TouchableOpacity onPress={SendNewpost} >
-                   <View style={styles.postbutton}
-                   >
-                       <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
-                       <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
-                   </View>
-               </TouchableOpacity>
-               </View> }
+                    :
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={SendNewpost} >
+                            <View style={styles.postbutton}
+                            >
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                                <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
 
@@ -312,9 +332,9 @@ const styles = StyleSheet.create({
 
 
     },
-    namepage:{
-      fontFamily: 'nunitobold',
-      fontSize: 20 ,
+    namepage: {
+        fontFamily: 'nunitobold',
+        fontSize: 20,
     },
     headerImage: {
 

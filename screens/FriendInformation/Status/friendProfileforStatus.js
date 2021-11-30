@@ -6,6 +6,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../../constant';
+import KnowLedgeApi from '../../../API/KnowledgeAPI';
+import StatusApi from '../../../API/StatusAPI';
 
 
 const { height } = Dimensions.get("screen");
@@ -31,20 +33,31 @@ const FriendInfoForStatus = ({ navigation, route }) => {
         CountPost
         , [])
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + item[0].userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
+        // const url = URL_local + 'knowledge/load-data/' + item[0].userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         setKnowledge(result)
+        //         console.log('bbb')
+        //     }).catch(err => console.log('Error'));
+            KnowLedgeApi.getKnowledgeUser(item[0].userID)
             .then(result => {
                 setKnowledge(result)
                 console.log('bbb')
             }).catch(err => console.log('Error'));
     }
     const fetchStatusData = () => {
-        const url = URL_local + 'status/load-data/' + item[0].userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
+        // const url = URL_local + 'status/load-data/' + item[0].userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         console.log('aaa')
+        //         setStatus(result)
+        //         CountPost()
+        //     }).catch(err => console.log('Error'));
+            StatusApi.getStatusUser(item[0].userID)
             .then(result => {
                 console.log('aaa')
                 setStatus(result)

@@ -7,12 +7,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { URL_local } from '../../../constant';
 import { MaterialIcons } from '@expo/vector-icons';
+import StatusApi from '../../../API/StatusAPI';
 
 
 
 const { height } = Dimensions.get("screen");
 export default function EditStatus({ route, navigation }) {
-    
+
     const GetDetail = (type) => {
         if (route.params) {
             switch (type) {
@@ -23,7 +24,7 @@ export default function EditStatus({ route, navigation }) {
             }
         }
     }
-
+    const {item} = route.params
     const { user } = useSelector(state => state.User)
     const [image, setImage] = useState(GetDetail('image'));
     const [body, setBody] = useState(GetDetail('body'));
@@ -34,7 +35,7 @@ export default function EditStatus({ route, navigation }) {
         navigation.goBack();
     }
 
-    
+
     const AddBody = (val) => {
         setBody(val);
 
@@ -66,13 +67,19 @@ export default function EditStatus({ route, navigation }) {
 
     }
     const fetchStatusData = () => {
-        const url = URL_local + 'status/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_USER_STATUS', payload: result })
-            }).catch(err => console.log('Error'));
+        // const url = URL_local + 'status/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         dispatch({ type: 'ADD_USER_STATUS', payload: result })
+        //     }).catch(err => console.log('Error'));
+        
+        StatusApi.getStatusUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_STATUS', payload: res })
+            })
+            .catch(err => console.log('Error Load User Status'))
     }
     const EditPost = () => {
         // const d = new Date();
@@ -88,13 +95,36 @@ export default function EditStatus({ route, navigation }) {
             reactNumber: '0'
         }
 
-        const url = URL_local + 'status/update'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        // const url = URL_local + 'status/update'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         id: route.params.item._id,
+        //         username: user.name,
+        //         body: body,
+        //         userID: user.userID,
+        //         avatar: user.avatar,
+        //         posttime: route.params.item.posttime,
+        //         listImage: picture,
+        //         react: route.params.item.react,
+        //         reactNumber: '0'
+        //     })
+        // }).then(res => {
+        //     if (!res.ok) {
+        //         throw Error('Loi phat sinh')
+        //     }
+        //     else {
+        //         return res.json()
+        //     }
+        // }).then(data => {
+
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })
+        StatusApi.UpdateItem({
                 id: route.params.item._id,
                 username: user.name,
                 body: body,
@@ -105,19 +135,10 @@ export default function EditStatus({ route, navigation }) {
                 react: route.params.item.react,
                 reactNumber: '0'
             })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-            {     
-                return res.json()
-            }               
-        }).then(data => {
-           
-        }).catch(err => {
-            console.log("error", err)
-        })        
+            .then(res => {
+                fetchStatusData()
+            })
+            .catch(err => console.log('Error Edit Status'))
         fetchStatusData();
         navigation.goBack();
     }
@@ -217,12 +238,12 @@ export default function EditStatus({ route, navigation }) {
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
 
-            <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
+                <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
                     <TextInput
-                         multiline={true}
-                         style={styles.body}
-                         onChangeText={AddBody}
-                         value ={body}
+                        multiline={true}
+                        style={styles.body}
+                        onChangeText={AddBody}
+                        value={body}
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Share your experience.</Text>
@@ -231,10 +252,10 @@ export default function EditStatus({ route, navigation }) {
 
                 </View>
 
-                
 
 
-               
+
+
                 <View style={styles.imageoptionsbar}>
                     <TouchableOpacity onPress={openCamera}>
                         <Ionicons name="ios-camera-sharp" size={24} color="black" />

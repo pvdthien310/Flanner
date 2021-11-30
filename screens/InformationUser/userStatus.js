@@ -25,7 +25,7 @@ const UserStatus = ({ navigation }) => {
     }
     useEffect(() => {
         forceRerender
-    }, [user_status])
+    }, [user_status,data])
     // const url = URL_local +  'status/load-data/' + user.userID
     // console.log(url)
     const fetchStatusData = () => {
@@ -38,7 +38,7 @@ const UserStatus = ({ navigation }) => {
 
             StatusApi.getStatusUser(user.userID)
             .then(res => {
-                dispatch({ type: 'ADD_USER_STATUS', payload: result })
+                dispatch({ type: 'ADD_USER_STATUS', payload: res })
             })
             .catch(err => console.log(err))
     }

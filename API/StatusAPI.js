@@ -33,6 +33,19 @@ const url = '/status';
         const res = await DatabaseClient.post(url +'/update/' + item + '/false/' + user );
         return res.data
     },
+    AddPost: async item => {
+        const res = await DatabaseClient.post(url +'/send-data',item );
+        return res.data
+    },
+    UpdateItem: async item => {
+        const res = await DatabaseClient.post(url +'/update',item );
+        return res.data
+    },
+    Delete: async item => {
+        const res = await DatabaseClient.post(url +'/delete',item );
+        return res.data
+    },
+
    
 }
 

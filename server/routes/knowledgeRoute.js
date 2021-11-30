@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 
 /// Delete member
-KnowledgeRoute.post('/delete', (req, res) => {
+KnowledgeRoute.post('/delete',authenToken, (req, res) => {
     Knowledge.findByIdAndRemove(req.body.id)
         .then((data) => {
             res.send("delete lien")
@@ -15,7 +15,7 @@ KnowledgeRoute.post('/delete', (req, res) => {
 })
 
 /// Add new member
-KnowledgeRoute.post('/send-data', (req, res) => {
+KnowledgeRoute.post('/send-data',authenToken, (req, res) => {
     const newKnowledge = new Knowledge({
         username: req.body.username,
         userID: req.body.userID,
@@ -31,7 +31,7 @@ KnowledgeRoute.post('/send-data', (req, res) => {
 
     newKnowledge.save()
         .then((data) => {
-            console.log(data)
+            // console.log(data)
             res.send("Add Success")
         })
         .catch(err => {
@@ -40,7 +40,7 @@ KnowledgeRoute.post('/send-data', (req, res) => {
 })
 
 /// Update member by ID
-KnowledgeRoute.post('/update', (req, res) => {
+KnowledgeRoute.post('/update',authenToken, (req, res) => {
     Knowledge.findByIdAndUpdate(req.body.id, {
         username: req.body.username,
         userID: req.body.userID,
@@ -54,7 +54,7 @@ KnowledgeRoute.post('/update', (req, res) => {
         reactNumber: req.body.reactNumber
     })
         .then((data) => {
-            console.log(data)
+            // console.log(data)
         }).catch(err => {
             console.log(err)
         })
