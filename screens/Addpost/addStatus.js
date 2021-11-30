@@ -19,6 +19,7 @@ const { height } = Dimensions.get("screen");
 
 export default function AddStatus({ route, navigation }) {
 
+    const dispatch = useDispatch()
     const { user } = useSelector(state => state.User)
     const [image, setImage] = useState([]);
     const [textinput, setTextinput] = useState('');
@@ -115,7 +116,7 @@ export default function AddStatus({ route, navigation }) {
             react: [],
             mode: 'public'
         })
-            .then(res => { })
+            .then(res => {fetchStatusData() })
             .catch(err => console.log('Error Add New Knowledge'))
 
         fetchStatusData()

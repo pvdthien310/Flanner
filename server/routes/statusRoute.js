@@ -28,7 +28,7 @@ StatusRoute.post('/send-data',authenToken, (req, res) => {
         react: req.body.react,
         reactNumber: req.body.reactNumber
     })
-    console.log(newStatus)
+    // console.log(newStatus)
     newStatus.save()
         .then((data) => {
             // console.log(data)
