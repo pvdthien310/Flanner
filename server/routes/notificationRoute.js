@@ -18,13 +18,13 @@ const jwt = require('jsonwebtoken')
 function authenToken(req, res, next) {
     const authorizationHeader = req.headers['x-access-token'];
     const token = authorizationHeader;
-    console.log(token);
+    
     if (!token) {
         res.status(401).send('Token het han');
         return;
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-        console.log(err, data);
+        console.log('accept token')
         if (err) {
             res.sendStatus(401);
             return;
@@ -46,16 +46,15 @@ NotificationRoute.post('/send-data',authenToken, (req, res) => {
         type: req.body.type,
         action: req.body.action
     })
-    console.log(newNotification)
 
-    // newNotification.save()
-    //     .then((data) => {
-    //         //console.log(data)
-    //         res.send("Add Success")
-    //     })
-    //     .catch(err => {
-    //         console.log('Error')
-    //     })
+    newNotification.save()
+        .then((data) => {
+            //console.log(data)
+            res.send("Add Success")
+        })
+        .catch(err => {
+            console.log('Error')
+        })
 })
 // NotificationRoute.post('/comment/send-data', (req,res) => {
 //     const newNotification = new Notification({
@@ -133,7 +132,7 @@ NotificationRoute.get('/load-data/:userID/system', authenToken, (req, res) => {
 
 // delete a notification
 
-NotificationRoute.post('/delete', (req, res) => {
+NotificationRoute.post('/delete',authenToken, (req, res) => {
     Notification.deleteMany({ userID: req.body.userID, postID: req.body.postID, senderID: req.body.senderID, action: req.body.action, type: req.body.type })
         .then((data) => {
             //  res.send(data)
@@ -144,7 +143,7 @@ NotificationRoute.post('/delete', (req, res) => {
 })
 
 ///delete
-NotificationRoute.post('/deletebypostid/:postID', (req, res) => {
+NotificationRoute.post('/deletebypostid/:postID',authenToken, (req, res) => {
     Notification.deleteMany({ postID: req.params.postID })
         .then((data) => {
             //  res.send(data)

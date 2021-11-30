@@ -16,18 +16,26 @@ const value = {
     subject: "hello",
     html: 'shin ne html'
 }
- function authenToken(req,res,next){
-    const authorizationHeader = req.headers['authorization'];
 
-    const token = authorizationHeader.split(' ')[1];
-    if (!token) 
-    res.sendStatus(401);
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,data) => { 
-        console.log(err,data);
-        if (err) res.sendStatus(403);
+function authenToken(req, res, next) {
+    
+    const authorizationHeader = req.headers['x-access-token'];
+    const token = authorizationHeader;
+    if (!token) {
+        res.status(401).send('Token het han');
+        return;
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+        if (err) {
+            res.sendStatus(401);
+            return;
+        }
+        console.log('accept token')
         next();
     })
-} 
+
+}
+
 /// Get all members
 UserRoute.get('/', (req, res) => {
     User.find({})
@@ -39,11 +47,9 @@ UserRoute.get('/', (req, res) => {
         })
 })
 
-UserRoute.get('/load-user-by-userID/:userID', (req,res) => {
+UserRoute.get('/load-user-by-userID/:userID',authenToken, (req,res) => {
     User.find({userID : req.params.userID})
-    .then(data => {
-        // console.log(data)
-     res.send(data)})
+    .then(data => res.send(data))
     .catch(err => console.log(err))
 })
 

@@ -13,6 +13,26 @@ const url = '/status';
         const res = await DatabaseClient.get(url +'/load-data/' + user);
         return res.data
     },
+    getItem: async item => {
+        const res = await DatabaseClient.get(url +'/' + item);
+        return res.data
+    },
+    sendNoti : async newNoti => {
+        const res = await DatabaseClient.post(url +'/send-data', newNoti);
+        return res.data.json()
+    },
+    removeNoti : async removedNoti => {
+        const res = await DatabaseClient.post(url +'/delete', removedNoti);
+        return res.data.json()
+    },
+    updateTrue: async (item,user) => {
+        const res = await DatabaseClient.post(url +'/update/' + item + '/true/' + user );
+        return res.data
+    },
+    updateFalse: async (item,user) => {
+        const res = await DatabaseClient.post(url +'/update/' + item + '/false/' + user );
+        return res.data
+    },
    
 }
 

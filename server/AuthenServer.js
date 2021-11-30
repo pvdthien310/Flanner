@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 
 
 /// Process file json and env
-app.use(express.json())
+app.use(bodyParser.json())
 dotenv.config();
 
 /// Connect MongoDB
@@ -36,7 +36,10 @@ app.use('/get-refreshToken', (req, res) => {
     if (!refreshTokens.includes(refreshToken)) res.sendStatus(403);
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
-        if (err) res.sendStatus(403);
+        if (err) {
+            res.sendStatus(401);
+            return;
+        }
         const accessToken = jwt.sign({ username: data.username },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '30s' }
@@ -81,8 +84,7 @@ const port = process.env.AUTHEN_PORT || 8800
 app.listen(port, () => {
     JWTRefTokens.find({})
         .then(data => {
-            refreshTokens = data[0].refreshTokens
-            console.log(refreshTokens)
+            refreshTokens = data[0].refreshTokens   
         })
         .catch(err => console.log(err))
     console.log('AuThen backends server is running!')

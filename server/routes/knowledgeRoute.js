@@ -60,7 +60,7 @@ KnowledgeRoute.post('/update', (req, res) => {
         })
 })
 
-KnowledgeRoute.post('/update/:id/true/:userID', (req, res) => {
+KnowledgeRoute.post('/update/:id/true/:userID',authenToken, (req, res) => {
     Knowledge.findById(req.params.id)
         .then(data => {
             if ((data.react).indexOf(req.params.userID) == -1) {
@@ -83,7 +83,7 @@ KnowledgeRoute.post('/update/:id/true/:userID', (req, res) => {
 })
 
 
-KnowledgeRoute.post('/update/:id/false/:userID', (req, res) => {
+KnowledgeRoute.post('/update/:id/false/:userID',authenToken, (req, res) => {
 
     Knowledge.findByIdAndUpdate(req.params.id,
         { "$pull": { "react": req.params.userID } },
@@ -136,13 +136,13 @@ KnowledgeRoute.get('/', authenToken, (req, res) => {
 function authenToken(req, res, next) {
     const authorizationHeader = req.headers['x-access-token'];
     const token = authorizationHeader;
-    console.log(token);
+   
     if (!token) {
         res.status(401).send('Token het han');
         return;
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-        console.log(err, data);
+        console.log('accept token')
         if (err) {
             res.sendStatus(401);
             return;

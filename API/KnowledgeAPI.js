@@ -21,6 +21,15 @@ const url = '/knowledge';
         const res = await DatabaseClient.get(url +'/' + item);
         return res.data
     },
+    updateTrue: async (item,user) => {
+        const res = await DatabaseClient.post(url +'/update/' + item + '/true/' + user );
+        return res.data
+    },
+    updateFalse: async (item,user) => {
+        const res = await DatabaseClient.post(url +'/update/' + item + '/false/' + user );
+        return res.data
+    },
+
 
    
 }

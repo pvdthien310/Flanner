@@ -17,8 +17,12 @@ const url = '/notification';
         return res.data
     },
     sendNoti : async newNoti => {
-        const res = await DatabaseClient.post(url +'/send-data', newNoti);
-        return res.data
+        const res = await DatabaseClient.post(url +'/send-data/',newNoti);
+        return res.data.json();
+    },
+    removeNoti : async removedNoti => {
+        const res = await DatabaseClient.post(url +'/delete/', removedNoti);
+        return res.data.json();
     },
    
 }
