@@ -17,6 +17,8 @@ const StatusMember = ({ item, navigation }) => {
 
     const dispatch = useDispatch();
     const {user}  = useSelector(state => state.User)
+    const {user_status}  = useSelector(state => state.Status)
+
     const [pressed, setPressed] = useState(false)
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
@@ -35,6 +37,7 @@ const StatusMember = ({ item, navigation }) => {
         //          setReactnumber(result.react.length)
         //          setData(result)
         //     }).catch(err => console.log('Error'));
+        
         StatusApi.getItem(item._id.toString())
         .then(res => {
             if ((res.react).indexOf(user.userID) != -1)
@@ -48,6 +51,10 @@ const StatusMember = ({ item, navigation }) => {
     useEffect(() => {
         LoadData()
     },[])
+    useEffect(() => {
+        LoadData()
+        console.log('load lai hinh')
+    },[user_status,data])
 
     const sendNotification = () => {
         // const url = URL_local + 'notification/send-data'
@@ -190,64 +197,7 @@ const StatusMember = ({ item, navigation }) => {
 
     }
 
-    
-        const PressHandle = () => {
-            //let numberReact = item.reactNumber;
-            const url_true = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/true/' + user.userID.toString();
-            const url_false = 'http://192.168.0.105:3000/api/status/update/' + item._id.toString() + '/' + reactnumber.toString() + '/false/'  + user.userID.toString();
-    
-    
-            if (pressed == true) {
-                console.log(url_false)
-                fetch(url_false, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-    
-                    }
-                }).then(res => {
-                    if (!res.ok) {
-                        throw Error('Loi phat sinh')
-                    }
-                    else {
-                        return res.json()
-                    }
-                }).then((result) => {
-                    if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-                setReactnumber(result.reactNumber)
 
-                }).catch(err => {
-                    console.log("error", err)
-                })
-            }
-            else if (pressed == false) {
-                console.log(url_true)
-
-                fetch(url_true, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(res => {
-                    if (!res.ok) {
-                        throw Error('Loi phat sinh')
-                    }
-                    else {
-                        return res.json()
-                    }
-                }).then(result => {
-                    if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-                setReactnumber(result.reactNumber)
-
-                }).catch(err => {
-                    console.log("error", err)
-                })
-            }
-    }
 
     useEffect(() => {
         console.log('render post')

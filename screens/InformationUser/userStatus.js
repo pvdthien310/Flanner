@@ -20,7 +20,6 @@ const UserStatus = ({ navigation }) => {
     const {user} = useSelector(state => {return state.User})
 
     const pressgobackHandler = () => {
-        console.log(user_status)
         navigation.goBack();
     }
     useEffect(() => {
@@ -35,10 +34,11 @@ const UserStatus = ({ navigation }) => {
         //         console.log(result)
         //         dispatch({ type: 'ADD_USER_STATUS', payload: result })
         //     }).catch(err => console.log('Error'));
-
+            console.log('load data')
             StatusApi.getStatusUser(user.userID)
             .then(res => {
                 dispatch({ type: 'ADD_USER_STATUS', payload: res })
+                console.log('updated')
             })
             .catch(err => console.log(err))
     }

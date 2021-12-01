@@ -20,7 +20,7 @@ const UserKnowledge = ({ navigation }) => {
         navigation.goBack();
     }
     useEffect(() => {
-        forceRerender
+         forceRerender
     }, [user_knowledge])
     const fetchKnowledgeData = () => {
         // const url = URL_local + 'knowledge/load-data/' + user.userID

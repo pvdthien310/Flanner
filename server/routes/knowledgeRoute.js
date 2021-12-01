@@ -54,7 +54,7 @@ KnowledgeRoute.post('/update',authenToken, (req, res) => {
         reactNumber: req.body.reactNumber
     })
         .then((data) => {
-            // console.log(data)
+            res.send("update thanh cong")
         }).catch(err => {
             console.log(err)
         })

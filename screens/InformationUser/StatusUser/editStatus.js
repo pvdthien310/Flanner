@@ -78,6 +78,7 @@ export default function EditStatus({ route, navigation }) {
         StatusApi.getStatusUser(user.userID)
             .then(res => {
                 dispatch({ type: 'ADD_USER_STATUS', payload: res })
+                console.log('yeu cau load laij trong status')
             })
             .catch(err => console.log('Error Load User Status'))
     }

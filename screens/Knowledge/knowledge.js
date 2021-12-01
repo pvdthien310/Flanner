@@ -51,7 +51,7 @@ const Knowledge = ({ navigation }) => {
         fetchKnowledgeData();
         fetchNewData();
         fetchStatusData();
-        forceRerender
+        
     }
         , [])
 
