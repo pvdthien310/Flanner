@@ -137,7 +137,7 @@ export default function AddKnowledge({ route, navigation }) {
         //     console.log("error", err)
         // })
         KnowLedgeApi.AddPost(newPost)
-        .then(res => {})
+        .then(res => {fetchKnowledgeData()})
         .catch(err => console.log('Error Add New Knowledge'))
        
         fetchKnowledgeData()

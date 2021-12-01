@@ -23,9 +23,7 @@ const NotificationMember = ({ item, navigation }) => {
      post = knowledge_data.user_knowledge.filter(member => member._id == item.postID)
     else if (item.type == 2)
      post = status_data.user_status.filter(member => member._id == item.postID)
-    
-    console.log(post[0])
-    
+        
     const HandelOpenPost = () => {
         if (item.type == '2')
             navigation.navigate('Status Detail Notification', { item: { _id: item.postID } });
