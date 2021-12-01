@@ -21,7 +21,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
     const { item } = route.params;
     const [data, setData] = useState(route.params.item)
     const [loading, setLoading] = useState(true)
-    const [isNull, setIsNull] = useState(false)
+    const [isNull, setIsNull] = useState(true)
     const [host, setHost] = useState({})
 
   

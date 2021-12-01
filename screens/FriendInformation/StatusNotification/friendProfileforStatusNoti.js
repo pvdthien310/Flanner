@@ -6,6 +6,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../../constant';
+import KnowLedgeApi from '../../../API/KnowledgeAPI';
+import StatusApi from '../../../API/StatusAPI';
 
 
 const { height } = Dimensions.get("screen");
@@ -31,22 +33,32 @@ const FriendInfoForStatusNoti = ({ navigation, route }) => {
         CountPost
         , [])
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + item[0].userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
+        // const url = URL_local + 'knowledge/load-data/' + item[0].userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         setKnowledge(result)
+        //         console.log('bbb')
+        //     }).catch(err => console.log('Error'));
+        KnowLedgeApi.getKnowledgeUser(item[0].userID)
             .then(result => {
                 setKnowledge(result)
                 console.log('bbb')
             }).catch(err => console.log('Error'));
     }
     const fetchStatusData = () => {
-        const url = URL_local + 'status/load-data/' + item[0].userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
+        // const url = URL_local + 'status/load-data/' + item[0].userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         console.log('aaa')
+        //         setStatus(result)
+        //         CountPost()
+        //     }).catch(err => console.log('Error'));
+        StatusApi.getStatusUser(item[0].userID)
             .then(result => {
-                console.log('aaa')
                 setStatus(result)
                 CountPost()
             }).catch(err => console.log('Error'));
@@ -136,12 +148,12 @@ const FriendInfoForStatusNoti = ({ navigation, route }) => {
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity  onPress = {() => navigation.push('Status Notification Friend Knowledge', {user: item[0], knowledge: knowledge})} >
+                                <TouchableOpacity onPress={() => navigation.push('Status Notification Friend Knowledge', { user: item[0], knowledge: knowledge })} >
                                     <View style={styles.button1}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity  onPress = {() => navigation.push('Status Notification Friend Status', {user: item[0], status: status})}  >
+                                <TouchableOpacity onPress={() => navigation.push('Status Notification Friend Status', { user: item[0], status: status })}  >
                                     <View style={styles.button2}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
                                     </View>
@@ -219,9 +231,9 @@ const FriendInfoForStatusNoti = ({ navigation, route }) => {
                                                             }
                                                             }
                                                         />
-                                                        : 
-                                                        null    
-                                          }
+                                                        :
+                                                        null
+                                                }
                                             </View>
 
                                             :
@@ -269,7 +281,7 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
-        marginTop:5,
+        marginTop: 5,
         backgroundColor: 'whitesmoke'
 
     },
