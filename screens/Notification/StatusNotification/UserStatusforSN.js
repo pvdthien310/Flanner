@@ -4,6 +4,7 @@ import StatusMemberForStatusNoti from '../../../components/StatusNotification/st
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../../constant';
+import StatusApi from '../../../API/StatusAPI';
 
 
 
@@ -13,15 +14,15 @@ const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const UserStatusForSN = ({ navigation,route }) => {
+const UserStatusForSN = ({ navigation, route }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
-    const {user,status} = route.params
+    const { user, status } = route.params
     const [user_status, setUserStatus] = useState(status)
     const [loading, Setloading] = useState(false)
 
     const pressgobackHandler = () => {
-        
+
         navigation.goBack();
     }
     useEffect(() => {
@@ -30,17 +31,24 @@ const UserStatusForSN = ({ navigation,route }) => {
     useEffect(() => {
         fetchStatusData()
     }, [])
-   
+
     const fetchStatusData = () => {
-        const url = URL_local +  'status/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                setUserStatus(result)      
-                Setloading(false)  
+        // const url = URL_local +  'status/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         setUserStatus(result)      
+        //         Setloading(false)  
+        //         forceRerender()
+        //     }).catch(err => console.log('Error'));
+        StatusApi.getStatusUser(user.userID)
+            .then(res => {
+                setUserStatus(res)
+                Setloading(false)
                 forceRerender()
-            }).catch(err => console.log('Error'));
+            })
+            .catch(err => console.log('Error Load User Status'))
     }
     return (
         <View style={styles.container}>
@@ -53,44 +61,44 @@ const UserStatusForSN = ({ navigation,route }) => {
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
-                    <View  style={{flex: 1, justifyContent: 'center',backgroundColor: 'white'}}>
-                    {
-                        user_status.length == 0 ? 
-                        <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center', flexDirection: 'column'
-                        }}>
-                            <Image source={require('../../../assets/icon/NoNotification2.png')}
-                                resizeMode='contain'
-                                style={{
-                                    width: 80,
-                                    height: 80,
-                                    marginBottom: 5,
-                                }
-                                }
-                            />
-                           <Text style ={{fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10}}>There's no post to display !</Text>
-                        <TouchableOpacity style= {{marginBottom: 10}} onPress = {() => fetchKnowledgeData()}>
-                                <View style ={{backgroundColor: 'teal', borderRadius: 5,padding: 5, paddingStart: 10, paddingEnd: 10}}>
-                                    <Text style ={{fontFamily: 'nunitobold', fontSize: 17,color:'white'}} >Refresh</Text>
+                    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
+                        {
+                            user_status.length == 0 ?
+                                <View style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center', flexDirection: 'column'
+                                }}>
+                                    <Image source={require('../../../assets/icon/NoNotification2.png')}
+                                        resizeMode='contain'
+                                        style={{
+                                            width: 80,
+                                            height: 80,
+                                            marginBottom: 5,
+                                        }
+                                        }
+                                    />
+                                    <Text style={{ fontFamily: 'nunitobold', fontSize: 17, marginBottom: 10 }}>There's no post to display !</Text>
+                                    <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => fetchKnowledgeData()}>
+                                        <View style={{ backgroundColor: 'teal', borderRadius: 5, padding: 5, paddingStart: 10, paddingEnd: 10 }}>
+                                            <Text style={{ fontFamily: 'nunitobold', fontSize: 17, color: 'white' }} >Refresh</Text>
+                                        </View>
+                                    </TouchableOpacity>
+
                                 </View>
-                            </TouchableOpacity>
-                           
-                        </View>
-                        :
-                    
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        data={user_status}
-                        renderItem={({ item }) => (
-                            <StatusMemberForStatusNoti item={item} navigation={navigation} />
-                        )}
-                        keyExtractor={item => item._id}
-                        onRefresh={() => fetchStatusData()}
-                        refreshing={loading}
-                    />
+                                :
+
+                                <FlatList
+                                    showsVerticalScrollIndicator={false}
+                                    data={user_status}
+                                    renderItem={({ item }) => (
+                                        <StatusMemberForStatusNoti item={item} navigation={navigation} />
+                                    )}
+                                    keyExtractor={item => item._id}
+                                    onRefresh={() => fetchStatusData()}
+                                    refreshing={loading}
+                                />
                         }
-                        </View>
+                    </View>
             }
         </View>
 
@@ -104,7 +112,7 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
-        marginBottom:80,
+        marginBottom: 80,
         backgroundColor: 'whitesmoke'
 
     },

@@ -26,9 +26,9 @@ const NotificationMember = ({ item, navigation }) => {
         
     const HandelOpenPost = () => {
         if (item.type == '2')
-            navigation.navigate('Status Detail Notification', { item: { _id: item.postID } });
+            navigation.navigate('Status Detail Notification', { item:  post[0]  });
         else if (item.type == '1')
-            navigation.navigate('Knowledge Detail Notification', { item: { _id: item.postID } });
+            navigation.navigate('Knowledge Detail Notification', { item:  post[0]  });
     }
 
     return (

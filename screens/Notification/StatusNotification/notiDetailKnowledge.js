@@ -9,6 +9,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../../constant';
+import NotificationApi from '../../../API/NotificationAPI';
+import KnowLedgeApi from '../../../API/KnowledgeAPI';
+import Api from '../../../API/UserAPI';
 
 
 const StatusNotiDetailKnowledge = ({ route, navigation }) => {
@@ -19,6 +22,8 @@ const StatusNotiDetailKnowledge = ({ route, navigation }) => {
     const [data, setData] = useState(route.params.item)
     const [loading, setLoading] = useState(true)
     const [isNull, setIsNull] = useState(false)
+    const [host, setHost] = useState({})
+
 
 
     // const [reactnumber, setReactnumber] = useState(null)
@@ -28,82 +33,122 @@ const StatusNotiDetailKnowledge = ({ route, navigation }) => {
     }, [item])
 
     const sendNotification = () => {
-        const url = URL_local + 'notification/send-data'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userID: data.userID,
-                message: 'Đã thích bài viết của bạn',
-                postID: data._id,
-                senderID: user.userID,
-                type: '1',
-                action: 'React'
-            })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-                return res.json()
-        }).then(data => {
-            // console.log(data)
-        }).catch(err => {
-            console.log("error", err)
-        })
+        // const url = URL_local + 'notification/send-data'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         userID: data.userID,
+        //         message: 'Đã thích bài viết của bạn',
+        //         postID: data._id,
+        //         senderID: user.userID,
+        //         type: '1',
+        //         action: 'React'
+        //     })
+        // }).then(res => {
+        //     if (!res.ok) {
+        //         throw Error('Loi phat sinh')
+        //     }
+        //     else
+        //         return res.json()
+        // }).then(data => {
+        //     // console.log(data)
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })
+        NotificationApi.sendNoti({
+            userID: data.userID,
+            message: ' liked your post ',
+            postID: data._id,
+            senderID: user.userID,
+            type: '1',
+            action: 'React'
+        }).then(res => { })
+            .catch(err => console.log('Error send noti'))
+
 
     }
     const removeNotification = () => {
-        const url = URL_local + 'notification/delete'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userID: data.userID,
-                postID: data._id,
-                senderID: user.userID,
-                type: '1',
-                action: 'React'
-            })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-                return res.json()
-        }).then(data => {
-            // console.log(data)
-        }).catch(err => {
-            console.log("error", err)
-        })
+        // const url = URL_local + 'notification/delete'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         userID: data.userID,
+        //         postID: data._id,
+        //         senderID: user.userID,
+        //         type: '1',
+        //         action: 'React'
+        //     })
+        // }).then(res => {
+        //     if (!res.ok) {
+        //         throw Error('Loi phat sinh')
+        //     }
+        //     else
+        //         return res.json()
+        // }).then(data => {
+        //     // console.log(data)
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })
+        NotificationApi.removeNoti({
+            userID: data.userID,
+            postID: data._id,
+            senderID: user.userID,
+            type: '1',
+            action: 'React'
+        }).then(res => { })
+            .catch(err => console.log('Error removed noti'))
     }
 
     const fetchData = () => {
 
-        const url = URL_local + 'knowledge/' + item._id.toString();
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                setData(result)
+        // const url = URL_local + 'knowledge/' + item._id.toString();
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         setData(result)
+        //         setLoading(false)
+        //         // console.log(result)
+        //         if ((result.react).indexOf(user.userID) != -1)
+        //             setPressed(true)
+        //         else setPressed(false)
+        //     }).catch(err => {
+        //         setIsNull(true)
+
+        //         console.log('Error')
+        //     });
+        KnowLedgeApi.getItem(item._id.toString())
+            .then(res => {
+                setData(res)
                 setLoading(false)
-                // console.log(result)
-                if ((result.react).indexOf(user.userID) != -1)
+                if ((res.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
-            }).catch(err => {
+            })
+            .catch(err => {
                 setIsNull(true)
-
-                console.log('Error')
-            });
+                console.log(err)
+            })
     }
+    const fetchHostData = () => {
+      
+        Api.getUserItem(item.userID.toString())
+            .then(res => {
+                setHost(res)
+            })
+            .catch(err => console.log('Loi set user by id', err))
+    }
+
 
     useEffect(() => {
         fetchData();
+        fetchHostData();
     }, [])
 
 
@@ -113,59 +158,79 @@ const StatusNotiDetailKnowledge = ({ route, navigation }) => {
 
     const PressHandle = () => {
         let numberReact = data.reactNumber;
-        
+
         const url_true = URL_local + 'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = URL_local +  'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_false = URL_local + 'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
         if (pressed == true) {
-            console.log(url_false)
-            fetch(url_false, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then((result) => {
-                //  console.log(result)
+            // console.log(url_false)
+            // fetch(url_false, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // }).then(res => {
+            //     if (!res.ok) {
+            //         throw Error('Loi phat sinh')
+            //     }
+            //     else {
+            //         return res.json()
+            //     }
+            // }).then((result) => {
+            //     //  console.log(result)
+            //     removeNotification()
+            //     setData(result)
+            //     dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
+            //     if ((result.react).indexOf(user.userID) != -1)
+            //         setPressed(true)
+            //     else setPressed(false)
+            // }).catch(err => {
+            //     console.log("error", err)
+            // })
+            KnowLedgeApi.updateFalse(item._id.toString(), user.userID.toString())
+            .then(res => {
                 removeNotification()
-                setData(result)
-                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
-                if ((result.react).indexOf(user.userID) != -1)
+                setData(res)
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: res })
+                if ((res.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
             })
+            .catch(err => console.log('Error update false'))
         }
         else if (pressed == false) {
-            fetch(url_true, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then(result => {
+            // fetch(url_true, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // }).then(res => {
+            //     if (!res.ok) {
+            //         throw Error('Loi phat sinh')
+            //     }
+            //     else {
+            //         return res.json()
+            //     }
+            // }).then(result => {
+            //     sendNotification()
+            //     setData(result)
+            //     dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
+            //     if ((result.react).indexOf(user.userID) != -1)
+            //         setPressed(true)
+            //     else setPressed(false)
+            // }).catch(err => {
+            //     console.log("error", err)
+            // })
+            KnowLedgeApi.updateTrue(item._id.toString(), user.userID.toString())
+            .then(res => {
                 sendNotification()
-                setData(result)
-                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
-                if ((result.react).indexOf(user.userID) != -1)
+                setData(res)
+                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: res })
+                if ((res.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
             })
+            .catch(err => console.log('Error update true'))
         }
 
     }
@@ -262,7 +327,13 @@ const StatusNotiDetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={{ uri: data.avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                 {
+                                    host.length > 0 ?
+
+                                        <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                        :
+                                        <Image source={require('../../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                                }
                                 <UserInfoText>
                                     <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
                                     <Text style={{
