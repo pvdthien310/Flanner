@@ -51,10 +51,10 @@ const StatusMember = ({ item, navigation }) => {
     useEffect(() => {
         LoadData()
     },[])
-    useEffect(() => {
-        LoadData()
-        console.log('load lai hinh')
-    },[user_status,data])
+    // useEffect(() => {
+    //     LoadData()
+    //     console.log('load lai hinh')
+    // },[user_status,data])
 
     const sendNotification = () => {
         // const url = URL_local + 'notification/send-data'

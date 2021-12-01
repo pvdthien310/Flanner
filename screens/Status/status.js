@@ -32,11 +32,8 @@ const Status = ({ navigation }) => {
 
     useEffect(() => {
         fetchData();
-    }
-        , [])
-    useEffect(() => {
-        forceRerender
-    }, [data])
+    }, [])
+   
 
     return (
         <View style={globalStyles.container}>
