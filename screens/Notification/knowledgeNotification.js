@@ -19,7 +19,7 @@ const KnowledgeNotification = ({ navigation }) => {
     // console.log(data)
     const url = URL_local +'notification/load-data/' + user.userID + '/knowledge';
     const fetchData = () => {
-        console.log(url)
+        // console.log(url)
         setLoading2(true)
 
         // fetch(url)
