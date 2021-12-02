@@ -41,7 +41,7 @@ export const renderBubble = (props) => {
 
             textStyle={{
                 right: {
-                    color: 'black'
+                    color: 'black',
                 },
                 left: {
                     color: 'white'

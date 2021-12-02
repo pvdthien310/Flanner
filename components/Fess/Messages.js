@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     },
     count:{
         color:'#fff',
-        fontFamily:'nunitobold',
+        fontFamily:'nunitoregular',
     },
     image:{
         width:60,

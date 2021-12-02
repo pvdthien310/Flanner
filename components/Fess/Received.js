@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
     message:{
         fontSize:13,
         marginHorizontal:15,
-        fontFamily:'nunitoregular'
+        fontFamily:'nunitobold'
     }
 })

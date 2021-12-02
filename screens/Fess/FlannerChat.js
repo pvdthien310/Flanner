@@ -134,7 +134,8 @@ const styles = StyleSheet.create({
         fontFamily:'nunitobold',
         color:'#FFF',
         flex:1,
-        fontSize:24
+        fontSize:30,
+        
     },
     proContainer:{
         marginRight:-20,
