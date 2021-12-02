@@ -117,6 +117,31 @@ export const CustomDrawer = (props) => {
                  </View>
              </TouchableOpacity>
                 }
+                  { _chosen != 4 ?
+                <TouchableOpacity
+                    style={styles.frameFeature}
+                    activeOpacity={0.7} 
+                    onPress={() => {
+                        navigation.navigate('Search')
+                        dispatch({ type: 'UPDATE_FEATURE', payload: 4 })
+                        }}
+                    >
+                    <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center',flexDirection:'row' }}>
+                    <Ionicons name="search-circle-sharp" size={27} color="black" />
+                        <Text style={styles.itemFeature}>Search</Text>
+                    </View>
+                </TouchableOpacity> 
+                :
+                 <TouchableOpacity
+                 style={{...styles.frameFeature, backgroundColor: 'black'}}
+                 activeOpacity={0.7} >
+                 <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center',flexDirection:'row' }}>
+                 <Text style={{...styles.itemFeature, color: 'white'}}>Search</Text>
+                 <Ionicons name="search-circle-sharp" size={27} color="white" />
+                   
+                 </View>
+             </TouchableOpacity>
+                }
                 { _chosen != 2 ? 
                 <TouchableOpacity
                     style={styles.frameFeature}
