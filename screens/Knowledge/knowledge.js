@@ -59,23 +59,10 @@ const Knowledge = ({ navigation }) => {
         forceRerender
     }, [data])
 
-    const Load = () => {
-        const test = {
-            userID: 'aaaaaa',
-            message: ' liked your post ',
-            postID: '11112333',
-            senderID: user.userID,
-            type: '1',
-            action: 'React'
-        }
-        NotificationApi.sendNoti(test)
-        .then(res => console.log('aaa'))
-        .catch(err => console.log(err))
-    }
+  
 
     return (
         <View style={globalStyles.container}>
-            <Button title = 'aaaa' onPress = {() => Load()}></Button>
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
