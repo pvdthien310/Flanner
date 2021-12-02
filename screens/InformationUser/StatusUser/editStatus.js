@@ -299,7 +299,7 @@ export default function EditStatus({ route, navigation }) {
                         <TouchableOpacity activeOpacity={1}>
                             <View style={styles.postbutton1}
                             >
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Saved</Text>
                                 <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
                             </View>
                         </TouchableOpacity>
