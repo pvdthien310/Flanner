@@ -141,6 +141,7 @@ UserRoute.post('/remove/:userID/followed/:friendID', (req, res) => {
 })
 
 UserRoute.post('/send-data', (req, res) => {
+    console.log(req.body)
     const newUser = new User({
         userID: req.body.userID,
         phoneNumber: req.body.phoneNumber,
@@ -154,6 +155,10 @@ UserRoute.post('/send-data', (req, res) => {
         address: req.body.address,
         position: req.body.position,
         reportedNum: req.body.reportedNum,
+        following: [],
+        followed: [],
+        bio: "Hi, I'm a new member of Flaner. Hope you will enjoy your visit to my home wall. Let's be friend!",
+        job: ""
     })
 
     newUser.save()
