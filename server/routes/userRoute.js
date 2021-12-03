@@ -75,6 +75,71 @@ UserRoute.post('/update', (req, res) => {
         })
 })
 
+/// Add to following
+UserRoute.post('/add/:userID/following/:friendID', (req, res) => {
+    User.find({ userID: req.params.friendID })
+        .then(data => {
+            if ((data[0].following).indexOf(req.params.userID) == -1) {
+                // console.log(data)
+                User.findOneAndUpdate({ userID: req.params.friendID },
+                    { "$push": { "following": req.params.userID } },
+                    { "new": true, "upsert": true }
+                ).then((data) => {
+                    res.send(data)
+                }
+                )
+                    .catch(err => console.log(err))
+            }
+            else
+                res.send(data)
+        }
+        )
+        .catch(err => console.log(err))
+})
+/// Add to followed
+UserRoute.post('/add/:userID/followed/:friendID', (req, res) => {
+    User.find({ userID: req.params.friendID })
+        .then(data => {
+            if ((data[0].followed).indexOf(req.params.userID) == -1) {
+                 
+                User.findOneAndUpdate({ userID: req.params.friendID },
+                    { "$push": { "followed": req.params.userID } },
+                    { "new": true, "upsert": true }
+                ).then((data) => {
+                    res.send(data)
+                }
+                )
+                    .catch(err => console.log(err))
+            }
+            else
+                res.send(data)
+        }
+        )
+        .catch(err => console.log(err))
+})
+// Remove user from following
+UserRoute.post('/remove/:userID/following/:friendID', (req, res) => {
+
+    User.findOneAndUpdate({ userID: req.params.friendID },
+        { "$pull": { "following": req.params.userID } },
+        { "new": true, "upsert": true }
+    ).then((data) => {
+        res.send(data)
+    })
+        .catch(err => console.log(err))
+})
+// Remove user from followed
+UserRoute.post('/remove/:userID/followed/:friendID', (req, res) => {
+
+    User.findOneAndUpdate({ userID: req.params.friendID },
+        { "$pull": { "followed": req.params.userID } },
+        { "new": true, "upsert": true }
+    ).then((data) => {
+        res.send(data)
+    })
+        .catch(err => console.log(err))
+})
+
 UserRoute.post('/send-data', (req, res) => {
     const newUser = new User({
         userID: req.body.userID,
