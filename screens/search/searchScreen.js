@@ -252,9 +252,9 @@ const SearchScreen = ({ navigation }) => {
                                     width: width * 0.8,
                                     borderTopLeftRadius: 4,
                                     borderTopRightRadius: 4,
-                                    padding: 5
+                                    padding: 10
                                 }}>
-                                    <Text style={{ fontSize: 25, fontWeight: 'bold',color: 'white', alignSelf: 'flex-start' }}>Suggesstion</Text>
+                                    <Text style={{ fontSize: 20,padding: 5, fontWeight: 'bold',color: 'white', alignSelf: 'flex-start' }}>Suggesstion</Text>
                                     <ScrollView>
                                         {
                                             filter.map(item => {
