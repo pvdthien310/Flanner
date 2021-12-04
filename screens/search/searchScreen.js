@@ -122,7 +122,7 @@ const SearchScreen = ({ navigation }) => {
 
                             <TextInput style={styles.textInput}
                                 placeholder="Search"
-                                placeholderTextColor='white'
+                                placeholderTextColor='dimgrey'
                                 onChangeText={onSearch}
                                 value={searchString}
                             >
@@ -147,7 +147,7 @@ const SearchScreen = ({ navigation }) => {
                                                 width: width,
                                                 height: height 
                                             }}>
-                                            <Text style={{ fontSize: 30, fontWeight: 'bold', alignSelf: 'flex-start', color: 'black' }}>Result</Text>
+                                            <Text style={{ fontSize: 30, fontWeight: 'bold',padding:5, alignSelf: 'flex-start', color: 'black' }}>Result</Text>
                                             <ScrollView>
                                                 {
                                                     result.map(item => {
@@ -161,7 +161,7 @@ const SearchScreen = ({ navigation }) => {
                                                                 width: width*0.9,
                                                             }}
                                                                 key={item._id}>
-                                                                <View style={{ flexDirection: 'row', backgroundColor: 'black', marginVertical: 5, padding: 10, borderRadius: 5 }}>
+                                                                <View style={{ flexDirection: 'row' ,backgroundColor: 'white', padding: 20, borderBottomWidth: 1, borderBottomColor: 'black'}}>
                                                                     {
                                                                         item.avatar ?
 
@@ -169,7 +169,7 @@ const SearchScreen = ({ navigation }) => {
                                                                                 style={{
                                                                                     height: 50,
                                                                                     width: 50,
-                                                                                    borderRadius: 5,
+                                                                                    borderRadius: 10,
                                                                                     alignSelf: 'center',
                                                                                 }} />
                                                                             :
@@ -184,19 +184,24 @@ const SearchScreen = ({ navigation }) => {
                                                                             />
                                                                     }
                                                                     <View style = {{
-                                                                        flexDirection: 'column'
+                                                                        flexDirection: 'column',
+                                                                        alignSelf:'center',
+                                                                        justifyContent:'center',
+                                                                        alignContent:'space-around'
                                                                     }}>
                                                                     <Text style={{
-                                                                        fontSize: 20,
-                                                                        marginStart: 12,
-                                                                        color: 'white',
+                                                                        fontSize: 17,
+                                                                        marginStart: 13,
+                                                                        padding:4,
+                                                                        color: 'black',
                                                                         fontWeight:'bold'
                                                                     }}     
                                                                     >{item.name}</Text>
                                                                      <Text style={{
-                                                                        fontSize: 15,
+                                                                        fontSize: 12,
+                                                                        padding:4,
                                                                         marginStart: 15,
-                                                                        color: 'white'
+                                                                        color: 'black'
                                                                     }}     
                                                                     >{item.email}</Text>
                                                                     </View>
@@ -241,15 +246,15 @@ const SearchScreen = ({ navigation }) => {
                                 searching &&
                                 <View style={{
                                     position: 'absolute',
-                                    marginTop: '13%',
-                                    backgroundColor: 'whitesmoke',
+                                    marginTop: '15%',
+                                    backgroundColor: 'black',
                                     opacity: 1,
                                     width: width * 0.8,
                                     borderTopLeftRadius: 4,
                                     borderTopRightRadius: 4,
                                     padding: 5
                                 }}>
-                                    <Text style={{ fontSize: 25, fontWeight: 'bold', alignSelf: 'flex-start' }}>Suggesstion</Text>
+                                    <Text style={{ fontSize: 25, fontWeight: 'bold',color: 'white', alignSelf: 'flex-start' }}>Suggesstion</Text>
                                     <ScrollView>
                                         {
                                             filter.map(item => {
@@ -261,7 +266,7 @@ const SearchScreen = ({ navigation }) => {
 
                                                     }}
                                                         key={item._id}>
-                                                        <View style={{ flexDirection: 'row', backgroundColor: 'lightslategrey', marginVertical: 5, padding: 5, borderRadius: 5 }}>
+                                                        <View style={{ flexDirection: 'row', backgroundColor: 'white', marginVertical: 5, padding: 5, borderRadius: 5 }}>
                                                             {
                                                                 item.avatar ?
 
@@ -269,7 +274,7 @@ const SearchScreen = ({ navigation }) => {
                                                                         style={{
                                                                             height: 50,
                                                                             width: 50,
-                                                                            borderRadius: 5,
+                                                                            borderRadius: 10,
                                                                             alignSelf: 'center',
                                                                         }} />
                                                                     :
@@ -286,7 +291,9 @@ const SearchScreen = ({ navigation }) => {
                                                             <Text style={{
                                                                 fontSize: 15,
                                                                 padding: 10,
-                                                                color: 'white'
+                                                                fontFamily: 'nunitobold',
+                                                                color: 'black',
+                                                                alignSelf:'center'
                                                             }}
                                                                 key={item._id}
                                                             >{item.name}</Text>
@@ -350,12 +357,14 @@ const styles = StyleSheet.create({
 
     },
     textInput: {
-        backgroundColor: 'lightslategrey',
-        borderRadius: 5,
+        backgroundColor: 'whitesmoke',
+        borderRadius: 10,
         height: 50,
-        fontSize: 20,
-        fontWeight: 'bold',
-        paddingHorizontal: 10
+        fontSize: 15,
+        fontFamily: 'nunitobold',
+        paddingHorizontal: 10,
+        borderColor: 'black',
+        borderWidth: 1
     }
 
 });

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Image, Text, TouchableOpacity, AppState } from 'react-native'
 import { images, Poststyle } from '../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Api from '../API/UserAPI';
+import JWTApi from '../API/JWTAPI';
 
 
 
@@ -13,6 +15,8 @@ export const CustomDrawer = (props) => {
     const dispatch = useDispatch();
      const { _chosen } = useSelector(state => state.DrawerController)
      const { user } = useSelector(state => state.User)
+     const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
+
 
     const { navigation } = props
     const [, forceRerender] = useState();
@@ -23,6 +27,17 @@ export const CustomDrawer = (props) => {
     useEffect(() => {
         forceRerender
     }, [user.avatar])
+
+    const Logout = async () => {
+
+        await JWTApi.logout(refreshToken)
+        .then(res => {
+            navigation.navigate('SignInScreen');
+        })
+        .catch(err => console.log('Error Log out'))
+
+
+    }
     
     return (
         <View style={{ flex: 1}}>
@@ -200,7 +215,8 @@ export const CustomDrawer = (props) => {
 
                 {/* <DrawerItemList {...props} /> */}
             </DrawerContentScrollView>
-            <TouchableOpacity style={{
+            <TouchableOpacity onPress ={() => Logout() }
+             style={{
                 position: 'absolute',
                 right: 0,
                 left: 0,

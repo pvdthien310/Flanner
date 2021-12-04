@@ -27,8 +27,8 @@ export default function SignInScreen({ navigation }) {
     // const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const { data, loading, user } = useSelector(state => { return state.User })
-    const { accessToken } = useSelector(state => { return state.JWT })
-    const fetchData = () => {
+    const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
+    const fetchData = async () => {
         // const url = URL_local_user + 'user'
         // fetch(url)
         //     .then(res => res.json())
@@ -38,11 +38,10 @@ export default function SignInScreen({ navigation }) {
 
         //     }).catch(err => console.log('Error'));
 
-        Api.getAll().then(result => {
+        await Api.getAll().then(result => {
             dispatch({ type: 'ADD_DATA_USER', payload: result })
             dispatch({ type: 'SET_LOADING_USER', payload: false })
         })
-
 
     }
 
@@ -168,20 +167,25 @@ export default function SignInScreen({ navigation }) {
         }
 
         let flag = false;
-        data.forEach(element => {
+        data.forEach(async element => {
             if (element.email === dataTemp.email) {
                 flag = true;
                 if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
                     _storeData()
-                    JWTApi.getToken().then(
+                    await JWTApi.getToken().then(
                         res => {
-                          navigation.navigate('DrawerStack')
+                            navigation.navigate('DrawerStack', {
+                                screen: 'NewsFeed',
+                                params: {},
+                            })
+                            dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+
                         }
                     )
-                    
 
-                    
+
+
                 }
                 else {
                     let toast = Toast.show('Password is incorrect', {
