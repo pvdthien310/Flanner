@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../../constant';
 import KnowLedgeApi from '../../../API/KnowledgeAPI';
 import StatusApi from '../../../API/StatusAPI';
+import Api from '../../../API/UserAPI';
 
 
 const { height } = Dimensions.get("screen");
@@ -18,20 +19,40 @@ const FriendInfoForSearch = ({ navigation, route }) => {
 
     const { item } = route.params;
 
-
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.User)
     const [knowledge, setKnowledge] = useState([])
     const [status, setStatus] = useState([])
     const [postNumber, setPostNumber] = useState(knowledge.length + status.length);
 
-    useEffect(() =>
+    const [isfollowing, Setisfollowing] = useState(false)
+    const [isfollowed, Setisfollowed] = useState(false)
+    const [friendInfo, SetfriendInfo] = useState(item[0])
+
+    const CheckFollowStatus = () => {
+        if ((friendInfo.following).indexOf(user.userID) != -1)
+            Setisfollowing(true)
+        if ((friendInfo.followed).indexOf(user.userID) != -1)
+            Setisfollowed(true)
+    }
+
+    const FetchFriendInfo = () => {
+        Api.getUserItem(friendInfo.userID)
+            .then(res => {
+
+                SetfriendInfo(res[0])
+                CheckFollowStatus()
+            })
+            .catch(err => console.log('error load user by id'))
+    }
+
+
+    useEffect(() => {
         CountPost()
+        CheckFollowStatus()
+    }
         , [knowledge, status])
 
-    useEffect(() =>
-        CountPost
-        , [])
     const fetchKnowledgeData = () => {
         // const url = URL_local + 'knowledge/load-data/' + item[0].userID
         // console.log(url)
@@ -41,7 +62,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
         //         setKnowledge(result)
         //         console.log('bbb')
         //     }).catch(err => console.log('Error'));
-        KnowLedgeApi.getKnowledgeUser(item[0].userID)
+        KnowLedgeApi.getKnowledgeUser(friendInfo.userID)
             .then(result => {
                 setKnowledge(result)
             }).catch(err => console.log('Error'));
@@ -56,14 +77,14 @@ const FriendInfoForSearch = ({ navigation, route }) => {
         //         setStatus(result)
         //         CountPost()
         //     }).catch(err => console.log('Error'));
-        StatusApi.getStatusUser(item[0].userID)
+        StatusApi.getStatusUser(friendInfo.userID)
             .then(result => {
                 setStatus(result)
                 CountPost()
             }).catch(err => console.log('Error'));
     }
     useEffect(() => {
-        // fetchData();
+        FetchFriendInfo()
         fetchKnowledgeData();
         fetchStatusData();
     }, [])
@@ -87,7 +108,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                         shadowOffset: { width: 1, height: 1 },
                         shadowColor: 'black',
                         shadowOpacity: 0.5,
-                    }} source={{ uri: item[0].avatar }} ></Image>
+                    }} source={{ uri: friendInfo.avatar }} ></Image>
                     <View style={{
                         backgroundColor: 'white',
                         alignSelf: 'center',
@@ -120,12 +141,12 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Post</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{item[0].following.length}</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{friendInfo.following.length}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Following</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{item[0].score}</Text>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Score</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{friendInfo.followed.length}</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Followers</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', padding: 10 }}>
@@ -137,7 +158,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 color: 'dimgrey',
                                 marginBottom: 10
                             }}>
-                                Sometimes I want to treat people how they treat me But I don’t because It’s out of my character.</Text>
+                                {friendInfo.bio}</Text>
                             <View
                                 style={{
                                     borderBottomColor: 'dimgrey',
@@ -147,12 +168,12 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={() => navigation.push('Search Friend Knowledge', { user: item[0], knowledge: knowledge })} >
+                                <TouchableOpacity onPress={() => navigation.push('Search Friend Knowledge', { user: friendInfo, knowledge: knowledge })} >
                                     <View style={styles.button1}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.push('Search Friend Status', { user: item[0], status: status })}  >
+                                <TouchableOpacity onPress={() => navigation.push('Search Friend Status', { user: friendInfo, status: status })}  >
                                     <View style={styles.button2}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
                                     </View>
@@ -186,11 +207,11 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                         }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <Ionicons style={{ marginEnd: 10 }} name="location" size={24} color="white" />
-                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{item[0].address}</Text>
+                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{friendInfo.address}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <FontAwesome5 style={{ marginEnd: 10 }} name="birthday-cake" size={22} color="white" />
-                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{item[0].doB}</Text>
+                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{friendInfo.doB}</Text>
                             </View>
 
 
@@ -215,13 +236,13 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                         }}>
                             <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                                    <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{item[0].name}</Text>
+                                    <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{friendInfo.name}</Text>
                                     {
                                         item.length > 0 ?
 
                                             <View>
                                                 {
-                                                    item[0].score > 100 ?
+                                                    friendInfo.followed.length > 100 ?
                                                         <Image source={require('../../../assets/overrall.png')}
                                                             resizeMode='contain'
                                                             style={{
@@ -241,22 +262,51 @@ const FriendInfoForSearch = ({ navigation, route }) => {
 
 
                                 </View>
-                                <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}> Fashion Model</Text>
+                                <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}> {friendInfo.job}</Text>
                             </View>
-                            <TouchableOpacity >
-                                <View style={{
-                                    borderRadius: 20,
-                                    padding: 7,
-                                    backgroundColor: 'black',
-                                    shadowOffset: { width: 1, height: 1 },
-                                    shadowColor: 'black',
-                                    shadowOpacity: 0.5,
-                                }}>
-                                    {/* <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text> */}
-                                    <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text>
 
-                                </View>
-                            </TouchableOpacity>
+                            {
+                                (isfollowing === false && isfollowed === false)
+                                &&
+                                <TouchableOpacity >
+                                    <View style={styles.buttonFriendstatus}>
+                                        <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            }
+
+
+                            {
+                                (isfollowing === true && isfollowed === false)
+                                &&
+                                <TouchableOpacity >
+                                    <View style={styles.buttonFriendstatus}>
+                                        <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Accept</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            }
+
+                            {
+                                (isfollowing === false && isfollowed === true)
+                                &&
+                                <TouchableOpacity >
+                                    <View style={styles.buttonFriendstatus}>
+                                        <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Following</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            }
+
+                            {
+                                (isfollowing === true && isfollowed === true)
+                                &&
+                                <TouchableOpacity >
+                                    <View style={styles.buttonFriendstatus}>
+                                        <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Friend</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            }
+
+
                         </View>
 
                     </View>
@@ -269,7 +319,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                     <TouchableOpacity onPress={pressgobackHandler} style={{ alignItems: 'flex-start', position: 'absolute', padding: 10 }} >
                         <View style={{ flexDirection: 'row', marginBottom: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
                             <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                            <Text style={{ color: 'black', fontSize: 20, fontFamily: 'nunitobold', margin: 5 }}>{item[0].name}</Text>
+                            <Text style={{ color: 'black', fontSize: 20, fontFamily: 'nunitobold', margin: 5 }}>{friendInfo.name}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -285,7 +335,6 @@ const styles = StyleSheet.create({
         paddingStart: 10,
         paddingEnd: 10,
         paddingTop: 5,
-        marginBottom: 90,
         flex: 1,
         backgroundColor: 'whitesmoke'
 
@@ -313,6 +362,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 7,
         backgroundColor: 'dimgrey'
+    },
+    buttonFriendstatus: {
+        borderRadius: 20,
+        padding: 7,
+        backgroundColor: 'black',
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
     }
 
 });
