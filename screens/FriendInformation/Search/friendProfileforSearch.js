@@ -198,14 +198,15 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Followers</Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'column', padding: 10 }}>
+                        <View style={{ flexDirection: 'column', padding: 10}}>
                             <Text style={{
-                                paddingStart: 15,
-                                paddingEnd: 15,
+                                paddingStart: 10,
+                                paddingEnd: 10,
                                 fontFamily: 'nunitobold',
                                 fontSize: 15,
                                 color: 'dimgrey',
-                                marginBottom: 10
+                                marginBottom: 10,
+                                alignSelf:'center'
                             }}>
                                 {friendInfo.bio}</Text>
                             <View
