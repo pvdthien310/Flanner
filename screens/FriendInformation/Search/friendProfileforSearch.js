@@ -49,53 +49,53 @@ const FriendInfoForSearch = ({ navigation, route }) => {
     }
 
     const FollowButtonHandler = async () => {
-       await Api.addFollowing(friendInfo.userID,user.userID)
-        .then(async res => {
-            dispatch({ type: 'ADD_USER', payload: res })
-            await Api.addFollowed(user.userID,friendInfo.userID)
-            .then(res => {
-                SetfriendInfo(res)
-                Setisfollowed(true)
-            })
+        await Api.addFollowing(friendInfo.userID, user.userID)
+            .then(async res => {
+                dispatch({ type: 'ADD_USER', payload: res })
+                await Api.addFollowed(user.userID, friendInfo.userID)
+                    .then(res => {
+                        SetfriendInfo(res)
+                        Setisfollowed(true)
+                    })
 
-        })
+            })
     }
     const FollowingButtonHandler = async () => {
-        await Api.removeFollowing(friendInfo.userID,user.userID)
-        .then(async res => {
-            dispatch({ type: 'ADD_USER', payload: res })
-           await Api.removeFollowed(user.userID,friendInfo.userID)
-            .then(res => {
-                SetfriendInfo(res)
-                Setisfollowed(false)
+        await Api.removeFollowing(friendInfo.userID, user.userID)
+            .then(async res => {
+                dispatch({ type: 'ADD_USER', payload: res })
+                await Api.removeFollowed(user.userID, friendInfo.userID)
+                    .then(res => {
+                        SetfriendInfo(res)
+                        Setisfollowed(false)
+                    })
+
             })
 
-        })
-        
     }
     const AcceptButtonHandler = async () => {
-        await Api.addFollowing(friendInfo.userID,user.userID)
-        .then(async res => {
-            dispatch({ type: 'ADD_USER', payload: res })
-           await Api.addFollowed(user.userID,friendInfo.userID)
-            .then(res => {
-                SetfriendInfo(res)
-                Setisfollowed(true)
-            })
+        await Api.addFollowing(friendInfo.userID, user.userID)
+            .then(async res => {
+                dispatch({ type: 'ADD_USER', payload: res })
+                await Api.addFollowed(user.userID, friendInfo.userID)
+                    .then(res => {
+                        SetfriendInfo(res)
+                        Setisfollowed(true)
+                    })
 
-        })
+            })
     }
     const FriendButtonHandler = async () => {
-        await Api.removeFollowing(friendInfo.userID,user.userID)
-        .then(async res => {
-            dispatch({ type: 'ADD_USER', payload: res })
-           await Api.removeFollowed(user.userID,friendInfo.userID)
-            .then(res => {
-                SetfriendInfo(res)
-                Setisfollowed(false)
-            })
+        await Api.removeFollowing(friendInfo.userID, user.userID)
+            .then(async res => {
+                dispatch({ type: 'ADD_USER', payload: res })
+                await Api.removeFollowed(user.userID, friendInfo.userID)
+                    .then(res => {
+                        SetfriendInfo(res)
+                        Setisfollowed(false)
+                    })
 
-        })
+            })
     }
 
     useEffect(() => {
@@ -151,7 +151,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
 
                     <Image style={{
                         height: height * 0.58, width: '100%',
-                        borderTopLeftRadius: 10, borderTopRightRadius: 10,
+                        borderTopLeftRadius: 0, borderTopRightRadius: 0,
                         borderBottomRightRadius: 50,
                         borderBottomLeftRadius: 50,
                         shadowOffset: { width: 1, height: 1 },
@@ -198,7 +198,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Followers</Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'column', padding: 10}}>
+                        <View style={{ flexDirection: 'column', padding: 10 }}>
                             <Text style={{
                                 paddingStart: 10,
                                 paddingEnd: 10,
@@ -206,7 +206,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 fontSize: 15,
                                 color: 'dimgrey',
                                 marginBottom: 10,
-                                alignSelf:'center'
+                                alignSelf: 'center'
                             }}>
                                 {friendInfo.bio}</Text>
                             <View
@@ -288,18 +288,16 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
                                     <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{friendInfo.name}</Text>
                                     {
-                                        item.length > 0 ?
-
+                                        friendInfo ?
                                             <View>
                                                 {
-                                                    friendInfo.followed.length > 100 ?
+                                                    friendInfo.followed.length > 0 ?
                                                         <Image source={require('../../../assets/overrall.png')}
                                                             resizeMode='contain'
                                                             style={{
                                                                 width: 25,
                                                                 height: 25,
-                                                            }
-                                                            }
+                                                            }}
                                                         />
                                                         :
                                                         null
@@ -318,7 +316,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                             {
                                 (isfollowing === false && isfollowed === false)
                                 &&
-                                <TouchableOpacity onPress = {() => FollowButtonHandler()} >
+                                <TouchableOpacity onPress={() => FollowButtonHandler()} >
                                     <View style={{ ...styles.buttonFriendstatus, flexDirection: 'row' }}>
                                         <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text>
                                     </View>
@@ -329,8 +327,8 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                             {
                                 (isfollowing === true && isfollowed === false)
                                 &&
-                                <TouchableOpacity onPress = {() => AcceptButtonHandler()} >
-                                    <View style={{ ...styles.buttonFriendstatus, flexDirection: 'row',backgroundColor: 'maroon' }}>
+                                <TouchableOpacity onPress={() => AcceptButtonHandler()} >
+                                    <View style={{ ...styles.buttonFriendstatus, flexDirection: 'row', backgroundColor: 'maroon' }}>
                                         <Ionicons name="checkmark-circle" size={24} color="white" />
                                         <Text style={{ color: 'white', alignSelf: 'center', fontSize: 17, paddingStart: 5, paddingEnd: 15, fontFamily: 'nunitobold' }}>Accept</Text>
                                     </View>
@@ -340,7 +338,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                             {
                                 (isfollowing === false && isfollowed === true)
                                 &&
-                                <TouchableOpacity onPress = {() => FollowingButtonHandler()} >
+                                <TouchableOpacity onPress={() => FollowingButtonHandler()} >
                                     <View style={{ ...styles.buttonFriendstatus, backgroundColor: 'teal', flexDirection: 'row' }}>
                                         <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Following</Text>
                                     </View>
@@ -350,7 +348,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                             {
                                 (isfollowing === true && isfollowed === true)
                                 &&
-                                <TouchableOpacity onPress ={() => FriendButtonHandler()} >
+                                <TouchableOpacity onPress={() => FriendButtonHandler()} >
                                     <View style={{ ...styles.buttonFriendstatus, backgroundColor: 'teal', flexDirection: 'row' }}>
                                         <Ionicons name="checkmark-circle" size={24} color="white" />
                                         <Text style={{ color: 'white', fontSize: 17, alignSelf: 'center', paddingStart: 5, paddingEnd: 15, fontFamily: 'nunitobold' }}>Friend</Text>
