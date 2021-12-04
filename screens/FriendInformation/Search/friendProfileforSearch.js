@@ -147,12 +147,12 @@ const FriendInfoForSearch = ({ navigation, route }) => {
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={() => navigation.push('Status Friend Knowledge', { user: item[0], knowledge: knowledge })} >
+                                <TouchableOpacity onPress={() => navigation.push('Search Friend Knowledge', { user: item[0], knowledge: knowledge })} >
                                     <View style={styles.button1}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.push('Status Friend Status', { user: item[0], status: status })}  >
+                                <TouchableOpacity onPress={() => navigation.push('Search Friend Status', { user: item[0], status: status })}  >
                                     <View style={styles.button2}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
                                     </View>

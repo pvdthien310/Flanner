@@ -4,7 +4,7 @@ import SearchScreen from '../../screens/search/searchScreen'
 import FriendInfoForSearch from '../../screens/FriendInformation/Search/friendProfileforSearch'
 import ShowReactInfoForSearch from '../../screens/FriendInformation/Search/showReactInfoforSearch'
 import UserKnowledgeForSearch from '../../screens/search/UserKnowledgeforSearch'
-import UserStatusForSearch from '../../screens/search/UserstatusforSearch'
+import UserStatusForSearch from '../../screens/search/UserStatusforSearch'
 import SearchDetailKnowledge from '../../screens/search/searchDetailKnowledge'
 
 const Stack = createNativeStackNavigator()
