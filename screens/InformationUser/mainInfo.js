@@ -75,17 +75,17 @@ const MainInfor = ({ navigation, item }) => {
                             paddingStart: 10,
                             paddingEnd: 10,
                         }}>
-                            <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', marginEnd: 5 }}>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{postNumber}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Post</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>118k</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.following.length}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Following</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.score}</Text>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Score</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.followed.length}</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Followers</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', padding: 10 }}>
@@ -95,15 +95,17 @@ const MainInfor = ({ navigation, item }) => {
                                 fontFamily: 'nunitobold',
                                 fontSize: 15,
                                 color: 'dimgrey',
-                                marginBottom: 10
+                                marginBottom: 10,
+
                             }}>
-                                Sometimes I want to treat people how they treat me But I don’t because It’s out of my character.</Text>
+                               {user.bio}</Text>
                             <View
                                 style={{
                                     borderBottomColor: 'dimgrey',
                                     borderBottomWidth: 0.7,
-                                    marginBottom: 15,
-                                    marginTop: 10
+                                    marginBottom: 10,
+                                    marginTop: 10,
+                                    alignSelf:'center'
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
@@ -196,7 +198,7 @@ const MainInfor = ({ navigation, item }) => {
                                 />
 
                             </View>
-                            <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}> Fashion Model</Text>
+                            <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}>{user.job}</Text>
                         </View>
                         <TouchableOpacity onPress = {()=>  
                         navigation.navigate('User Information', {
