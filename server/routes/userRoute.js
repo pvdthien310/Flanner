@@ -86,8 +86,7 @@ UserRoute.post('/add/:userID/following/:friendID', (req, res) => {
                     { "new": true, "upsert": true }
                 ).then((data) => {
                     res.send(data)
-                }
-                )
+                })
                     .catch(err => console.log(err))
             }
             else

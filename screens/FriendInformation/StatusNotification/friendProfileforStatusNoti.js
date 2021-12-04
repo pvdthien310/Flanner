@@ -121,7 +121,7 @@ const FriendInfoForStatusNoti = ({ navigation, route }) => {
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Post</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{item[0].friendArray.length}</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{item[0].following.length}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Following</Text>
                             </View>
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
