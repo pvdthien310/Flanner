@@ -40,8 +40,8 @@ export default function SplashScreen({ navigation }) {
         {
             key: "0",
             photo: 'https://images.unsplash.com/photo-1634954230878-4b0174e50a7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-            title: 'Android launch screen',
-            description: 'Splash screens (also known as launch screens) provide a simple initial experience while your mobile app loads.',
+            title: 'Sharing is Learning',
+            description: 'Your knowledge sharing will be mapped out in Flâner. Significant worklet  for you not to chop and change. Be a great knowledge sharer.',
             avatar_url: `http://randomuser.me/api/portraits/women/${Math.floor(
                 Math.random() * 40
             )}.jpg`
@@ -49,8 +49,8 @@ export default function SplashScreen({ navigation }) {
         {
             key: "1",
             photo: 'https://images.unsplash.com/photo-1634938971687-1082b4cb018c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-            title: 'Initializing the app',
-            description: 'All apps submitted to the Apple App Store must use an Xcode storyboard to provide the app’s launch screen.',
+            title: 'Broaden Your World',
+            description: 'Flânêr will broadly your mind. All kinds of experience on one screen',
             avatar_url: `http://randomuser.me/api/portraits/women/${Math.floor(
                 Math.random() * 40
             )}.jpg`
@@ -58,8 +58,9 @@ export default function SplashScreen({ navigation }) {
         {
             key: "2",
             photo: 'https://images.unsplash.com/photo-1634952597304-b5dde0c621ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80',
-            title: 'Set up the FlutterActivity',
-            description: 'Every Android app requires initialization time while the operating system sets up the app’s process.',
+            title: 'Light Up Your Mind',
+            description: 'Altschmerz ?' +
+            ' \nCome to Flâner where communications keep you company',
             avatar_url: `http://randomuser.me/api/portraits/women/${Math.floor(
                 Math.random() * 40
             )}.jpg`
@@ -67,8 +68,8 @@ export default function SplashScreen({ navigation }) {
         {
             key: "3",
             photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80',
-            title: 'Android S',
-            description: 'The Android app now displays the desired launch screen while the app initializes',
+            title: 'Global Relationship',
+            description: 'Flâner dictionary has no word like nodus tollen for you. Let make some friends',
             avatar_url: `http://randomuser.me/api/portraits/women/${Math.floor(
                 Math.random() * 40
             )}.jpg`
@@ -76,8 +77,8 @@ export default function SplashScreen({ navigation }) {
         {
             key: "4",
             photo: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-            title: 'Custom splash screens',
-            description: 'See Android Splash Screens first on how to configure your splash screen on Android S.',
+            title: 'Quality Make Unique Experience',
+            description: 'Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. \nIt is Flâner ! Best way to entertain',
             avatar_url: `http://randomuser.me/api/portraits/women/${Math.floor(
                 Math.random() * 40
             )}.jpg`
@@ -182,8 +183,8 @@ export default function SplashScreen({ navigation }) {
                                     }}
                                 />
                                 <View style={{ position: 'absolute', bottom: 180, paddingLeft: 20, paddingRight: 20 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>{item.title}</Text>
-                                    <Text style={{ color: 'white' }}>{item.description}</Text>
+                                    <Text style={{ color: 'white', fontFamily:'nunitobold' ,fontWeight: 'bold', fontSize: 27 }}>{item.title}</Text>
+                                    <Text style={{ color: 'white', fontFamily:'nunitoregular', fontSize:15, padding:10 }}>{item.description}</Text>
                                 </View>
 
 
@@ -204,7 +205,7 @@ export default function SplashScreen({ navigation }) {
             <Indicator scrollX={scrollX} />
 
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SignInScreen') }}>
-                <Text style={{ fontStyle: 'italic', color: 'white', fontSize: 20 }}>Skip</Text>
+                <Text style={{ fontStyle: 'italic', color: 'white',fontFamily: 'nunitobold' ,fontSize: 20 }}>Skip</Text>
                 <EvilIcons style ={{alignSelf:'center'}} name="chevron-right" size={35} color='white' />
             </TouchableOpacity>
 

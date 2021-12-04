@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
-import { globalStyles } from '../../styles/global';
-import StatusMember from '../../components/statusMember';
+
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/core';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { URL_local } from '../../constant';
+import { URL_local } from '../../../constant';
 
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const FriendInfo = ({ navigation, route }) => {
+const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
 
     const { item } = route.params;
 
@@ -138,12 +136,12 @@ const FriendInfo = ({ navigation, route }) => {
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity onPress = {() => navigation.push('Knowledge Friend Knowledge', {user: item[0], knowledge: knowledge})} >
+                                <TouchableOpacity  onPress = {() => navigation.push('Knowledge Notification Friend Knowledge', {user: item[0], knowledge: knowledge})} >
                                     <View style={styles.button1}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress = {() => navigation.push('Knowledge Friend Status', {user: item[0], status: status})}  >
+                                <TouchableOpacity  onPress = {() => navigation.push('Knowledge Notification Friend Status', {user: item[0], status: status})}  >
                                     <View style={styles.button2}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
                                     </View>
@@ -213,7 +211,7 @@ const FriendInfo = ({ navigation, route }) => {
                                             <View>
                                                 {
                                                     item[0].score > 100 ?
-                                                        <Image source={require('../../assets/overrall.png')}
+                                                        <Image source={require('../../../assets/overrall.png')}
                                                             resizeMode='contain'
                                                             style={{
                                                                 width: 25,
@@ -251,12 +249,6 @@ const FriendInfo = ({ navigation, route }) => {
                         </View>
 
                     </View>
-
-                    {/* <TouchableOpacity style={{ position: 'absolute', marginTop: 5, marginStart: 15 }} onPress = {CountPost} >
-                        <View style={{ flexDirection: 'row', marginBottom: 15, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Thien Pham</Text>
-                        </View>
-                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={pressgobackHandler} style={{ alignItems: 'flex-start', position: 'absolute', padding: 10 }} >
                         <View style={{ flexDirection: 'row', marginBottom: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
                             <MaterialIcons name="keyboard-backspace" size={30} color="black" />
@@ -276,8 +268,8 @@ const styles = StyleSheet.create({
         paddingStart: 10,
         paddingEnd: 10,
         paddingTop: 5,
-        marginBottom: 90,
         flex: 1,
+        marginTop:5,
         backgroundColor: 'whitesmoke'
 
     },
@@ -307,4 +299,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default FriendInfo;
+export default FriendInfoForKnowledgeNoti;

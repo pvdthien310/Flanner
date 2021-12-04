@@ -9,7 +9,6 @@ import react from 'react';
 const KnowledgeMember = ({ item, navigation }) => {
      const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
-    // console.log( item.title +' : ' +  item.react)
     useEffect(() => {
         CheckNew()
         setReactnumber(item.react.length)
@@ -20,10 +19,8 @@ const KnowledgeMember = ({ item, navigation }) => {
         var currentDate = new Date()
         var difference= Math.abs(currentDate-postDate);
         let days = difference/(1000 * 3600 * 24)
-        
         if (days >= 10) return true;
         return false
-       
     }
 
     return (

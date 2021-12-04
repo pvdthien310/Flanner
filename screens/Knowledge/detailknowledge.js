@@ -18,6 +18,7 @@ const DetailKnowledge = ({ route, navigation }) => {
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
     const [data, setData] = useState(route.params.item)
+    const [host, setHost] = useState({})
     const [loading, setLoading] = useState(true)
     const [isNull, setIsNull] = useState(false)
 
@@ -84,7 +85,6 @@ const DetailKnowledge = ({ route, navigation }) => {
     }
 
     const fetchData = () => {
-
         const url = URL_local + 'knowledge/' + item._id.toString();
         console.log(url)
         fetch(url)
@@ -92,19 +92,30 @@ const DetailKnowledge = ({ route, navigation }) => {
             .then(result => {
                 setData(result)
                 setLoading(false)
-                // console.log(result)
                 if ((result.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
             }).catch(err => {
                 setIsNull(true)
-
+                console.log('Error')
+            });
+    }
+    const fetchHostData = () => {
+        const url = URL_local + 'user/load-user-by-userID/' + item.userID;
+        console.log(url)
+        fetch(url)
+            .then(res => res.json())
+            .then(result => {
+                setHost(result)
+                console.log(host)
+            }).catch(err => { 
                 console.log('Error')
             });
     }
 
     useEffect(() => {
         fetchData();
+        fetchHostData();
     }, [])
 
 
@@ -271,15 +282,10 @@ const DetailKnowledge = ({ route, navigation }) => {
                                     renderItem={({ item }) => (
                                         <View>
                                             <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
-
                                         </View>
-
-
                                     )}
                                     keyExtractor={item => item.key} />
                             </View>
-
-
 
                             <PostText>
                                 <Text style={Poststyle_Status.posttime_detail}>{data.posttime}</Text>
@@ -290,12 +296,11 @@ const DetailKnowledge = ({ route, navigation }) => {
                                     <Text style={Poststyle_Status.body_detail}>{data.body}</Text>
                                 </View>
 
-
                             </PostText>
                             <TouchableOpacity  onPress={() => navigation.push('Knowledge Show React User', { data })} >
                                 <Text style={Poststyle_Status.reactnumber_detail}>{data.react.length} likes</Text>
-
                             </TouchableOpacity>
+
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', margin: 10 }}>
                                 <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
@@ -326,9 +331,16 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 borderRadius: 10,
                                 padding: 10
                             }}>
-                                <Image source={{ uri: data.avatarcc }} style={Poststyle_Status.imageavatar_detai} />
+                                {
+                                    host.length > 0 ? 
+                                
+                                    <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                    : 
+                                    <Image source={require('../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                                }
+                               
                                 <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
+                                    <Text style={Poststyle_Status._name_detail}> {item.username}</Text>
                                     <Text style={{
                                         fontFamily: 'nunitobold',
                                         fontSize: 12,

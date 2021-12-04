@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,FlatList, SafeAreaView } from 'react-native';
-import { globalStyles } from '../../styles/global';
-import StatusMember from '../../components/statusMember';
+import { globalStyles } from '../../../styles/global';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/core';
-import { ScrollView } from 'react-native-gesture-handler';
-import { FontAwesome5 } from '@expo/vector-icons';
-import ReactMember from '../../components/ShowReactUser/reactMember';
+import ReactMemberForStatusUser from '../../../components/ShowReactUser/reactMemberforStatusUserInfo';
 
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const ShowReactInfo = ({ route, navigation }) => {
+const ShowReactInfoForStatusUserInfo = ({ route, navigation }) => {
     const { data } = route.params;
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -42,7 +38,7 @@ const ShowReactInfo = ({ route, navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 data={data.react}
                 renderItem={({ item }) => (
-                  <ReactMember item = {item} navigation = {navigation} ></ReactMember>
+                  <ReactMemberForStatusUser item = {item} navigation = {navigation} ></ReactMemberForStatusUser>
                 )}
                 keyExtractor={item => item} />
             
@@ -87,4 +83,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default ShowReactInfo;
+export default ShowReactInfoForStatusUserInfo;

@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Alert, Text, View, ScrollView, SafeAreaView, TouchableWithoutFeedback, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import { images } from '../../styles/poststyle'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/core';
-import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
-import { URL_local } from '../../constant';
+import { URL_local } from '../../../constant';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 
 const { height } = Dimensions.get("screen");

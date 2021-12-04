@@ -16,9 +16,9 @@ const BottomTabNavigator = () => {
                 style:{
                     height:65,
                     justifyContent:'center',
-                    paddingVertical:15,
+                    paddingVertical:0,
                     backgroundColor:'#FFF',
-                    elevation:2
+                    elevation:2,
                 },
             }}
         >
@@ -28,7 +28,7 @@ const BottomTabNavigator = () => {
                     options={{
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
-                            <Entypo name="chat" color={color} size={30}/>
+                            <Entypo style ={{marginTop: 10}} name="chat" color={color} size={30}/>
                         ),
                         headerShown: true
                     }}
@@ -39,7 +39,7 @@ const BottomTabNavigator = () => {
                     options={{
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
-                            <Ionicons name='ios-person' color={color} size={30}/>
+                            <Ionicons style ={{marginTop: 10}} name='ios-person' color={color} size={30}/>
                         ),
                         headerShown: true
                     }}

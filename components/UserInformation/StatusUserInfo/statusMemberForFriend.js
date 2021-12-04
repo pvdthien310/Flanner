@@ -1,27 +1,27 @@
 import React, { useState, useEffect, memo } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
-import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../shared/post'
-import { UserInfo } from '../shared/post'
-import { images, imagespost, Poststyle } from '../styles/poststyle'
+import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../../shared/post'
+import { UserInfo } from '../../../shared/post'
+import { images, imagespost, Poststyle } from '../../../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import '../constant.js'
-import { URL_local } from '../constant.js';
+import { URL_local } from '../../../constant';
 
 
-const StatusMember = ({ item, navigation }) => {
+const StatusMemberForSUser = ({ item, navigation }) => {
 
     const dispatch = useDispatch();
     const {user}  = useSelector(state => state.User)
     const [pressed, setPressed] = useState(false)
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
+    const [data, setData] = useState(item)
 
     const LoadData = () => {
        
-        const url = URL_local + 'status/' + item._id.toString();
+        const url =  URL_local+ 'status/' + item._id.toString();
         fetch(url)
             .then(res => res.json())
             .then(result => {
@@ -30,6 +30,7 @@ const StatusMember = ({ item, navigation }) => {
                     setPressed(true)
                 else setPressed(false)
                  setReactnumber(result.react.length)
+                 setData(result)
             }).catch(err => console.log('Error'));
     }
     useEffect(() => {
@@ -257,9 +258,11 @@ const StatusMember = ({ item, navigation }) => {
 
                 />
             </PostImage>
-            <ReactNumber>
+            <TouchableOpacity onPress ={() => navigation.push('Status User Info Show React User', { data: item })}>
+            <ReactNumber  >
                 <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
             </ReactNumber>
+            </TouchableOpacity>
             <InteractionWrapper style={Poststyle.interactionwrapper}>
                 <TouchableOpacity style={Poststyle.buttonpost}
                     onPress={PressHandle1}>
@@ -278,4 +281,4 @@ const StatusMember = ({ item, navigation }) => {
     )
 
 }
-export default react.memo(StatusMember);
+export default react.memo(StatusMemberForSUser);
