@@ -76,7 +76,7 @@ UserRoute.post('/update', (req, res) => {
 })
 
 /// Add to following
-UserRoute.post('/add/:userID/following/:friendID', (req, res) => {
+UserRoute.post('/add/:userID/following/:friendID',authenToken, (req, res) => {
     User.findOne({ userID: req.params.friendID })
         .then(data => {
             if ((data.following).indexOf(req.params.userID) == -1) {
@@ -96,7 +96,7 @@ UserRoute.post('/add/:userID/following/:friendID', (req, res) => {
         .catch(err => console.log(err))
 })
 /// Add to followed
-UserRoute.post('/add/:userID/followed/:friendID', (req, res) => {
+UserRoute.post('/add/:userID/followed/:friendID',authenToken, (req, res) => {
     User.findOne({ userID: req.params.friendID })
         .then(data => {
             if ((data.followed).indexOf(req.params.userID) == -1) {
@@ -117,7 +117,7 @@ UserRoute.post('/add/:userID/followed/:friendID', (req, res) => {
         .catch(err => console.log(err))
 })
 // Remove user from following
-UserRoute.post('/remove/:userID/following/:friendID', (req, res) => {
+UserRoute.post('/remove/:userID/following/:friendID',authenToken, (req, res) => {
 
     User.findOneAndUpdate({ userID: req.params.friendID },
         { "$pull": { "following": req.params.userID } },
@@ -128,7 +128,7 @@ UserRoute.post('/remove/:userID/following/:friendID', (req, res) => {
         .catch(err => console.log(err))
 })
 // Remove user from followed
-UserRoute.post('/remove/:userID/followed/:friendID', (req, res) => {
+UserRoute.post('/remove/:userID/followed/:friendID',authenToken, (req, res) => {
 
     User.findOneAndUpdate({ userID: req.params.friendID },
         { "$pull": { "followed": req.params.userID } },

@@ -11,7 +11,24 @@ const Api = {
     getUserItem : async itemId => {
         const res = await DatabaseClient.get('/user/load-user-by-userID/'+ itemId);
         return res.data;
-    }
+    },
+    addFollowing: async (userID,friendUserID) => {
+        const res = await DatabaseClient.post('/user/add/' + userID + '/following/' + friendUserID );
+        return res.data
+    },
+    addFollowed: async (userID,friendUserID) => {
+        const res = await DatabaseClient.post('/user/add/' + userID + '/followed/' + friendUserID );
+        return res.data
+    },
+    removeFollowing: async (userID,friendUserID) => {
+        const res = await DatabaseClient.post('/user/remove/' + userID + '/following/' + friendUserID );
+        return res.data
+    },
+    removeFollowed: async (userID,friendUserID) => {
+        const res = await DatabaseClient.post('/user/remove/' + userID + '/followed/' + friendUserID );
+        return res.data
+    },
+    
 }
 
 export default Api;
