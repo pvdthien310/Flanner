@@ -6,6 +6,7 @@ import ShowReactInfoForSearch from '../../screens/FriendInformation/Search/showR
 import UserKnowledgeForSearch from '../../screens/search/UserKnowledgeforSearch'
 import UserStatusForSearch from '../../screens/search/UserStatusforSearch'
 import SearchDetailKnowledge from '../../screens/search/searchDetailKnowledge'
+import CommentScreenForSearch from '../../screens/search/commentScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -19,6 +20,8 @@ export const SearchStack = (props) => {
             <Stack.Screen name='Search Friend Knowledge' component={UserKnowledgeForSearch} />
             <Stack.Screen name='Search Friend Status' component={UserStatusForSearch} />
             <Stack.Screen name='Search Detail Knowledge' component= {SearchDetailKnowledge} />
+            <Stack.Screen name='Search Comment' component={CommentScreenForSearch} />
+
 
 
         </Stack.Navigator>

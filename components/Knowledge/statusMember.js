@@ -163,7 +163,7 @@ const KnowledgeStatusMember = ({ item, navigation }) => {
             StatusApi.updateFalse(item._id.toString(), user.userID.toString())
             .then(res => {
                 removeNotification()
-                setData(res)
+                // setData(res)
                 setReactnumber(res.react.length)
                 dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
                 if ((res.react).indexOf(user.userID) != -1)
@@ -263,7 +263,9 @@ const KnowledgeStatusMember = ({ item, navigation }) => {
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
                     <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={Poststyle.buttonpost}>
+                <TouchableOpacity 
+                 onPress={() => navigation.push('Knowledge Comment', { item : data })}
+                style={Poststyle.buttonpost}>
                     <Octicons style={Poststyle.buttonicon} name="comment" size={20} color="black" />
                     <Text style={Poststyle.buttontext}>Comment</Text>
                 </TouchableOpacity>

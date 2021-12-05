@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Image, FlatList, ActivityIndicator, Saf
 import { globalStyles } from '../../styles/global';
 import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Poststyle_Knowledge, images, Poststyle,Poststyle_Status } from '../../styles/poststyle';
+import { Poststyle_Knowledge, images, Poststyle, Poststyle_Status } from '../../styles/poststyle';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -36,7 +36,7 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
         // fetch(url)
         //     .then(res => res.json())
         //     .then(result => {
-               
+
         //         setData(result)
         //         setLoading(false)
         //         // console.log(result)
@@ -48,15 +48,15 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
         //             setIsNull(true)
         //             console.log('Error')
         //         } );
-                StatusApi.getItem(item._id.toString())
-                .then(res => {
-                    setData(res)
-                    setLoading(false)
-                    if ((res.react).indexOf(user.userID) != -1)
-                        setPressed(true)
-                    else setPressed(false)
-                })
-                .catch(err => console.log(err))
+        StatusApi.getItem(item._id.toString())
+            .then(res => {
+                setData(res)
+                setLoading(false)
+                if ((res.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+            })
+            .catch(err => console.log(err))
     }
     const sendNotification = () => {
 
@@ -97,7 +97,7 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
 
     }
     const removeNotification = () => {
-  
+
         // const url = URL_local + 'notification/delete'
         // fetch(url, {
         //     method: 'POST',
@@ -136,7 +136,7 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
     const PressHandle = () => {
         let numberReact = data.reactNumber;
         const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = URL_local +  'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        const url_false = URL_local + 'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
         if (pressed == true) {
             // console.log(url_false)
@@ -164,15 +164,15 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
             //     console.log("error", err)
             // })
             StatusApi.updateFalse(item._id.toString(), user.userID.toString())
-            .then(res => {
-                removeNotification()
-                setData(res)
-                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            })
-            .catch(err => console.log('Error update false'))
+                .then(res => {
+                    removeNotification()
+                    setData(res)
+                    dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                })
+                .catch(err => console.log('Error update false'))
         }
         else if (pressed == false) {
             // fetch(url_true, {
@@ -198,15 +198,15 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
             //     console.log("error", err)
             // })
             StatusApi.updateTrue(item._id.toString(), user.userID.toString())
-            .then(res => {
-                sendNotification()
-                setData(res)
-                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            })
-            .catch(err => console.log('Error update true'))
+                .then(res => {
+                    sendNotification()
+                    setData(res)
+                    dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                })
+                .catch(err => console.log('Error update true'))
         }
 
 
@@ -230,8 +230,8 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
-                    <SafeAreaView style ={styles.post}>
-                    
+                    <SafeAreaView style={styles.post}>
+
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
                                 <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
@@ -246,9 +246,9 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
                             </View>
                         </View>
 
-                        <ScrollView style ={{padding:10}}>
+                        <ScrollView style={{ padding: 10 }}>
                             <UserInfo >
-                                <Image source={{uri: user.avatar}} style={Poststyle_Knowledge.imageavatar} />
+                                <Image source={{ uri: user.avatar }} style={Poststyle_Knowledge.imageavatar} />
                                 <UserInfoText>
                                     <Text style={Poststyle_Knowledge.name}> {user.name}</Text>
                                     <Text style={Poststyle_Knowledge.posttime}> {data.posttime}</Text>
@@ -274,16 +274,16 @@ const KnowledgeDetailStatus = ({ route, navigation }) => {
                                 <TouchableOpacity onPress={PressHandle}>
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
-                                <TouchableOpacity >
+                                <TouchableOpacity onPress={() => navigation.push('Knowledge Comment', { item : data })} >
                                     <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>
 
-                    
+
                     </SafeAreaView>
             }
-              {
+            {
                 isNull == false ? null :
                     <View style={{
                         alignItems: 'center',
