@@ -5,20 +5,46 @@ import Api from '../../API/UserAPI';
 import { useSelector, useDispatch } from 'react-redux';
 import { EvilIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import CommentAPI from '../../API/CommentAPI';
 
 
 
 const CommentMember = ({ item, navigation }) => {
-    const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const { user } = useSelector(state => { return state.User })
     const [host, setHost] = useState(undefined)
     const [isLike, SetisLike] = useState(false)
+    const [data, setData] = useState(item)
+    
     const fetchHostData = async () => {
         await Api.getUserItem(item.userID)
             .then(res => {
                 setHost(res[0])
+                if (item.react.indexOf(user.userID) == -1)
+                    SetisLike(false);
+                else SetisLike(true);
+               
             })
             .catch(err => console.log('Loi set user by id', err))
+    }
+    const LikeActionHandler = () => {
+        CommentAPI.updateTrue(item._id, user.userID)
+            .then(res => {
+                if (res.react.indexOf(user.userID) == -1)
+                    SetisLike(false);
+                else SetisLike(true);
+                setData(res)
+            })
+            .catch(err => console.log('Error Like Comment'))
+    }
+    const UnlikeActionHandler = () => {
+        CommentAPI.updateFalse(item._id, user.userID)
+            .then(res => {
+                if (res.react.indexOf(user.userID) == -1)
+                    SetisLike(false);
+                else SetisLike(true);
+                setData(res)
+            })
+            .catch(err => console.log('Error Like Comment'))
     }
     useEffect(() => {
         fetchHostData();
@@ -94,9 +120,9 @@ const CommentMember = ({ item, navigation }) => {
                         marginStart: 15,
                         opacity: 1
                     }}>{item.body}</Text>
-                    <TouchableOpacity>
-                        {
-                            isLike === false ?
+                    {
+                        isLike === false && data ?
+                            <TouchableOpacity onPress={() => LikeActionHandler()}>
                                 <View style={{
                                     marginBottom: 10,
                                     marginTop: 10,
@@ -113,8 +139,11 @@ const CommentMember = ({ item, navigation }) => {
                                         fontFamily: 'nunitobold',
                                         fontSize: 15,
                                         marginStart: 5
-                                    }}>{item.react.length}</Text>
-                                </View> :
+                                    }}>{data.react.length}</Text>
+                                </View>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity onPress={() => UnlikeActionHandler()}>
                                 <View style={{
                                     marginBottom: 10,
                                     marginTop: 10,
@@ -133,10 +162,10 @@ const CommentMember = ({ item, navigation }) => {
                                         fontSize: 15,
                                         marginStart: 5,
                                         color: 'maroon'
-                                    }}>{item.react.length}</Text>
+                                    }}>{data.react.length}</Text>
                                 </View>
-                        }
-                    </TouchableOpacity>
+                            </TouchableOpacity>
+                    } 
 
 
                 </View>
