@@ -182,27 +182,12 @@ export default function SplashScreen({ navigation }) {
                                         }]
                                     }}
                                 />
-                                <View style={{ position: 'absolute', top: 530, paddingLeft: 20, paddingRight: 20 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>{item.title}</Text>
-                                    <Text style={{ color: 'white' }}>{item.description}</Text>
+                                <View style={{ position: 'absolute', bottom: 180, paddingLeft: 20, paddingRight: 20 }}>
+                                    <Text style={{ color: 'white', fontFamily: 'nunitobold', fontWeight: 'bold', fontSize: 27 }}>{item.title}</Text>
+                                    <Text style={{ color: 'white', fontFamily: 'nunitoregular', fontSize: 15, padding: 10 }}>{item.description}</Text>
                                 </View>
-
-
                             </View>
-
-                            {/* <Image
-                                source={{ uri: item.avatar_url }}
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderRadius: 60,
-                                    position: 'absolute',
-                                    bottom: -30,
-                                    right: 40
-                                }}
-                            /> */}
                         </View>
-
                     </View>
                     )
                 }}
@@ -215,8 +200,8 @@ export default function SplashScreen({ navigation }) {
             <Indicator scrollX={scrollX} />
 
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SignInScreen') }}>
-                <Text style={{ fontStyle: 'italic', textDecorationLine: 'underline', color: 'white', fontSize: 18 }}>Skip</Text>
-                <EvilIcons name="chevron-right" size={24} color='white' />
+                <Text style={{ fontStyle: 'italic', color: 'white', fontFamily: 'nunitobold', fontSize: 20 }}>Skip</Text>
+                <EvilIcons style={{ alignSelf: 'center' }} name="chevron-right" size={35} color='white' />
             </TouchableOpacity>
 
             <Animatable.Image
@@ -225,6 +210,7 @@ export default function SplashScreen({ navigation }) {
                 source={require('../../assets/flaner.png')}
                 resizeMode='stretch'
                 easing='ease-out-back' />
+
         </View>
     )
 }
@@ -266,7 +252,7 @@ const styles = StyleSheet.create({
         height: logoHeight * 0.4,
         width: logoHeight * 0.4,
         position: 'absolute',
-        top: 40,
+        top: height * 0.05,
         left: 30
 
     },
@@ -283,11 +269,12 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        alignItems: 'flex-end',
+        alignItems: 'center',
         marginTop: 30,
         position: 'absolute',
         bottom: 80, right: 20,
-        flexDirection: 'row'
+        flexDirection: 'row',
+
     },
     signIn: {
         width: 150,

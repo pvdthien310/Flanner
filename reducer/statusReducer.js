@@ -41,6 +41,22 @@ const initState = {
 
     }
 
+    if (action.type == 'UPDATE_USER_KNOWLEDGE_MEMBER') {
+        let newdata = state.user_status;
+        newdata = newdata.map(member => {
+            if (member._id == action.payload._id)
+                return action.payload
+            else return member
+        })
+        
+        // console.log(newdata)
+        const newState = {
+            ...state,
+            user_status: newdata
+        }
+        return newState;
+
+    }
     if (action.type == 'DELETE_USER_STATUS_MEMBER') {
         let newdata = state.user_status;
         newdata = newdata.filter(member => member._id != action.payload._id)

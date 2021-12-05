@@ -23,28 +23,19 @@ const NotificationMember = ({ item, navigation }) => {
      post = knowledge_data.user_knowledge.filter(member => member._id == item.postID)
     else if (item.type == 2)
      post = status_data.user_status.filter(member => member._id == item.postID)
-    
-    // console.log(sender[0])
-    // console.log('postID :',item.postID)
-    // knowledge_data.user_knowledge.forEach(Element => console.log(Element._id))
-    console.log(post[0])
-    
+        
     const HandelOpenPost = () => {
         if (item.type == '2')
-            navigation.navigate('Status Detail Notification', { item: { _id: item.postID } });
+            navigation.navigate('Status Detail Notification', { item:  post[0]  });
         else if (item.type == '1')
-            navigation.navigate('Knowledge Detail Notification', { item: { _id: item.postID } });
+            navigation.navigate('Knowledge Detail Notification', { item:  post[0]  });
     }
 
     return (
         <TouchableOpacity activeOpacity={item.type == '3' ? 1 : 0.7} onPress={() => HandelOpenPost()}>
             <View style={item.type == '1' ? styles.frame_1 : item.type == '2' ? styles.frame_2 : styles.frame_3} >
-            {/* <Text style={styles.body}> {item.message}</Text> */}
-
                 {
                     sender[0].avatar ? 
-                  
-                    
                 <Image source={{ uri: sender[0].avatar }}
                     resizeMode='center'
                     style={{
@@ -70,11 +61,10 @@ const NotificationMember = ({ item, navigation }) => {
                 <View style ={{ padding: 10, flexShrink: 1}}>
                     <Text style={styles.body}><Text style={{ color: 'black', fontFamily: 'nunitobold' }}>{sender[0].name}</Text> {item.message}</Text>
                 </View>
-                
                 {
                   (post[0] != undefined ) ? 
                  <Image source={{ uri: post[0].listImage.length > 0 ? post[0].listImage[0].url : '../assets/icon/postPhoto.png' }}
-                    resizeMode='stretch'
+                    resizeMode='contain'
                     style={{
                         width: post[0].listImage.length > 0 ? 50 : 0,
                         height: 50,
@@ -124,8 +114,9 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 5,
         backgroundColor: 'dimgrey',
-        flexDirection: 'row'
-
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignContent: 'center'
 
     },
     frame_3: {
@@ -136,7 +127,9 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 5,
         backgroundColor: 'maroon',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignContent: 'center'
 
     },
     body: {

@@ -216,9 +216,9 @@ const Discussion = ({ route, navigation }) => {
                     onPress={() => navigation.goBack()}
                 >
                     <Icon name='left'
-                        //color='#000119'
+                        style ={{marginLeft: 10}}
                         color='white'
-                        size={24} />
+                        size={25} />
                 </TouchableOpacity>
                 <Text style={styles.username}>{Linh2.name}</Text>
                 <Image source={Linh2.avatar}
@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         height: "100%",
+        paddingTop: 40
     },
     main: {
         backgroundColor: '#FFF',
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
     username: {
         //color: "#000119",
         color: 'white',
-        fontFamily: 'Montserrat_700Bold',
+        fontFamily: 'nunitobold',
         fontSize: 20,
         flex: 1,
         textAlign: 'center'

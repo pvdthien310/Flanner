@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal,FlatList, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions,ActivityIndicator } from 'react-native';
-import { globalStyles } from '../../styles/global';
-import StatusMember from '../../components/statusMember';
-import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/core';
-import { ScrollView } from 'react-native-gesture-handler';
-import { FontAwesome5 } from '@expo/vector-icons';
-import UserKnowledgeMember from '../../components/UserInformation/userKnowledgeMember';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
-import KnowledgeMember from '../../components/knowledgeMember';
+import KnowledgeMember from '../../components/Knowledge/knowledgeMember';
 import Knowledge from './knowledge';
+import KnowLedgeApi from '../../API/KnowledgeAPI';
 
 
 const { height } = Dimensions.get("screen");
@@ -37,15 +31,20 @@ const UserKnowledgeForNF = ({ navigation, route }) => {
         
     }, [])
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {      
-                setUserKnowledge(result)      
-                Setloading(false)  
-                forceRerender()
-            }).catch(err => console.log('Error'));
+        // const url = URL_local + 'knowledge/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {      
+               
+        //     }).catch(err => console.log('Error'));
+        KnowLedgeApi.getKnowledgeUser(user.userID)
+        .then(res => {
+            setUserKnowledge(res)      
+            Setloading(false)  
+            forceRerender()
+        })
+        .catch(err => console.log('Error Load User Knowledge'))
        
     }
     return (

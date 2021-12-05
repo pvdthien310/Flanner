@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         color:'#252933',
         fontSize:11,
         marginTop:5,
-        fontFamily:'Montserrat_600SemiBold',
+        fontFamily:'nunitobold',
         alignSelf:'flex-end'
     },
     gradient:{
@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
     },
     text:{
         color:'#fff',
-        fontFamily:'Montserrat_700Bold'
+        fontFamily:'nunitoregular'
     }
 })

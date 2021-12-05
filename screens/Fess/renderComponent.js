@@ -41,7 +41,7 @@ export const renderBubble = (props) => {
 
             textStyle={{
                 right: {
-                    color: 'black'
+                    color: 'black',
                 },
                 left: {
                     color: 'white'
@@ -68,7 +68,7 @@ export const renderSend = (props) => {
 
 export const scrollToBottomComponent = () => {
     return (
-        <AntDesign name="caretdown" size={25} color='black' />
+        <AntDesign name="downcircle" size={40} color='black' />
     );
 }
 

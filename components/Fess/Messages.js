@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     },
     count:{
         color:'#fff',
-        fontFamily:'Montserrat_700Bold',
+        fontFamily:'nunitoregular',
     },
     image:{
         width:60,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     },
     text:{
         color:'#b6b6b6',
-        fontFamily:'Montserrat_600SemiBold',
+        fontFamily:'nunitoregular',
         fontSize:11
     },
     duration:{
@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
         flex:1,
         marginLeft:280,
         position:'absolute',
-        fontFamily:'Montserrat_600SemiBold'
+        fontFamily:'nunitobold'
     },
     username:{
         color:'#000119',
-        fontFamily:'Montserrat_700Bold'
+        fontFamily:'nunitobold'
     }
 })

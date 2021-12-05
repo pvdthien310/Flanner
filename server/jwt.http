@@ -1,0 +1,43 @@
+GET http://192.168.0.101:3000/api/user
+Authorization : Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoaWVuZGkiLCJpYXQiOjE2MzgxMTc1MTIsImV4cCI6MTYzODExNzU0Mn0.7VyjZ6e86_Ri6kgIqsPBmRqmWfUAdtONSs36l-Tkcb8
+###
+
+GET http://192.168.0.101:3000/api/knowledge
+x-access-token : Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzgxNzIxMDUsImV4cCI6MTYzODE3MjEzNX0.n-nVEJ4gKf8amkOUjo0Ifrf2bhBC2YnnhNePer62LqI
+###
+
+POST http://192.168.0.101:8000/get-accessToken
+Content-Type: application/json
+
+{
+    "username": "thiendi"
+}
+###
+POST http://192.168.0.101:8000/get-refreshToken
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoaWVuZGkiLCJpYXQiOjE2MzgxMjEyNzl9.tj2ANRM7TQQ9GgAAAqe0vgDCUPB65-91KeDtdgK-rAI"
+}
+####
+POST http://192.168.0.101:8000/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoaWVuZGkiLCJpYXQiOjE2MzgxMjA0MTh9.4jlq3Efl8qfi_9O3E6G8XKmuFlcgyWy3zS346c13JVo"
+}
+###
+POST http://192.168.0.103:8000/api/JWT/send-data
+Content-Type: application/json
+
+{
+    "refreshTokens" : "[]"
+}
+###
+
+GET http://192.168.0.103:8000/api/JWT/get-full-refreshToken
+Content-Type: application/json
+
+{
+    "refreshTokens" : "[]"
+}

@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
+import NotificationApi from '../../API/NotificationAPI';
+import StatusApi from '../../API/StatusAPI';
 
 
 
@@ -29,141 +31,182 @@ const DetailStatus = ({ route, navigation }) => {
 
     const fetchData = () => {
 
-        const url = URL_local + 'status/' + item._id.toString();
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
+        // const url = URL_local + 'status/' + item._id.toString();
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
                
-                setData(result)
-                setLoading(false)
-                // console.log(result)
-                if ((result.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            }).catch(err =>
-                {
-                    setIsNull(true)
-                    console.log('Error')
-                } );
+        //         setData(result)
+        //         setLoading(false)
+        //         // console.log(result)
+        //         if ((result.react).indexOf(user.userID) != -1)
+        //             setPressed(true)
+        //         else setPressed(false)
+        //     }).catch(err =>
+        //         {
+        //             setIsNull(true)
+        //             console.log('Error')
+        //         } );
+                StatusApi.getItem(item._id.toString())
+                .then(res => {
+                    setData(res)
+                    setLoading(false)
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                })
+                .catch(err => console.log(err))
     }
     const sendNotification = () => {
 
-        const url = URL_local + 'notification/send-data'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userID: data.userID,
-                message: ' liked your status',
-                postID: data._id,
-                senderID: user.userID,
-                type: '2',
-                action: 'React'
-            })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-                return res.json()
-        }).then(data => {
-            // console.log(data)
-        }).catch(err => {
-            console.log("error", err)
-        })
+        // const url = URL_local + 'notification/send-data'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         userID: data.userID,
+        //         message: ' liked your status',
+        //         postID: data._id,
+        //         senderID: user.userID,
+        //         type: '2',
+        //         action: 'React'
+        //     })
+        // }).then(res => {
+        //     if (!res.ok) {
+        //         throw Error('Loi phat sinh')
+        //     }
+        //     else
+        //         return res.json()
+        // }).then(data => {
+        //     // console.log(data)
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })
+        NotificationApi.sendNoti({
+            userID: data.userID,
+            message: ' liked your post ',
+            postID: data._id,
+            senderID: user.userID,
+            type: '2',
+            action: 'React'
+        }).then(res => {})
+            .catch(err => console.log('Error send noti'))
 
     }
     const removeNotification = () => {
   
-        const url = URL_local + 'notification/delete'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userID: data.userID,
-                postID: data._id,
-                senderID: user.userID,
-                type: '2',
-                action: 'React'
-            })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-                return res.json()
-        }).then(data => {
-            // console.log(data)
-        }).catch(err => {
-            console.log("error", err)
-        })
+        // const url = URL_local + 'notification/delete'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         userID: data.userID,
+        //         postID: data._id,
+        //         senderID: user.userID,
+        //         type: '2',
+        //         action: 'React'
+        //     })
+        // }).then(res => {
+        //     if (!res.ok) {
+        //         throw Error('Loi phat sinh')
+        //     }
+        //     else
+        //         return res.json()
+        // }).then(data => {
+        //     // console.log(data)
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })
+        NotificationApi.removeNoti({
+            userID: data.userID,
+            postID: data._id,
+            senderID: user.userID,
+            type: '2',
+            action: 'React'
+        }).then(res => { })
+            .catch(err => console.log('Error removed noti'))
     }
 
     const PressHandle = () => {
-        let numberReact = data.reactNumber;
-        const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        const url_false = URL_local +  'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
+        // let numberReact = data.reactNumber;
+        // const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+        // const url_false = URL_local +  'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
         if (pressed == true) {
-            console.log(url_false)
-            fetch(url_false, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then((result) => {
-                //  console.log(result)
+            // console.log(url_false)
+            // fetch(url_false, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // }).then(res => {
+            //     if (!res.ok) {
+            //         throw Error('Loi phat sinh')
+            //     }
+            //     else {
+            //         return res.json()
+            //     }
+            // }).then((result) => {
+            //     //  console.log(result)
+            //     removeNotification()
+            //     setData(result)
+            //     dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+            //     if ((result.react).indexOf(user.userID) != -1)
+            //         setPressed(true)
+            //     else setPressed(false)
+            // }).catch(err => {
+            //     console.log("error", err)
+            // })
+            StatusApi.updateFalse(item._id.toString(), user.userID.toString())
+            .then(res => {
                 removeNotification()
-                setData(result)
-                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
-                if ((result.react).indexOf(user.userID) != -1)
+                setData(res)
+                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                if ((res.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
             })
+            .catch(err => console.log('Error update false'))
         }
         else if (pressed == false) {
-            fetch(url_true, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => {
-                if (!res.ok) {
-                    throw Error('Loi phat sinh')
-                }
-                else {
-                    return res.json()
-                }
-            }).then(result => {
+            // fetch(url_true, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // }).then(res => {
+            //     if (!res.ok) {
+            //         throw Error('Loi phat sinh')
+            //     }
+            //     else {
+            //         return res.json()
+            //     }
+            // }).then(result => {
+            //     sendNotification()
+            //     setData(result)
+            //     dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
+            //     if ((result.react).indexOf(user.userID) != -1)
+            //         setPressed(true)
+            //     else setPressed(false)
+            // }).catch(err => {
+            //     console.log("error", err)
+            // })
+            StatusApi.updateTrue(item._id.toString(), user.userID.toString())
+            .then(res => {
                 sendNotification()
-                setData(result)
-                dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
-                if ((result.react).indexOf(user.userID) != -1)
+                setData(res)
+                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                if ((res.react).indexOf(user.userID) != -1)
                     setPressed(true)
                 else setPressed(false)
-            }).catch(err => {
-                console.log("error", err)
             })
+            .catch(err => console.log('Error update true'))
         }
-
-
-        // if (pressed == true) setReactnumber(reactnumber - 1);
-        // else setReactnumber(reactnumber + 1)
-
     }
 
     useEffect(() => {

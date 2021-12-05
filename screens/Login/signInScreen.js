@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, CheckBox } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, CheckBox, AppRegistry } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { Entypo } from '@expo/vector-icons';
@@ -10,41 +10,41 @@ import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-root-toast';
 import { AsyncStorage } from 'react-native';
 import base64 from 'react-native-base64'
-import { URL_local } from '../../constant.js';
+import { URL_local, URL_local_user } from '../../constant.js';
+import Api from '../../API/UserAPI'
+import JWTApi from '../../API/JWTAPI'
+import DatabaseClient from '../../API/DatabaseAPI.js';
+import KnowLedgeApi from '../../API/KnowledgeAPI.js';
+
+
+
+
+
+
 
 export default function SignInScreen({ navigation }) {
     // const [data1, setData1] = useState([])
     // const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const { data, loading, user } = useSelector(state => { return state.User })
-    const fetchData = () => {
-        const url = URL_local + 'user'
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_DATA_USER', payload: result })
-                dispatch({ type: 'SET_LOADING_USER', payload: false })
+    const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
+    const fetchData = async () => {
+        // const url = URL_local_user + 'user'
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         dispatch({ type: 'ADD_DATA_USER', payload: result })
+        //         dispatch({ type: 'SET_LOADING_USER', payload: false })
 
-            }).catch(err => console.log('Error'));
+        //     }).catch(err => console.log('Error'));
+
+        await Api.getAll().then(result => {
+            dispatch({ type: 'ADD_DATA_USER', payload: result })
+            dispatch({ type: 'SET_LOADING_USER', payload: false })
+        })
+
     }
-    // const fetchKnowledgeData = () => {
-    //     const url = 'http://192.168.0.106:3000/api/knowledge/load-data/' + user.userID
-    //     console.log(url)
-    //     fetch(url)
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
-    //         }).catch(err => console.log('Error'));
-    // }
-    // const fetchStatusData = () => {
-    //     const url = 'http://192.168.0.106:3000/api/status/load-data/' + user.userID
-    //     console.log(url)
-    //     fetch(url)
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             dispatch({ type: 'ADD_USER_STATUS', payload: result })
-    //         }).catch(err => console.log('Error'));
-    // }
+
 
     _storeData = async () => {
         try {
@@ -167,15 +167,25 @@ export default function SignInScreen({ navigation }) {
         }
 
         let flag = false;
-        data.forEach(element => {
+        data.forEach(async element => {
             if (element.email === dataTemp.email) {
                 flag = true;
                 if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
                     _storeData()
-                    // fetchKnowledgeData()
-                    // fetchStatusData()                      
-                    navigation.navigate('DrawerStack')
+                    await JWTApi.getToken().then(
+                        res => {
+                            navigation.navigate('DrawerStack', {
+                                screen: 'NewsFeed',
+                                params: {},
+                            })
+                            dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+
+                        }
+                    )
+
+
+
                 }
                 else {
                     let toast = Toast.show('Password is incorrect', {
@@ -221,7 +231,7 @@ export default function SignInScreen({ navigation }) {
                             onChangeText={(val) => EmailChange(val)}
                             defaultValue={saveData.email}
                         />
-                        {dataTemp.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
+                        {dataTemp.checkUser ? <Ionicons style={{ marginEnd: 10 }} name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
 
                     </View>
                 </View>
@@ -238,6 +248,7 @@ export default function SignInScreen({ navigation }) {
                             defaultValue={saveData.password}
                         />
                         <Ionicons
+                            style={{ alignSelf: 'center', marginEnd: 10 }}
                             name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
@@ -333,7 +344,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
         position: 'absolute',
         top: 0,
-        height: height * 0.06,
+        height: height * 0.05,
         width: width * 0.85
     },
     accountTxt: {
@@ -358,7 +369,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: 75,
         zIndex: 1,
-        marginTop: 15
+        marginTop: 17
     },
     passwordEdt: {
         paddingLeft: 13,
