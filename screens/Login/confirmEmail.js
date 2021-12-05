@@ -21,7 +21,7 @@ export default function ConfirmEmail({ route, navigation }) {
     } = route.params.dataTemp
 
     const sendEmail = () => {
-        fetch("http://192.168.1.5:3000/api/sendEmail", {
+        fetch("http://192.168.0.102:3000/api/sendEmail", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,14 +43,14 @@ export default function ConfirmEmail({ route, navigation }) {
         let temp = ''
         let i = 0
 
-        while (email.charAt(i) != '@') {
+        while (email.charAt(i) != '@' || email.charAt(i) != '.') {
             temp += email.charAt(i)
             i++;
         }
         return temp;
     }
     const _submitData = () => {
-        fetch("http://192.168.1.6:3000/api/user/send-data", {
+        fetch("http://192.168.0.102:3000/api/user/send-data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,9 +62,7 @@ export default function ConfirmEmail({ route, navigation }) {
                 doB: '',
                 avatar: '',
                 email: email,
-                friendArray: '',
                 password: base64.encode(password),
-                score: '0',
                 address: '',
                 position: '0',
                 reportedNum: '0',
