@@ -54,22 +54,24 @@ UserRoute.get('/load-user-by-userID/:userID',authenToken, (req,res) => {
 })
 
 UserRoute.post('/update', (req, res) => {
-    User.findByIdAndUpdate(req.body.id, {
+    User.findOneAndUpdate({userID : req.body.userID}, {
         userID: req.body.userID,
         phoneNumber: req.body.phoneNumber,
         name: req.body.name,
         doB: req.body.doB,
+        address: req.body.address,
         avatar: req.body.avatar,
         email: req.body.email,
-        friendArray: req.body.friendArray,
         password: req.body.password,
-        score: req.body.score,
-        address: req.body.address,
+        following: req.body.following,
+        followed: req.body.followed,
+        job: req.body.job,
+        bio: req.body.bio,
         position: req.body.position,
         reportedNum: req.body.reportedNum,
-    })
+    }, { "new": true, "upsert": true })
         .then((data) => {
-            console.log(data)
+            res.send(data)
         }).catch(err => {
             console.log(err)
         })
