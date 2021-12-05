@@ -7,6 +7,13 @@ import {
     OverlayProvider
 } from "stream-chat-react-native-core"
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { LogBox } from 'react-native';
+
+// Ignore log notification by message
+LogBox.ignoreLogs(['Warning: ...']);
+
+//Ignore all log notifications
+LogBox.ignoreAllLogs();
 
 const ChannelScreen = () => {
 
