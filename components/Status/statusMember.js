@@ -246,7 +246,8 @@ const StatusMember = ({ item, navigation }) => {
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
                     <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={Poststyle.buttonpost}>
+                <TouchableOpacity  onPress={() => navigation.push('Status Comment', { item : data })}
+                style={Poststyle.buttonpost}>
                     <Octicons style={Poststyle.buttonicon} name="comment" size={20} color="black" />
                     <Text style={Poststyle.buttontext}>Comment</Text>
                 </TouchableOpacity>

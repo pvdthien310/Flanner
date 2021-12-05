@@ -7,6 +7,7 @@ import FriendInfoForStatusNoti from '../../screens/FriendInformation/StatusNotif
 import UserKnowledgeForSN from '../../screens/Notification/StatusNotification/UserKnowledgeforSN'
 import UserStatusForSN from '../../screens/Notification/StatusNotification/UserStatusforSN'
 import StatusNotiDetailKnowledge from '../../screens/Notification/StatusNotification/notiDetailKnowledge'
+import CommentScreenForSNoti from '../../screens/Notification/StatusNotification/commentScreen'
 
 
 
@@ -24,6 +25,8 @@ export const StatusNotificationStack = (props) => {
             <Stack.Screen name='Status Notification Friend Profile' component={FriendInfoForStatusNoti} />
             <Stack.Screen name='Status Notification Friend Knowledge' component={UserKnowledgeForSN} />
             <Stack.Screen name='Status Notification Friend Status' component={UserStatusForSN} />
+            <Stack.Screen name='Status Notification Comment' component={CommentScreenForSNoti} />
+            
 
         </Stack.Navigator>
     )

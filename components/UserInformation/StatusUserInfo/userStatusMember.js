@@ -352,12 +352,12 @@ const UserStatusMember = ({ item, navigation }) => {
 
                 />
             </PostImage>
-            <TouchableOpacity onPress ={() => navigation.push('Status User Info Show React User', { data: item })}>
+            <TouchableOpacity style ={{margin: 10}} onPress ={() => navigation.push('Status User Info Show React User', { data: item })}>
             <ReactNumber>
                 <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
             </ReactNumber>
             </TouchableOpacity>
-            <InteractionWrapper style={Poststyle.interactionwrapper}>
+            {/* <InteractionWrapper style={Poststyle.interactionwrapper}>
                 <TouchableOpacity style={Poststyle.buttonpost}
                     onPress={PressHandle}>
                     <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
@@ -367,7 +367,7 @@ const UserStatusMember = ({ item, navigation }) => {
                     <Octicons style={Poststyle.buttonicon} name="comment" size={20} color="black" />
                     <Text style={Poststyle.buttontext}>Comment</Text>
                 </TouchableOpacity>
-            </InteractionWrapper>
+            </InteractionWrapper> */}
 
         </Post>
         // </TouchableOpacity>
