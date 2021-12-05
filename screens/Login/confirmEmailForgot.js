@@ -161,7 +161,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
 
                         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                             <LinearGradient
-                                colors={['black', 'dimgray']}
+                                colors={['black', 'black']}
                                 style={styles.gradient}>
                                 <Text style={styles.textConfirm}>Confirm</Text>
                             </LinearGradient>

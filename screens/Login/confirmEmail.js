@@ -176,7 +176,7 @@ export default function ConfirmEmail({ route, navigation }) {
 
                         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                             <LinearGradient
-                                colors={['black', 'dimgray']}
+                                colors={['black', 'black']}
                                 style={styles.gradient}>
                                 <Text style={styles.textConfirm}>Confirm</Text>
                             </LinearGradient>
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: 20,
         fontSize: 15,
-        fontFamily: 'nunitobold'
+        //fontFamily: 'nunitobold'
     },
     logo: {
         height: logoHeight,
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     },
     textConfirm: {
         color: 'white',
-        fontFamily: 'nunitobold'
+        //fontFamily: 'nunitobold'
     },
     gradient: {
         justifyContent: 'center',

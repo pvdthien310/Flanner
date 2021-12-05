@@ -256,7 +256,7 @@ export default function SignUpScreen({ navigation }) {
 
                 <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
                     <LinearGradient
-                        colors={['black', 'dimgray']}
+                        colors={['black', 'black']}
                         style={styles.signIn}
                     >
                         <Text style={styles.textSign}>Sign Up</Text>
@@ -269,7 +269,7 @@ export default function SignUpScreen({ navigation }) {
                     onPress={() => navigation.navigate('SignInScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
-                    <Text style={styles.signUpTxt}>Sign Up</Text>
+                    <Text style={styles.signUpTxt}>Sign In</Text>
                 </TouchableOpacity>
             </Animatable.View>
         </View>

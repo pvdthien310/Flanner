@@ -222,7 +222,7 @@ export default function ForgotPasswordScreen({ navigation }) {
 
                 <TouchableOpacity style={styles.signInBtn} onPress={_resetHandle} >
                     <LinearGradient
-                        colors={['black', 'dimgray']}
+                        colors={['black', 'black']}
                         style={styles.signIn}
                     >
                         <Text style={styles.textSign}>Reset password</Text>
