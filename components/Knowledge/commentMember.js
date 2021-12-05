@@ -16,7 +16,6 @@ const CommentMember = ({ item, navigation }) => {
     const fetchHostData = async () => {
         await Api.getUserItem(item.userID)
             .then(res => {
-                console.log(res[0])
                 setHost(res[0])
             })
             .catch(err => console.log('Loi set user by id', err))
@@ -80,7 +79,7 @@ const CommentMember = ({ item, navigation }) => {
                         <Text style={{
                             fontFamily: 'robotoregular',
                             fontWeight: 'bold',
-                            fontSize: 14,
+                            fontSize: 11,
                             color: 'lightslategrey',
                             marginStart: 10,
                             opacity: 0.5,

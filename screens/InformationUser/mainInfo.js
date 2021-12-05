@@ -29,7 +29,7 @@ const MainInfor = ({ navigation, item }) => {
     useEffect(() => 
     CountPost
     ,[])
-    
+
     useEffect(() => 
     forceRerender()
     ,[user])
@@ -101,6 +101,7 @@ const MainInfor = ({ navigation, item }) => {
                                 fontSize: 15,
                                 color: 'dimgrey',
                                 marginBottom: 10,
+                                alignSelf:'center'
 
                             }}>
                                {user.bio}</Text>

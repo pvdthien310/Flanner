@@ -31,7 +31,7 @@ const KnowledgeNotification = ({ navigation }) => {
 
         NotificationApi.getKnowledge(user.userID)
             .then(res => {
-                dispatch({ type: 'ADD_USER_KNOWLEDGE_NOTIFICATION', payload: res })
+                dispatch({ type: 'ADD_USER_KNOWLEDGE_NOTIFICATION', payload: res.reverse() })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
                 setLoading2(false)
             })
