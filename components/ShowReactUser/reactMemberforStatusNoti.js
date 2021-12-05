@@ -8,6 +8,7 @@ import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { URL_local } from '../../constant.js';
 import { useSelector, useDispatch } from 'react-redux';
+import Api from '../../API/UserAPI';
 
 const ReactMemberForStatusNoti = ({ item, navigation }) => {
     const [host, setHost] = useState(item)
@@ -38,16 +39,21 @@ const ReactMemberForStatusNoti = ({ item, navigation }) => {
     }
 
     const fetchData = () => {
-        const url = URL_local + 'user/load-user-by-userID/' + item.toString();
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                setHost(result)
-                console.log(result)
-            }).catch(err => {
-                console.log('Error')
-            });
+        // const url = URL_local + 'user/load-user-by-userID/' + item.toString();
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         setHost(result)
+        //         console.log(result)
+        //     }).catch(err => {
+        //         console.log('Error')
+        //     });
+            Api.getUserItem( item.toString())
+            .then(res => {
+                setHost(res)
+            })
+            .catch(err => console.log('error load user by id'))
     }
 
     useEffect(() => {

@@ -16,7 +16,7 @@ const ShowReactInfo = ({ route, navigation }) => {
     const pressgobackHandler = () => {
         navigation.goBack();
     }
-   
+   console.log(data)
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>

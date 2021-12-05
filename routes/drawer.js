@@ -9,6 +9,7 @@ import MainInfor from '../screens/InformationUser/mainInfo';
 import NotificationTab from './notification/NotificationStack';
 import Header, { HeaderDrawer, HeaderNews } from '../shared/header';
 import { UserInformationStack } from './userInformation/userInformationStack';
+import { SearchStack } from './search/searchStack';
 
 function HomeScreen({ navigation }) {
     return (
@@ -50,8 +51,9 @@ export const DrawerStack = (props) => {
             <Drawer.Screen name="Flâner Chat" component={ChatStackNavigator} options={{ headerShown: false }} />
             <Drawer.Screen name = "User Information" component = {UserInformationStack} 
             options = { { headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'/> },
-            {drawerLabel:()=>null}
-    }/>
+            {drawerLabel:()=>null}}/>
+            <Drawer.Screen name = "Search" component = {SearchStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Search'  /> }} />
+
         </Drawer.Navigator>
     );
 }

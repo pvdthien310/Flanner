@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { URL_local } from '../../../constant';
+import KnowLedgeApi from '../../../API/KnowledgeAPI';
 
 const UserKnowledgeMember = ({ item, navigation }) => {
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
@@ -19,13 +20,18 @@ const UserKnowledgeMember = ({ item, navigation }) => {
     const dispatch = useDispatch()
 
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
-            }).catch(err => console.log('Error'));
+        // const url = URL_local + 'knowledge/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+        //     }).catch(err => console.log('Error'));
+            KnowLedgeApi.getKnowledgeUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
+            })
+            .catch(err => console.log('Error Load User Knowledge'))
     }
 
     const createTwoButtonAlert = () =>
@@ -58,59 +64,54 @@ const UserKnowledgeMember = ({ item, navigation }) => {
             react: item.react,
             reactNumber: '0'
         }
-        const url = URL_local + 'knowledge/delete'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: item._id,
-                username: user.username,
-                body: item.body,
-                userID: user.userID,
-                title: item.title,
-                description: item.description,
-                avatar: user.avatar,
-                posttime: item.posttime,
-                listImage: item.listImage,
-                react: item.react,
-                reactNumber: '0'
-            })
+        // const url = URL_local + 'knowledge/delete'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         id: item._id,
+        //         username: user.username,
+        //         body: item.body,
+        //         userID: user.userID,
+        //         title: item.title,
+        //         description: item.description,
+        //         avatar: user.avatar,
+        //         posttime: item.posttime,
+        //         listImage: item.listImage,
+        //         react: item.react,
+        //         reactNumber: '0'
+        //     })
+        // }).then(res => {
+        //         console.log(res.ok)
+        //         dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
+        //         throw Error('Loi phat sinh')      
+        // }).then(data => {                   
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })       
+        KnowLedgeApi.Delete({
+            id: item._id,
+            username: user.username,
+            body: item.body,
+            userID: user.userID,
+            title: item.title,
+            description: item.description,
+            avatar: user.avatar,
+            posttime: item.posttime,
+            listImage: item.listImage,
+            react: item.react,
+            reactNumber: '0'
         }).then(res => {
-                console.log(res.ok)
-                dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
-                throw Error('Loi phat sinh')      
-        }).then(data => {                   
-        }).catch(err => {
-            console.log("error", err)
-        })       
+            console.log('Delete successfully')
+            dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
+            fetchKnowledgeData()
+        })
+        .catch(err => console.log('Error Delete Knowledge'))
         fetchKnowledgeData()
        
     }
-
-    // const DeleteNoti = () => {
-    //     const url = 'http://192.168.0.102:3000/api/notification/deletebypostid/' + item._id
-    //     fetch(url, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: item
-    //     }).then(res => {
-    //         if (!res.ok) {
-                
-                
-    //             dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
-    //             // fetchKnowledgeData()
-    //             throw Error('Loi phat sinh')      
-    //         }    
-    //     }).then(data => {   
-    //         DeleteNoti()                   
-    //     }).catch(err => {
-    //         console.log("error", err)
-    //     })       
-    // }
     
     useEffect(() => {
         setReactnumber(item.react.length)

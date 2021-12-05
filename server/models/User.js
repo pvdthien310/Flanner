@@ -25,9 +25,19 @@ const UserSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    friendArray: {
+    following: {
+        type: Array,
+    },
+    followed: {
+        type: Array,
+    },
+    bio: {
         type: String,
-        default: ""
+        require: true
+    },
+    job: {
+        type: String,
+        require: true
     },
     password: {
         type: String,

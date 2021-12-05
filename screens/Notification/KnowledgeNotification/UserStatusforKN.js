@@ -4,6 +4,7 @@ import StatusMemberForKnowledgeNoti from '../../../components/KnowledgeNotificat
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../../constant';
+import StatusApi from '../../../API/StatusAPI';
 
 
 
@@ -32,15 +33,22 @@ const UserStatusForKN = ({ navigation,route }) => {
     }, [])
    
     const fetchStatusData = () => {
-        const url = URL_local +  'status/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                setUserStatus(result)      
-                Setloading(false)  
-                forceRerender()
-            }).catch(err => console.log('Error'));
+        // const url = URL_local +  'status/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         setUserStatus(result)      
+        //         Setloading(false)  
+        //         forceRerender()
+        //     }).catch(err => console.log('Error'));
+        StatusApi.getStatusUser(user.userID)
+        .then(res => {
+            setUserStatus(res)
+            Setloading(false)
+            forceRerender()
+        })
+        .catch(err => console.log('Error Load User Status'))
     }
     return (
         <View style={styles.container}>

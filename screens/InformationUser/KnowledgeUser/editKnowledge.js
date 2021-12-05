@@ -8,6 +8,7 @@ import { useFocusEffect } from '@react-navigation/core';
 import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { URL_local } from '../../../constant';
+import KnowLedgeApi from '../../../API/KnowledgeAPI';
 
 
 
@@ -16,7 +17,7 @@ import { URL_local } from '../../../constant';
 
 const { height } = Dimensions.get("screen");
 export default function EditKnowledge({ route, navigation }) {
-    
+
     const GetDetail = (type) => {
         if (route.params) {
             switch (type) {
@@ -83,13 +84,18 @@ export default function EditKnowledge({ route, navigation }) {
 
     }
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
-            }).catch(err => console.log('Error'));
+        // const url = URL_local + 'knowledge/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+        //     }).catch(err => console.log('Error'));
+        KnowLedgeApi.getKnowledgeUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
+            })
+            .catch(err => console.log('Error Load User Knowledge'))
     }
     const EditPost = () => {
         // const d = new Date();
@@ -107,38 +113,54 @@ export default function EditKnowledge({ route, navigation }) {
             reactNumber: '0'
         }
 
-        const url = URL_local + 'knowledge/update'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: route.params.item._id,
-                username: user.name,
-                body: body,
-                userID: user.userID,
-                title: title,
-                description: description,
-                avatar: user.avatar,
-                posttime: route.params.item.posttime,
-                listImage: picture,
-                react: route.params.item.react,
-                reactNumber: '0'
-            })
-        }).then(res => {
-            if (!res.ok) {
-                throw Error('Loi phat sinh')
-            }
-            else
-            {     
-                return res.json()
-            }               
-        }).then(data => {
-           
-        }).catch(err => {
-            console.log("error", err)
-        })        
+        // const url = URL_local + 'knowledge/update'
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         id: route.params.item._id,
+        //         username: user.name,
+        //         body: body,
+        //         userID: user.userID,
+        //         title: title,
+        //         description: description,
+        //         avatar: user.avatar,
+        //         posttime: route.params.item.posttime,
+        //         listImage: picture,
+        //         react: route.params.item.react,
+        //         reactNumber: '0'
+        //     })
+        // }).then(res => {
+        //     if (!res.ok) {
+        //         throw Error('Loi phat sinh')
+        //     }
+        //     else {
+        //         return res.json()
+        //     }
+        // }).then(data => {
+
+        // }).catch(err => {
+        //     console.log("error", err)
+        // })
+        KnowLedgeApi.UpdateItem({
+            id: route.params.item._id,
+            username: user.name,
+            body: body,
+            userID: user.userID,
+            title: title,
+            description: description,
+            avatar: user.avatar,
+            posttime: route.params.item.posttime,
+            listImage: picture,
+            react: route.params.item.react,
+            reactNumber: '0'
+        })
+        .then(res => {
+            fetchKnowledgeData()
+        })
+        .catch(err => console.log('Error Edit Knowledge'))
         fetchKnowledgeData();
         navigation.goBack();
     }
@@ -245,8 +267,8 @@ export default function EditKnowledge({ route, navigation }) {
                         multiline={true}
                         style={styles.title_topic}
                         onChangeText={AddTitle}
-                        value ={title}
-                        
+                        value={title}
+
 
                     ></TextInput>
                     <View style={styles.bodytitle}>
@@ -263,9 +285,9 @@ export default function EditKnowledge({ route, navigation }) {
                         multiline={true}
                         style={styles.description}
                         onChangeText={AddDescription}
-                        value ={description}
+                        value={description}
 
-                        
+
 
                     ></TextInput>
                     <View style={styles.bodytitle}>
@@ -280,9 +302,9 @@ export default function EditKnowledge({ route, navigation }) {
                         multiline={true}
                         style={styles.body}
                         onChangeText={AddBody}
-                        value ={body}
+                        value={body}
 
-                       
+
 
                     ></TextInput>
                     <View style={styles.bodytitle}>

@@ -4,6 +4,7 @@ import UserKnowledgeMember from '../../components/UserInformation/KnowledgeUserI
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
+import KnowLedgeApi from '../../API/KnowledgeAPI';
 
 
 const { height } = Dimensions.get("screen");
@@ -19,17 +20,23 @@ const UserKnowledge = ({ navigation }) => {
         navigation.goBack();
     }
     useEffect(() => {
-        forceRerender
+         forceRerender
     }, [user_knowledge])
     const fetchKnowledgeData = () => {
-        const url = URL_local + 'knowledge/load-data/' + user.userID
-        console.log(url)
-        fetch(url)
-            .then(res => res.json())
-            .then(result => {
-                // console.log(result)
-                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
-            }).catch(err => console.log('Error'));
+        // const url = URL_local + 'knowledge/load-data/' + user.userID
+        // console.log(url)
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         // console.log(result)
+        //         dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
+        //     }).catch(err => console.log('Error'));
+        
+            KnowLedgeApi.getKnowledgeUser(user.userID)
+            .then(res => {
+                dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
+            })
+            .catch(err => console.log(err))
        
     }
     return (
