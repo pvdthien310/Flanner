@@ -16,6 +16,7 @@ const logoHeight = height * 0.5;
 const MainInfor = ({ navigation, item }) => {
 
     const dispatch = useDispatch()
+    const [, forceRerender] = useState();
     const {user} = useSelector(state => state.User)
     const {user_knowledge} = useSelector(state => state.Knowledge)
     const {user_status} = useSelector(state => state.Status)
@@ -28,6 +29,10 @@ const MainInfor = ({ navigation, item }) => {
     useEffect(() => 
     CountPost
     ,[])
+    
+    useEffect(() => 
+    forceRerender()
+    ,[user])
     
     const CountPost = () => {
         setPostNumber(user_knowledge.length + user_status.length)
