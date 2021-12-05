@@ -22,7 +22,7 @@ import {StreamChat} from "stream-chat"
 // import { Montserrat_800ExtraBold } from "@expo-google-fonts/montserrat";
 const store = createStore(RootReducer);
 
-const API_KEY = "tw5mmngstvph"
+const API_KEY = "d2mthgpptgyv"
 const client = StreamChat.getInstance(API_KEY);
 
 export default function App() {
