@@ -3,14 +3,14 @@ Authorization : Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoa
 ###
 
 GET http://192.168.0.101:3000/api/knowledge
-x-access-token : Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzgxNzIxMDUsImV4cCI6MTYzODE3MjEzNX0.n-nVEJ4gKf8amkOUjo0Ifrf2bhBC2YnnhNePer62LqI
+x-access-token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoaWVuZGkiLCJpYXQiOjE2MzgyMDY0MjEsImV4cCI6MTYzODgwNjQyMX0.D9ad_l9YQGseHB2TvVesSZ-W3wunt2P1eFkuNvzwXzQ
 ###
 
 POST http://192.168.0.101:8000/get-accessToken
 Content-Type: application/json
 
 {
-    "username": "thiendi"
+    "username": "19522267"
 }
 ###
 POST http://192.168.0.101:8000/get-refreshToken
@@ -41,3 +41,5 @@ Content-Type: application/json
 {
     "refreshTokens" : "[]"
 }
+###
+POSt http://192.168.0.102:3000/api/comment
