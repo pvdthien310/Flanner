@@ -28,6 +28,10 @@ const Api = {
         const res = await DatabaseClient.post('/user/remove/' + userID + '/followed/' + friendUserID );
         return res.data
     },
+    updateUser: async updated_User => {
+        const res = await DatabaseClient.post('/user/update', updated_User);
+        return res.data;
+    } 
     
 }
 
