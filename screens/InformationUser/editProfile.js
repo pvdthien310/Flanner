@@ -204,7 +204,6 @@ const EditProFile = ({ navigation }) => {
       job: job
     }).then(res => {
       SetLoading(false)
-      
       fetchUserData();
     }).catch(err => {
       console.log(err)
