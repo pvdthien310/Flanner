@@ -28,6 +28,21 @@ const UserReducer = (state = initState, action) => {
         }
         return newState;
     }
+    if (action.type == 'UPDATE_USER') {
+        let newdata = state.data;
+        newdata = newdata.map(member => {
+            if (member._id == action.payload._id)
+                return action.payload
+            else return member
+        })
+
+        const newState = {
+            ...state,
+            data: newdata
+        }
+        return newState;
+
+    }
     return state;
 }
 export default UserReducer;
