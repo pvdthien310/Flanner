@@ -5,7 +5,7 @@ import { UserInfo } from '../../../shared/post'
 import { Poststyle } from '../../../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import Toast from 'react-native-root-toast';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,25 +17,25 @@ import NotificationApi from '../../../API/NotificationAPI';
 const UserStatusMember = ({ item, navigation }) => {
 
     const dispatch = useDispatch();
-    const {user}  = useSelector(state => state.User)
+    const { user } = useSelector(state => state.User)
     const [pressed, setPressed] = useState(false)
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
 
     const createTwoButtonAlert = () =>
-    Alert.alert(
-        
-      "Notification",
-      "Do you want to delete this post?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-        
-        },
-        { text: "OK", onPress: () => DeleteStatus() }
-      ]
-    );
+        Alert.alert(
+
+            "Notification",
+            "Do you want to delete this post?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+
+                },
+                { text: "OK", onPress: () => DeleteStatus() }
+            ]
+        );
     const fetchStatusData = () => {
         // const url = URL_local + 'status/load-data/' + user.userID
         // console.log(url)
@@ -45,23 +45,23 @@ const UserStatusMember = ({ item, navigation }) => {
         //         dispatch({ type: 'ADD_USER_STATUS', payload: result })
         //     }).catch(err => console.log('Error'));
         StatusApi.getStatusUser(user.userID)
-        .then(res => {
-              dispatch({ type: 'ADD_USER_STATUS', payload: res })
-        })
-        .catch(err => console.log('Error Load User Status'))
+            .then(res => {
+                dispatch({ type: 'ADD_USER_STATUS', payload: res })
+            })
+            .catch(err => console.log('Error Load User Status'))
     }
-    
+
     const DeleteStatus = () => {
         const deletedObject = {
-                id: item._id,
-                username: user.username,
-                userID: user.userID,
-                body: item.body,
-                avatar: user.avatar,
-                posttime: item.posttime,
-                listImage: item.listImage,
-                reactNumber: '0',
-                react: item.react
+            id: item._id,
+            username: user.username,
+            userID: user.userID,
+            body: item.body,
+            avatar: user.avatar,
+            posttime: item.posttime,
+            listImage: item.listImage,
+            reactNumber: '0',
+            react: item.react
         }
         // const url = URL_local + 'status/delete'
         // fetch(url, {
@@ -101,42 +101,42 @@ const UserStatusMember = ({ item, navigation }) => {
             reactNumber: '0',
             react: item.react
         })
-        .then(res => {
-            dispatch({ type: 'DELETE_USER_STATUS_MEMBER', payload: deletedObject })
-            fetchStatusData()
-        })
-        .catch(err => {
-            console.log('Error Deletd Status')
-        })
+            .then(res => {
+                dispatch({ type: 'DELETE_USER_STATUS_MEMBER', payload: deletedObject })
+                fetchStatusData()
+            })
+            .catch(err => {
+                console.log('Error Deletd Status')
+            })
         fetchStatusData()
-       
+
     }
-    
+
     const LoadData = () => {
         // const url = URL_local +  'status/' + item._id.toString();
         // fetch(url)
         //     .then(res => res.json())
         //     .then(result => {
         //         if ((result.react).indexOf(user.userID) != -1)
-                
+
         //             setPressed(true)
         //         else setPressed(false)
         //          setReactnumber(result.react.length)
         //     }).catch(err => console.log('Error'));
 
-            StatusApi.getItem(item._id.toString())
+        StatusApi.getItem(item._id.toString())
             .then(res => {
                 if ((res.react).indexOf(user.userID) != -1)
-                
+
                     setPressed(true)
                 else setPressed(false)
-                 setReactnumber(res.react.length)
+                setReactnumber(res.react.length)
             })
             .catch(err => console.log(err))
     }
     useEffect(() => {
         LoadData()
-    },[])
+    }, [])
 
     const sendNotification = () => {
         // const url = URL_local + 'notification/send-data'
@@ -172,12 +172,12 @@ const UserStatusMember = ({ item, navigation }) => {
             senderID: user.userID,
             type: '2',
             action: 'React'
-        }).then(res => {})
+        }).then(res => { })
             .catch(err => console.log('Error send noti'))
 
     }
     const removeNotification = () => {
-  
+
         // const url = URL_local + 'notification/delete'
         // fetch(url, {
         //     method: 'POST',
@@ -247,18 +247,18 @@ const UserStatusMember = ({ item, navigation }) => {
             // }).catch(err => {
             //     console.log("error", err)
             // })
-               
+
             StatusApi.updateFalse(item._id.toString(), user.userID.toString())
-            .then(res => {
-                removeNotification()               
-                setReactnumber(res.react.length)
-                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            })
-            .catch(err => console.log('Error update false'))
-        
+                .then(res => {
+                    removeNotification()
+                    setReactnumber(res.react.length)
+                    dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                })
+                .catch(err => console.log('Error update false'))
+
         }
         else if (pressed == false) {
             // fetch(url_true, {
@@ -287,17 +287,17 @@ const UserStatusMember = ({ item, navigation }) => {
             //     console.log("error", err)
             // })
             StatusApi.updateTrue(item._id.toString(), user.userID.toString())
-            .then(res => {
-                sendNotification()
-                
-                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-                setReactnumber(res.react.length)
+                .then(res => {
+                    sendNotification()
 
-            })
-            .catch(err => console.log('Error update true'))
+                    dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                    setReactnumber(res.react.length)
+
+                })
+                .catch(err => console.log('Error update true'))
         }
 
 
@@ -306,35 +306,71 @@ const UserStatusMember = ({ item, navigation }) => {
 
     }
 
-    
-    
-    
+
+
+
 
     useEffect(() => {
-        console.log('render post')
-       
+        // console.log('render post')
+
     })
 
     return (
         <Post >
-             <View style={{ flexDirection: 'row',justifyContent:'flex-end',alignSelf:'flex-end' ,alignContent: 'flex-end',borderRadius:10, borderColor: 'black',borderWidth:1, paddingStart:5, paddingEnd:5,marginBottom:5 }}>
-                        <TouchableOpacity onPress= {() => navigation.navigate('Status User Edit Status',{item})}  style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
-                            <MaterialIcons name="edit" size={24} color="black" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress= {createTwoButtonAlert} style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Ionicons name="close" size={30} color="maroon" />
-                        </TouchableOpacity>
-                    </View>
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignSelf: 'flex-end',
+                alignContent: 'flex-end',
+                borderRadius: 10,
+                borderColor: 'black',
+                borderWidth: 1,
+                paddingStart: 5,
+                paddingEnd: 5,
+                marginBottom: 5,
+                opacity: item.mode == 'limitary' ? '0.5' : 1
+            }}>
+                {
+                    item.mode == 'private' &&
+                    <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                        <MaterialIcons name="person-outline" size={24} color="black" />
+                    </TouchableOpacity>
+                }
+                {
+                    item.mode == 'limitary' &&
+                    <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                        <MaterialIcons name="privacy-tip" size={24} color="maroon" />
+                    </TouchableOpacity>
+                }
+                <TouchableOpacity onPress={() => {
+                    if (item.mode != 'limitary')
+                        navigation.navigate('Status User Edit Status', { item })
+                    else {
+                        let toast = Toast.show('Sorry! Limitary post can not be edited.', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                        });
+                    }
+                }} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                    <MaterialIcons name="edit" size={24} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={createTwoButtonAlert} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Ionicons name="close" size={30} color="maroon" />
+                </TouchableOpacity>
+            </View>
             <UserInfo>
-                <Image source={{uri: user.avatar}} style={Poststyle.imageavatar} />
+                <Image source={{ uri: user.avatar }} style={Poststyle.imageavatar} />
                 <UserInfoText>
                     <Text style={Poststyle.name}> {user.name}</Text>
                     <Text style={Poststyle.posttime}> {item.posttime}</Text>
                 </UserInfoText>
-               
+
             </UserInfo>
-            <PostText>            
-                    <Text style={Poststyle.body}>{item.body}</Text>
+            <PostText>
+                <Text style={Poststyle.body}>{item.body}</Text>
             </PostText>
             <PostImage>
                 <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
@@ -352,10 +388,10 @@ const UserStatusMember = ({ item, navigation }) => {
 
                 />
             </PostImage>
-            <TouchableOpacity style ={{margin: 10}} onPress ={() => navigation.push('Status User Info Show React User', { data: item })}>
-            <ReactNumber>
-                <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
-            </ReactNumber>
+            <TouchableOpacity style={{ margin: 10 }} onPress={() => navigation.push('Status User Info Show React User', { data: item })}>
+                <ReactNumber>
+                    <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
+                </ReactNumber>
             </TouchableOpacity>
             {/* <InteractionWrapper style={Poststyle.interactionwrapper}>
                 <TouchableOpacity style={Poststyle.buttonpost}

@@ -217,7 +217,7 @@ const KnowledgeStatusMember = ({ item, navigation }) => {
 
 
     useEffect(() => {
-        console.log('render post')
+        // console.log('render post')
 
     })
 
