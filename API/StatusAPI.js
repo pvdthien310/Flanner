@@ -1,5 +1,6 @@
 import DatabaseClient from '../API/DatabaseAPI'
 
+
 const url = '/status';
 
  const StatusApi = {
@@ -8,7 +9,10 @@ const url = '/status';
         const res = await DatabaseClient.get(url);
         return res.data
     },
-
+    getRandom: async (userID) => {
+        const res = await DatabaseClient.get(url + '/load-data/newsfeed/random/' + userID);
+        return res.data
+    },
     getStatusUser: async user => {
         const res = await DatabaseClient.get(url +'/load-data/' + user);
         return res.data

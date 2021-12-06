@@ -13,11 +13,9 @@ import JWTApi from '../API/JWTAPI';
 
 export const CustomDrawer = (props) => {
     const dispatch = useDispatch();
-     const { _chosen } = useSelector(state => state.DrawerController)
-     const { user } = useSelector(state => state.User)
-     const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
-
-
+    const { _chosen } = useSelector(state => state.DrawerController)
+    const { user } = useSelector(state => state.User)
+    const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
     const { navigation } = props
     const [, forceRerender] = useState();
     useEffect(() => {
@@ -31,16 +29,18 @@ export const CustomDrawer = (props) => {
     const Logout = async () => {
 
         await JWTApi.logout(refreshToken)
-        .then(res => {
-            navigation.navigate('SignInScreen');
-        })
-        .catch(err => console.log('Error Log out'))
+            .then(res => {
+                navigation.navigate('SignInScreen');
+
+
+            })
+            .catch(err => console.log('Error Log out'))
 
 
     }
-    
+
     return (
-        <View style={{ flex: 1}}>
+        <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <TouchableOpacity>
                     <View style={{
@@ -56,178 +56,178 @@ export const CustomDrawer = (props) => {
                         <Text style={styles.appname}>Flâner</Text>
                     </View>
                 </TouchableOpacity>
-                {_chosen != 0 ? 
+                {_chosen != 0 ?
 
-                <TouchableOpacity
-                    style={{
-                        margin: 3,
-                        shadowOffset: { width: 1, height: 1 },
-                        shadowColor: 'black',
-                        shadowOpacity: 0.5,
-                        backgroundColor: 'whitesmoke'
-                    }}
-                    activeOpacity={0.7} onPress={() => {
-                        navigation.navigate('User Information', {
-                        screen: 'User Dashboard',
-                        params: { user: 'jane' },
-                    })
-                    dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
-                    }}>
-                    <View style={styles.info}>
-                        <View>
-                            <Text style={styles.textstyle}>{user.name}</Text>
-                            <Text style={styles.textstyle1}>{user.email}</Text>
-                        </View>
-                        <Image source={{
-                            uri: user.avatar
+                    <TouchableOpacity
+                        style={{
+                            margin: 3,
+                            shadowOffset: { width: 1, height: 1 },
+                            shadowColor: 'black',
+                            shadowOpacity: 0.5,
+                            backgroundColor: 'whitesmoke'
                         }}
-                            style={styles.avatar}
-                        />
-                    </View>
-                </TouchableOpacity>
-                : 
-                <TouchableOpacity
-                style={{
-                    margin: 3,
-                    
-                    shadowOffset: { width: 0.5, height: 0.5 },
-                    shadowColor: 'black',
-                    shadowOpacity: 0.5,
-                    backgroundColor: 'black'
-                }}
-                activeOpacity={0.7} >
-                <View style={styles.info}>
-                    <View>
-                        <Text style={{...styles.textstyle, color: 'white'}}>{user.name}</Text>
-                        <Text style={styles.textstyle1}>{user.email}</Text>
-                    </View>
-                    <Image source={{
-                        uri: user.avatar
-                    }}
-                        style={styles.avatar}
-                    />
-                </View>
-            </TouchableOpacity>
-                 }
-                { _chosen != 1 ?
-                <TouchableOpacity
-                    style={styles.frameFeature}
-                    activeOpacity={0.7} onPress={() => {
-                        navigation.navigate('NewsFeed')
-                        dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+                        activeOpacity={0.7} onPress={() => {
+                            navigation.navigate('User Information', {
+                                screen: 'User Dashboard',
+                                params: { user: 'jane' },
+                            })
+                            dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
                         }}>
-                    <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center',flexDirection:'row' }}>
-                    <Ionicons name="ios-newspaper" size={24} color="black" />
-                        <Text style={styles.itemFeature}>New Feed</Text>
-                    </View>
-                </TouchableOpacity> 
-                :
-                 <TouchableOpacity
-                 style={{...styles.frameFeature, backgroundColor: 'black'}}
-                 activeOpacity={0.7} >
-                 <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center',flexDirection:'row' }}>
-                 <Text style={{...styles.itemFeature, color: 'white'}}>New Feed</Text>
-                 <Ionicons name="ios-newspaper" size={24} color="white" />
-                   
-                 </View>
-             </TouchableOpacity>
+                        <View style={styles.info}>
+                            <View>
+                                <Text style={styles.textstyle}>{user.name}</Text>
+                                <Text style={styles.textstyle1}>{user.email}</Text>
+                            </View>
+                            <Image source={{
+                                uri: user.avatar
+                            }}
+                                style={styles.avatar}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                        style={{
+                            margin: 3,
+
+                            shadowOffset: { width: 0.5, height: 0.5 },
+                            shadowColor: 'black',
+                            shadowOpacity: 0.5,
+                            backgroundColor: 'black'
+                        }}
+                        activeOpacity={0.7} >
+                        <View style={styles.info}>
+                            <View>
+                                <Text style={{ ...styles.textstyle, color: 'white' }}>{user.name}</Text>
+                                <Text style={styles.textstyle1}>{user.email}</Text>
+                            </View>
+                            <Image source={{
+                                uri: user.avatar
+                            }}
+                                style={styles.avatar}
+                            />
+                        </View>
+                    </TouchableOpacity>
                 }
-                  { _chosen != 4 ?
-                <TouchableOpacity
-                    style={styles.frameFeature}
-                    activeOpacity={0.7} 
-                    onPress={() => {
-                        navigation.navigate('Search')
-                        dispatch({ type: 'UPDATE_FEATURE', payload: 4 })
+                {_chosen != 1 ?
+                    <TouchableOpacity
+                        style={styles.frameFeature}
+                        activeOpacity={0.7} onPress={() => {
+                            navigation.navigate('NewsFeed')
+                            dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+                        }}>
+                        <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
+                            <Ionicons name="ios-newspaper" size={24} color="black" />
+                            <Text style={styles.itemFeature}>New Feed</Text>
+                        </View>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                        style={{ ...styles.frameFeature, backgroundColor: 'black' }}
+                        activeOpacity={0.7} >
+                        <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
+                            <Text style={{ ...styles.itemFeature, color: 'white' }}>New Feed</Text>
+                            <Ionicons name="ios-newspaper" size={24} color="white" />
+
+                        </View>
+                    </TouchableOpacity>
+                }
+                {_chosen != 4 ?
+                    <TouchableOpacity
+                        style={styles.frameFeature}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                            navigation.navigate('Search')
+                            dispatch({ type: 'UPDATE_FEATURE', payload: 4 })
                         }}
                     >
-                    <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center',flexDirection:'row' }}>
-                    <Ionicons name="search-circle-sharp" size={27} color="black" />
-                        <Text style={styles.itemFeature}>Search</Text>
-                    </View>
-                </TouchableOpacity> 
-                :
-                 <TouchableOpacity
-                 style={{...styles.frameFeature, backgroundColor: 'black'}}
-                 activeOpacity={0.7} >
-                 <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center',flexDirection:'row' }}>
-                 <Text style={{...styles.itemFeature, color: 'white'}}>Search</Text>
-                 <Ionicons name="search-circle-sharp" size={27} color="white" />
-                   
-                 </View>
-             </TouchableOpacity>
+                        <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
+                            <Ionicons name="search-circle-sharp" size={27} color="black" />
+                            <Text style={styles.itemFeature}>Search</Text>
+                        </View>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                        style={{ ...styles.frameFeature, backgroundColor: 'black' }}
+                        activeOpacity={0.7} >
+                        <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
+                            <Text style={{ ...styles.itemFeature, color: 'white' }}>Search</Text>
+                            <Ionicons name="search-circle-sharp" size={27} color="white" />
+
+                        </View>
+                    </TouchableOpacity>
                 }
-                { _chosen != 2 ? 
-                <TouchableOpacity
-                    style={styles.frameFeature}
-                    activeOpacity={0.7} onPress={() => {
-                        navigation.navigate('Notification')
-                        dispatch({ type: 'UPDATE_FEATURE', payload: 2 })
+                {_chosen != 2 ?
+                    <TouchableOpacity
+                        style={styles.frameFeature}
+                        activeOpacity={0.7} onPress={() => {
+                            navigation.navigate('Notification')
+                            dispatch({ type: 'UPDATE_FEATURE', payload: 2 })
 
                         }}>
-                    <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
-                    <Ionicons name="notifications" size={24} color="black" />
-                        <Text style = {styles.itemFeature}>Notification</Text>
-                    </View>
-                </TouchableOpacity>
-                :
-                <TouchableOpacity
-                style={{...styles.frameFeature, backgroundColor: 'black'}}
-                activeOpacity={0.7} >
-                <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
-               
+                        <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
+                            <Ionicons name="notifications" size={24} color="black" />
+                            <Text style={styles.itemFeature}>Notification</Text>
+                        </View>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                        style={{ ...styles.frameFeature, backgroundColor: 'black' }}
+                        activeOpacity={0.7} >
+                        <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
 
-                    <Text style = {{...styles.itemFeature, color: 'white'}}>Notification</Text>
-                    <Ionicons name="notifications" size={24} color="white" />
-                </View>
-            </TouchableOpacity>
+
+                            <Text style={{ ...styles.itemFeature, color: 'white' }}>Notification</Text>
+                            <Ionicons name="notifications" size={24} color="white" />
+                        </View>
+                    </TouchableOpacity>
                 }
                 {
-                    _chosen != 3 ? 
-                    <TouchableOpacity
-                    style={styles.frameFeature}
-                    activeOpacity={0.7} onPress={() => {
-                        navigation.navigate('Flâner Chat')
-                        dispatch({ type: 'UPDATE_FEATURE', payload: 3 })
+                    _chosen != 3 ?
+                        <TouchableOpacity
+                            style={styles.frameFeature}
+                            activeOpacity={0.7} onPress={() => {
+                                navigation.navigate('Flâner Chat')
+                                dispatch({ type: 'UPDATE_FEATURE', payload: 3 })
 
-                    }}>
-                    <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center',flexDirection:'row' }}>
-                    <Ionicons name="chatbubble-ellipses" size={24} color="black" />
-                        <Text style={styles.itemFeature}>Fess</Text>
-                    </View>
-                </TouchableOpacity> :
-                    <TouchableOpacity
-                    style={{...styles.frameFeature, backgroundColor: 'black'}}
-                    activeOpacity={0.7} >
-                    <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
-                   
-    
-                        <Text style = {{...styles.itemFeature, color: 'white'}}>Fess</Text>
-                        <Ionicons name="chatbubble-ellipses" size={24} color="white" />
+                            }}>
+                            <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
+                                <Ionicons name="chatbubble-ellipses" size={24} color="black" />
+                                <Text style={styles.itemFeature}>Fess</Text>
+                            </View>
+                        </TouchableOpacity> :
+                        <TouchableOpacity
+                            style={{ ...styles.frameFeature, backgroundColor: 'black' }}
+                            activeOpacity={0.7} >
+                            <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
 
-                    </View>
-                </TouchableOpacity>
+
+                                <Text style={{ ...styles.itemFeature, color: 'white' }}>Fess</Text>
+                                <Ionicons name="chatbubble-ellipses" size={24} color="white" />
+
+                            </View>
+                        </TouchableOpacity>
 
                 }
-              
+
 
 
 
                 {/* <DrawerItemList {...props} /> */}
             </DrawerContentScrollView>
-            <TouchableOpacity onPress ={() => Logout() }
-             style={{
-                position: 'absolute',
-                right: 0,
-                left: 0,
-                bottom: 50,
-                padding: 15,
-                borderTopWidth: 1,
-                shadowOffset: { width: 1, height: 1 },
-                shadowColor: 'black',
-                shadowOpacity: 0.1,
-            }}>
-                <Text style={{ ...styles.textstyle , color: 'black'}} >Log out</Text>
+            <TouchableOpacity onPress={() => Logout()}
+                style={{
+                    position: 'absolute',
+                    right: 0,
+                    left: 0,
+                    bottom: 50,
+                    padding: 15,
+                    borderTopWidth: 1,
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: 'black',
+                    shadowOpacity: 0.1,
+                }}>
+                <Text style={{ ...styles.textstyle, color: 'black' }} >Log out</Text>
             </TouchableOpacity>
 
         </View>
@@ -273,10 +273,10 @@ const styles = StyleSheet.create({
     },
     frameFeature: {
         margin: 5,
-        
+
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'black',
         shadowOpacity: 0.1,
-        
+
     }
 })
