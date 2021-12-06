@@ -37,12 +37,10 @@ export default function SignInScreen({ navigation }) {
         //         dispatch({ type: 'SET_LOADING_USER', payload: false })
 
         //     }).catch(err => console.log('Error'));
-
         await Api.getAll().then(result => {
             dispatch({ type: 'ADD_DATA_USER', payload: result })
             dispatch({ type: 'SET_LOADING_USER', payload: false })
         })
-
     }
 
 
@@ -183,6 +181,7 @@ export default function SignInScreen({ navigation }) {
 
                         }
                     )
+                   
 
 
 

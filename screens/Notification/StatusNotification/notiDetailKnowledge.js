@@ -301,7 +301,7 @@ const StatusNotiDetailKnowledge = ({ route, navigation }) => {
                                 <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
-                                <TouchableOpacity >
+                                <TouchableOpacity onPress={() => navigation.push('Status Notification Comment', { item : data })}>
                                     <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>

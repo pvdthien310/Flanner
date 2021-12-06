@@ -1,8 +1,5 @@
 import * as  React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
-import MainInfor from '../../screens/InformationUser/mainInfo'
-import EditProFile from '../../screens/InformationUser/editProfile'
 import UserKnowledge from '../../screens/InformationUser/userKnowledge'
 import userKnowledgeMember from '../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMember'
 import UserDetailKnowledge from '../../screens/InformationUser/KnowledgeUser/userDetailKnowledge'
@@ -11,6 +8,7 @@ import ShowReactInfoForKnowledgeUserInfo from '../../screens/FriendInformation/K
 import FriendInfoForKnowledgeUserInfo from '../../screens/FriendInformation/KnowledgeUserInfo/friendProfileforKUserInfo'
 import UserKnowledgeForKUSer from '../../screens/InformationUser/KnowledgeUser/UserKnowledgeforKUser'
 import UserStatusForKUser from '../../screens/InformationUser/KnowledgeUser/UserStatusforKUser'
+import CommentScreenForKUser from '../../screens/InformationUser/KnowledgeUser/commentScreen'
 const Stack = createNativeStackNavigator()
 
 export const UserKnowledgeStack = (props) => {
@@ -25,6 +23,8 @@ export const UserKnowledgeStack = (props) => {
             <Stack.Screen name='Knowledge User Edit Knowledge' component= {EditKnowledge} />
             <Stack.Screen name='Knowledge User Friend Knowledge' component={UserKnowledgeForKUSer} />
             <Stack.Screen name='Knowledge User Friend Status' component={UserStatusForKUser} />
+            <Stack.Screen name='Knowledge User Comment' component={CommentScreenForKUser} />
+
             
         </Stack.Navigator>
     )

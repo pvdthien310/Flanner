@@ -142,22 +142,19 @@ UserRoute.post('/remove/:userID/followed/:friendID',authenToken, (req, res) => {
 })
 
 UserRoute.post('/send-data', (req, res) => {
-
-    console.log(req.body)
-
+    let UserID = req.body.userID.toString().replaceAll('.','')
+    let processedUserID  = UserID.toString().replaceAll('@','')
     const newUser = new User({
-        userID: req.body.userID,
+        userID: processedUserID,
         phoneNumber: req.body.phoneNumber,
         name: req.body.name,
         doB: req.body.doB,
         avatar: req.body.avatar,
         email: req.body.email,
-        friendArray: req.body.friendArray,
         password: req.body.password,
-        score: req.body.score,
         address: req.body.address,
         position: req.body.position,
-        reportedNum: req.body.reportedNum,
+        reportedNum: "0",
         following: [],
         followed: [],
         bio: "Hi, I'm a new member of Flaner. Hope you will enjoy your visit to my home wall. Let's be friend!",

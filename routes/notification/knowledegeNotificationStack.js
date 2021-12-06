@@ -6,6 +6,7 @@ import ShowReactInfoForKnowledgeNoti from '../../screens/FriendInformation/Knowl
 import FriendInfoForKnowledgeNoti from '../../screens/FriendInformation/KnowledgeNotification/friendProfileforKnowledgeNoti'
 import UserKnowledgeForKN from '../../screens/Notification/KnowledgeNotification/UserKnowledgeforKN'
 import UserStatusForKN from '../../screens/Notification/KnowledgeNotification/UserStatusforKN'
+import CommentScreenForKNoti from '../../screens/Notification/KnowledgeNotification/commentScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -19,6 +20,8 @@ export const KnowledgeNotificationStack = (props) => {
             <Stack.Screen name='Knowledge Notification Friend Profile' component={FriendInfoForKnowledgeNoti} />
             <Stack.Screen name='Knowledge Notification Friend Knowledge' component={UserKnowledgeForKN} />
             <Stack.Screen name='Knowledge Notification Friend Status' component={UserStatusForKN} />
+            <Stack.Screen name='Knowledge Notification Comment' component={CommentScreenForKNoti} />
+
 
         </Stack.Navigator>
     )

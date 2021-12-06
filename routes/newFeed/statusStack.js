@@ -9,6 +9,7 @@ import FriendInfoForStatus from '../../screens/FriendInformation/Status/friendPr
 import UserKnowledgeForNFS from '../../screens/Status/UserKnowledgeforNFS'
 import UserStatusForNFS from '../../screens/Status/UserStatusforNFS'
 import StatusDetailKnowledge from '../../screens/Status/statusDetailKnowledge'
+import CommentScreenForStatus from '../../screens/Status/commentScreen'
 const Stack = createNativeStackNavigator()
 
 export const StatusStack = (props) => {
@@ -24,6 +25,7 @@ export const StatusStack = (props) => {
             <Stack.Screen name='Status Friend Knowledge' component={UserKnowledgeForNFS} />
             <Stack.Screen name='Status Friend Status' component={UserStatusForNFS} />
             <Stack.Screen name='Status Knowledge Detail' component={StatusDetailKnowledge}/>
+            <Stack.Screen name='Status Comment' component={CommentScreenForStatus} />
 
         </Stack.Navigator>
     )

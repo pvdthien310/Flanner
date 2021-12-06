@@ -50,7 +50,7 @@ export default function SplashScreen({ navigation }) {
             key: "1",
             photo: 'https://images.unsplash.com/photo-1634938971687-1082b4cb018c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
             title: 'Broaden Your World',
-            description: 'Flânêr will broadly your mind. All kinds of experience on one screen',
+            description: 'Flâner will broadly your mind. All kinds of experience on one screen',
             avatar_url: `http://randomuser.me/api/portraits/women/${Math.floor(
                 Math.random() * 40
             )}.jpg`

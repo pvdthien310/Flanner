@@ -105,7 +105,6 @@ export default function AddKnowledge({ route, navigation }) {
                 posttime: d.toUTCString(),
                 listImage: picture,
                 react: [],
-                reactNumber: '0',
                 mode: 'public'
         }
 

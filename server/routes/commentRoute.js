@@ -18,7 +18,6 @@ CommentRoute.post('/delete',authenToken, (req, res) => {
 
 /// Add new member
 CommentRoute.post('/send-data',authenToken, (req, res) => {
-    console.log(req.body)
     const newComment = new Comment({
         username: req.body.username,
         postID: req.body.postID,
@@ -31,7 +30,7 @@ CommentRoute.post('/send-data',authenToken, (req, res) => {
     newComment.save()
         .then((data) => {
             // console.log(data)
-            res.send("Add Success")
+            res.send(data)
         })
         .catch(err => {
             console.log('Error')
@@ -63,13 +62,13 @@ function authenToken(req, res, next) {
     const authorizationHeader = req.headers['x-access-token'];
     const token = authorizationHeader;
     if (!token) {
-        res.Comment(401).send('Token het han');
+        res.sendStatus(401).send('Token het han');
         return;
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         console.log('accept token')
         if (err) {
-            res.sendComment(401);
+            res.sendStatus(401);
             return;
         }
         next();

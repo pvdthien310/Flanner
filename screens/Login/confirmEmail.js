@@ -45,7 +45,7 @@ export default function ConfirmEmail({ route, navigation }) {
         let temp = ''
         let i = 0
 
-        while (email.charAt(i) != '@') {
+        while (email.charAt(i) != '@' || email.charAt(i) != '.') {
             temp += email.charAt(i)
             i++;
         }
@@ -65,9 +65,7 @@ export default function ConfirmEmail({ route, navigation }) {
                 doB: '',
                 avatar: '',
                 email: email,
-                friendArray: '',
                 password: base64.encode(password),
-                score: '0',
                 address: '',
                 position: '0',
                 reportedNum: '0',

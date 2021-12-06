@@ -386,8 +386,7 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
-        backgroundColor: 'whitesmoke',
-        marginBottom: 90
+        backgroundColor: 'whitesmoke'
 
     },
     button1: {

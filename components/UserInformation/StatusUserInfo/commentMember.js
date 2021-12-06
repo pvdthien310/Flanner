@@ -1,15 +1,15 @@
 import React, { useState, useEffect, memo } from 'react';
 import { Alert, Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import react from 'react';
-import Api from '../../API/UserAPI';
 import { useSelector, useDispatch } from 'react-redux';
 import { EvilIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import CommentAPI from '../../API/CommentAPI';
+import CommentAPI from '../../../API/CommentAPI';
+import Api from '../../../API/UserAPI';
 
 
 
-const CommentMember = ({ item, navigation }) => {
+const CommentMemberForSUser = ({ item, navigation }) => {
     const dispatch = useDispatch()
     const { user } = useSelector(state => { return state.User })
     const [host, setHost] = useState(undefined)
@@ -108,7 +108,7 @@ const CommentMember = ({ item, navigation }) => {
                                   
                                         if (host.email != user.email) {
                                             navigation.push(
-                                                'Knowledge Friend Profile',
+                                                'Status User Info Friend Profile',
                                                 { item: [host] })
                                            
                                         }
@@ -226,4 +226,4 @@ const styles = StyleSheet.create({
 
 
 });
-export default react.memo(CommentMember);
+export default react.memo(CommentMemberForSUser);

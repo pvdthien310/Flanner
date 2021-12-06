@@ -110,7 +110,8 @@ export default function EditKnowledge({ route, navigation }) {
             posttime: route.params.item.posttime,
             listImage: picture,
             react: route.params.item.react,
-            reactNumber: '0'
+            reactNumber: '0',
+            mide: route.params.item.mode
         }
 
         // const url = URL_local + 'knowledge/update'
@@ -155,7 +156,8 @@ export default function EditKnowledge({ route, navigation }) {
             posttime: route.params.item.posttime,
             listImage: picture,
             react: route.params.item.react,
-            reactNumber: '0'
+            reactNumber: '0',
+            mode : route.params.item.mode
         })
         .then(res => {
             fetchKnowledgeData()

@@ -1,37 +1,31 @@
 const mongoose = require('mongoose');
 
-const StatusSchema = new mongoose.Schema({
-    username:{
+const ReportSchema = new mongoose.Schema({
+    postID:{
         type:String,
         required:true,
     
     }, 
-    userID:{
+    type:{
         type:String,
         required:true,
     },
-    body:{
+    posterID:{
         type:String,
         required:true,
     },
-    avatar:{
+    reason:{
         type:String,
         required:true,
     },
-    posttime:{
+    reporterID:{
         type:String,
     },
-    listImage:{
-        type: Array,
+    censor:{
+        type: String,
     },
-    react:{
-        type:Array,
-    },
-    mode:{
+    isSeen:{
         type:String,
     }
-},
- {timestamps:true}
-);
-
-module.exports = mongoose.model("Status", StatusSchema);
+});
+module.exports = mongoose.model("Report", ReportSchema);

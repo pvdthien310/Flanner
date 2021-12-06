@@ -9,7 +9,7 @@ import CommentAPI from '../../API/CommentAPI';
 
 
 
-const CommentMember = ({ item, navigation }) => {
+const CommentMemberForKNoti = ({ item, navigation }) => {
     const dispatch = useDispatch()
     const { user } = useSelector(state => { return state.User })
     const [host, setHost] = useState(undefined)
@@ -108,7 +108,7 @@ const CommentMember = ({ item, navigation }) => {
                                   
                                         if (host.email != user.email) {
                                             navigation.push(
-                                                'Knowledge Friend Profile',
+                                                'Knowledge Notification Friend Profile',
                                                 { item: [host] })
                                            
                                         }
@@ -226,4 +226,4 @@ const styles = StyleSheet.create({
 
 
 });
-export default react.memo(CommentMember);
+export default react.memo(CommentMemberForKNoti);

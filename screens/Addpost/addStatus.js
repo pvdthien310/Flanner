@@ -112,9 +112,8 @@ export default function AddStatus({ route, navigation }) {
             avatar: user.avatar,
             posttime: d.toUTCString(),
             listImage: picture,
-            reactNumber: '0',
             react: [],
-            mode: 'public'
+            mode: "public"
         })
             .then(res => {fetchStatusData() })
             .catch(err => console.log('Error Add New Knowledge'))

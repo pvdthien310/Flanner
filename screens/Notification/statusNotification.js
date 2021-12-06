@@ -27,7 +27,7 @@ const StatusNotification = ({ navigation }) => {
 
             NotificationApi.getStatus(user.userID)
             .then(res => {
-                dispatch({ type: 'ADD_USER_STATUS_NOTIFICATION', payload: res })
+                dispatch({ type: 'ADD_USER_STATUS_NOTIFICATION', payload: res.reverse() })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
                 setLoading2(false)
             })

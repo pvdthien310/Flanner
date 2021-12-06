@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, ActivityIndicator, StyleSheet, Text, Pressable, TextInput, View, Image, TouchableOpacity, Dimensions, Button, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import CommentAPI from '../../API/CommentAPI';
-import Api from '../../API/UserAPI';
-import CommentMember from '../../components/Knowledge/commentMember';
+import CommentAPI from '../../../API/CommentAPI';
+import CommentMemberForKUser from '../../../components/UserInformation/KnowledgeUserInfo/commentMember';
 import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import NotificationApi from '../../API/NotificationAPI';
+import NotificationApi from '../../../API/NotificationAPI';
 
 
 
@@ -16,7 +15,7 @@ const { height, width } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
-const CommentScreen = ({ navigation, route }) => {
+const CommentScreenForKUser = ({ navigation, route }) => {
 
     const { item } = route.params
     const [listComment, setListComment] = useState(undefined)
@@ -186,7 +185,7 @@ const CommentScreen = ({ navigation, route }) => {
                                 showsHorizontalScrollIndicator={false}
                                 data={listComment}
                                 renderItem={({ item }) => (
-                                    <CommentMember item={item} navigation = {navigation} ></CommentMember>
+                                    <CommentMemberForKUser item={item} navigation = {navigation} ></CommentMemberForKUser>
                                 )}
                                 keyExtractor={item => item._id} />
                         </View>
@@ -271,4 +270,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default CommentScreen;
+export default CommentScreenForKUser;

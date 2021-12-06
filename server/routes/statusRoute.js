@@ -18,6 +18,7 @@ StatusRoute.post('/delete',authenToken, (req, res) => {
 
 /// Add new member
 StatusRoute.post('/send-data',authenToken, (req, res) => {
+    console.log(req.body.mode)
     const newStatus = new Status({
         username: req.body.username,
         userID: req.body.userID,
@@ -26,7 +27,7 @@ StatusRoute.post('/send-data',authenToken, (req, res) => {
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
-        reactNumber: req.body.reactNumber
+        mode: req.body.mode
     })
     // console.log(newStatus)
     newStatus.save()
@@ -41,21 +42,29 @@ StatusRoute.post('/send-data',authenToken, (req, res) => {
 
 /// Update member by ID
 StatusRoute.post('/update',authenToken, (req, res) => {
-    Status.findByIdAndUpdate(req.body.id, {
-        username: req.body.username,
-        userID: req.body.userID,
-        body: req.body.body,
-        avatar: req.body.avatar,
-        posttime: req.body.posttime,
-        listImage: req.body.listImage,
-        react: req.body.react,
-        reactNumber: req.body.reactNumber
-    })
-        .then((data) => {
-           res.send('update thanh cong')
-        }).catch(err => {
-            console.log(err)
+    Status.findById(req.body.id)
+    .then(result => 
+        {
+            const _mode = result.mode
+             Status.findByIdAndUpdate(req.body.id, {
+                username: req.body.username,
+                userID: req.body.userID,
+                body: req.body.body,
+                avatar: req.body.avatar,
+                posttime: req.body.posttime,
+                listImage: req.body.listImage,
+                react: req.body.react,
+                mode: _mode
+            })
+                .then(data => {
+               
+                   res.send(data)
+                }).catch(err => {
+                    console.log(err)
+                })
         })
+        .catch(err => console.log('err '))
+   
 
 
 })
@@ -163,7 +172,30 @@ StatusRoute.post('/update/:id/false/:userID', authenToken, (req, res) => {
     })
         .catch(err => console.log(err))
 })
-
+StatusRoute.post('/update/mode/:postID/limitary', (req, res) => {
+    Status.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
+        .then((data) => {
+           res.send('update thanh cong')
+        }).catch(err => {
+            console.log(err)
+        })
+})
+StatusRoute.post('/update/mode/:postID/private', (req, res) => {
+    Status.findByIdAndUpdate(req.params.postID, { "mode": 'private' }, { new: true })
+        .then((data) => {
+           res.send('update thanh cong')
+        }).catch(err => {
+            console.log(err)
+        })
+})
+StatusRoute.post('/update/mode/:postID/public', (req, res) => {
+    Status.findByIdAndUpdate(req.params.postID, { "mode": 'public' }, { new: true })
+        .then((data) => {
+           res.send('update thanh cong')
+        }).catch(err => {
+            console.log(err)
+        })
+})
 
 
 

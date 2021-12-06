@@ -29,7 +29,7 @@ const SystemNotification = ({ navigation }) => {
 
             NotificationApi.getSystem(user.userID)
             .then(res => {
-                dispatch({ type: 'ADD_USER_SYSTEM_NOTIFICATION', payload: res })
+                dispatch({ type: 'ADD_USER_SYSTEM_NOTIFICATION', payload: res.reverse() })
                 dispatch({ type: 'SET_LOADING_NOTIFICATION', payload: false })
                 setLoading2(false)
             })
