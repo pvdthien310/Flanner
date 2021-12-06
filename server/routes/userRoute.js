@@ -53,7 +53,7 @@ UserRoute.get('/load-user-by-userID/:userID',authenToken, (req,res) => {
     .catch(err => console.log(err))
 })
 
-UserRoute.post('/update', (req, res) => {
+UserRoute.post('/update',authenToken, (req, res) => {
     User.findOneAndUpdate({userID : req.body.userID}, {
         userID: req.body.userID,
         phoneNumber: req.body.phoneNumber,

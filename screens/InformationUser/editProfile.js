@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, Button, AppRegistry } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { useFormik } from 'formik';
+
 import { URL_local } from '../../constant';
 import Api from '../../API/UserAPI';
 
@@ -17,15 +17,16 @@ const EditProFile = ({ navigation }) => {
 
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.User)
-
+  const [loading, SetLoading] = useState(false)
   const [image, setImage] = useState(user.avatar)
-  const [picture, setPicture] = useState(user.avatar)
+  const [picture, setPicture] = useState(undefined)
   const [name, setName] = useState(user.name)
   const [bio, setBio] = useState(user.bio)
   const [contact, setContact] = useState(user.phoneNumber)
   const [birthday, setBirthday] = useState(user.doB)
   const [job, setJob] = useState(user.job)
   const [address, setAddress] = useState(user.address)
+  let url;
 
 
   const changeName = (val) => {
@@ -104,20 +105,25 @@ const EditProFile = ({ navigation }) => {
       aspect: [4, 6],
       quality: 1,
     });
+
     if (!result.cancelled) {
-      setPicture(result)
-      console.log(result)
       setImage(result.uri)
     }
 
   };
 
+  useEffect(() => {
+    if (picture)
+      _submitData()
+  }, [picture])
+
+
   const HandleUpImages = () => {
-    const uri = picture.uri;
-    const type = picture.type;
+    const uri = image;
+    const type = 'image';
     const name = Math.random().toString();
     const photo = { uri, type, name }
-
+    SetLoading(true)
     const data = new FormData();
     data.append("file", photo)
     data.append("upload_preset", "fyjwewqj")
@@ -132,9 +138,7 @@ const EditProFile = ({ navigation }) => {
       }
     }).then(res => res.json())
       .then(data => {
-        console.log(data)
         setPicture(data.url)
-        //_submitData()
       }).catch(err => {
         Alert.alert("Error While Uploading Image");
         console.log(err)
@@ -144,11 +148,14 @@ const EditProFile = ({ navigation }) => {
   const fetchUserData = () => {
     Api.getUserItem(user.userID)
       .then(res => {
-        dispatch({ type: 'UPDATE_USER', payload: res })
+        
+        dispatch({ type: 'ADD_USER', payload: res[0] })
+        dispatch({ type: 'UPDATE_USER', payload: res[0] })
       })
       .catch(err => console.log('Error Load User'))
   }
   const _submitData = () => {
+
     // const url = URL_local + 'user/send-data'
     // fetch(url, {
     //   method: 'POST',
@@ -178,7 +185,8 @@ const EditProFile = ({ navigation }) => {
     //   .catch(err => {
     //     console.log("error", err)
     //   })
-
+    console.log('vao day')
+    SetLoading(true)
     Api.updateUser({
       userID: user.userID,
       phoneNumber: contact,
@@ -195,15 +203,16 @@ const EditProFile = ({ navigation }) => {
       bio: bio,
       job: job
     }).then(res => {
+      SetLoading(false)
+      
       fetchUserData();
-
     }).catch(err => {
       console.log(err)
     })
   }
-  const saveHandle = () => {
-    if (picture.type) HandleUpImages()
-    else _submitData()
+  const saveHandle = async () => {
+    await HandleUpImages()
+
   }
 
   return (
@@ -273,6 +282,10 @@ const EditProFile = ({ navigation }) => {
 
             </View>
           </TouchableOpacity>
+          {
+            loading &&
+            <ActivityIndicator size="small" color="black" />
+          }
         </View>
       </ScrollView>
     </View>
