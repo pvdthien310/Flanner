@@ -17,34 +17,45 @@ ReportRoute.post('/delete', (req, res) => {
 })
 
 /// Add new member
-ReportRoute.post('/send-data', (req, res) => {
+ReportRoute.post('/send-data',authenToken, (req, res) => {
+    Report.find({ postID: req.body.postID, reporterID: req.body.reporterID })
+        .then(data => {
+            console.log(data)
+            if (data.length > 0)
+                res.send('Duplicate')
+            else {
+                const newReport = new Report({
+                    postID: req.body.postID,
+                    reason: req.body.reason,
+                    posterID: req.body.posterID,
+                    reporterID: req.body.reporterID,
+                    censor: req.body.censor,
+                    isSeen: req.body.isSeen,
+                    type: req.body.type
+                })
+                // console.log(newReport)
+                newReport.save()
+                    .then((data) => {
+                        res.send(data)
+                    })
+                    .catch(err => {
+                        console.log('Error')
+                    })
+            }
 
-    const newReport = new Report({
-        postID: req.body.postID,
-        reason: req.body.reason,
-        posterID : req.body.posterID,
-        reporterID: req.body.reporterID,
-        censor: req.body.censor,
-        isSeen: req.body.isSeen,
-        type: req.body.type
-    })
-    // console.log(newReport)
-    newReport.save()
-        .then((data) => {
-             console.log(data)
-            // res.send("Add Success")
-        })
-        .catch(err => {
-            console.log('Error')
-        })
+        }
+        )
+        .catch(err => console.log(err))
+
+
 })
 
 /// Update member by ID
 
 ReportRoute.post('/update/isSeen/:postID', (req, res) => {
-    Report.updateMany({postID : req.params.postID}, { "isSeen": 'true' }, { new: true })
+    Report.updateMany({ postID: req.params.postID }, { "isSeen": 'true' }, { new: true })
         .then((data) => {
-           res.send('update thanh cong')
+            res.send('update thanh cong')
         }).catch(err => {
             console.log(err)
         })
@@ -69,7 +80,7 @@ function authenToken(req, res, next) {
 }
 
 //Get a member by ID
-ReportRoute.get('/:id',authenToken, (req, res) => {
+ReportRoute.get('/:id', authenToken, (req, res) => {
     Report.findById(req.params.id)
         .then(data => res.send(data))
         .catch(err => console.log(err))
@@ -84,7 +95,7 @@ ReportRoute.get('/load-data/:userID', authenToken, (req, res) => {
 
 
 /// Get all members
-ReportRoute.get('/',authenToken, (req, res) => {
+ReportRoute.get('/', authenToken, (req, res) => {
     Report.find({})
         .then(data => {
             // console.log(data)

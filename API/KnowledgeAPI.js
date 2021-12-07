@@ -13,6 +13,10 @@ const url = '/knowledge';
         const res = await DatabaseClient.get(url +'/load-data/' + user);
         return res.data
     },
+    getKnowledgeUserForFriend: async user => {
+        const res = await DatabaseClient.get(url +'/load-data/friend/' + user);
+        return res.data
+    },
     getRandom: async () => {
         const res = await DatabaseClient.get(url + '/load-data/newsfeed/random');
         return res.data
@@ -39,6 +43,18 @@ const url = '/knowledge';
     },
     Delete: async item => {
         const res = await DatabaseClient.post(url +'/delete',item );
+        return res.data
+    },
+    UpdatePublic: async postID => {
+        const res = await DatabaseClient.post(url +'/update/mode/'+ postID +'/public' );
+        return res.data
+    },
+    UpdatePrivate: async postID => {
+        const res = await DatabaseClient.post(url +'/update/mode/'+ postID +'/private' );
+        return res.data
+    },
+    UpdateLimitary: async postID => {
+        const res = await DatabaseClient.post(url +'/update/mode/'+ postID +'/limitary' );
         return res.data
     },
 

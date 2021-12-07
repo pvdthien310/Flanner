@@ -101,6 +101,17 @@ StatusRoute.get('/load-data/:userID', authenToken, (req, res) => {
         .catch(err => console.log(err))
 })
 
+//Load data without private and limitary post
+StatusRoute.get('/load-data/friend/:userID', authenToken, (req, res) => {
+    Status.find({ userID: req.params.userID })
+        .then(data => {
+            let processedList = data.filter(item => {
+                if(item.mode == 'public') return item
+            })
+            res.send(processedList)
+        })
+        .catch(err => console.log(err))
+})
 
 /// Get all members
 StatusRoute.get('/',authenToken, (req, res) => {
@@ -173,26 +184,26 @@ StatusRoute.post('/update/:id/false/:userID', authenToken, (req, res) => {
     })
         .catch(err => console.log(err))
 })
-StatusRoute.post('/update/mode/:postID/limitary', (req, res) => {
+StatusRoute.post('/update/mode/:postID/limitary',authenToken, (req, res) => {
     Status.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
         .then((data) => {
-           res.send('update thanh cong')
+           res.send(data)
         }).catch(err => {
             console.log(err)
         })
 })
-StatusRoute.post('/update/mode/:postID/private', (req, res) => {
+StatusRoute.post('/update/mode/:postID/private', authenToken,(req, res) => {
     Status.findByIdAndUpdate(req.params.postID, { "mode": 'private' }, { new: true })
         .then((data) => {
-           res.send('update thanh cong')
+           res.send(data)
         }).catch(err => {
             console.log(err)
         })
 })
-StatusRoute.post('/update/mode/:postID/public', (req, res) => {
+StatusRoute.post('/update/mode/:postID/public',authenToken, (req, res) => {
     Status.findByIdAndUpdate(req.params.postID, { "mode": 'public' }, { new: true })
         .then((data) => {
-           res.send('update thanh cong')
+           res.send(data)
         }).catch(err => {
             console.log(err)
         })

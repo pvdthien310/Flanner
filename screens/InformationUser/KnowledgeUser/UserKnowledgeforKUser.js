@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { Alert, Modal, FlatList, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -40,7 +40,7 @@ const UserKnowledgeForKUSer = ({ navigation, route }) => {
         //         Setloading(false)  
         //         forceRerender()
         //     }).catch(err => console.log('Error'));
-        KnowLedgeApi.getKnowledgeUser(user.userID)
+        KnowLedgeApi.getKnowledgeUserForFriend(user.userID)
             .then(res => {
                 setUserKnowledge(res)
                 Setloading(false)

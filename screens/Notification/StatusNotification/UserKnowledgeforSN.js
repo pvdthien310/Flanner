@@ -39,7 +39,7 @@ const UserKnowledgeForSN = ({ navigation, route }) => {
         //         Setloading(false)  
         //         forceRerender()
         //     }).catch(err => console.log('Error'));
-        KnowLedgeApi.getKnowledgeUser(user.userID)
+        KnowLedgeApi.getKnowledgeUserForFriend(user.userID)
             .then(res => {
                 setUserKnowledge(res)
                 Setloading(false)

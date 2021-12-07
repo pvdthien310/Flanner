@@ -17,6 +17,7 @@ import KnowLedgeApi from '../../../API/KnowledgeAPI';
 const UserKnowledgeMember = ({ item, navigation }) => {
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
+    const [data, setData] = useState(item)
     const { user } = useSelector(state => state.User)
     const dispatch = useDispatch()
 
@@ -33,6 +34,39 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                 dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
             })
             .catch(err => console.log('Error Load User Knowledge'))
+    }
+
+    const UpdatePublicMode = () => {
+        KnowLedgeApi.UpdatePublic(data._id)
+            .then(res => {
+                setData(res)
+                dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: res })
+                let toast = Toast.show('Set up successful public mode post', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            }
+            )
+            .catch(err => console.log('Error Update Public Mode'))
+    }
+    const UpdatePrivateMode = () => {
+        KnowLedgeApi.UpdatePrivate(data._id)
+            .then(res => {
+                setData(res)
+                dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: res })
+                let toast = Toast.show('Set up successful private mode post', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            }
+            )
+            .catch(err => console.log('Error Update Public Mode'))
     }
 
     const createTwoButtonAlert = () =>
@@ -116,8 +150,8 @@ const UserKnowledgeMember = ({ item, navigation }) => {
     }
 
     useEffect(() => {
-        setReactnumber(item.react.length)
-    }, [item])
+        setReactnumber(data.react.length)
+    }, [data])
 
     return (
         <Post >
@@ -129,21 +163,34 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                     <Text style={{ ...Poststyle_Status.posttime, alignSelf: 'center' }}>{item.posttime}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center', borderRadius: 10, borderColor: 'black', borderWidth: 1, paddingStart: 5, paddingEnd: 5, }}>
                         {
-                            item.mode == 'private' &&
-                            <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                            data.mode == 'private' &&
+                            <TouchableOpacity 
+                            onPress = {
+                                () => UpdatePublicMode()
+                            }
+                             activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                                 <MaterialIcons name="person-outline" size={24} color="black" />
                             </TouchableOpacity>
                         }
                         {
-                            item.mode == 'limitary' &&
+                            data.mode == 'limitary' &&
                             <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                                 <MaterialIcons name="privacy-tip" size={24} color="maroon" />
                             </TouchableOpacity>
                         }
+                        {
+                            data.mode == 'public' &&
+                            <TouchableOpacity onPress = {
+                                () => UpdatePrivateMode()
+                            }
+                             activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                                <Ionicons name="ios-earth-sharp" size={24} color="black" />
+                            </TouchableOpacity>
+                        }
 
                         <TouchableOpacity onPress={() => {
-                            if (item.mode != 'limitary')
-                                navigation.navigate('Knowledge User Edit Knowledge', { item })
+                            if (data.mode != 'limitary')
+                                navigation.navigate('Knowledge User Edit Knowledge', { item : data })
                             else {
                                 let toast = Toast.show('Sorry! Limitary post can not be edited.', {
                                     duration: Toast.durations.SHORT,

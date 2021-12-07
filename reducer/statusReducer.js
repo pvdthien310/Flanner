@@ -41,7 +41,7 @@ const initState = {
 
     }
 
-    if (action.type == 'UPDATE_USER_KNOWLEDGE_MEMBER') {
+    if (action.type == 'UPDATE_USER_STATUS_MEMBER') {
         let newdata = state.user_status;
         newdata = newdata.map(member => {
             if (member._id == action.payload._id)

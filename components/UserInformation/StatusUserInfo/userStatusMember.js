@@ -1,12 +1,11 @@
 import React, { useState, useEffect, memo } from 'react';
 import { Alert, StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
-import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../../shared/post'
+import Post, { PostImage, PostText, UserInfoText, ReactNumber } from '../../../shared/post'
 import { UserInfo } from '../../../shared/post'
 import { Poststyle } from '../../../styles/poststyle'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import Toast from 'react-native-root-toast';
-import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../../constant';
@@ -21,6 +20,7 @@ const UserStatusMember = ({ item, navigation }) => {
     const [pressed, setPressed] = useState(false)
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
+    const [data,setData] = useState(item)
 
     const createTwoButtonAlert = () =>
         Alert.alert(
@@ -50,6 +50,39 @@ const UserStatusMember = ({ item, navigation }) => {
             })
             .catch(err => console.log('Error Load User Status'))
     }
+    const UpdatePublicMode = () => {
+        StatusApi.UpdatePublic(data._id)
+            .then(res => {
+                setData(res)
+                dispatch({ type: 'UPDATE_USER_STATUS_MEMBER', payload: res })
+                let toast = Toast.show('Set up successful public mode post', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            }
+            )
+            .catch(err => console.log('Error Update Public Mode'))
+    }
+    const UpdatePrivateMode = () => {
+        StatusApi.UpdatePrivate(data._id)
+            .then(res => {
+                setData(res)
+                dispatch({ type: 'UPDATE_USER_STATUS_MEMBER', payload: res })
+                let toast = Toast.show('Set up successful private mode post', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            }
+            )
+            .catch(err => console.log('Error Update Public Mode'))
+    }
+
 
     const DeleteStatus = () => {
         const deletedObject = {
@@ -331,20 +364,33 @@ const UserStatusMember = ({ item, navigation }) => {
                 opacity: item.mode == 'limitary' ? '0.5' : 1
             }}>
                 {
-                    item.mode == 'private' &&
-                    <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                    data.mode == 'public' &&
+                    <TouchableOpacity onPress={
+                        () => UpdatePrivateMode()
+                    }
+                        activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                        <Ionicons name="ios-earth-sharp" size={24} color="black" />
+                    </TouchableOpacity>
+                }
+
+                {
+                    data.mode == 'private' &&
+                    <TouchableOpacity onPress={
+                        () => UpdatePublicMode()
+                    }
+                     activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                         <MaterialIcons name="person-outline" size={24} color="black" />
                     </TouchableOpacity>
                 }
                 {
-                    item.mode == 'limitary' &&
+                    data.mode == 'limitary' &&
                     <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                         <MaterialIcons name="privacy-tip" size={24} color="maroon" />
                     </TouchableOpacity>
                 }
                 <TouchableOpacity onPress={() => {
                     if (item.mode != 'limitary')
-                        navigation.navigate('Status User Edit Status', { item })
+                        navigation.navigate('Status User Edit Status', { item: data })
                     else {
                         let toast = Toast.show('Sorry! Limitary post can not be edited.', {
                             duration: Toast.durations.SHORT,

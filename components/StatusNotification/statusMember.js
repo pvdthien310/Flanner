@@ -1,9 +1,9 @@
 import React, { useState, useEffect, memo } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Alert, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../shared/post'
 import { UserInfo } from '../../shared/post'
 import { images, imagespost, Poststyle } from '../../styles/poststyle'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,16 +11,101 @@ import '../../constant.js'
 import { URL_local } from '../../constant.js';
 import StatusApi from '../../API/StatusAPI';
 import NotificationApi from '../../API/NotificationAPI';
+import Api from '../../API/UserAPI';
+import ReportApi from '../../API/ReportAPI';
+import Toast from 'react-native-root-toast';
 
 
 const StatusMemberForStatusNoti = ({ item, navigation }) => {
-
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const [pressed, setPressed] = useState(false)
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
     const [data, setData] = useState(item)
+    const [host, setHost] = useState(undefined)
+
+
+    const fetchHostData = async () => {
+        await Api.getUserItem(item.userID)
+            .then(res => {
+                setHost(res[0])
+            })
+            .catch(err => console.log('Loi set user by id', err))
+    }
+
+    const NavigateToCurrentUserProfile = () => {
+        navigation.navigate('User Information', {
+            screen: 'User Dashboard',
+            params: { user: '' },
+        })
+        dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+    }
+
+    const createThreeButtonAlert = () =>
+        Alert.alert(
+            "Report Request:",
+            "Why do you want to report this article?",
+            [
+                {
+                    text: "Plagiarism",
+                    onPress: () => ReportPost('Plagiarism'),
+                },
+                {
+                    text: "Inappropriate Content",
+                    onPress: () => ReportPost('Inappropriate Content'),
+                },
+                {
+                    text: "Trouble",
+                    onPress: () => ReportPost('Trouble'),
+                },
+                {
+                    text: "Other",
+                    onPress: () => ReportPost('Other'),
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log('Cancel'),
+                    style: "cancel"
+                },
+
+            ]
+        );
+
+    const ReportPost = (reason) => {
+        ReportApi.AddPost({
+            postID: item._id,
+            reason: reason,
+            posterID: item.userID,
+            reporterID: user.userID,
+            censor: '',
+            isSeen: 'false',
+            type: '2'
+        })
+            .then(res => {
+                if (res == 'Duplicate') {
+                    let toast = Toast.show('You reported this post! Please do not duplicate', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+                else {
+                    let toast = Toast.show('Report successful! Thanks for your supporting', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+
+
+            })
+            .catch(err => console.log(err))
+    }
 
     const LoadData = () => {
 
@@ -32,8 +117,8 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
 
         //             setPressed(true)
         //         else setPressed(false)
-        //         setReactnumber(result.react.length)
-        //         setData(result)
+        //          setReactnumber(result.react.length)
+        //          setData(result)
         //     }).catch(err => console.log('Error'));
         StatusApi.getItem(item._id.toString())
             .then(res => {
@@ -47,7 +132,9 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
     }
     useEffect(() => {
         LoadData()
+        fetchHostData()
     }, [])
+
 
     const sendNotification = () => {
         // const url = URL_local + 'notification/send-data'
@@ -221,13 +308,29 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
 
     return (
         <Post >
-            <UserInfo>
-                <Image source={{ uri: item.avatar }} style={Poststyle.imageavatar} />
-                <UserInfoText>
-                    <Text style={Poststyle.name}> {item.username}</Text>
-                    <Text style={Poststyle.posttime}> {item.posttime}</Text>
-                </UserInfoText>
-            </UserInfo>
+             <TouchableOpacity onPress={() => createThreeButtonAlert()}>
+                <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => {
+                if (item.userID != user.userID) {
+                    navigation.push(
+                        'Status Notification Friend Profile',
+                        { item: [host] })
+                }
+                else {
+                    createTwoButtonAlert()
+                }
+            }
+            }>
+                <UserInfo>
+                    <Image source={{ uri: host ? host.avatar : item.avatar }} style={Poststyle.imageavatar} />
+                    <UserInfoText>
+                        <Text style={Poststyle.name}> {host ? host.name : item.username}</Text>
+                        <Text style={Poststyle.posttime}> {item.posttime}</Text>
+                    </UserInfoText>
+                </UserInfo>
+            </TouchableOpacity>
             <PostText>
                 {/* <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}> */}
                 <Text style={Poststyle.body}>{item.body}</Text>
