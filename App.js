@@ -32,35 +32,14 @@ export default function App() {
     nunitoregular: require('./assets/fonts/Nunito_Regular.ttf'),
     robotobold: require('./assets/fonts/RobotoSlabBold.ttf'),
     robotoregular: require('./assets/fonts/RobotoSlabRegular.ttf'),
-
-    // 'nunito-bold': require('./assets/fonts/Nunito-Bold.ttf'),
-    // nunitoregular: require('./assets/fonts/Nunito-Regular.ttf'),
-    // Montserrat_600SemiBold,
-    // Montserrat_700Bold,
-    // Montserrat_800ExtraBold
   });
-
-  const themeStyle = {
-  messageSimple: {
-    content: {
-      markdown: {
-        heading1: {
-          color: 'pink',
-        },
-        inlineCode: {
-          fontSize: 10
-        }
-      },
-    },
-  },
-};
 
   if (!fontsLoaded) {
     return null;
   }
   return (
     <RootSiblingParent>
-       <Chat client={client} style={themeStyle}>
+       <Chat client={client}>
       <Provider store={store}>
         <LoginStack />
       </Provider>

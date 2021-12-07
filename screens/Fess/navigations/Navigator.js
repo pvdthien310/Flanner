@@ -30,7 +30,7 @@ const BottomTabNavigator = () => {
                         tabBarIcon:({color,size})=>(
                             <Entypo style ={{marginTop: 10}} name="chat" color={color} size={30}/>
                         ),
-                        headerShown: true
+                        headerShown: false
                     }}
                 />
                  <Tab.Screen
@@ -56,7 +56,7 @@ const ChatStackNavigator = () => {
     return(
         <Stack.Navigator screenOptions={screenOptionStyle} >
             <Stack.Screen name='Fess' component={BottomTabNavigator} options={{headerShown: false}} />
-            <Stack.Screen name='Channel' component={ChannelScreen} options={{headerShown: true}} />
+            <Stack.Screen name='Channel' component={ChannelScreen} options={{headerShown: false}} />
         </Stack.Navigator>
     )
 }
