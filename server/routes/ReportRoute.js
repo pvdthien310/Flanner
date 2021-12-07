@@ -95,7 +95,7 @@ ReportRoute.get('/load-data/:userID', authenToken, (req, res) => {
 
 
 /// Get all members
-ReportRoute.get('/', authenToken, (req, res) => {
+ReportRoute.get('/',authenToken, (req, res) => {
     Report.find({})
         .then(data => {
             // console.log(data)

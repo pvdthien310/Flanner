@@ -1,22 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, ActivityIndicator,  View, TouchableOpacity, Dimensions, FlatList } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useSelector, useDispatch } from 'react-redux';
+import ReportApi from '../../../API/ReportAPI';
+import ReportMember from '../../../components/Manager/report'
+import { Ionicons } from '@expo/vector-icons';
 
 
-const { height } = Dimensions.get("screen");
+const { height, width } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 
 const CensorScreen = ({ navigation }) => {
 
-    const pressgobackHandler = () => {
-        navigation.goBack();
+    const { user } = useSelector(state => state.User)
+    const [reportList, SetReportList] = useState(undefined);
+   let loading = false
+
+    
+    const FetchData = () => {
+        
+        ReportApi.getAll()
+            .then(res => {
+                SetReportList(res)
+                console.log(reportList)
+            })
+            .catch(err => console.log('Error Report'))
     }
+    useEffect(() => {
+        FetchData()
+    }, [])
+    useEffect(() => {
+        
+    }, [reportList])
+
     return (
         <View style={styles.container}>
-             <TouchableOpacity onPress={pressgobackHandler}>
-                <Text> Back </Text>
-            </TouchableOpacity>
-          <Text>Censor Screen</Text>
+            <View>
+                {
+                  loading ? <ActivityIndicator size="small" color="#0000ff" />
+                  :
+                    <View>
+                        {
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                data={reportList}
+                                renderItem={({ item }) => (
+                                    <ReportMember item={item} navigation = {navigation} ></ReportMember>
+                                )}
+                                keyExtractor={item => item._id}
+                                onRefresh={() => FetchData()}
+                                refreshing = {loading}
+                            />
+                        }
+                    </View>
+                }
+            </View>
         </View>
 
     )

@@ -90,7 +90,12 @@ function authenToken(req, res, next) {
 //Get a member by ID
 StatusRoute.get('/:id',authenToken, (req, res) => {
     Status.findById(req.params.id)
-        .then(data => res.send(data))
+        .then(data => {
+            if (data)
+                res.send(data)
+                else
+                res.send('No Exist')
+        })
         .catch(err => console.log(err))
 })
 

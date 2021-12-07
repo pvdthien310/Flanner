@@ -114,9 +114,15 @@ KnowledgeRoute.post('/update/:id', (req, res) => {
 
 
 //Get a member by ID
-KnowledgeRoute.get('/:id', authenToken, (req, res) => {
+KnowledgeRoute.get('/:id',authenToken, (req, res) => {
     Knowledge.findById(req.params.id)
-        .then(data => res.send(data))
+        .then(data => 
+            {
+                if (data)
+                res.send(data)
+                else
+                res.send('No Exist')
+            })
         .catch(err => console.log(err))
 })
 
