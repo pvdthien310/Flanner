@@ -332,21 +332,10 @@ const UserStatusMember = ({ item, navigation }) => {
                 })
                 .catch(err => console.log('Error update true'))
         }
-
-
         // if (pressed == true) setReactnumber(reactnumber - 1);
         // else setReactnumber(reactnumber + 1)
 
     }
-
-
-
-
-
-    useEffect(() => {
-        // console.log('render post')
-
-    })
 
     return (
         <Post >
@@ -378,6 +367,7 @@ const UserStatusMember = ({ item, navigation }) => {
                     <TouchableOpacity onPress={
                         () => UpdatePublicMode()
                     }
+                    
                      activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                         <MaterialIcons name="person-outline" size={24} color="black" />
                     </TouchableOpacity>
