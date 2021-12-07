@@ -10,6 +10,8 @@ import NotificationTab from './notification/NotificationStack';
 import Header, { HeaderDrawer, HeaderNews } from '../shared/header';
 import { UserInformationStack } from './userInformation/userInformationStack';
 import { SearchStack } from './search/searchStack';
+import { StaffManagerStack } from './manager/staffManagerStack';
+import { CensorManagerStack } from './manager/censorManagerStack';
 
 function HomeScreen({ navigation }) {
     return (
@@ -53,7 +55,8 @@ export const DrawerStack = (props) => {
             options = { { headerTitle:  () => <HeaderDrawer navigation={navigation} title ='User Information'/> },
             {drawerLabel:()=>null}}/>
             <Drawer.Screen name = "Search" component = {SearchStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Search'  /> }} />
-
+            <Drawer.Screen name = "Staff" component = {StaffManagerStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Staff'  /> }} />
+            <Drawer.Screen name = "Censor" component = {CensorManagerStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Censor'  /> }} />
         </Drawer.Navigator>
     );
 }

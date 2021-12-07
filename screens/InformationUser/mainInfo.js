@@ -109,9 +109,8 @@ const MainInfor = ({ navigation, item }) => {
                                 style={{
                                     borderBottomColor: 'dimgrey',
                                     borderBottomWidth: 0.7,
-                                    marginBottom: 10,
-                                    marginTop: 10,
-                                    alignSelf:'center'
+                                    marginBottom: 15,
+                                    marginTop: 10
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>

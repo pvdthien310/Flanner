@@ -3,7 +3,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, View, Image, Text, TouchableOpacity, AppState } from 'react-native'
 import { images, Poststyle } from '../styles/poststyle'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Api from '../API/UserAPI';
@@ -27,16 +27,11 @@ export const CustomDrawer = (props) => {
     }, [user.avatar])
 
     const Logout = async () => {
-
         await JWTApi.logout(refreshToken)
             .then(res => {
                 navigation.navigate('SignInScreen');
-
-
             })
             .catch(err => console.log('Error Log out'))
-
-
     }
 
     return (
@@ -128,7 +123,6 @@ export const CustomDrawer = (props) => {
                         <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
                             <Text style={{ ...styles.itemFeature, color: 'white' }}>New Feed</Text>
                             <Ionicons name="ios-newspaper" size={24} color="white" />
-
                         </View>
                     </TouchableOpacity>
                 }
@@ -192,7 +186,7 @@ export const CustomDrawer = (props) => {
 
                             }}>
                             <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
-                                <Ionicons name="chatbubble-ellipses" size={24} color="black" />
+                                <Ionicons style ={{marginEnd:2}} name="chatbubble-ellipses" size={24} color="black" />
                                 <Text style={styles.itemFeature}>Fess</Text>
                             </View>
                         </TouchableOpacity> :
@@ -209,9 +203,54 @@ export const CustomDrawer = (props) => {
                         </TouchableOpacity>
 
                 }
+                {
+                    _chosen != 5 ?
+                        <TouchableOpacity
+                            style={styles.frameFeature}
+                            activeOpacity={0.7} onPress={() => {
+                                 navigation.navigate('Staff')
+                                dispatch({ type: 'UPDATE_FEATURE', payload: 5 })
 
+                            }}>
+                            <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
+                                <Ionicons name="person-add" size={24} color="black" />
+                                <Text style={styles.itemFeature}>Manager</Text>
+                            </View>
+                        </TouchableOpacity> :
+                        <TouchableOpacity
+                            style={{ ...styles.frameFeature, backgroundColor: 'black' }}
+                            activeOpacity={0.7} >
+                            <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
+                                <Text style={{ ...styles.itemFeature, color: 'white' }}>Manager</Text>
+                                <Ionicons name="person-add" size={24} color="white" />
 
+                            </View>
+                        </TouchableOpacity>
+                }
+                {
+                    _chosen != 6 ?
+                        <TouchableOpacity
+                            style={styles.frameFeature}
+                            activeOpacity={0.7} onPress={() => {
+                                navigation.navigate('Censor')
+                                dispatch({ type: 'UPDATE_FEATURE', payload: 6 })
+                            }}>
+                            <View style={{ padding: 10, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
+                                <MaterialIcons name="report" size={24} color="black" />
+                                <Text style={styles.itemFeature}>Report</Text>
+                            </View>
+                        </TouchableOpacity> 
+                        :
+                        <TouchableOpacity
+                            style={{ ...styles.frameFeature, backgroundColor: 'black' }}
+                            activeOpacity={0.7} >
+                            <View style={{ padding: 10, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row' }}>
+                                <Text style={{ ...styles.itemFeature, color: 'white' }}>Report</Text>
+                                <MaterialIcons name="report" size={24} color="white" />
+                            </View>
+                        </TouchableOpacity>
 
+                }
 
                 {/* <DrawerItemList {...props} /> */}
             </DrawerContentScrollView>
