@@ -77,7 +77,7 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
             postID: item._id,
             reason: reason,
             posterID: item.userID,
-            reporterID: user.userID,
+            reporterID:  user.userID,
             censor: '',
             isSeen: 'false',
             type: '2'
@@ -134,7 +134,7 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
         LoadData()
         fetchHostData()
     }, [])
-
+    
 
     const sendNotification = () => {
         // const url = URL_local + 'notification/send-data'
@@ -210,7 +210,6 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
     }
 
     const PressHandle1 = () => {
-        // let numberReact = data.reactNumber;
 
         const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
         const url_false = URL_local + 'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
@@ -300,11 +299,6 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
     }
 
 
-
-    useEffect(() => {
-        console.log('render post')
-
-    })
 
     return (
         <Post >

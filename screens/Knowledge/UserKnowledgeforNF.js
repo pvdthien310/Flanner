@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'whitesmoke',
         flexDirection:'column',
-        marginBottom:10
+        marginBottom: 90
         
 
     },
