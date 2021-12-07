@@ -50,8 +50,8 @@ const UserListItemInFessScr = ({tempUser}) => {
         <Pressable onPress={onPress} style={styles.root}>
             <Image style={styles.image} source={{uri: tempUser.image}} />
             <Text style={{
-                marginTop:10,
-                fontSize:13,
+                marginTop:5,
+                fontSize:12,
                 color:'white',
             }} > {tempUser.name}</Text>
         </Pressable>
@@ -62,13 +62,16 @@ export default UserListItemInFessScr;
 
 const styles = StyleSheet.create({
     root:{
+        height: 85,
          alignItems:'center',
-        marginTop:20,
+         marginTop: 15,
         marginRight:17
     },
     image:{
-        width:60,
-        height:60,
-        borderRadius: 30
+        width:50,
+        height:50,
+        borderRadius: 30,
+        borderColor: 'white',
+        borderWidth: 1
     },
 })

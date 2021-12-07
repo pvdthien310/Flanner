@@ -15,25 +15,25 @@ const styles = StyleSheet.create({
   gradient:{
         height:'100%',
         position:"absolute",
-        left:0,
-        right:0,
-        top:0,
+        backgroundColor: '#313149',
         paddingHorizontal:20,
         paddingTop:30
     },
     headerContainer:{
+        justifyContent: 'center',
         flexDirection:'row',
-        alignItems:'center'
+        alignSelf:'center',
+        alignItems: 'center',
     },
     header:{
         color:'#FFF',
-        flex:1,
         fontSize:24,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        alignSelf: 'center',
     },
      proContainer:{
         marginRight:-20,
-        alignSelf:'center'
+        alignSelf:'center',
     },
     card:{
         marginLeft:400,
@@ -54,12 +54,11 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     day:{
-        fontFamily:'Montserrat_800ExtraBold',
         color:'#000119',
         flex:1,
         fontSize:17,
         fontWeight:'bold'
-    }
+    },
 });
 
 const sort = { last_message_at: -1 };
@@ -132,16 +131,18 @@ const Fess = ({navigation}) => {
         return null;
     } else {
         return(
-            <LinearGradient colors={['black', 'black', 'black']}
-                            style={styles.gradient}>
+            <View style={styles.gradient}>
                 <View style={styles.headerContainer}>
-                <Text style={styles.header}>Fess</Text>
+                    <Text style={styles.header}>Fess</Text>
+                </View>
+                <View style={{ marginTop: 5 ,alignItems: 'flex-start'}}>
+                    <Text style={{ fontFamily: 'nunitobold', fontSize: 16, color: 'white'}}>People</Text>
                 </View>
                 <ScrollView
                 horizontal
                 style={styles.proContainer}
                 showsHorizontalScrollIndicator={false}
-           >
+                >
                 {loading ? 
                     (
                         <ActivityIndicator size='small' color='#FFF'/>
@@ -157,12 +158,11 @@ const Fess = ({navigation}) => {
                         </Animated.View>
                     )
                 }
-           </ScrollView>
-           <View style={styles.ops}>
-                <View style={styles.col}>
-                    <Text style={styles.day}>{today}</Text>
-                </View>
-                <ScrollView>
+                </ScrollView>
+                <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{marginTop: -150}}
+                >
                     {
                         loading ? 
                         (
@@ -170,7 +170,7 @@ const Fess = ({navigation}) => {
                         ):(
                             <Animated.View style={[list.getLayout(), styles.list]}>
                                 {
-                                    <SafeAreaProvider style={{marginTop: 320, marginBottom: 25}}>
+                                    <SafeAreaProvider style={{ backgroundColor: '#313149',marginTop: 320, marginBottom: 25}}>
                                     <OverlayProvider>
                                         <ChannelList onSelect={onChannelPressed} filters={filters} 
                                                      sort={sort} />  
@@ -180,10 +180,7 @@ const Fess = ({navigation}) => {
                             </Animated.View>
                         )}
                 </ScrollView>
-           </View>
-                
-            </LinearGradient>
-            
+         </View>   
     )
     }
    

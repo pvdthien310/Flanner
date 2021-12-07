@@ -49,7 +49,7 @@ const UserListItem = ({tempUser}) => {
     return (
         <Pressable onPress={onPress} style={styles.root}>
             <Image style={styles.image} source={{uri: tempUser.image}} />
-            <Text > {tempUser.name}</Text>
+            <Text style={{color: 'white', fontSize: 15, fontWeight: 'bold'}} > {tempUser.name}</Text>
         </Pressable>
     )
 }
@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
     image:{
         width: 50,
         height: 50,
-        backgroundColor: "gray",
         borderRadius: 50,
-        marginRight: 10
+        marginRight: 10,
+        borderWidth: 1,
+        borderColor: 'white'
     },
 })

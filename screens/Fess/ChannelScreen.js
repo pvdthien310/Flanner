@@ -38,17 +38,15 @@ const onDoubleTapMessage = ({
     return (
         <LinearGradient
             colors={["white", "white", "white"]}
-             style={styles.container}
-        >
+             style={styles.container}>
                  <SafeAreaView style={styles.headerContainer}>
                      <TouchableOpacity
                         onPress={() => navigation.goBack()}
                         style={{marginLeft: 10}}
                    >
-                         <AntDesign name="leftcircle" size={30} color="black" />
+                         <AntDesign name="leftcircle" size={30} color="#313149" />
                      </TouchableOpacity>
                     <Text style={styles.username}>Discussion</Text>
-                    {/* <Image source={channel.me} style={styles.avatar} /> */}
                    </SafeAreaView>
                 <SafeAreaProvider style={{marginBottom: 10}}>
                     <OverlayProvider >
@@ -89,16 +87,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         paddingTop: 10,
-        paddingBottom: 10,
+        paddingBottom: 10
     },
      username: {
-        //color: "#000119",
-        color: 'black',
+        color: '#313149',
         fontWeight: 'bold',
-        fontFamily: 'Montserrat_700Bold',
         fontSize: 20,
         flex: 1,
-        marginLeft: 20
+        marginLeft: 106,
+        alignSelf: 'center',
     },
     avatar: {
         width: 50,

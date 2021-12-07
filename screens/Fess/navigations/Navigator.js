@@ -6,20 +6,29 @@ import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Fess from './../FlannerChat';
 import ChannelScreen from './../ChannelScreen';
+import {BlurView} from 'expo-blur';
+import {StyleSheet, View} from 'react-native'
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
     return (
         <Tab.Navigator 
             screenOptions={{
-                tabBarActiveTintColor: 'black',
-                style:{
-                    height:65,
-                    justifyContent:'center',
-                    paddingVertical:0,
-                    backgroundColor:'#FFF',
-                    elevation:2,
-                },
+                tabBarActiveTintColor: 'white',
+                tabBarShowLabel: false,
+                headerShown: false,
+                tabBarStyle: {
+                    position: 'absolute',
+                    bottom: 15,
+                    left: 20,
+                    right: 20,
+                    elevation: 0,
+                    backgroundColor: '#313149',
+                    borderRadius: 15,
+                    height: 60,
+
+                    ...styles.shadow
+                }
             }}
         >
                  <Tab.Screen
@@ -28,7 +37,7 @@ const BottomTabNavigator = () => {
                     options={{
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
-                            <Entypo style ={{marginTop: 10}} name="chat" color={color} size={30}/>
+                            <Entypo style ={{marginTop: 10}} name="chat" color={color} size={25}/>
                         ),
                         headerShown: false
                     }}
@@ -39,9 +48,9 @@ const BottomTabNavigator = () => {
                     options={{
                         tabBarLabel:'',
                         tabBarIcon:({color,size})=>(
-                            <Ionicons style ={{marginTop: 10}} name='ios-person' color={color} size={30}/>
+                            <Ionicons style ={{marginTop: 10}} name='ios-person' color={color} size={25}/>
                         ),
-                        headerShown: true
+                        headerShown: false
                     }}
                 />
         </Tab.Navigator>
@@ -62,3 +71,12 @@ const ChatStackNavigator = () => {
 }
 
 export default ChatStackNavigator;
+const styles = StyleSheet.create({
+    shadow: {
+        shadowColor: '#313149',
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+    }
+});
