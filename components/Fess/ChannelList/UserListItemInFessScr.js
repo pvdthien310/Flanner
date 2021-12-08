@@ -62,7 +62,7 @@ export default UserListItemInFessScr;
 
 const styles = StyleSheet.create({
     root:{
-        height: 85,
+        height: '50%',
          alignItems:'center',
          marginTop: 15,
         marginRight:17

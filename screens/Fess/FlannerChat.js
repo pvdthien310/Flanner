@@ -8,6 +8,7 @@ import {useChatContext,
         useChannelsContext} from 'stream-chat-expo'
 import {LinearGradient} from 'expo-linear-gradient';
 import UserListItemInFessScr from './../../components/Fess/ChannelList/UserListItemInFessScr';
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 
 LogBox.ignoreAllLogs(true);
@@ -34,10 +35,14 @@ const styles = StyleSheet.create({
      proContainer:{
         marginRight:-20,
         alignSelf:'center',
+      
+        marginBottom: 0,
+        height: "5%",
     },
     card:{
         marginLeft:400,
-        width:400,
+        width:"100%",
+        height: "100%",
         flexDirection:'row'
     },
     ops:{
@@ -159,27 +164,13 @@ const Fess = ({navigation}) => {
                     )
                 }
                 </ScrollView>
-                <ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{marginTop: -150}}
-                >
-                    {
-                        loading ? 
-                        (
-                            <ActivityIndicator size='large' color='#f20042'/>
-                        ):(
-                            <Animated.View style={[list.getLayout(), styles.list]}>
-                                {
-                                    <SafeAreaProvider style={{ backgroundColor: '#313149',marginTop: 320, marginBottom: 25}}>
-                                    <OverlayProvider>
-                                        <ChannelList onSelect={onChannelPressed} filters={filters} 
-                                                     sort={sort} />  
-                                     </OverlayProvider>
-                                    </SafeAreaProvider>
-                                }
-                            </Animated.View>
-                        )}
-                </ScrollView>
+                <View style={{marginTop: "-270%" ,height: 1, borderWidth: 1, backgroundColor: 'black', width: '100%'}}></View>
+                <SafeAreaProvider style={{ backgroundColor: '#313149',marginTop: "100%"}}>
+                    <OverlayProvider>
+                        <ChannelList onSelect={onChannelPressed} filters={filters} 
+                                     sort={sort} />  
+                    </OverlayProvider>
+                </SafeAreaProvider>
          </View>   
     )
     }
