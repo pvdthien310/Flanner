@@ -14,8 +14,12 @@ const url = '/report';
         const res = await DatabaseClient.post(url +'/send-data',item );
         return res.data
     },
-    UpdateItem: async item => {
-        const res = await DatabaseClient.post(url +'/update/isSeen',item );
+    UpdateFalse: async (itemID,censorID) => {
+        const res = await DatabaseClient.post(url +'/update/false/' + itemID +'/' + censorID );
+        return res.data
+    },
+    UpdateTrue: async (itemID,censorID) => {
+        const res = await DatabaseClient.post(url +'/update/true/' + itemID +'/' + censorID );
         return res.data
     },
   

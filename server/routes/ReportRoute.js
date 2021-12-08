@@ -1,7 +1,11 @@
 
 const ReportRoute = require('express').Router();
 const Report = require("../models/Report")
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const Knowledge = require('../models/Knowledge');
+const Status = require('../models/Status');
+
+const User = require('../models/User');
 
 
 
@@ -17,7 +21,7 @@ ReportRoute.post('/delete', (req, res) => {
 })
 
 /// Add new member
-ReportRoute.post('/send-data',authenToken, (req, res) => {
+ReportRoute.post('/send-data', authenToken, (req, res) => {
     Report.find({ postID: req.body.postID, reporterID: req.body.reporterID })
         .then(data => {
             console.log(data)
@@ -30,8 +34,9 @@ ReportRoute.post('/send-data',authenToken, (req, res) => {
                     posterID: req.body.posterID,
                     reporterID: req.body.reporterID,
                     censor: req.body.censor,
-                    isSeen: req.body.isSeen,
-                    type: req.body.type
+                    result: '',
+                    type: req.body.type,
+                    isSeen : req.body.isSeen
                 })
                 // console.log(newReport)
                 newReport.save()
@@ -52,13 +57,86 @@ ReportRoute.post('/send-data',authenToken, (req, res) => {
 
 /// Update member by ID
 
-ReportRoute.post('/update/isSeen/:postID', (req, res) => {
-    Report.updateMany({ postID: req.params.postID }, { "isSeen": 'true' }, { new: true })
-        .then((data) => {
-            res.send('update thanh cong')
-        }).catch(err => {
-            console.log(err)
+ReportRoute.post('/update/true/:postID/:censorID',authenToken, (req, res) => {
+    Report.find({ postID: req.params.postID })
+        .then(data => {
+            if (data[0].censor != '') {
+                res.send('This post has been processed by another censor!')
+                return;
+            }
+            else {
+                if (data[0].type == 1) {
+                    Report.updateMany({ postID: req.params.postID, }, { "result": 'true', "censor": req.params.censorID }, { new: true })
+                        .then((data) => {
+                            Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
+                                .then((data) => {
+                                   res.send('Process successful!')
+                                   return;
+                                }).catch(err => {
+                                    console.log(err)
+                                })
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                }
+                else 
+                {
+                    Report.updateMany({ postID: req.params.postID, }, { "result": 'true', "censor": req.params.censorID }, { new: true })
+                    .then((data) => {
+                        Status.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
+                            .then((data) => {
+                               res.send('Process successful!')
+                               return;
+                            }).catch(err => {
+                                console.log(err)
+                            })
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            }
         })
+})
+ReportRoute.post('/update/false/:postID/:censorID',authenToken, (req, res) => {
+    Report.find({ postID: req.params.postID })
+        .then(data => {
+            if (data[0].censor != '') {
+                res.send('This post has been processed by another censor!')
+                return;
+            }
+            else {
+                if (data[0].type == 1) {
+                    Report.updateMany({ postID: req.params.postID, }, { "result": 'false', "censor": req.params.censorID }, { new: true })
+                        .then((data) => {
+                            Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
+                                .then((data) => {
+                                   res.send('Process successful!')
+                                   return;
+                                }).catch(err => {
+                                    console.log(err)
+                                })
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                }
+                else 
+                {
+                    Report.updateMany({ postID: req.params.postID, }, { "result": 'false', "censor": req.params.censorID }, { new: true })
+                    .then((data) => {
+                        Status.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
+                            .then((data) => {
+                               res.send('Process successful!')
+                               return;
+                            }).catch(err => {
+                                console.log(err)
+                            })
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            }
+        })
+
 })
 
 
@@ -95,7 +173,7 @@ ReportRoute.get('/load-data/:userID', authenToken, (req, res) => {
 
 
 /// Get all members
-ReportRoute.get('/',authenToken, (req, res) => {
+ReportRoute.get('/', authenToken, (req, res) => {
     Report.find({})
         .then(data => {
             // console.log(data)

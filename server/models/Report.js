@@ -24,6 +24,9 @@ const ReportSchema = new mongoose.Schema({
     censor:{
         type: String,
     },
+    result:{
+        type:String,
+    },
     isSeen:{
         type:String,
     }

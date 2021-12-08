@@ -6,6 +6,9 @@ import KnowLedgeApi from '../../API/KnowledgeAPI';
 import StatusApi from '../../API/StatusAPI';
 import { Ionicons } from '@expo/vector-icons';
 import Api from '../../API/UserAPI';
+import ReportApi from '../../API/ReportAPI';
+import Toast from 'react-native-root-toast';
+import NotificationApi from '../../API/NotificationAPI';
 
 
 
@@ -16,11 +19,101 @@ const logoHeight = height * 0.5;
 const ReportMember = ({ item, navigation }) => {
 
     const dispatch = useDispatch()
-    const { data } = useSelector(state => { return state.User })
+    const { user } = useSelector(state => { return state.User })
     const [knowledge, SetKnowledge] = useState(undefined)
     const [status, SetStatus] = useState(undefined)
     const [poster, SetPoster] = useState(undefined)
     const [resultchecking, SetResultChecking] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+
+    const FetchData = () => {
+        
+        ReportApi.getAll()
+            .then(res => {
+                console.log(res)
+                // console.log(reportList)
+                dispatch({ type: 'ADD_DATA_REPORT', payload: res })
+
+            })
+            .catch(err => console.log('Error Report'))
+    }
+    const AcceptReport = () => {
+        ReportApi.UpdateTrue(item.postID, user.userID)
+            .then(res => {
+                if (res == 'This post has been processed by another censor!') {
+                    let toast = Toast.show('This post has been processed by another censor!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    FetchData()
+                }
+                else {
+                    let number = (parseInt(poster.reportedNum) + 1).toString()
+                    Api.updateReportNumber(item.posterID, number)
+                        .then(res => {
+                            NotificationApi.sendNoti({
+                                userID: item.posterID,
+                                message: ' Your post has been restricted due to a rule violation!',
+                                postID: item.postID,
+                                senderID: user.userID,
+                                type: '3',
+                                action: 'Warnning'
+                            })
+                                .then(res => {
+                                    let toast = Toast.show('Process successful!', {
+                                        duration: Toast.durations.SHORT,
+                                        position: Toast.positions.CENTER,
+                                        shadow: true,
+                                        animation: true,
+                                        hideOnPress: true,
+                                    });
+                                    FetchData()
+                                })
+                                .catch(err => console.log('Error Send Noti', err))
+                        })
+                        .catch(err => {
+                            console.log('Update User Failed')
+                        })
+                }
+
+            })
+            .catch(err => console.log(err))
+    }
+
+    const DeclineReport = () => {
+        ReportApi.UpdateFalse(item.postID, user.userID)
+            .then(res => {
+                if (res == 'This post has been processed by another censor!') {
+                    let toast = Toast.show('This post has been processed by another censor!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    FetchData()
+                }
+                else {
+
+                    let toast = Toast.show('Process successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    FetchData()
+
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
+
 
 
     const fetchKnowledgeData = () => {
@@ -53,7 +146,7 @@ const ReportMember = ({ item, navigation }) => {
     }
     const CheckObseneWord = (str) => {
         var ObseneWord = [
-            "đụ","Đụ", "duma", "dume", "ditconmem", "dkm", "vcl", "cdmm", "dmm", "cdm", "clm", "cl", 'cc', "cặc", "cu", "lồn", "loz",
+            "đụ", "Đụ", "duma", "dume", "ditconmem", "dkm", "vcl", "cdmm", "dmm", "cdm", "clm", "cl", 'cc', "cặc", "cu", "lồn", "loz",
             "cak", "đỉ", "đĩ", "fucking", "asshole", "motherfucker", "dick", "cock", "bitch", "chó đẻ", "cho de", "địt", "dit"];
         let arrayChar = str.toLowerCase().split(' ');
         for (var i = 0; i < ObseneWord.length; i++) {
@@ -71,10 +164,10 @@ const ReportMember = ({ item, navigation }) => {
     }, [])
     return (
         <TouchableOpacity onPress={() => {
-            if (item.type == 1 )
-            navigation.navigate('Detail Report Screen', {item: knowledge, poster: poster })
-            else             
-            navigation.navigate('Detail Report Screen', {item: status, poster: poster })
+            if (item.type == 1)
+                navigation.navigate('Detail Report Screen', { item: knowledge, poster: poster })
+            else
+                navigation.navigate('Detail Report Screen', { item: status, poster: poster })
 
         }}
             style={{
@@ -154,7 +247,7 @@ const ReportMember = ({ item, navigation }) => {
                                         color: 'maroon',
                                         fontFamily: 'nunitobold'
                                     }}
-                                    >Checking Result: {resultchecking.toString()} </Text>
+                                    >Checking OW Result: {resultchecking.toString()} </Text>
                                     :
                                     <Text style={{
                                         fontSize: 14,
@@ -162,15 +255,55 @@ const ReportMember = ({ item, navigation }) => {
                                         color: 'teal',
                                         fontFamily: 'nunitobold'
                                     }}
-                                    >Checking Result: {resultchecking.toString()} </Text>
+                                    >Checking OW Result: {resultchecking.toString()} </Text>
+                            }
+                            {
+                                item.censor != '' ?
+
+
+                                    <View style={{
+                                        backgroundColor: item.result == 'true' ? 'teal' : 'maroon',
+                                        alignSelf: 'flex-start',
+                                        padding: 5,
+                                        borderRadius: 5
+                                    }}>
+                                        {
+                                            item.result == 'true' ?
+
+                                                <Text style={{
+                                                    fontSize: 14,
+                                                    padding: 4,
+                                                    color: 'white',
+                                                    fontWeight: 'bold'
+                                                }}
+                                                >Censor: {item.censor}</Text>
+                                                :
+                                                <Text style={{
+                                                    fontSize: 14,
+                                                    padding: 4,
+                                                    color: 'white',
+                                                    fontWeight: 'bold'
+                                                }}
+                                                >Censor: {item.censor}</Text>
+                                        }
+
+
+                                    </View>
+
+
+                                    : null
+
                             }
                         </View>
-                        <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: -20 }}>
-                          
-                            <TouchableOpacity style={{ borderRadius: 5, marginStart: 5, backgroundColor: 'lightpink', padding: 5 }}>
+                        <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: -30, }}>
+
+                            <TouchableOpacity
+                                onPress={() => AcceptReport()}
+                                style={{ borderRadius: 5, marginStart: 5, backgroundColor: 'lightpink', padding: 5 }}>
                                 <Ionicons name="ios-warning" size={24} color="maroon" />
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={() => DeclineReport()}
                                 style={{ borderRadius: 5, marginStart: 5, backgroundColor: 'teal', padding: 5 }}>
                                 <Ionicons name="checkmark" size={24} color="white" />
                             </TouchableOpacity>

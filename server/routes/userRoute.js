@@ -77,6 +77,14 @@ UserRoute.post('/update',authenToken, (req, res) => {
         })
 })
 
+UserRoute.post('/update/:userID/:number',authenToken, (req,res) => {
+    User.findOneAndUpdate({userID : req.params.userID}, {"reportedNum" : req.params.number},{new: true})
+    .then(data => {
+        res.send('Process successful!')
+    })
+    .catch(err => console.log('err'))
+})
+
 /// Add to following
 UserRoute.post('/add/:userID/following/:friendID',authenToken, (req, res) => {
     User.findOne({ userID: req.params.friendID })
@@ -141,7 +149,7 @@ UserRoute.post('/remove/:userID/followed/:friendID',authenToken, (req, res) => {
         .catch(err => console.log(err))
 })
 
-UserRoute.post('/send-data', (req, res) => {
+UserRoute.post('/send-data',authenToken, (req, res) => {
     let UserID = req.body.userID.toString().replaceAll('.','')
     let processedUserID  = UserID.toString().replaceAll('@','')
     const newUser = new User({
