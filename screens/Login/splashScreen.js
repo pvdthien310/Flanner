@@ -35,7 +35,6 @@ export default function SplashScreen({ navigation }) {
 
     }, [])
 
-
     const data = [
         {
             key: "0",

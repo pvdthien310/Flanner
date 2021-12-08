@@ -3,9 +3,9 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacit
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 
+import * as ImagePicker from 'expo-image-picker';
+import { AntDesign } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
 import Api from '../../API/UserAPI';
 
@@ -148,7 +148,7 @@ const EditProFile = ({ navigation }) => {
   const fetchUserData = () => {
     Api.getUserItem(user.userID)
       .then(res => {
-        
+
         dispatch({ type: 'ADD_USER', payload: res[0] })
         dispatch({ type: 'UPDATE_USER', payload: res[0] })
       })
@@ -227,12 +227,22 @@ const EditProFile = ({ navigation }) => {
           shadowOpacity: 0.5,
         }} source={{ uri: image }} />
 
-        <View style={styles.imageoptionsbar}>
-          <TouchableOpacity onPress={pickImage}>
-            <Ionicons name="image-sharp" size={24} color="black" />
-          </TouchableOpacity>
 
-        </View>
+        <TouchableOpacity onPress={pickImage}
+          style={{
+            height: 40,
+            width: 40,
+            position: 'absolute',
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            padding: 5,
+            borderRadius: 20,
+            alignSelf: 'flex-end',
+            margin: 10
+          }}>
+          <AntDesign name="edit" size={24} color="black" />
+        </TouchableOpacity>
+
 
         <View style={{ marginLeft: 20, marginRight: 30, marginTop: 10 }}>
           <Text style={styles.title}>Email Address</Text>
@@ -316,22 +326,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold'
   },
-  imageoptionsbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderRadius: 10,
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    marginTop: 10,
-    marginStart: 10,
-    marginEnd: 10,
-    shadowColor: 'black',
-    shadowOffset: { width: 1, height: 1 },
-    padding: 5,
-    backgroundColor: 'ghostwhite'
 
-
-  },
 
 });
 export default EditProFile;
