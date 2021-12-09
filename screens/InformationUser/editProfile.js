@@ -211,8 +211,8 @@ const EditProFile = ({ navigation }) => {
         shadow: true,
         animation: true,
         hideOnPress: true,
-    });
-      
+      });
+
     }).catch(err => {
       let toast = Toast.show('Update your profile failed, Please try again!', {
         duration: Toast.durations.SHORT,
@@ -220,7 +220,7 @@ const EditProFile = ({ navigation }) => {
         shadow: true,
         animation: true,
         hideOnPress: true,
-    });
+      });
       console.log(err)
     })
   }
@@ -231,14 +231,14 @@ const EditProFile = ({ navigation }) => {
       shadow: true,
       animation: true,
       hideOnPress: true,
-  });
+    });
     await HandleUpImages()
 
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator = {false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Image style={{
           height: height * 0.58, width: '100%',
           borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -264,8 +264,8 @@ const EditProFile = ({ navigation }) => {
           <TextInput style={styles.info} onChangeText={changeName} value={name} />
 
           <Text style={styles.title}>Bio</Text>
-          <View style ={{
-            
+          <View style={{
+
             borderRadius: 5,
             padding: 10,
             backgroundColor: 'white',
@@ -273,9 +273,9 @@ const EditProFile = ({ navigation }) => {
             shadowOpacity: 0.5,
             shadowRadius: 2,
             shadowOffset: { width: 1, height: 1 },
-            
+
           }}>
-          <TextInput multiline ={true} style={{...styles.info,height: height*0.2}} onChangeText={changeBio} value={bio} />
+            <TextInput multiline={true} style={{ ...styles.info, height: height * 0.2 }} onChangeText={changeBio} value={bio} />
           </View>
           <Text style={styles.title}>Contact</Text>
           <TextInput style={styles.info} onChangeText={changeContact} value={contact} />
@@ -296,36 +296,36 @@ const EditProFile = ({ navigation }) => {
           <TextInput style={styles.info} onChangeText={changeAddress} value={address} />
           {
             loading == true ?
-            <View style = {{
-              flexDirection :'row', 
-              alignItems:'center',
-              justifyContent : 'flex-start'
-            } }>
-              <TouchableOpacity activeOpacity={1} >
-                <View style={{
-                  borderRadius: 15,
-                  padding: 7,
-                  backgroundColor: 'gray',
-                  shadowOffset: { width: 1, height: 1 },
-                  shadowColor: 'black',
-                  shadowOpacity: 0.5,
-                  marginTop: 20,
-                  marginLeft: 0,
-                  marginRight: 30,
-                  marginBottom: 20,
-                  width: 100,
-                  justifyContent: 'center',
+              <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start'
+              }}>
+                <TouchableOpacity activeOpacity={1} >
+                  <View style={{
+                    borderRadius: 15,
+                    padding: 7,
+                    backgroundColor: 'gray',
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: 'black',
+                    shadowOpacity: 0.5,
+                    marginTop: 20,
+                    marginLeft: 0,
+                    marginRight: 30,
+                    marginBottom: 20,
+                    width: 100,
+                    justifyContent: 'center',
 
-                }}>
-                  <Text style={{ alignSelf: 'center', color: 'white', fontSize: 15, fontFamily: 'nunitobold' }}>Save</Text>
-                </View>
-              </TouchableOpacity>
+                  }}>
+                    <Text style={{ alignSelf: 'center', color: 'white', fontSize: 15, fontFamily: 'nunitobold' }}>Save</Text>
+                  </View>
+                </TouchableOpacity>
 
-              <ActivityIndicator size="small" color="black" />
+                <ActivityIndicator size="small" color="black" />
 
-            </View>
-            :
-            <TouchableOpacity onPress={saveHandle} >
+              </View>
+              :
+              <TouchableOpacity onPress={saveHandle} >
                 <View style={{
                   borderRadius: 15,
                   padding: 7,
