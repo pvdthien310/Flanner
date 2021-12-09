@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
 import Toast from 'react-native-root-toast';
 import base64 from 'react-native-base64'
+import { URL_local } from '../../constant.js';
 
 export default function ConfirmEmail({ route, navigation }) {
 
@@ -21,7 +22,8 @@ export default function ConfirmEmail({ route, navigation }) {
     } = route.params.dataTemp
 
     const sendEmail = () => {
-        fetch("http://192.168.1.5:3000/api/sendEmail", {
+        const url = URL_local + 'sendEmail'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,14 +45,15 @@ export default function ConfirmEmail({ route, navigation }) {
         let temp = ''
         let i = 0
 
-        while (email.charAt(i) != '@') {
+        while (email.charAt(i) != '@' || email.charAt(i) != '.') {
             temp += email.charAt(i)
             i++;
         }
         return temp;
     }
     const _submitData = () => {
-        fetch("http://192.168.1.6:3000/api/user/send-data", {
+        const url = URL_local + 'user/send-data'
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,9 +65,7 @@ export default function ConfirmEmail({ route, navigation }) {
                 doB: '',
                 avatar: '',
                 email: email,
-                friendArray: '',
                 password: base64.encode(password),
-                score: '0',
                 address: '',
                 position: '0',
                 reportedNum: '0',
@@ -173,7 +174,7 @@ export default function ConfirmEmail({ route, navigation }) {
 
                         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                             <LinearGradient
-                                colors={['black', 'dimgray']}
+                                colors={['black', 'black']}
                                 style={styles.gradient}>
                                 <Text style={styles.textConfirm}>Confirm</Text>
                             </LinearGradient>
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: 20,
         fontSize: 15,
-        fontFamily: 'nunitobold'
+        //fontFamily: 'nunitobold'
     },
     logo: {
         height: logoHeight,
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     },
     textConfirm: {
         color: 'white',
-        fontFamily: 'nunitobold'
+        //fontFamily: 'nunitobold'
     },
     gradient: {
         justifyContent: 'center',

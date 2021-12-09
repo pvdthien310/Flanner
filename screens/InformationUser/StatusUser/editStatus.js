@@ -93,7 +93,7 @@ export default function EditStatus({ route, navigation }) {
             posttime: route.params.item.posttime,
             listImage: picture,
             react: route.params.item.react,
-            reactNumber: '0'
+            mode :route.params.item.mode
         }
 
         // const url = URL_local + 'status/update'
@@ -134,7 +134,7 @@ export default function EditStatus({ route, navigation }) {
                 posttime: route.params.item.posttime,
                 listImage: picture,
                 react: route.params.item.react,
-                reactNumber: '0'
+                mode: route.params.item.mode
             })
             .then(res => {
                 fetchStatusData()

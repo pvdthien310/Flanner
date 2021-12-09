@@ -31,6 +31,10 @@ const Api = {
     updateUser: async updated_User => {
         const res = await DatabaseClient.post('/user/update', updated_User);
         return res.data;
+    } ,
+    updateReportNumber: async (updated_User,number) => {
+        const res = await DatabaseClient.post('/user/update/'+ updated_User + '/' + number);
+        return res.data;
     } 
     
 }

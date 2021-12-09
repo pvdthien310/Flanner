@@ -4,6 +4,7 @@ import DrawerControllerReducer from './drawerReducer'
 import JWTReducer from './JWTReducer'
 import  KnowledgeReducer  from './knowledgeReducer'
 import NotificationReducer from './notificationReducer'
+import ReportReducer from './reportReducer'
 import StatusReducer from './statusReducer'
 import  UserReducer  from './userReducer'
 
@@ -13,7 +14,8 @@ const RootReducer =  combineReducers({
   Notification: NotificationReducer,
   Status: StatusReducer,
   DrawerController: DrawerControllerReducer,
-  JWT: JWTReducer
+  JWT: JWTReducer,
+  Report: ReportReducer
 })
 
 export default RootReducer;

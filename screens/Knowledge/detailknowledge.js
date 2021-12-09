@@ -344,7 +344,9 @@ const DetailKnowledge = ({ route, navigation }) => {
                             </View>
 
                             <PostText>
+                               
                                 <Text style={Poststyle_Status.posttime_detail}>{data.posttime}</Text>
+                               
 
                                 <Text style={Poststyle_Status.title_detail}>{data.title}</Text>
                                 <Text style={Poststyle_Status.description_detail}>{data.description}</Text>
@@ -396,7 +398,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 }
 
                                 <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {item.username}</Text>
+                                    <Text style={Poststyle_Status._name_detail}> {host[0] ? host[0].name : item.username}</Text>
                                     <Text style={{
                                         fontFamily: 'nunitobold',
                                         fontSize: 12,

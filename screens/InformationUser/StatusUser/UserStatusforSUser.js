@@ -38,7 +38,7 @@ const UserStatusForSUser = ({ navigation, route }) => {
         //         Setloading(false)  
         //         forceRerender()
         //     }).catch(err => console.log('Error'));
-        StatusApi.getStatusUser(user.userID)
+        StatusApi.getStatusUserForFriend(user.userID)
             .then(res => {
                 setUserStatus(res)
                 Setloading(false)

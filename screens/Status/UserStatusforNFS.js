@@ -33,7 +33,7 @@ const UserStatusForNFS = ({ navigation,route }) => {
     }, [])
    
     const fetchStatusData = () => {
-        StatusApi.getStatusUser(user.userID)
+        StatusApi.getStatusUserForFriend(user.userID)
             .then(res => {
                 setUserStatus(res)        
                 Setloading(false)  

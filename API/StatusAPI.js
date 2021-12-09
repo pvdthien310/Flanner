@@ -1,5 +1,6 @@
 import DatabaseClient from '../API/DatabaseAPI'
 
+
 const url = '/status';
 
  const StatusApi = {
@@ -8,9 +9,16 @@ const url = '/status';
         const res = await DatabaseClient.get(url);
         return res.data
     },
-
+    getRandom: async (userID) => {
+        const res = await DatabaseClient.get(url + '/load-data/newsfeed/random/' + userID);
+        return res.data
+    },
     getStatusUser: async user => {
         const res = await DatabaseClient.get(url +'/load-data/' + user);
+        return res.data
+    },
+    getStatusUserForFriend: async user => {
+        const res = await DatabaseClient.get(url +'/load-data/friend/' + user);
         return res.data
     },
     getItem: async item => {
@@ -45,8 +53,18 @@ const url = '/status';
         const res = await DatabaseClient.post(url +'/delete',item );
         return res.data
     },
-
-   
+    UpdatePublic: async postID => {
+        const res = await DatabaseClient.post(url +'/update/mode/'+ postID +'/public' );
+        return res.data
+    },
+    UpdatePrivate: async postID => {
+        const res = await DatabaseClient.post(url +'/update/mode/'+ postID +'/private' );
+        return res.data
+    },
+    UpdateLimitary: async postID => {
+        const res = await DatabaseClient.post(url +'/update/mode/'+ postID +'/limitary' );
+        return res.data
+    },
 }
 
 export default StatusApi;

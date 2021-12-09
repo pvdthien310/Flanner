@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 
 /// Delete member
-KnowledgeRoute.post('/delete',authenToken, (req, res) => {
+KnowledgeRoute.post('/delete', authenToken, (req, res) => {
     Knowledge.findByIdAndRemove(req.body.id)
         .then((data) => {
             res.send("delete lien")
@@ -15,7 +15,7 @@ KnowledgeRoute.post('/delete',authenToken, (req, res) => {
 })
 
 /// Add new member
-KnowledgeRoute.post('/send-data',authenToken, (req, res) => {
+KnowledgeRoute.post('/send-data', authenToken, (req, res) => {
     const newKnowledge = new Knowledge({
         username: req.body.username,
         userID: req.body.userID,
@@ -26,7 +26,7 @@ KnowledgeRoute.post('/send-data',authenToken, (req, res) => {
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
-        reactNumber: req.body.reactNumber
+        mode: req.body.mode
     })
 
     newKnowledge.save()
@@ -40,27 +40,33 @@ KnowledgeRoute.post('/send-data',authenToken, (req, res) => {
 })
 
 /// Update member by ID
-KnowledgeRoute.post('/update',authenToken, (req, res) => {
-    Knowledge.findByIdAndUpdate(req.body.id, {
-        username: req.body.username,
-        userID: req.body.userID,
-        body: req.body.body,
-        title: req.body.title,
-        description: req.body.description,
-        avatar: req.body.avatar,
-        posttime: req.body.posttime,
-        listImage: req.body.listImage,
-        react: req.body.react,
-        reactNumber: req.body.reactNumber
-    })
-        .then((data) => {
-            res.send("update thanh cong")
-        }).catch(err => {
-            console.log(err)
+KnowledgeRoute.post('/update', authenToken, (req, res) => {
+    Knowledge.findById(req.body.id)
+        .then(result => {
+            const _mode = result.mode
+            Knowledge.findByIdAndUpdate(req.body.id, {
+                username: req.body.username,
+                userID: req.body.userID,
+                body: req.body.body,
+                title: req.body.title,
+                description: req.body.description,
+                avatar: req.body.avatar,
+                posttime: req.body.posttime,
+                listImage: req.body.listImage,
+                react: req.body.react,
+                mode: _mode
+            })
+                .then((data) => {
+                    res.send("update thanh cong")
+                }).catch(err => {
+                    console.log(err)
+                })
         })
+        .catch(err => console.log('err '))
+        
 })
 
-KnowledgeRoute.post('/update/:id/true/:userID',authenToken, (req, res) => {
+KnowledgeRoute.post('/update/:id/true/:userID', authenToken, (req, res) => {
     Knowledge.findById(req.params.id)
         .then(data => {
             if ((data.react).indexOf(req.params.userID) == -1) {
@@ -83,7 +89,7 @@ KnowledgeRoute.post('/update/:id/true/:userID',authenToken, (req, res) => {
 })
 
 
-KnowledgeRoute.post('/update/:id/false/:userID',authenToken, (req, res) => {
+KnowledgeRoute.post('/update/:id/false/:userID', authenToken, (req, res) => {
 
     Knowledge.findByIdAndUpdate(req.params.id,
         { "$pull": { "react": req.params.userID } },
@@ -108,9 +114,15 @@ KnowledgeRoute.post('/update/:id', (req, res) => {
 
 
 //Get a member by ID
-KnowledgeRoute.get('/:id',authenToken,  (req, res) => {
+KnowledgeRoute.get('/:id',authenToken, (req, res) => {
     Knowledge.findById(req.params.id)
-        .then(data => res.send(data))
+        .then(data => 
+            {
+                if (data)
+                res.send(data)
+                else
+                res.send('No Exist')
+            })
         .catch(err => console.log(err))
 })
 
@@ -122,6 +134,18 @@ KnowledgeRoute.get('/load-data/:userID', authenToken, (req, res) => {
         })
         .catch(err => console.log(err))
 })
+/// Load data without private and limitary post
+KnowledgeRoute.get('/load-data/friend/:userID', authenToken, (req, res) => {
+    Knowledge.find({ userID: req.params.userID })
+        .then(data => {
+            let processedList = data.filter(item => {
+                if(item.mode == 'public') return item
+            })
+            res.send(processedList)
+        })
+        .catch(err => console.log(err))
+})
+
 
 /// Get all members
 KnowledgeRoute.get('/', authenToken, (req, res) => {
@@ -136,7 +160,7 @@ KnowledgeRoute.get('/', authenToken, (req, res) => {
 function authenToken(req, res, next) {
     const authorizationHeader = req.headers['x-access-token'];
     const token = authorizationHeader;
-   
+
     if (!token) {
         res.status(401).send('Token het han');
         return;
@@ -155,10 +179,40 @@ function authenToken(req, res, next) {
 KnowledgeRoute.get('/load-data/newsfeed/random', authenToken, (req, res) => {
     Knowledge.aggregate([{ $sample: { size: 10 } }])
         .then(data => {
+            let processedList = data.filter(item => {
+                if(item.mode == 'public') return item
+            })
+            res.send(processedList)
+        }).catch(err => {
+            console.log(err)
+        })
+})
+
+KnowledgeRoute.post('/update/mode/:postID/limitary',authenToken, (req, res) => {
+    Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
+        .then((data) => {
             res.send(data)
         }).catch(err => {
             console.log(err)
         })
 })
+KnowledgeRoute.post('/update/mode/:postID/private',authenToken, (req, res) => {
+    Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'private' }, { new: true })
+        .then((data) => {
+            res.send(data)
+        }).catch(err => {
+            console.log(err)
+        })
+})
+KnowledgeRoute.post('/update/mode/:postID/public', authenToken,(req, res) => {
+    Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'public' }, { new: true })
+        .then((data) => {
+            res.send(data)
+        }).catch(err => {
+            console.log(err)
+        })
+})
+
+
 
 module.exports = KnowledgeRoute

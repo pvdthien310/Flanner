@@ -14,7 +14,6 @@ import NotificationApi from '../../API/NotificationAPI';
 
 
 
-
 const Knowledge = ({ navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
@@ -43,15 +42,15 @@ const Knowledge = ({ navigation }) => {
                 dispatch({ type: 'SET_LOADING_KNOWLEDGE', payload: false })
             })
             .catch(err => console.log(err))
-           
+
     }
 
-    useEffect( () => {
-        
+    useEffect(() => {
+
         fetchKnowledgeData();
         fetchNewData();
         fetchStatusData();
-        
+
     }
         , [])
 
@@ -59,7 +58,7 @@ const Knowledge = ({ navigation }) => {
         forceRerender
     }, [data])
 
-  
+
 
     return (
         <View style={globalStyles.container}>

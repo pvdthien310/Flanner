@@ -4,7 +4,7 @@ const { google } = require('googleapis')
 const CLIENT_ID = '580901955209-d09qf9thmab1epi7069qi3dj6b5g1vlr.apps.googleusercontent.com'
 const CLIENT_SECRET = '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'
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground'
-const REFRESH_TOKEN = '1//046NeSXEdgj6oCgYIARAAGAQSNwF-L9IrvNlByHvTWe9QlpRstgMuosjAwG1ECc8Ddf9eiWCDqnstEFHgb8wAdr2An1uLVImwTgo'
+const REFRESH_TOKEN = '1//04y-mdiErXfRnCgYIARAAGAQSNwF-L9IrKEMPw9X621y0kJFNmshEsmQPdl32DqT2p-IkLzNDK5YvWkwDmNDO6tKCumf5K4f8NrE'
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
@@ -47,12 +47,6 @@ module.exports = async function sendMail({ value }) {
     }
 }
 
-// const value = {
-//     from: 'flanerapplication <trithuc23232@gmail.com>',
-//     to: '19522321@gm.uit.edu.vn',
-//     subject: "hello",
-//     html: 'thuc ne hdddddtml'
-// }
-// sendMail({ value })
+//module.exports = sendMail()
 //     .then((result) => console.log('Email send...', result))
 //     .catch((error) => console.log(error.message))

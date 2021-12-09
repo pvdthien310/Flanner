@@ -42,7 +42,7 @@ const MainInfor = ({ navigation, item }) => {
     }
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator = {false}>
                 <View>
                     <Image style={{
                         height: height * 0.58, width: '100%',
@@ -109,9 +109,8 @@ const MainInfor = ({ navigation, item }) => {
                                 style={{
                                     borderBottomColor: 'dimgrey',
                                     borderBottomWidth: 0.7,
-                                    marginBottom: 10,
-                                    marginTop: 10,
-                                    alignSelf:'center'
+                                    marginBottom: 15,
+                                    marginTop: 10
                                 }}
                             />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>

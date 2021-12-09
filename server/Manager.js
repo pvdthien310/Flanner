@@ -9,6 +9,10 @@ const StatusRoute = require('./routes/statusRoute');
 const NotificationRoute = require('./routes/notificationRoute');
 const EmailRoute = require('./routes/emailRoute');
 const CommentRoute = require('./routes/commentRoute');
+const ReportRoute = require('./routes/ReportRoute');
+const SavePostInfoRoute = require('./routes/savePostInfoRoute');
+
+
 
 
 /// Process file json and env
@@ -33,12 +37,8 @@ app.use("/api/user", UserRoute)
 app.use("/api/notification", NotificationRoute)
 app.use("/api/sendEmail", EmailRoute)
 app.use("/api/comment", CommentRoute)
-
-
-
-
-
-
+app.use("/api/report", ReportRoute)
+app.use("/api/savedpost", SavePostInfoRoute)
 
 
 //// Open port

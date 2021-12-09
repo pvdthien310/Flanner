@@ -11,6 +11,8 @@ const Status = ({ navigation }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
     const { data, loading } = useSelector(state => { return state.Status })
+    const { user } = useSelector(state => { return state.User })
+
 
     const fetchData = () => {
         // const url = URL_local + 'status'
@@ -22,7 +24,7 @@ const Status = ({ navigation }) => {
         //         dispatch({ type: 'ADD_DATA_STATUS', payload: result })
         //         dispatch({ type: 'SET_LOADING_STATUS', payload: false })
         //     }).catch(err => console.log('Error'));
-        StatusApi.getAll()
+        StatusApi.getRandom(user.userID)
             .then(res => {
                 dispatch({ type: 'ADD_DATA_STATUS', payload: res })
                 dispatch({ type: 'SET_LOADING_STATUS', payload: false })

@@ -27,7 +27,7 @@ const StatusSchema = new mongoose.Schema({
     react:{
         type:Array,
     },
-    reactNumber:{
+    mode:{
         type:String,
     }
 },

@@ -53,7 +53,7 @@ UserRoute.get('/load-user-by-userID/:userID',authenToken, (req,res) => {
     .catch(err => console.log(err))
 })
 
-UserRoute.post('/update', (req, res) => {
+UserRoute.post('/update',authenToken, (req, res) => {
     User.findOneAndUpdate({userID : req.body.userID}, {
         userID: req.body.userID,
         phoneNumber: req.body.phoneNumber,
@@ -75,6 +75,14 @@ UserRoute.post('/update', (req, res) => {
         }).catch(err => {
             console.log(err)
         })
+})
+
+UserRoute.post('/update/:userID/:number',authenToken, (req,res) => {
+    User.findOneAndUpdate({userID : req.params.userID}, {"reportedNum" : req.params.number},{new: true})
+    .then(data => {
+        res.send('Process successful!')
+    })
+    .catch(err => console.log('err'))
 })
 
 /// Add to following
@@ -141,23 +149,20 @@ UserRoute.post('/remove/:userID/followed/:friendID',authenToken, (req, res) => {
         .catch(err => console.log(err))
 })
 
-UserRoute.post('/send-data', (req, res) => {
-
-    console.log(req.body)
-
+UserRoute.post('/send-data',authenToken, (req, res) => {
+    let UserID = req.body.userID.toString().replaceAll('.','')
+    let processedUserID  = UserID.toString().replaceAll('@','')
     const newUser = new User({
-        userID: req.body.userID,
+        userID: processedUserID,
         phoneNumber: req.body.phoneNumber,
         name: req.body.name,
         doB: req.body.doB,
         avatar: req.body.avatar,
         email: req.body.email,
-        friendArray: req.body.friendArray,
         password: req.body.password,
-        score: req.body.score,
         address: req.body.address,
         position: req.body.position,
-        reportedNum: req.body.reportedNum,
+        reportedNum: "0",
         following: [],
         followed: [],
         bio: "Hi, I'm a new member of Flaner. Hope you will enjoy your visit to my home wall. Let's be friend!",

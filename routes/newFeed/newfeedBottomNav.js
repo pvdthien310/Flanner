@@ -75,6 +75,7 @@ export const BottomNavigator = (props) => {
                 top: -10,
                 justifyContent: 'center',
                 alignItems: 'center',
+                
 
                 ...styles.shadow
             }}

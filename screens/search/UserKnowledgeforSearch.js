@@ -30,7 +30,7 @@ const UserKnowledgeForSearch = ({ navigation, route }) => {
         
     }, [])
     const fetchKnowledgeData = () => {
-            KnowLedgeApi.getKnowledgeUser(user.userID)
+            KnowLedgeApi.getKnowledgeUserForFriend(user.userID)
             .then(res => {
                 setUserKnowledge(res)      
                 Setloading(false)  

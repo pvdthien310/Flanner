@@ -1,10 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
-import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber1 } from '../shared/post'
-import { UserInfo } from '../shared/post'
-import { images, imagespost, Poststyle, Poststyle_Status } from '../styles/poststyle'
-import { Ionicons } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
 import react from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -26,6 +21,11 @@ const NotificationMember = ({ item, navigation }) => {
         post = knowledge_data.user_knowledge.filter(member => member._id == item.postID)
     else if (item.type == 2)
         post = status_data.user_status.filter(member => member._id == item.postID)
+    else if (item.type == 3) {
+        post = knowledge_data.user_knowledge.filter(member => member._id == item.postID)
+        if (post.length == 0)
+            post = status_data.user_status.filter(member => member._id == item.postID)
+    }
 
     const HandelOpenPost = () => {
         if (item.type == '2')
@@ -63,15 +63,22 @@ const NotificationMember = ({ item, navigation }) => {
                 }
                 {
                     sender[0] ?
-                    <View style={{ padding: 10, flexShrink: 1 }}>
-                        <Text style={styles.body}><Text style={{ color: 'black', fontFamily: 'nunitobold' }}>{sender[0].name}</Text> {item.message}</Text>
-                    </View>:
-                     <View style={{ padding: 10, flexShrink: 1 }}>
-                     <Text style={styles.body}><Text style={{ color: 'black', fontFamily: 'nunitobold' }}>Flaner-er</Text> {item.message}</Text>
-                 </View>
+                        <View View style={{ padding: 10, flexShrink: 1 }}>
+                            {
+                                item.type != 3 ?
+                            <Text style={styles.body}><Text style={{ color:  'black', fontFamily: 'nunitobold' }}>{sender[0].name}</Text>{item.message}</Text>
+                           : 
+                           <Text style={styles.body}><Text style={{ color: 'white', fontFamily: 'nunitobold' }}>{sender[0].name}</Text>,{item.message}</Text>
+
+                        }
+                            </View>
+                        :
+                        <View style={{ padding: 10, flexShrink: 1 }}>
+                            <Text style={styles.body}><Text style={{ color: 'black', fontFamily: 'nunitobold' }}>Flaner-er</Text> {item.message}</Text>
+                        </View>
                 }
                 {
-                    (post[0] != undefined) ?
+                    post[0] ?
                         <Image source={{ uri: post[0].listImage.length > 0 ? post[0].listImage[0].url : '../assets/icon/postPhoto.png' }}
                             resizeMode='contain'
                             style={{
@@ -95,7 +102,7 @@ const NotificationMember = ({ item, navigation }) => {
                         />
                 }
             </View >
-        </TouchableOpacity>
+        </TouchableOpacity >
 
     )
 
@@ -113,7 +120,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightslategrey',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignContent: 'center'
+        alignContent: 'center',
+        alignItems: 'center'
+
     },
     frame_2: {
         shadowOffset: { width: 1, height: 1 },
@@ -125,7 +134,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'dimgrey',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignContent: 'center'
+        alignContent: 'center',
+        alignItems: 'center'
 
     },
     frame_3: {
@@ -135,10 +145,11 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         margin: 5,
-        backgroundColor: 'maroon',
+        backgroundColor: 'black',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignContent: 'center'
+        alignContent: 'center',
+        alignItems: 'center'
 
     },
     body: {

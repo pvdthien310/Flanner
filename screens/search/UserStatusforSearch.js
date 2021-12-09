@@ -32,7 +32,7 @@ const UserStatusForSearch = ({ navigation,route }) => {
     }, [])
    
     const fetchStatusData = () => {
-        StatusApi.getStatusUser(user.userID)
+        StatusApi.getStatusUserForFriend(user.userID)
             .then(res => {
                 setUserStatus(res)        
                 Setloading(false)  
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
-        marginBottom:80,
+       
         backgroundColor: 'whitesmoke'
 
     },
