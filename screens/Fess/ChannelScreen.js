@@ -13,19 +13,16 @@ import { useSelector } from 'react-redux';
 import {AntDesign} from '@expo/vector-icons'
 
 
-
 // Ignore log notification by message
-LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreLogs(['Warning: ...','Non-serializable values were found in the navigation state','VirtualizedLists should never be nested']);
 
 //Ignore all log notifications
 LogBox.ignoreAllLogs();
 
 
-const ChannelScreen = ({navigation}) => {
+const ChannelScreen = ({navigation, route}) => {
 
-    const route = useRoute();
-
-    const channel = route.params?.channel;
+    const channel = route.params.channel;
 
     const { user } = useSelector(state => { return state.User })
 

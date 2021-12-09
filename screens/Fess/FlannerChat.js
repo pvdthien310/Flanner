@@ -157,6 +157,8 @@ const Fess = ({navigation}) => {
                                 users.map((item) => (
                                     <UserListItemInFessScr
                                         tempUser={item}
+                                        keyExtractor={item => item.id.toString()}
+                                        key={item.id.toString()}
                                     />
                                 ))
                             }

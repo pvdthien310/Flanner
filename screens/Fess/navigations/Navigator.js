@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Fess from './../FlannerChat';
 import ChannelScreen from './../ChannelScreen';
+import CreateFessScreen from './../CreateFessScreen';
 import {BlurView} from 'expo-blur';
 import {StyleSheet, View} from 'react-native'
 
@@ -66,6 +67,7 @@ const ChatStackNavigator = () => {
         <Stack.Navigator screenOptions={screenOptionStyle} >
             <Stack.Screen name='Fess' component={BottomTabNavigator} options={{headerShown: false}} />
             <Stack.Screen name='Channel' component={ChannelScreen} options={{headerShown: false}} />
+            <Stack.Screen name='CreateFess' component={CreateFessScreen} options={{headerShown: false}} />
         </Stack.Navigator>
     )
 }

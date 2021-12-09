@@ -40,7 +40,7 @@ const UserListItemInFessScr = ({tempUser}) => {
                     members: [tempUser.id, user.userID],
                 })
                 await channel.watch();
-                navigation.navigate("Channel", {channel});
+                navigation.navigate("Channel", {channel: channel});
             }
         }
         

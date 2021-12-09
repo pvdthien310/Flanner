@@ -1,12 +1,14 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {useChatContext} from "stream-chat-expo";
 import UserListItem from "./UserListItem";
-import { LogBox, ActivityIndicator, ScrollView, Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Animated, StyleSheet, Text, Pressable, View, Modal, TextInput, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FAB} from 'react-native-paper';
+import { AntDesign } from '@expo/vector-icons';
 
 
 
-const GlobalPeople = () => {
+const GlobalPeople = ({navigation}) => {
 
     const[users, setUsers] = useState([]);
     const[isLoading, setIsLoading] = useState(false);
@@ -15,6 +17,17 @@ const GlobalPeople = () => {
 
     const pan = useRef(new Animated.ValueXY()).current;
     const list = useRef(new Animated.ValueXY()).current;
+
+    //for Fab group
+    const [state, setState] = React.useState({ open: false });
+    const onStateChange = ({ open }) => setState({ open });
+
+    //For Modal
+   const [modalVisible, setModalVisible] = useState(false);
+    const [text, setText] = useState('');
+
+
+    const { open } = state;
 
      const fetchUsers = async () =>{
             setIsLoading(true);
@@ -38,6 +51,12 @@ const GlobalPeople = () => {
         }).start();
     },[])
    
+    const onCreateFessGo = () => {
+        setModalVisible(!modalVisible),
+        navigation.navigate('CreateFess',{fessName: text})
+        setText('')
+    }
+
     return (
         <LinearGradient
             colors={['#313149', '#313149', '#313149']}
@@ -61,6 +80,8 @@ const GlobalPeople = () => {
                                 users.map((item) => (
                                     <UserListItem
                                         tempUser={item}
+                                        keyExtractor={item => item.id.toString()}
+                                        key={item.id.toString()}
                                     />
                                 ))
                             }
@@ -68,6 +89,70 @@ const GlobalPeople = () => {
                     )
                 }
            </ScrollView>
+
+         <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                setModalVisible(!modalVisible);
+            }}
+      >
+        <View style={styles.centeredView}>
+            <View style={{width: "70%", 
+                          padding: 10,
+                          backgroundColor: "white",
+                          borderWidth: 1, 
+                          borderRadius: 10}}>
+                <TextInput style={{width: "100%", 
+                                   borderWidth: 1, 
+                                   borderRadius: 10,
+                                   height: 50,
+                                   fontSize: 15,
+                                   textAlign: "center"}}
+                           onChangeText={setText}
+                           value={text}
+                           placeholder="Type Fess name..." ></TextInput>
+                
+                <AntDesign name="rightcircle" 
+                           size={26} 
+                           color="#313149"
+                           style={{alignSelf: 'center', marginTop: 10}} 
+                           onPress={onCreateFessGo} />
+            </View>
+        </View>
+      </Modal>
+
+        <FAB.Group
+          style={{marginBottom: '19%', marginEnd: '0%'}}
+          open={open}
+          icon={open ? {uri: "https://img.icons8.com/ios-filled/100/000000/expand-arrow.png"} : {uri: 'https://img.icons8.com/ios-filled/100/000000/collapse-arrow.png'}}
+          actions={[
+            {
+              icon : {uri: "https://img.icons8.com/ios/50/000000/search-client.png"},
+              label: 'Search',
+              labelTextColor: 'black',
+              style: {backgroundColor: '#313149'},
+              onPress: () => console.log("Press search part")
+            },
+            {
+              icon: 'plus',
+              label: 'New Fess',
+              labelTextColor: 'black',
+              style: {backgroundColor: '#313149'},
+              onPress: () => setModalVisible(true),
+              small: false,
+            },
+          ]}
+          onStateChange={onStateChange}
+          onPress={() => {
+            if (open) {
+              // do something if the speed dial is open
+            }
+          }}
+        />
+    
+   
         </LinearGradient>
     )
 }
@@ -104,4 +189,13 @@ const styles = StyleSheet.create({
     list:{
         marginTop:0,
     },
+    centeredView: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+    }
+  
 })
