@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MainInfor from '../../screens/InformationUser/mainInfo'
 import EditProFile from '../../screens/InformationUser/editProfile'
 import { UserSavedPostStack } from './userPostStack'
-import SavedPost from '../../screens/InformationUser/savedPost'
 import { UserKnowledgeStack } from './userKnowledgestack'
 import { UserStatusStack } from './userStatusStack'
 const Stack = createNativeStackNavigator()
