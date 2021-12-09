@@ -12,6 +12,7 @@ import { UserInformationStack } from './userInformation/userInformationStack';
 import { SearchStack } from './search/searchStack';
 import { StaffManagerStack } from './manager/staffManagerStack';
 import { CensorManagerStack } from './manager/censorManagerStack';
+import { AboutStack } from './about/aboutStack';
 
 function HomeScreen({ navigation }) {
     return (
@@ -57,6 +58,8 @@ export const DrawerStack = (props) => {
             <Drawer.Screen name = "Search" component = {SearchStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Search'  /> }} />
             <Drawer.Screen name = "Staff" component = {StaffManagerStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Staff'  /> }} />
             <Drawer.Screen name = "Censor" component = {CensorManagerStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='Censor'  /> }} />
+            <Drawer.Screen name = "About" component = {AboutStack} options = {{ headerTitle:  () => <HeaderDrawer navigation={navigation} title ='About Us'  /> }} />
+
         </Drawer.Navigator>
     );
 }

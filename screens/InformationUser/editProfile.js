@@ -238,7 +238,7 @@ const EditProFile = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator = {false}>
         <Image style={{
           height: height * 0.58, width: '100%',
           borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -301,7 +301,7 @@ const EditProFile = ({ navigation }) => {
               alignItems:'center',
               justifyContent : 'flex-start'
             } }>
-              <TouchableOpacity >
+              <TouchableOpacity activeOpacity={1} >
                 <View style={{
                   borderRadius: 15,
                   padding: 7,
