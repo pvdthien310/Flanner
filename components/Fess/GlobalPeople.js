@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {useChatContext} from "stream-chat-expo";
 import UserListItem from "./UserListItem";
-import { ActivityIndicator, ScrollView, Animated, StyleSheet, Text, Pressable, View, Modal, TextInput, Image } from 'react-native';
+import { Alert, ActivityIndicator, ScrollView, Animated, StyleSheet, Text, Pressable, View, Modal, TextInput, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FAB} from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
@@ -50,11 +50,24 @@ const GlobalPeople = ({navigation}) => {
             useNativeDriver:false
         }).start();
     },[])
-   
+   const createOneButtonAlert = () =>
+        Alert.alert(
+            "Sorry!",
+            "Fess name need to be longer name",
+            [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+        );
     const onCreateFessGo = () => {
-        setModalVisible(!modalVisible),
-        navigation.navigate('CreateFess',{fessName: text})
-        setText('')
+        setModalVisible(!modalVisible);
+        if(text.length != 0 && text.length > 5)
+        {
+            navigation.navigate('CreateFess',{fessName: text})
+            setText('')
+        } else{
+            createOneButtonAlert();
+        }
+       
     }
 
     return (

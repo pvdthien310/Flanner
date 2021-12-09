@@ -17,27 +17,38 @@ const CreateFessScreen = ({navigation, route}) => {
     const {client} = useChatContext();
     const[users, setUsers] = useState([]);
 
-    const[members, setMembers] = useState([]);
-    const[memberID, setMemberID] = useState([]);
-    
+    const[membersList, setMembersList] = useState([]);
+
+    const[membersIDList, setMembersIDList] = useState([]);
 
     const fetchUsers = async () =>{
             const response = await client.queryUsers({});
             setUsers(response.users);
         };
-
-    useEffect(() =>{
+    function getMembersID (){
+        var i;
+        let newList = [...membersIDList]
+        for(i = 0; i < membersList.length; i++)
+        {
+             newList = [...newList, membersList[i].id.toString()]
+        }
+        setMembersIDList(newList);
+    }
+    useEffect(() => {
         fetchUsers();
     },[])
 
-    const createOneButtonAlert = () =>
-        Alert.alert(
-            "Limited!",
-            "This one has already been a member",
-            [
-                { text: "OK", onPress: () => console.log("OK Pressed") }
-            ]
-        );
+    useEffect(() => {
+        console.log(membersList)
+    },[membersList]);
+
+    useEffect(() => {
+        console.log(membersIDList)
+        if(membersIDList.length != 0)
+        {
+            createFessChannel();
+        }
+    },[membersIDList]);
 
     const createAlert = () =>
         Alert.alert(
@@ -47,40 +58,62 @@ const CreateFessScreen = ({navigation, route}) => {
                 { text: "OK", onPress: () => console.log("OK Pressed") }
             ]
         ); 
-        
+
+    const createAlertSub = () =>
+        Alert.alert(
+            "Note!",
+            "Choose members first",
+            [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+        ); 
+
+    const createOneButtonAlert = () =>
+        Alert.alert(
+            "Limited!",
+            "This one has already been a member",
+            [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+        );
     function memberExists(id) {
-        return members.some(function(el) {
-        return el.id === id;
+        return membersList.some(function(el) {
+        return el.id.toString() === id.toString();
      }); 
     }
 
-    function rapeMember(item) {
-            // var i;
-            // for(i = 0; i < members.length; i++) {
-            // if(members[i].id.toString() === item.id.toString())
-            // {
-            //     members.splice(i, 1);
-            //     const newmembers = [...members]
-            //     // setMembers(newmembers)
+    const createFessChannel = () =>{
+        //console.log(membersIDList)
+        const channel = client.channel("messaging", 
+                {
+                    members: [...membersIDList, user.userID],
+                    name: text,
+                })
+                  channel.watch();
+                navigation.push("Channel", {channel});
+    };
 
-            // }
-            // }
-            memberList = memberList(item => {
-                if (item.id.toString() != item.id.toString()) return item
-            })
+
+    function rapeMember(item) {
+            var i;
+            for(i = 0; i < membersList.length; i++) {
+            if(membersList[i].id.toString() === item.id.toString())
+            {
+                membersList.splice(i, 1);
+                const newmembers = [...membersList]
+                setMembersList(newmembers)
+            }
+            }
         }
 
-    
-        let memberList =[]
-     const onPressHandler1 = (item) => {
-        if(item.id.toString() === user.userID.toString())
+    const onPressHandler1 = (item) => {
+         if(item.id.toString() === user.userID.toString())
         {
             createAlert();
         } else if(memberExists(item.id)) {
             createOneButtonAlert();
         }else{
-            // setMembers([...members, item]);
-            memberList = [...memberList, item]
+            setMembersList([...membersList, item])
         }
     }
 
@@ -88,41 +121,15 @@ const CreateFessScreen = ({navigation, route}) => {
         rapeMember(item);
     }
 
-    function getMembersID (){
-        // setMemberID([...memberID, user.userID.toString()]);
-        
-        var i;
-        let newList = [...memberID]
-        for(i = 0; i < members.length; i++)
-        {
-            //setMemberID([...memberID, members[i].id.toString()])
-             newList = [...newList, members[i].id.toString()]
-        }
-        setMemberID(newList);
-        
-    
-    }
- useEffect(() => {
-        if (memberID.length != 0)
-       { const channel = client.channel("messaging", 
-                {
-                    members: [...memberID, user.userID],
-                    name: text,
-                })
-                 channel.watch();
-                navigation.push("Channel", {channel});
-            }
-    }, [memberID])
-
-     useEffect(() => {
-    getMembersID();
-    }, [members])
-
-
     const CreateFess = () => {
-        setMembers(memberList)  
-         
+        if(membersList.length != 0)
+        {
+            getMembersID();
+        } else {
+            createAlertSub();
+        }
     }
+
     return (
         <LinearGradient colors={["#313149", "#313149", "#313149"]}
                         style={styles.container}>
@@ -156,7 +163,7 @@ const CreateFessScreen = ({navigation, route}) => {
                           marginTop: 10}}>{ text}</Text>
             <FlatList
                 horizontal={true}
-                data={members}
+                data={membersList}
                 style={{marginTop: 10}}
                 keyExtractor={item => item.id.toString()}
                 showsHorizontalScrollIndicator={false}

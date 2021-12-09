@@ -38,7 +38,7 @@ const onDoubleTapMessage = ({
              style={styles.container}>
                  <SafeAreaView style={styles.headerContainer}>
                      <TouchableOpacity
-                        onPress={() => navigation.goBack()}
+                        onPress={() => navigation.navigate("Fess")}
                         style={{marginLeft: 10}}
                    >
                          <AntDesign name="leftcircle" size={30} color="#313149" />
