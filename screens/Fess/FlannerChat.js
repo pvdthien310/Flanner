@@ -140,9 +140,6 @@ const Fess = ({navigation}) => {
                 <View style={styles.headerContainer}>
                     <Text style={styles.header}>Fess</Text>
                 </View>
-                <View style={{ marginTop: 5 ,alignItems: 'flex-start'}}>
-                    <Text style={{ fontFamily: 'nunitobold', fontSize: 16, color: 'white'}}>People</Text>
-                </View>
                 <ScrollView
                 horizontal
                 style={styles.proContainer}
@@ -167,7 +164,7 @@ const Fess = ({navigation}) => {
                 }
                 </ScrollView>
                 <View style={{marginTop: "-270%" ,height: 1, borderWidth: 1, backgroundColor: 'black', width: '100%'}}></View>
-                <SafeAreaProvider style={{ backgroundColor: '#313149',marginTop: "100%"}}>
+                <SafeAreaProvider style={{ backgroundColor: '#313149',marginTop: "110%", marginBottom: '20%'}}>
                     <OverlayProvider>
                         <ChannelList onSelect={onChannelPressed} filters={filters} 
                                      sort={sort} />  

@@ -136,7 +136,7 @@ const GlobalPeople = ({navigation}) => {
         </View>
       </Modal>
 
-        <FAB.Group
+        {/* <FAB.Group
           style={{marginBottom: '19%', marginEnd: '0%'}}
           open={open}
           icon={open ? {uri: "https://img.icons8.com/ios-filled/100/000000/expand-arrow.png"} : {uri: 'https://img.icons8.com/ios-filled/100/000000/collapse-arrow.png'}}
@@ -163,9 +163,23 @@ const GlobalPeople = ({navigation}) => {
               // do something if the speed dial is open
             }
           }}
-        />
+        /> */}
     
-   
+        <FAB
+            style={{ width: 60,  
+                     height: 60,
+                     alignItems: 'center' ,   
+                     borderRadius: 30,            
+                     backgroundColor: '#ee6e73',                                    
+                     position: 'absolute',
+                     backgroundColor: '#b7c3f3' ,
+                     opacity: 50,                                        
+                     bottom: '10%',                                                    
+                     right: '10%',}}
+            icon="plus" 
+            big
+            onPress={() => setModalVisible(true)}
+  />
         </LinearGradient>
     )
 }
@@ -209,6 +223,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22
-    }
+    },
   
 })
