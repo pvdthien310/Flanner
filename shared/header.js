@@ -41,7 +41,7 @@ export const HeaderNews = ({ navigation, title }) => {
                 <View style={styles.headerTitle}>
 
                     <Image style={styles.headerImage} source={require('../assets/logo/logo.png')} />
-                    <Text style={styles.headerText}>{title}</Text>
+                    <Text style={{...styles.headerText}}>{title}</Text>
                 </View>
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} >
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 0,
         marginStart: 0,
-        flex: 1,
+       
        
     },
     headerText: {
@@ -115,8 +115,8 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     headerImage: {
 
