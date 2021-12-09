@@ -68,9 +68,8 @@ SavePostInfoRoute.post('/update/:id/false/:userID', (req, res) => {
 
 //Get a member by ID
 SavePostInfoRoute.get('/load-data/:userID', (req, res) => {
-    SavePostInfo.find({ userID: req.params.userID })
+    SavePostInfo.findOne({ userID: req.params.userID })
         .then(data => {
-            // console.log(data)
             res.send(data)
         })
         .catch(err => console.log(err))
