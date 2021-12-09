@@ -7,14 +7,11 @@ import SavedPost from '../../screens/InformationUser/savedPost'
 
 const Stack = createNativeStackNavigator()
 
-export const UserPostStack = (props) => {
+export const UserSavedPostStack = (props) => {
     const { navigation } = props
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-           
-           
-
-
+            <Stack.Screen name='Saved Post Screen' component={SavedPost} />
         </Stack.Navigator>
     )
 }
