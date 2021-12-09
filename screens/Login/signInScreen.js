@@ -173,15 +173,25 @@ export default function SignInScreen({ navigation }) {
                     _storeData()
                     await JWTApi.getToken().then(
                         res => {
-                            navigation.navigate('DrawerStack', {
-                                screen: 'NewsFeed',
-                                params: {},
-                            })
-                            dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+                            if (element.position == '2') {
+                                navigation.navigate('DrawerStack', {
+                                    screen: 'NewsFeed',
+                                    params: {},
+                                })
+                                dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+                            }
+                            else if (element.position == '0' || element.position == '1') {
+                                navigation.navigate('DrawerStack', {
+                                    screen: 'User Information',
+                                    params: {},
+                                })
+                                dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+                            }
+                           
 
                         }
                     )
-                   
+
 
 
 

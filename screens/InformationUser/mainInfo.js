@@ -42,7 +42,7 @@ const MainInfor = ({ navigation, item }) => {
     }
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator = {false}>
                 <View>
                     <Image style={{
                         height: height * 0.58, width: '100%',

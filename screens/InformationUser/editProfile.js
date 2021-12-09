@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { URL_local } from '../../constant';
 import Api from '../../API/UserAPI';
+import Toast from 'react-native-root-toast';
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
@@ -148,7 +149,7 @@ const EditProFile = ({ navigation }) => {
   const fetchUserData = () => {
     Api.getUserItem(user.userID)
       .then(res => {
-        
+
         dispatch({ type: 'ADD_USER', payload: res[0] })
         dispatch({ type: 'UPDATE_USER', payload: res[0] })
       })
@@ -185,7 +186,6 @@ const EditProFile = ({ navigation }) => {
     //   .catch(err => {
     //     console.log("error", err)
     //   })
-    console.log('vao day')
     SetLoading(true)
     Api.updateUser({
       userID: user.userID,
@@ -205,18 +205,40 @@ const EditProFile = ({ navigation }) => {
     }).then(res => {
       SetLoading(false)
       fetchUserData();
+      let toast = Toast.show('Update your profile successful!', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+    });
+      
     }).catch(err => {
+      let toast = Toast.show('Update your profile failed, Please try again!', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+    });
       console.log(err)
     })
   }
   const saveHandle = async () => {
+    let toast = Toast.show('The system is processing, please wait!', {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.CENTER,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+  });
     await HandleUpImages()
 
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator = {false}>
         <Image style={{
           height: height * 0.58, width: '100%',
           borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -242,8 +264,19 @@ const EditProFile = ({ navigation }) => {
           <TextInput style={styles.info} onChangeText={changeName} value={name} />
 
           <Text style={styles.title}>Bio</Text>
-          <TextInput style={styles.info} onChangeText={changeBio} value={bio} />
-
+          <View style ={{
+            
+            borderRadius: 5,
+            padding: 10,
+            backgroundColor: 'white',
+            shadowColor: 'black',
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+            shadowOffset: { width: 1, height: 1 },
+            
+          }}>
+          <TextInput multiline ={true} style={{...styles.info,height: height*0.2}} onChangeText={changeBio} value={bio} />
+          </View>
           <Text style={styles.title}>Contact</Text>
           <TextInput style={styles.info} onChangeText={changeContact} value={contact} />
 
@@ -261,29 +294,56 @@ const EditProFile = ({ navigation }) => {
 
           <Text style={styles.title}>Address</Text>
           <TextInput style={styles.info} onChangeText={changeAddress} value={address} />
+          {
+            loading == true ?
+            <View style = {{
+              flexDirection :'row', 
+              alignItems:'center',
+              justifyContent : 'flex-start'
+            } }>
+              <TouchableOpacity activeOpacity={1} >
+                <View style={{
+                  borderRadius: 15,
+                  padding: 7,
+                  backgroundColor: 'gray',
+                  shadowOffset: { width: 1, height: 1 },
+                  shadowColor: 'black',
+                  shadowOpacity: 0.5,
+                  marginTop: 20,
+                  marginLeft: 0,
+                  marginRight: 30,
+                  marginBottom: 20,
+                  width: 100,
+                  justifyContent: 'center',
 
-          <TouchableOpacity onPress={saveHandle}>
-            <View style={{
-              borderRadius: 15,
-              padding: 7,
-              backgroundColor: 'black',
-              shadowOffset: { width: 1, height: 1 },
-              shadowColor: 'black',
-              shadowOpacity: 0.5,
-              marginTop: 20,
-              marginLeft: 0,
-              marginBottom: 20,
-              width: 100,
-              justifyContent: 'center',
+                }}>
+                  <Text style={{ alignSelf: 'center', color: 'white', fontSize: 15, fontFamily: 'nunitobold' }}>Save</Text>
+                </View>
+              </TouchableOpacity>
 
-            }}>
-              <Text style={{ alignSelf: 'center', color: 'white', fontSize: 15, fontFamily: 'nunitobold' }}>Save</Text>
+              <ActivityIndicator size="small" color="black" />
 
             </View>
-          </TouchableOpacity>
-          {
-            loading &&
-            <ActivityIndicator size="small" color="black" />
+            :
+            <TouchableOpacity onPress={saveHandle} >
+                <View style={{
+                  borderRadius: 15,
+                  padding: 7,
+                  backgroundColor: 'black',
+                  shadowOffset: { width: 1, height: 1 },
+                  shadowColor: 'black',
+                  shadowOpacity: 0.5,
+                  marginTop: 20,
+                  marginLeft: 0,
+                  marginBottom: 20,
+                  width: 100,
+                  justifyContent: 'center',
+
+                }}>
+                  <Text style={{ alignSelf: 'center', color: 'white', fontSize: 15, fontFamily: 'nunitobold' }}>Save</Text>
+                </View>
+              </TouchableOpacity>
+
           }
         </View>
       </ScrollView>
