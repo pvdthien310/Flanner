@@ -77,11 +77,7 @@ export const HeaderDrawer = ({ navigation, title }) => {
     }
     return (
         <View  style={styles.headerDrawer}>
-             {/* <TouchableOpacity onPress={pressgobackHandler}>
-                    <View style={{ flexDirection: 'row' }}>
-                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                    </View>
-                </TouchableOpacity> */}
+            
                 <Text style={styles.headerText}>{title}</Text>
         </View>
 
@@ -100,12 +96,13 @@ const styles = StyleSheet.create({
 
     },
     headerDrawer: {
-        width: '120%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         padding: 0,
-        marginStart: 0
+        marginStart: 0,
+        flex: 1,
+       
     },
     headerText: {
         fontWeight: 'bold',
@@ -118,8 +115,8 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end'
     },
     headerImage: {
 
