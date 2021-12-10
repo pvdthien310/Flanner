@@ -4,6 +4,7 @@ import {Image,View} from 'react-native'
 import SystemNotification from '../../screens/Notification/systemNotification';
 import { KnowledgeNotificationStack } from './knowledegeNotificationStack';
 import { StatusNotificationStack } from './statusNotificationStack';
+import { Ionicons } from '@expo/vector-icons';
 
 
 
@@ -46,6 +47,7 @@ export default function NotificationTab() {
                                 margin: 5
 
                             }}>
+                               
                             <Image source={require('../../assets/icon/status.png')}
                                 resizeMode='contain'
                                 style={{
@@ -70,7 +72,7 @@ export default function NotificationTab() {
                                 justifyContent: 'center',
                                 margin: 5
                             }}>
-                            <Image source={require('../../assets/icon/rocket.png')}
+                            {/* <Image source={require('../../assets/icon/rocket.png')}
                                 resizeMode='contain'
                                 style={{
                                     width: focused ? 30 : 25,
@@ -79,7 +81,14 @@ export default function NotificationTab() {
                                     marginBottom: 2,
                                 }
                                 }
-                            />
+                            /> */}
+                             <Ionicons  style={{
+                                    width: focused ? 30 : 25,
+                                    height: focused ? 30 : 25,
+                                    color: focused ? 'black' : '#748c94',
+                                    marginBottom: 2,
+                                }
+                                } name="ios-hardware-chip-outline" size={ focused ? 30 : 24} color="black" />
                            
                         </View>
                     )

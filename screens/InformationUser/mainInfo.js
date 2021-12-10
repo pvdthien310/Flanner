@@ -42,7 +42,7 @@ const MainInfor = ({ navigation, item }) => {
     }
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator = {false}>
                 <View>
                     <Image style={{
                         height: height * 0.58, width: '100%',
@@ -130,7 +130,7 @@ const MainInfor = ({ navigation, item }) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => 
                                     navigation.navigate('User Information', {
-                                        screen: 'User Post Stack'})} >
+                                        screen: 'User Saved Post Stack'})} >
                                     <View style={styles.button3}>
                                         <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Saved</Text>
                                     </View>

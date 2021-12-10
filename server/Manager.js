@@ -10,6 +10,8 @@ const NotificationRoute = require('./routes/notificationRoute');
 const EmailRoute = require('./routes/emailRoute');
 const CommentRoute = require('./routes/commentRoute');
 const ReportRoute = require('./routes/ReportRoute');
+const SavePostInfoRoute = require('./routes/savePostInfoRoute');
+
 
 
 
@@ -36,6 +38,8 @@ app.use("/api/notification", NotificationRoute)
 app.use("/api/sendEmail", EmailRoute)
 app.use("/api/comment", CommentRoute)
 app.use("/api/report", ReportRoute)
+app.use("/api/savedpost", SavePostInfoRoute)
+
 
 //// Open port
 const port = process.env.PORT || 3001

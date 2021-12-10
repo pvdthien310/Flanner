@@ -22,7 +22,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.User)
     const { item } = route.params;
-    const [data, setData] = useState(null)
+    const [data, setData] = useState(route.params.item)
     const [loading, setLoading] = useState(true)
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
@@ -48,7 +48,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
         //             setIsNull(true)
         //             console.log('Error')
         //         } );
-        StatusApi.getItem(item._id.toString())
+        StatusApi.getItem(data._id.toString())
             .then(res => {
                 setData(res)
                 setLoading(false)
@@ -219,7 +219,12 @@ const NotiDetailStatus = ({ route, navigation }) => {
     }
 
     useEffect(() => {
-        fetchData();
+        if (item)
+            fetchData();
+        else 
+        {
+            setIsNull(true)
+        }
     }, [])
 
 
@@ -230,6 +235,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
     return (
 
         <View >
+           
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
@@ -279,7 +285,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
                                 <TouchableOpacity onPress={PressHandle}>
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.push('Status Notification Comment', { item : data })} >
+                                <TouchableOpacity onPress={() => navigation.push('Status Notification Comment', { item: data })} >
                                     <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>
@@ -288,7 +294,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
 
                     </SafeAreaView>
             }
-            {
+              {
                 isNull == false ? null :
                     <View style={{
                         alignItems: 'center',
@@ -317,6 +323,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
 
                     </View>
             }
+           
         </View>
 
 

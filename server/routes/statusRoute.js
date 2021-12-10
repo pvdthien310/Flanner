@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 
 /// Delete member
-StatusRoute.post('/delete',authenToken, (req, res) => {
+StatusRoute.post('/delete', authenToken, (req, res) => {
     Status.findByIdAndRemove(req.body.id)
         .then((data) => {
             console.log("Delete Success")
@@ -18,7 +18,7 @@ StatusRoute.post('/delete',authenToken, (req, res) => {
 })
 
 /// Add new member
-StatusRoute.post('/send-data',authenToken, (req, res) => {
+StatusRoute.post('/send-data', authenToken, (req, res) => {
     console.log(req.body.mode)
     const newStatus = new Status({
         username: req.body.username,
@@ -42,12 +42,11 @@ StatusRoute.post('/send-data',authenToken, (req, res) => {
 })
 
 /// Update member by ID
-StatusRoute.post('/update',authenToken, (req, res) => {
+StatusRoute.post('/update', authenToken, (req, res) => {
     Status.findById(req.body.id)
-    .then(result => 
-        {
+        .then(result => {
             const _mode = result.mode
-             Status.findByIdAndUpdate(req.body.id, {
+            Status.findByIdAndUpdate(req.body.id, {
                 username: req.body.username,
                 userID: req.body.userID,
                 body: req.body.body,
@@ -58,14 +57,14 @@ StatusRoute.post('/update',authenToken, (req, res) => {
                 mode: _mode
             })
                 .then(data => {
-               
-                   res.send(data)
+
+                    res.send(data)
                 }).catch(err => {
                     console.log(err)
                 })
         })
         .catch(err => console.log('err '))
-   
+
 
 
 })
@@ -88,12 +87,12 @@ function authenToken(req, res, next) {
 }
 
 //Get a member by ID
-StatusRoute.get('/:id',authenToken, (req, res) => {
+StatusRoute.get('/:id', authenToken, (req, res) => {
     Status.findById(req.params.id)
         .then(data => {
             if (data)
                 res.send(data)
-                else
+            else
                 res.send('No Exist')
         })
         .catch(err => console.log(err))
@@ -111,7 +110,7 @@ StatusRoute.get('/load-data/friend/:userID', authenToken, (req, res) => {
     Status.find({ userID: req.params.userID })
         .then(data => {
             let processedList = data.filter(item => {
-                if(item.mode == 'public') return item
+                if (item.mode == 'public') return item
             })
             res.send(processedList)
         })
@@ -119,7 +118,7 @@ StatusRoute.get('/load-data/friend/:userID', authenToken, (req, res) => {
 })
 
 /// Get all members
-StatusRoute.get('/',authenToken, (req, res) => {
+StatusRoute.get('/', authenToken, (req, res) => {
     Status.find({})
         .then(data => {
             // console.log(data)
@@ -189,66 +188,63 @@ StatusRoute.post('/update/:id/false/:userID', authenToken, (req, res) => {
     })
         .catch(err => console.log(err))
 })
-StatusRoute.post('/update/mode/:postID/limitary',authenToken, (req, res) => {
+StatusRoute.post('/update/mode/:postID/limitary', authenToken, (req, res) => {
     Status.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
         .then((data) => {
-           res.send(data)
+            res.send(data)
         }).catch(err => {
             console.log(err)
         })
 })
-StatusRoute.post('/update/mode/:postID/private', authenToken,(req, res) => {
+StatusRoute.post('/update/mode/:postID/private', authenToken, (req, res) => {
     Status.findByIdAndUpdate(req.params.postID, { "mode": 'private' }, { new: true })
         .then((data) => {
-           res.send(data)
+            res.send(data)
         }).catch(err => {
             console.log(err)
         })
 })
-StatusRoute.post('/update/mode/:postID/public',authenToken, (req, res) => {
+StatusRoute.post('/update/mode/:postID/public', authenToken, (req, res) => {
     Status.findByIdAndUpdate(req.params.postID, { "mode": 'public' }, { new: true })
         .then((data) => {
-           res.send(data)
+            res.send(data)
         }).catch(err => {
             console.log(err)
         })
 })
 
-StatusRoute.get('/load-data/newsfeed/random/:userID',authenToken, (req, res) => {
+StatusRoute.get('/load-data/newsfeed/random/:userID', authenToken, (req, res) => {
     User.find({})
-    .then(data => {
-        // res.send(data)
-        let processedList = data.filter(item => {
-            if(item.following.indexOf(req.params.userID) != -1 && item.followed.indexOf(req.params.userID) != -1)
-            return item;
-        })
-        console.log(processedList)
-
-        Status.aggregate([{ $sample: { size: 10 } }])
         .then(data => {
-            let ListStatus = []
-            for (let i = 0; i < data.length; i++)
-            {
-                for (let j = 0; j < processedList.length; j++)
-                {
-                    if (data[i].userID == processedList[j].userID)
-                        {
-                            if (!ListStatus.includes(data[i]))
-                            ListStatus.push(data[i]);
-                            break;
+            // res.send(data)
+            let processedList = data.filter(item => {
+                if (item.following.indexOf(req.params.userID) != -1 && item.followed.indexOf(req.params.userID) != -1)
+                    return item;
+            })
+            console.log(processedList)
+
+            Status.aggregate([{ $sample: { size: 10 } }])
+                .then(data => {
+                    let ListStatus = []
+                    for (let i = 0; i < data.length; i++) {
+                        for (let j = 0; j < processedList.length; j++) {
+                            if (data[i].userID == processedList[j].userID) {
+                                if (!ListStatus.includes(data[i]))
+                                    ListStatus.push(data[i]);
+                                break;
+                            }
                         }
-                }
-            }
-            res.send(ListStatus)
+                    }
+                    res.send(ListStatus)
+                }).catch(err => {
+                    console.log(err)
+                })
         }).catch(err => {
             console.log(err)
         })
-    }).catch(err => {
-        console.log(err)
-    })
 
 
-   
+
 })
 
 
