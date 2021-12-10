@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, FlatList } from 'react-native';
-import SavedPostApi from '../../API/SavedPostAPI';
+import { StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, FlatList } from 'react-native';
+import SavedPostApi from '../../../API/SavedPostAPI';
 import { useSelector, useDispatch } from 'react-redux';
 
 
