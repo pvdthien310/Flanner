@@ -25,6 +25,46 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
     const [data, setData] = useState(item)
     const [host, setHost] = useState(undefined)
 
+    const createTwoButtonAlert1 = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to save this post?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => AddSavedPost()
+                }
+            ]
+        );
+    const AddSavedPost = () => {
+        SavedPostApi.UpdateTrue(user.userID, item._id)
+            .then(res => {
+                if (res) {
+                    dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                    let toast = Toast.show('Save successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+                let toast = Toast.show('Save failed, please try again!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
+    }
 
     const createTwoButtonAlert = () =>
         Alert.alert(
@@ -320,6 +360,8 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
 
 
     return (
+        <TouchableOpacity onLongPress={() => createTwoButtonAlert1()} 
+        activeOpacity={1}>
         <Post >
             <TouchableOpacity onPress={() => createThreeButtonAlert()}>
                 <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
@@ -387,7 +429,7 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
             </InteractionWrapper>
 
         </Post>
-        // </TouchableOpacity>
+         </TouchableOpacity>
 
     )
 

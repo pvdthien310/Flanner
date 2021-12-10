@@ -13,6 +13,7 @@ import NotificationApi from '../../API/NotificationAPI';
 import Api from '../../API/UserAPI';
 import ReportApi from '../../API/ReportAPI';
 import Toast from 'react-native-root-toast';
+import SavedPostApi from '../../API/SavedPostAPI';
 
 
 const StatusMemberForSearch = ({ item, navigation }) => {
@@ -25,6 +26,61 @@ const StatusMemberForSearch = ({ item, navigation }) => {
     const [data, setData] = useState(item)
     const [host, setHost] = useState(undefined)
 
+    const createTwoButtonAlert1 = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to save this post?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => AddSavedPost()
+                }
+            ]
+        );
+    const AddSavedPost = () => {
+        SavedPostApi.UpdateTrue(user.userID, item._id)
+            .then(res => {
+                if (res) {
+                    dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                    let toast = Toast.show('Save successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+                let toast = Toast.show('Save failed, please try again!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
+    }
+
+    const createTwoButtonAlert = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to navigate your profile?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => NavigateToCurrentUserProfile()
+                }
+            ]
+        );
 
     const fetchHostData = async () => {
         await Api.getUserItem(item.userID)
@@ -304,73 +360,76 @@ const StatusMemberForSearch = ({ item, navigation }) => {
 
 
     return (
-        <Post >
-            <TouchableOpacity onPress={() => createThreeButtonAlert()}>
-                <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => {
-                if (item.userID != user.userID) {
-                    navigation.push(
-                        'Search Friend Profile',
-                        { item: [host] })
-                }
-                else {
-                    createTwoButtonAlert()
-                }
-            }
-            }>
-                <UserInfo>
-                    <Image source={{ uri: host ? host.avatar : item.avatar }} style={Poststyle.imageavatar} />
-                    <UserInfoText>
-                        <Text style={Poststyle.name}> {host ? host.name : item.username}</Text>
-                        <Text style={Poststyle.posttime}> {item.posttime}</Text>
-                    </UserInfoText>
-                </UserInfo>
-            </TouchableOpacity>
-            <PostText>
-                {/* <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}> */}
-                <Text style={Poststyle.body}>{item.body}</Text>
-
-                {/* </TouchableOpacity> */}
-            </PostText>
-            <PostImage>
-                <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
-                <FlatList
-                    scrollEnabled={true}
-                    horizontal={true}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={item.listImage}
-                    renderItem={({ item }) => (
-                        <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
-
-                    )}
-                    keyExtractor={item => item.key}
-
-                />
-            </PostImage>
-            <TouchableOpacity onPress={() => navigation.push('Search Show React User', { data: item })}>
-                <ReactNumber  >
-                    <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
-                </ReactNumber>
-            </TouchableOpacity>
-            <InteractionWrapper style={Poststyle.interactionwrapper}>
-                <TouchableOpacity style={Poststyle.buttonpost}
-                    onPress={PressHandle1}>
-                    <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
-                    <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
+        <TouchableOpacity
+            onLongPress={() => createTwoButtonAlert1()}
+            activeOpacity={1}>
+            <Post >
+                <TouchableOpacity onPress={() => createThreeButtonAlert()}>
+                    <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => navigation.push('Search Comment', { item: data })}
-                    style={Poststyle.buttonpost}>
-                    <Octicons style={Poststyle.buttonicon} name="comment" size={20} color="black" />
-                    <Text style={Poststyle.buttontext}>Comment</Text>
-                </TouchableOpacity>
-            </InteractionWrapper>
 
-        </Post>
-        // </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    if (item.userID != user.userID) {
+                        navigation.push(
+                            'Search Friend Profile',
+                            { item: [host] })
+                    }
+                    else {
+                        createTwoButtonAlert()
+                    }
+                }
+                }>
+                    <UserInfo>
+                        <Image source={{ uri: host ? host.avatar : item.avatar }} style={Poststyle.imageavatar} />
+                        <UserInfoText>
+                            <Text style={Poststyle.name}> {host ? host.name : item.username}</Text>
+                            <Text style={Poststyle.posttime}> {item.posttime}</Text>
+                        </UserInfoText>
+                    </UserInfo>
+                </TouchableOpacity>
+                <PostText>
+                    {/* <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}> */}
+                    <Text style={Poststyle.body}>{item.body}</Text>
+
+                    {/* </TouchableOpacity> */}
+                </PostText>
+                <PostImage>
+                    <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
+                    <FlatList
+                        scrollEnabled={true}
+                        horizontal={true}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={item.listImage}
+                        renderItem={({ item }) => (
+                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+
+                        )}
+                        keyExtractor={item => item.key}
+
+                    />
+                </PostImage>
+                <TouchableOpacity onPress={() => navigation.push('Search Show React User', { data: item })}>
+                    <ReactNumber  >
+                        <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
+                    </ReactNumber>
+                </TouchableOpacity>
+                <InteractionWrapper style={Poststyle.interactionwrapper}>
+                    <TouchableOpacity style={Poststyle.buttonpost}
+                        onPress={PressHandle1}>
+                        <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
+                        <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.push('Search Comment', { item: data })}
+                        style={Poststyle.buttonpost}>
+                        <Octicons style={Poststyle.buttonicon} name="comment" size={20} color="black" />
+                        <Text style={Poststyle.buttontext}>Comment</Text>
+                    </TouchableOpacity>
+                </InteractionWrapper>
+
+            </Post>
+        </TouchableOpacity>
 
     )
 

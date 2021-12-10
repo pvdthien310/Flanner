@@ -14,6 +14,7 @@ import NotificationApi from '../../API/NotificationAPI';
 import ReportApi from '../../API/ReportAPI';
 import Api from '../../API/UserAPI';
 import Toast from 'react-native-root-toast';
+import SavedPostApi from '../../API/SavedPostAPI';
 
 
 const StatusMember = ({ item, navigation }) => {
@@ -26,7 +27,46 @@ const StatusMember = ({ item, navigation }) => {
     const [data, setData] = useState(item)
     const [host, setHost] = useState(undefined)
 
+    const createTwoButtonAlert = () =>
+    Alert.alert(
+        "Notification",
+        "Do you want to save this post?",
+        [
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+            },
+            {
+                text: "OK", onPress: () => AddSavedPost()
+            }
+        ]
+    );
+const AddSavedPost = () => {
+    SavedPostApi.UpdateTrue(user.userID, item._id)
+        .then(res => {
+            if (res) {
+                dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                let toast = Toast.show('Save successful!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            }
 
+        })
+        .catch(err => {
+            console.log(err)
+            let toast = Toast.show('Save failed, please try again!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        })
+}
     const fetchHostData = async () => {
         await Api.getUserItem(item.userID)
             .then(res => {
@@ -286,7 +326,9 @@ const StatusMember = ({ item, navigation }) => {
     })
 
     return (
-        <Post >
+        <TouchableOpacity activeOpacity={1}
+        onLongPress={() => createTwoButtonAlert()}>
+        <Post>
              <TouchableOpacity onPress={() => createThreeButtonAlert()}>
                 <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
             </TouchableOpacity>
@@ -351,7 +393,7 @@ const StatusMember = ({ item, navigation }) => {
             </InteractionWrapper>
 
         </Post>
-        // </TouchableOpacity>
+         </TouchableOpacity>
 
     )
 

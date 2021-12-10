@@ -16,27 +16,36 @@ SavePostInfoRoute.post('/delete', authenToken, (req, res) => {
 
 /// Add new member
 SavePostInfoRoute.post('/send-data', (req, res) => {
-    const newSavedPost = new SavePostInfo({      
-        userID: req.body.userID,
-        postIDList: []
+    SavePostInfo.findOne({userID: req.body.userID})
+    .then(result => {
+        if (result)
+            res.send('User Exist')
+        else 
+        {
+            const newSavedPost = new SavePostInfo({      
+                userID: req.body.userID,
+                postIDList: []
+            })
+            newSavedPost.save()
+                .then((data) => {
+                    // console.log(data)
+                    res.send("Add Success")
+                })
+                .catch(err => {
+                    console.log('Error')
+                })
+        }
     })
-    newSavedPost.save()
-        .then((data) => {
-            // console.log(data)
-            res.send("Add Success")
-        })
-        .catch(err => {
-            console.log('Error')
-        })
+   
 })
 
 
-SavePostInfoRoute.post('/update/:id/true/:userID', (req, res) => {
-    SavePostInfo.findOne({userID : req.params.id})
+SavePostInfoRoute.post('/update/:userID/true/:postID',authenToken, (req, res) => {
+    SavePostInfo.findOne({userID : req.params.userID})
         .then(data => {
-            if ((data.postIDList).indexOf(req.params.userID) == -1) {
-                SavePostInfo.findOneAndUpdate({userID : req.params.id},
-                    { "$push": { "postIDList": req.params.userID } },
+            if ((data.postIDList).indexOf(req.params.postID) == -1) {
+                SavePostInfo.findOneAndUpdate({userID : req.params.userID},
+                    { "$push": { "postIDList": req.params.postID } },
                     { "new": true, "upsert": true }
                 ).then((data) => {
                     res.send(data)
@@ -52,9 +61,9 @@ SavePostInfoRoute.post('/update/:id/true/:userID', (req, res) => {
 })
 
 
-SavePostInfoRoute.post('/update/:id/false/:userID', (req, res) => {
-    SavePostInfo.findOneAndUpdate({userID : req.params.id},
-        { "$pull": { "postIDList": req.params.userID } },
+SavePostInfoRoute.post('/update/:userID/false/:postID',authenToken, (req, res) => {
+    SavePostInfo.findOneAndUpdate({userID : req.params.userID},
+        { "$pull": { "postIDList": req.params.postID } },
         { "new": true, "upsert": true }
     ).then((data) => {
         res.send(data)
