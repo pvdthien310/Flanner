@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
 import StatusApi from '../../API/StatusAPI';
+import Toast from 'react-native-root-toast';
 
 
 
@@ -115,7 +116,16 @@ export default function AddStatus({ route, navigation }) {
             react: [],
             mode: "public"
         })
-            .then(res => {fetchStatusData() })
+            .then(res => {
+                fetchStatusData() 
+                let toast = Toast.show('Add post successful!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
             .catch(err => console.log('Error Add New Knowledge'))
 
         fetchStatusData()

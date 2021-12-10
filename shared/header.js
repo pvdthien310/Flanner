@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         letterSpacing: 1,
         marginTop: 5,
+        fontFamily:'nunitobold'
     },
     icon: {
         position: 'absolute',

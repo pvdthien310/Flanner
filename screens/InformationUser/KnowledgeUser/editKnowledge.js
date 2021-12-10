@@ -9,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { URL_local } from '../../../constant';
 import KnowLedgeApi from '../../../API/KnowledgeAPI';
+import Toast from 'react-native-root-toast';
 
 
 
@@ -22,13 +23,13 @@ export default function EditKnowledge({ route, navigation }) {
         if (route.params) {
             switch (type) {
                 case 'title':
-                    return route.params.item.title
+                    return data ? data.title : route.params.item.title
                 case 'description':
-                    return route.params.item.description
+                    return data ? data.description : route.params.item.description
                 case 'body':
-                    return route.params.item.body
+                    return data ? data.body : route.params.item.body
                 case 'image':
-                    return route.params.item.listImage
+                    return data ? data.listImage : route.params.item.listImage
             }
         }
     }
@@ -39,7 +40,27 @@ export default function EditKnowledge({ route, navigation }) {
     const [description, setDescription] = useState(GetDetail('description'));
     const [body, setBody] = useState(GetDetail('body'));
     const [loading, setLoading] = useState(false);
+    const [data, SetData] = useState(undefined)
     const dispatch = useDispatch()
+
+    const fetchData = () => {
+        KnowLedgeApi.getItem(route.params.item._id)
+            .then(res => {
+                SetData(res)
+            })
+            .catch(err => console.log(err))
+    }
+    useEffect(() => {
+        fetchData()
+    }, [])
+    useEffect(() => {
+        if (data) {
+            setTitle(data.title)
+            setDescription(data.description)
+            setBody(data.body)
+            setImage(data.listImage)
+        }
+    }, [data])
 
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -157,12 +178,28 @@ export default function EditKnowledge({ route, navigation }) {
             listImage: picture,
             react: route.params.item.react,
             reactNumber: '0',
-            mode : route.params.item.mode
+            mode: route.params.item.mode
         })
-        .then(res => {
-            fetchKnowledgeData()
-        })
-        .catch(err => console.log('Error Edit Knowledge'))
+            .then(res => {
+                fetchKnowledgeData()
+                let toast = Toast.show('Edit post successful!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
+            .catch(err => {
+                console.log('Error Edit Knowledge')
+                let toast = Toast.show('Add post failed, please try again!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
         fetchKnowledgeData();
         navigation.goBack();
     }

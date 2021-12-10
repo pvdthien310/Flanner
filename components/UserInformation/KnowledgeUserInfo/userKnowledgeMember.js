@@ -143,8 +143,25 @@ const UserKnowledgeMember = ({ item, navigation }) => {
             console.log('Delete successfully')
             dispatch({ type: 'DELETE_USER_KNOWLEDGE_MEMBER', payload: deletedObject })
             fetchKnowledgeData()
+            let toast = Toast.show('Delete post successful!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
         })
-            .catch(err => console.log('Error Delete Knowledge'))
+            .catch(err => 
+                {
+                    console.log('Error Delete Knowledge')
+                    let toast = Toast.show('Add post failed!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                })
         fetchKnowledgeData()
 
     }

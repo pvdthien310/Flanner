@@ -16,50 +16,51 @@ const { width } = Dimensions.get("screen");
 const SavedPostMember = ({ item, navigation }) => {
 
     const dispatch = useDispatch()
-    const {user} = useSelector(state => { return state.User })
+    const { user } = useSelector(state => { return state.User })
     const [data, SetData] = useState(undefined)
     const [type, SetType] = useState(undefined)
     const [host, setHost] = useState(undefined)
 
     const createTwoButtonAlert = () =>
-    Alert.alert(
-        "Notification",
-      "Do you want to deleted this post?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-        },
-        { text: "OK", onPress: () => RemovePost()         
-        }
-      ]
-    );
+        Alert.alert(
+            "Notification",
+            "Do you want to deleted this post?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => RemovePost()
+                }
+            ]
+        );
     const RemovePost = () => {
-        SavedPostApi.UpdateFalse(user.userID,item)
-        .then(res => {
-            console.log(res)
-            if (res){
-                dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
-                let toast = Toast.show('Delete successful!', {
+        SavedPostApi.UpdateFalse(user.userID, item)
+            .then(res => {
+                console.log(res)
+                if (res) {
+                    dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                    let toast = Toast.show('Delete successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+                let toast = Toast.show('Delete failed, please try again!', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER,
                     shadow: true,
                     animation: true,
                     hideOnPress: true,
                 });
-            }
-           
-        })
-        .catch(err => {
-            console.log(err)
-            let toast = Toast.show('Delete failed, please try again!', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.CENTER,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-        })
+            })
     }
     const fetchKnowledgeItem = () => {
         KnowLedgeApi.getItem(item)
@@ -119,11 +120,11 @@ const SavedPostMember = ({ item, navigation }) => {
                         hideOnPress: true,
                     });
                 }
-            }} 
+            }}
             onLongPress={() => {
                 createTwoButtonAlert()
             }}
-            >
+        >
             <View style={{
                 borderRadius: 10,
                 backgroundColor: 'white',
@@ -177,11 +178,11 @@ const SavedPostMember = ({ item, navigation }) => {
 
                         }}></View>
                         <Text style={{
-                            fontFamily: 'nunitobold',
+                            fontFamily: 'robotobold',
                             fontSize: 18
                         }}>{data.title}</Text>
                         <Text style={{
-                            fontFamily: 'nunitoregular'
+                            fontFamily: 'robotoregular'
                         }}>{data.description}</Text>
 
                     </View>
@@ -237,27 +238,32 @@ const SavedPostMember = ({ item, navigation }) => {
                     </View>
                 }
                 {
-                    data ?
-                        <Image source={{ uri: data.listImage.length > 0 ? data.listImage[0].url : '../../../assets/icon/postPhoto.png' }}
-                            resizeMode='contain'
-                            style={{
-                                minHeight: width * 0.8,
-                                minWidth: 600,
-                                alignSelf: 'center'
-                            }
-                            }
-                        />
-                        :
-                        <Image source={require('../../../assets/icon/postPhoto.png')}
-                            resizeMode='contain'
-                            style={{
-                                width: 50,
-                                height: 50,
-                                marginBottom: 5,
-                                borderRadius: 10
-                            }
-                            }
-                        />
+                    data && <View>
+                        {
+                            data.listImage.length > 0 ?
+                                <Image source={{ uri:data.listImage[0].url  }}
+                                    resizeMode='contain'
+                                    style={{
+                                        minHeight: 300,
+                                        minWidth: 400,
+                                        
+                                    }
+                                    }
+                                />
+                                :
+                                <Image source={require('../../../assets/icon/postPhoto.png')}
+                                    resizeMode='contain'
+                                    style={{
+                                        width: 100,
+                                        height: 100,
+                                        marginBottom: 5,
+                                        borderRadius: 10,
+                                        alignSelf: 'center'
+                                    }
+                                    }
+                                />
+                        }
+                    </View>
                 }
 
 

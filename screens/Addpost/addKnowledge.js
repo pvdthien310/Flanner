@@ -10,6 +10,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { URL_local } from '../../constant';
 import KnowLedgeApi from '../../API/KnowledgeAPI';
+import Toast from 'react-native-root-toast';
+
 
 
 
@@ -136,7 +138,16 @@ export default function AddKnowledge({ route, navigation }) {
         //     console.log("error", err)
         // })
         KnowLedgeApi.AddPost(newPost)
-        .then(res => {fetchKnowledgeData()})
+        .then(res => {
+            fetchKnowledgeData()
+            let toast = Toast.show('Add post successful!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        })
         .catch(err => console.log('Error Add New Knowledge'))
        
         fetchKnowledgeData()
