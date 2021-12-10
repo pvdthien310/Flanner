@@ -11,8 +11,11 @@ import { AntDesign } from '@expo/vector-icons';
 const GlobalPeople = ({navigation}) => {
 
     const[users, setUsers] = useState([]);
+    const[masterData, setmasterData] = useState([]);
     const[isLoading, setIsLoading] = useState(false);
 
+    const[search, setSearch] = useState('');
+    
     const {client} = useChatContext();
 
     const pan = useRef(new Animated.ValueXY()).current;
@@ -33,6 +36,7 @@ const GlobalPeople = ({navigation}) => {
             setIsLoading(true);
             const response = await client.queryUsers({});
             setUsers(response.users);
+            setmasterData(response.users);
             setIsLoading(false);
         };
 
@@ -66,8 +70,24 @@ const GlobalPeople = ({navigation}) => {
             setText('')
         } else{
             createOneButtonAlert();
+        }  
+    }
+
+    const searchFilter = (text) => {
+        if(text) {
+            const newData = masterData.filter((item) => {
+                const itemData = item.name ?
+                                 item.name.toUpperCase() 
+                                 : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setUsers(newData);
+            setSearch(text);
+        } else {
+            setUsers(masterData);
+            setSearch(text);
         }
-       
     }
 
     return (
@@ -78,6 +98,13 @@ const GlobalPeople = ({navigation}) => {
              <View style={styles.headerContainer}>
                 <Text style={styles.header}>Fess people</Text>
              </View>
+             <TextInput style={{backgroundColor: 'whitesmoke', paddingLeft: 15,marginTop: 10, height: 40, borderRadius: 15, color: 'black', fontSize: 15}}
+                        placeholder="Search here..."
+                        value={search}
+                        underlineColorAndroid= "transparent"
+                        onChangeText={(text) => searchFilter(text)}
+
+             />
              <ScrollView
                 style={styles.proContainer}
                 showsHorizontalScrollIndicator={false}
@@ -95,7 +122,7 @@ const GlobalPeople = ({navigation}) => {
                                         tempUser={item}
                                         keyExtractor={item => item.id.toString()}
                                         key={item.id.toString()}
-                                    />
+            />  
                                 ))
                             }
                         </Animated.View>

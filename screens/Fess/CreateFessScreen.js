@@ -62,7 +62,7 @@ const CreateFessScreen = ({navigation, route}) => {
     const createAlertSub = () =>
         Alert.alert(
             "Note!",
-            "Choose members first",
+            "Members count should be 3 mates or more",
             [
                 { text: "OK", onPress: () => console.log("OK Pressed") }
             ]
@@ -122,7 +122,7 @@ const CreateFessScreen = ({navigation, route}) => {
     }
 
     const CreateFess = () => {
-        if(membersList.length != 0)
+        if(membersList.length >= 3)
         {
             getMembersID();
         } else {
