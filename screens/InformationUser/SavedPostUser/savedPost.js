@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, Pressable, View, Image, TouchableOpacity, Dimensions, FlatList, SafeAreaView } from 'react-native';
 import SavedPostApi from '../../../API/SavedPostAPI';
 import { useSelector, useDispatch } from 'react-redux';
+import SavedPostMember from '../../../components/UserInformation/SavedPost/savedPostMember';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 
 
@@ -10,10 +13,11 @@ const logoHeight = height * 0.5;
 
 
 const SavedPost = ({ navigation }) => {
+    const [,forceRerender] = useState()
     const dispatch = useDispatch()
-    const { user } = useSelector(state => state.User)
+    const { user,saved_post } = useSelector(state => state.User)
     const [data, SetData] = useState(undefined);
-    const [loading,SetLoading] = useState(false)
+    const [loading, SetLoading] = useState(false)
     const pressgobackHandler = () => {
         navigation.goBack();
     }
@@ -32,32 +36,56 @@ const SavedPost = ({ navigation }) => {
                 console.log('vao day')
                 SetData(res.postIDList)
                 SetLoading(false)
+
             })
             .catch(err => console.log(err))
 
     }
     useEffect(() => {
-       fetchData()
+        fetchData()
     }, [])
+    useEffect(() => {
+        fetchData()
+    }, [saved_post])
     return (
-        <View style={styles.container}>
-            <TouchableOpacity onPress={pressgobackHandler}>
-                <Text> Back </Text>
-            </TouchableOpacity>
+        <SafeAreaView style={styles.container}>
+            <View style = {{
+                flexDirection: 'row',
+                justifyContent:'space-between',alignItems:'center',
+                paddingTop: 5
+                
+            }}>
+                <TouchableOpacity style={{ width: 100, borderRadius: 10, }} onPress={pressgobackHandler}>
+                    <View style={{ flexDirection: 'row', width: 80, alignItems: 'center' }}>
+                        <MaterialIcons name="keyboard-backspace" size={25} color="black" />
+                        
+                    </View>
+                </TouchableOpacity>
+                <View style ={{
+                    
+                    borderRadius: 5,padding:5
+                }}>
+                <Text style ={{
+                    fontFamily:'nunitobold',
+                    fontSize:20,
+                    
+                }}>Saved Posts</Text>
+                </View>
+            </View>
             {
                 data &&
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={data}
                     renderItem={({ item }) => (
-                        <Text>{item}</Text>
+                        <SavedPostMember item={item} navigation={navigation}></SavedPostMember>
                     )}
                     keyExtractor={item => item}
                     onRefresh={() => fetchData()}
                     refreshing={loading}
                 />
             }
-        </View>
+        </SafeAreaView>
 
     )
 
@@ -72,30 +100,5 @@ const styles = StyleSheet.create({
         backgroundColor: 'whitesmoke'
 
     },
-    button1: {
-        shadowOffset: { width: 1, height: 1 },
-        shadowColor: 'black',
-        shadowOpacity: 0.2,
-        borderRadius: 10,
-        padding: 7,
-        backgroundColor: 'lightslategrey'
-    },
-    button2: {
-        shadowOffset: { width: 1, height: 1 },
-        shadowColor: 'black',
-        shadowOpacity: 0.2,
-        borderRadius: 10,
-        padding: 7,
-        backgroundColor: 'black'
-    },
-    button3: {
-        shadowOffset: { width: 1, height: 1 },
-        shadowColor: 'black',
-        shadowOpacity: 0.2,
-        borderRadius: 10,
-        padding: 7,
-        backgroundColor: 'dimgrey'
-    }
-
 });
 export default SavedPost;
