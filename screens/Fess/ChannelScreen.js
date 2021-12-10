@@ -1,26 +1,26 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRoute } from '@react-navigation/core';
-import { 
+import {
     Channel,
     MessageList,
     MessageInput,
     OverlayProvider,
 } from "stream-chat-react-native-core"
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { LogBox, StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient'
+import { LogBox, StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'
 import { useSelector } from 'react-redux';
-import {AntDesign} from '@expo/vector-icons'
+import { AntDesign, Ionicons } from '@expo/vector-icons'
 
 
 // Ignore log notification by message
-LogBox.ignoreLogs(['Warning: ...','Non-serializable values were found in the navigation state','VirtualizedLists should never be nested','source.uri should not be an empty string']);
+LogBox.ignoreLogs(['Warning: ...', 'Non-serializable values were found in the navigation state', 'VirtualizedLists should never be nested', 'source.uri should not be an empty string']);
 
 //Ignore all log notifications
 LogBox.ignoreAllLogs();
 
 
-const ChannelScreen = ({navigation, route}) => {
+const ChannelScreen = ({ navigation, route }) => {
 
     const channel = route.params.channel;
 
@@ -32,28 +32,26 @@ const ChannelScreen = ({navigation, route}) => {
 
     const [imgHeader, setImgHeader] = useState('')
 
-    const fetchMembers = async () =>{
-            const response = await channel.queryMembers({}) ;
-            setMembers(response.members);
-        };
+    const fetchMembers = async () => {
+        const response = await channel.queryMembers({});
+        setMembers(response.members);
+    };
 
 
     useEffect(() => {
         fetchMembers();
-    },[])
+    }, [])
 
     useEffect(() => {
-         if(members.length === 2)
-        {
+        if (members.length === 2) {
             setNameHeader(members[1].user.name);
         } else {
             setNameHeader(channel.data.name);
         }
     })
 
-    useEffect(() =>{
-          if(members.length === 2)
-        {
+    useEffect(() => {
+        if (members.length === 2) {
             setImgHeader(members[1].user.image);
         } else {
             setImgHeader("https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-communication-communication-kiranshastry-lineal-kiranshastry.png");
@@ -70,30 +68,63 @@ const ChannelScreen = ({navigation, route}) => {
     return (
         <LinearGradient
             colors={["white", "white", "white"]}
-             style={styles.container}>
-                 <SafeAreaView style={styles.headerContainer}>
-                          <TouchableOpacity
+            style={styles.container}>
+            <View style={styles.headerContainer}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <TouchableOpacity
                         onPress={() => navigation.navigate("Fess")}
-                        style={{marginLeft: 10}}
-                   >
-                         <AntDesign name="leftcircle" size={30} color="white" />
-                     </TouchableOpacity>
-                        <Image style={styles.avatar} source={{ uri: imgHeader}}/>
+                        style={{
+                            marginEnd: 10
+                        }}
+                    >
+                        <Ionicons name="arrow-back-outline" size={25} color="white" />
+                    </TouchableOpacity>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+
+                    }}>
+                        <Image style={styles.avatar} source={{ uri: imgHeader }} />
                         <Text style={styles.username}>{nameHeader}</Text>
-                   </SafeAreaView>
-                <SafeAreaProvider style={{marginBottom: 10}}>
-                    <OverlayProvider >
-                        <Channel  channel={channel}
-                            onDoubleTapMessage={onDoubleTapMessage}
-                        >
-                            <MessageList />
-                            <MessageInput />
-                        </Channel>
-                    </OverlayProvider>
-                </SafeAreaProvider>            
-            
+                    </View>
+                </View>
+                <View style={
+                    {
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        
+                    }
+                }>
+                    <TouchableOpacity style ={{
+                        marginEnd: 15
+                    }}>
+                        <Ionicons name="call-outline" size={27} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity >
+                        <Ionicons name="videocam-outline" size={30} color="white" />
+                    </TouchableOpacity>
+
+                </View>
+
+            </View>
+            <SafeAreaProvider style={{ marginBottom: 10 }} >
+                <OverlayProvider>
+                    <Channel channel={channel}
+                        onDoubleTapMessage={onDoubleTapMessage}
+                    >
+                        <MessageList />
+                        <MessageInput />
+                    </Channel>
+                </OverlayProvider>
+            </SafeAreaProvider>
+
         </LinearGradient>
-       
+
     )
 }
 
@@ -107,7 +138,7 @@ const styles = StyleSheet.create({
         top: 0,
         height: "100%",
     },
-     main: {
+    main: {
         backgroundColor: '#FFF',
         height: '88%',
         paddingHorizontal: 20,
@@ -116,33 +147,33 @@ const styles = StyleSheet.create({
         paddingTop: 40
     },
     headerContainer: {
-        backgroundColor:"#313149",
+        backgroundColor: "#313149",
         width: '100%',
-        // flexDirection: 'column',
-        height: '15%', 
+        flexDirection: 'row',
+        height: '10%',
         alignSelf: 'center',
-        paddingTop: 5,
-        paddingBottom: 5,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 30,
+        paddingStart: 10,
+        paddingEnd:10
+
     },
-     username: {
+    username: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: 15,
-        marginTop: 5,
-        marginBottom: -5,
-        alignSelf: 'center',
+        fontSize: 20,
+        fontFamily: 'nunitobold'
+
     },
     avatar: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
+        width: 40,
+        height: 40,
+        borderRadius: 15,
         borderColor: 'white',
         backgroundColor: 'white',
-        borderWidth: 2,
-        alignSelf: 'center',
-        marginTop: '-7%'
+        marginEnd: 10
+
     }
 
 })
