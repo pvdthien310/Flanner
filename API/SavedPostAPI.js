@@ -10,7 +10,7 @@ const url = '/savedpost';
         return res.data
     },
     
-    AddPost: async item => {
+    AddSavedPost: async item => {
         const res = await DatabaseClient.post(url +'/send-data',item );
         return res.data
     },

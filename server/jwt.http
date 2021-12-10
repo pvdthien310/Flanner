@@ -6,7 +6,7 @@ GET http://192.168.0.101:3000/api/knowledge
 x-access-token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoaWVuZGkiLCJpYXQiOjE2MzgyMDY0MjEsImV4cCI6MTYzODgwNjQyMX0.D9ad_l9YQGseHB2TvVesSZ-W3wunt2P1eFkuNvzwXzQ
 ###
 
-POST http://192.168.0.101:8000/get-accessToken
+POST http://192.168.0.105:8000/get-accessToken
 Content-Type: application/json
 
 {

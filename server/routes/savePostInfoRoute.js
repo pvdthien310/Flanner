@@ -16,18 +16,27 @@ SavePostInfoRoute.post('/delete', authenToken, (req, res) => {
 
 /// Add new member
 SavePostInfoRoute.post('/send-data', (req, res) => {
-    const newSavedPost = new SavePostInfo({      
-        userID: req.body.userID,
-        postIDList: []
+    SavePostInfo.findOne({userID: req.body.userID})
+    .then(result => {
+        if (result)
+            res.send('User Exist')
+        else 
+        {
+            const newSavedPost = new SavePostInfo({      
+                userID: req.body.userID,
+                postIDList: []
+            })
+            newSavedPost.save()
+                .then((data) => {
+                    // console.log(data)
+                    res.send("Add Success")
+                })
+                .catch(err => {
+                    console.log('Error')
+                })
+        }
     })
-    newSavedPost.save()
-        .then((data) => {
-            // console.log(data)
-            res.send("Add Success")
-        })
-        .catch(err => {
-            console.log('Error')
-        })
+   
 })
 
 
