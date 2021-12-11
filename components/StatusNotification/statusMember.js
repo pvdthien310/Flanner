@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Alert, } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, Alert, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../shared/post'
 import { UserInfo } from '../../shared/post'
 import { images, imagespost, Poststyle } from '../../styles/poststyle'
@@ -15,6 +15,8 @@ import Api from '../../API/UserAPI';
 import ReportApi from '../../API/ReportAPI';
 import Toast from 'react-native-root-toast';
 import SavedPostApi from '../../API/SavedPostAPI';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 
 const StatusMemberForStatusNoti = ({ item, navigation }) => {
