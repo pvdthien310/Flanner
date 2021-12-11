@@ -403,7 +403,7 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     data={item.listImage}
                     renderItem={({ item }) => (
-                        <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                        <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
 
                     )}
                     keyExtractor={item => item.key}

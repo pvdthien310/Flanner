@@ -151,7 +151,7 @@ const KnowledgeMemberForKnowledgeNoti = ({ item, navigation }) => {
                     data={item.listImage}
                     renderItem={({ item }) => (
                         <View>
-                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                            <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
                             <View style={{ position: 'absolute', top: 20, left: 10 }}>
                                 <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
                             </View>
