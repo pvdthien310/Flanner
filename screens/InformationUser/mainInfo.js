@@ -17,23 +17,23 @@ const MainInfor = ({ navigation, item }) => {
 
     const dispatch = useDispatch()
     const [, forceRerender] = useState();
-    const {user} = useSelector(state => state.User)
-    const {user_knowledge} = useSelector(state => state.Knowledge)
-    const {user_status} = useSelector(state => state.Status)
-    const [postNumber,setPostNumber] = useState(user_knowledge.length + user_status.length);
-    
-    useEffect(() => 
-    CountPost
-    ,[user_knowledge,user_status])
+    const { user } = useSelector(state => state.User)
+    const { user_knowledge } = useSelector(state => state.Knowledge)
+    const { user_status } = useSelector(state => state.Status)
+    const [postNumber, setPostNumber] = useState(user_knowledge.length + user_status.length);
 
-    useEffect(() => 
-    CountPost
-    ,[])
+    useEffect(() =>
+        CountPost
+        , [user_knowledge, user_status])
 
-    useEffect(() => 
-    forceRerender()
-    ,[user])
-    
+    useEffect(() =>
+        CountPost
+        , [])
+
+    useEffect(() =>
+        forceRerender()
+        , [user])
+
     const CountPost = () => {
         setPostNumber(user_knowledge.length + user_status.length)
     }
@@ -42,7 +42,7 @@ const MainInfor = ({ navigation, item }) => {
     }
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator = {false}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
                     <Image style={{
                         height: height * 0.58, width: '100%',
@@ -52,7 +52,7 @@ const MainInfor = ({ navigation, item }) => {
                         shadowOffset: { width: 1, height: 1 },
                         shadowColor: 'black',
                         shadowOpacity: 0.5,
-                    }} source={{uri: user.avatar}} ></Image>
+                    }} source={{ uri: user.avatar }} ></Image>
                     <View style={{
                         backgroundColor: 'white',
                         alignSelf: 'center',
@@ -101,10 +101,10 @@ const MainInfor = ({ navigation, item }) => {
                                 fontSize: 15,
                                 color: 'dimgrey',
                                 marginBottom: 10,
-                                alignSelf:'center'
+                                alignSelf: 'center'
 
                             }}>
-                               {user.bio}</Text>
+                                {user.bio}</Text>
                             <View
                                 style={{
                                     borderBottomColor: 'dimgrey',
@@ -113,118 +113,125 @@ const MainInfor = ({ navigation, item }) => {
                                     marginTop: 10
                                 }}
                             />
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={() => 
-                                    navigation.navigate('User Information', {
-                                        screen: 'User Knowledge Stack'})} >
-                                    <View style={styles.button1}>
-                                        <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => 
-                                    navigation.navigate('User Information', {
-                                        screen: 'User Status Stack'})}  >
-                                    <View style={styles.button2}>
-                                        <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => 
-                                    navigation.navigate('User Information', {
-                                        screen: 'User Saved Post Stack'})} >
-                                    <View style={styles.button3}>
-                                        <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Saved</Text>
-                                    </View>
-                                </TouchableOpacity>
+                            {
+                                user.position == '2' &&
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={() =>
+                                        navigation.navigate('User Information', {
+                                            screen: 'User Knowledge Stack'
+                                        })} >
+                                        <View style={styles.button1}>
+                                            <Text style={{ color: 'white', fontSize: 15, paddingStart: 10, paddingEnd: 10, fontFamily: 'nunitobold' }}>Knowledge</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() =>
+                                        navigation.navigate('User Information', {
+                                            screen: 'User Status Stack'
+                                        })}  >
+                                        <View style={styles.button2}>
+                                            <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Status</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() =>
+                                        navigation.navigate('User Information', {
+                                            screen: 'User Saved Post Stack'
+                                        })} >
+                                        <View style={styles.button3}>
+                                            <Text style={{ color: 'white', fontSize: 15, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Saved</Text>
+                                        </View>
+                                    </TouchableOpacity>
 
 
 
 
-                            </View>
+                                </View>
+                            }
                         </View>
                     </View>
-                    <View style = {{
-                        marginTop: height*0.38,
+                    <View style={{
+                        marginTop: height * 0.38,
                         position: 'absolute',
-                         flexDirection: 'column',
-                         width: '90%',
-                         alignSelf: 'center',
-                         alignItems:'flex-start'
+                        flexDirection: 'column',
+                        width: '90%',
+                        alignSelf: 'center',
+                        alignItems: 'flex-start'
                     }}>
                         <View style={{
-                        borderRadius: 20,
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-start',
-                        padding: 15,
-                        shadowOffset: { width: 1, height: 1 },
-                        shadowColor: 'black',
-                        shadowOpacity: 0.3,
-                        marginStart: 10
-                    }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <Ionicons style ={{marginEnd: 10}} name="location" size={24} color="white" />
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.address}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <FontAwesome5 style ={{marginEnd : 10}} name="birthday-cake" size={22} color="white" />
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.doB}</Text>
-                        </View>
-
-
-                    </View>
-
-
-                    <View style={{
-                        alignSelf: 'center',
-                        backgroundColor: 'white',
-                        width: '100%',
-                        height: logoHeight * 0.17,
-                        borderRadius: 20,
-                        alignSelf: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: 15,
-                        shadowOffset: { width: 1, height: 1 },
-                        shadowColor: 'black',
-                        shadowOpacity: 0.3,
-
-                    }}>
-                        <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                                <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{user.name}</Text>
-                                <Image source={require('../../assets/overrall.png')}
-                                    resizeMode='contain'
-                                    style={{
-                                        width: 25,
-                                        height: 25,
-                                    }
-                                    }
-                                />
-
+                            borderRadius: 20,
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            padding: 15,
+                            shadowOffset: { width: 1, height: 1 },
+                            shadowColor: 'black',
+                            shadowOpacity: 0.3,
+                            marginStart: 10
+                        }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                <Ionicons style={{ marginEnd: 10 }} name="location" size={24} color="white" />
+                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.address}</Text>
                             </View>
-                            <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}>{user.job}</Text>
-                        </View>
-                        <TouchableOpacity onPress = {()=>  
-                        navigation.navigate('User Information', {
-                        screen: 'Edit Profile'})}>
-                            <View style={{
-                                borderRadius: 20,
-                                padding: 7,
-                                backgroundColor: 'black',
-                                shadowOffset: { width: 1, height: 1 },
-                                shadowColor: 'black',
-                                shadowOpacity: 0.5,
-                            }}>
-                                {/* <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text> */}
-                                <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Edit Profile</Text>
-
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                <FontAwesome5 style={{ marginEnd: 10 }} name="birthday-cake" size={22} color="white" />
+                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>{user.doB}</Text>
                             </View>
-                        </TouchableOpacity>
-                    </View>
+
+
+                        </View>
+
+
+                        <View style={{
+                            alignSelf: 'center',
+                            backgroundColor: 'white',
+                            width: '100%',
+                            height: logoHeight * 0.17,
+                            borderRadius: 20,
+                            alignSelf: 'center',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: 15,
+                            shadowOffset: { width: 1, height: 1 },
+                            shadowColor: 'black',
+                            shadowOpacity: 0.3,
+
+                        }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+                                    <Text style={{ fontSize: 20, fontFamily: 'nunitobold', marginEnd: 5 }}>{user.name}</Text>
+                                    <Image source={require('../../assets/overrall.png')}
+                                        resizeMode='contain'
+                                        style={{
+                                            width: 25,
+                                            height: 25,
+                                        }
+                                        }
+                                    />
+
+                                </View>
+                                <Text style={{ fontFamily: 'nunitobold', color: 'dimgrey' }}>{user.job}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() =>
+                                navigation.navigate('User Information', {
+                                    screen: 'Edit Profile'
+                                })}>
+                                <View style={{
+                                    borderRadius: 20,
+                                    padding: 7,
+                                    backgroundColor: 'black',
+                                    shadowOffset: { width: 1, height: 1 },
+                                    shadowColor: 'black',
+                                    shadowOpacity: 0.5,
+                                }}>
+                                    {/* <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Follow</Text> */}
+                                    <Text style={{ color: 'white', fontSize: 17, paddingStart: 15, paddingEnd: 15, fontFamily: 'nunitobold' }}>Edit Profile</Text>
+
+                                </View>
+                            </TouchableOpacity>
+                        </View>
 
                     </View>
-                   
+
                     {/* <TouchableOpacity style={{ position: 'absolute', marginTop: 5, marginStart: 15 }} onPress = {CountPost} >
                         <View style={{ flexDirection: 'row', marginBottom: 15, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Thien Pham</Text>

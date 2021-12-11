@@ -274,7 +274,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
                                 data={data.listImage}
                                 renderItem={({ item }) => (
                                     // <Image style={Poststyle.imagepost} source={imagespost.imagepost[item.image]} />
-                                    <Image style={Poststyle.imagepost_detailstatus} source={{ uri: item.uri }} />
+                                    <Image style={Poststyle.imagepost_detailstatus} source={{ uri: item.url }} />
 
                                 )}
                                 keyExtractor={item => item.key} />

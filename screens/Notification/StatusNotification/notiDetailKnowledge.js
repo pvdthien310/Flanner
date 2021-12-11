@@ -293,7 +293,7 @@ const StatusNotiDetailKnowledge = ({ route, navigation }) => {
                                     data={data.listImage}
                                     renderItem={({ item }) => (
                                         <View>
-                                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                                            <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
 
                                         </View>
 

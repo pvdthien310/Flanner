@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import Toast from 'react-native-root-toast';
 import base64 from 'react-native-base64'
 import { URL_local } from '../../constant.js';
+import SavedPostApi from '../../API/SavedPostAPI.js';
 
 export default function ConfirmEmail({ route, navigation }) {
 
@@ -71,7 +72,31 @@ export default function ConfirmEmail({ route, navigation }) {
                 reportedNum: '0',
             })
         }).then(res => res.json())
-            .then(data => { })
+            .then(data => {
+                SavedPostApi.AddSavedPost({
+                    userID: makeUserId()
+                }).then(result => {
+                    let toast = Toast.show('Sign up successfully', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    navigation.navigate('DrawerStack')
+                }
+                )
+                    .catch(err => {
+                        console.log(err)
+                        let toast = Toast.show('Sign up failed', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                        });
+                    })
+            })
             .catch(err => {
                 console.log("error", err)
             })
@@ -97,14 +122,7 @@ export default function ConfirmEmail({ route, navigation }) {
         }
         else {
             _submitData()
-            let toast = Toast.show('Sign up successfully', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            navigation.navigate('DrawerStack')
+            
         }
     }
     return (

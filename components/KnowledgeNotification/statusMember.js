@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { Alert, StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
+import { Alert, StyleSheet, Text, View, FlatList,Image, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../shared/post'
 import { UserInfo } from '../../shared/post'
 import { Poststyle } from '../../styles/poststyle'
@@ -13,6 +13,8 @@ import NotificationApi from '../../API/NotificationAPI';
 import ReportApi from '../../API/ReportAPI';
 import Toast from 'react-native-root-toast';
 import Api from '../../API/UserAPI';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 
 const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
@@ -403,7 +405,7 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     data={item.listImage}
                     renderItem={({ item }) => (
-                        <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                        <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
 
                     )}
                     keyExtractor={item => item.key}
