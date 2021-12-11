@@ -34,6 +34,7 @@ const ChannelScreen = ({ navigation, route }) => {
 
     const fetchMembers = async () => {
         const response = await channel.queryMembers({});
+        console.log(members)
         setMembers(response.members);
     };
 
@@ -44,7 +45,14 @@ const ChannelScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (members.length === 2) {
-            setNameHeader(members[1].user.name);
+            var i;
+            for(i = 0; i < 2; i++) {
+                if(members[i].user.id != user.userID)
+                {
+                    setNameHeader(members[i].user.name);
+                    break;
+                }
+            }
         } else {
             setNameHeader(channel.data.name);
         }
@@ -52,7 +60,14 @@ const ChannelScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (members.length === 2) {
-            setImgHeader(members[1].user.image);
+            var i;
+            for(i = 0; i < 2; i++) {
+                if(members[i].user.id != user.userID)
+                {
+                    setImgHeader(members[i].user.image);
+                    break;
+                }
+            }
         } else {
             setImgHeader("https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-communication-communication-kiranshastry-lineal-kiranshastry.png");
         }

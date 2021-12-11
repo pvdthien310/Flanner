@@ -16,6 +16,8 @@ const CreateFessScreen = ({ navigation, route }) => {
 
     const { client } = useChatContext();
     const [users, setUsers] = useState([]);
+    const [masterData, setmasterData] = useState([]);
+    const [search, setSearch] = useState('');
 
     const [membersList, setMembersList] = useState([]);
 
@@ -24,6 +26,7 @@ const CreateFessScreen = ({ navigation, route }) => {
     const fetchUsers = async () => {
         const response = await client.queryUsers({});
         setUsers(response.users);
+        setmasterData(response.users);
     };
     function getMembersID() {
         var i;
@@ -47,6 +50,23 @@ const CreateFessScreen = ({ navigation, route }) => {
             createFessChannel();
         }
     }, [membersIDList]);
+
+    const searchFilter = (text) => {
+        if (text) {
+            const newData = masterData.filter((item) => {
+                const itemData = item.name ?
+                    item.name.toUpperCase()
+                    : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setUsers(newData);
+            setSearch(text);
+        } else {
+            setUsers(masterData);
+            setSearch(text);
+        }
+    }
 
     const createAlert = () =>
         Alert.alert(
@@ -150,6 +170,9 @@ const CreateFessScreen = ({ navigation, route }) => {
                 }}></View>
                 <TextInput style={{ backgroundColor: 'whitesmoke', paddingLeft: 15, padding:10, marginTop: 10, height: 40, borderRadius: 15, color: 'black', fontSize: 15 }}
                     placeholder="Search here..."
+                    value={search}
+                    underlineColorAndroid="transparent"
+                    onChangeText={(text) => searchFilter(text)}
                 />
 
                 <ScrollView>
