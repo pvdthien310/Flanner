@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
+import AboutMember from '../../components/About/AboutMember';
+import { Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
@@ -47,13 +50,13 @@ const AboutScreen = ({ navigation }) => {
 
     const aboutFlaner2 = "\nFlâner will broadly your mind. All kinds of experience on one screen. " +
         "Flâner dictionary has no word like nodus tollen for you. Let make some friends" +
-        " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. \nIt is Flâner! Best way to entertain!"
+        " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. \n\nIt is Flâner! Best way to entertain!"
 
     return (
         <ScrollView>
             <View style={styles.container}>
                 {/* About Flaner */}
-                <View> 
+                <View>
                     <Text style={styles.title}> Flâner </Text>
 
                     <View style={{
@@ -70,7 +73,7 @@ const AboutScreen = ({ navigation }) => {
                             textAlign: 'auto',
                             marginBottom: -2,
                             ///   backgroundColor: 'blue',
-                        }}> {aboutFlaner1} </Text>
+                        }}>{aboutFlaner1} </Text>
 
                         <Image source={require('../../assets/logo/logo.png')}
                             style={{
@@ -110,38 +113,38 @@ const AboutScreen = ({ navigation }) => {
                     <FlatList data={members}
                         keyExtractor={members.id}
                         renderItem={({ item }) => (
-                            <View style={styles.memberList}>
-                                <Image style={{
-                                    backgroundColor: 'black',
-                                    borderRadius: 20,
-                                    width: 60,
-                                    height: 60
-                                }} ///source={}
-                                />
+                            // <View style={styles.memberList}>
+                            //     <Image style={{
+                            //         backgroundColor: 'black',
+                            //         borderRadius: 20,
+                            //         width: 60,
+                            //         height: 60
+                            //     }} ///source={}
+                            //     />
 
-                                <View style={{
-                                    marginLeft: 20,
-                                    paddingTop: 5
-                                }}>
-                                    <Text style={{
-                                        fontFamily: 'nunitobold',
-                                        fontStyle: 'bold',
-                                        fontSize: 15
-                                    }}
-                                    >{item.name}</Text>
+                            //     <View style={{
+                            //         marginLeft: 20,
+                            //         paddingTop: 5
+                            //     }}>
+                            //         <Text style={{
+                            //             fontFamily: 'nunitobold',
+                            //             fontStyle: 'bold',
+                            //             fontSize: 15
+                            //         }}
+                            //         >{item.name}</Text>
 
-                                    <Text style={{
-                                        fontFamily: 'nunitobold',
-                                        fontStyle: 'italic',
-                                        fontSize: 12,
-                                        paddingTop: 10,
-                                        
-                                    }}>{item.email}</Text>
+                            //         <Text style={{
+                            //             fontFamily: 'nunitobold',
+                            //             fontStyle: 'italic',
+                            //             fontSize: 12,
+                            //             paddingTop: 10,
 
-                                </View>
+                            //         }}>{item.email}</Text>
 
+                            //     </View>
 
-                            </View>
+                            <AboutMember item={item.id}></AboutMember>
+                            // </View>
                         )}
                     />
 
@@ -178,34 +181,89 @@ const AboutScreen = ({ navigation }) => {
                 {/* Software Information */}
                 <View>
                     <Text style={styles.title}>Application Infomation </Text>
-                    <View style = {styles.softwareInfoView}>
-                        <Text style = {styles.infoCaption}
+                    <View style={styles.softwareInfoView}>
+                        <Text style={styles.infoCaption}
                         >Version: </Text>
-                        <Text style = {styles.infoContent}>1.0</Text>
+                        <Text style={styles.infoContent}>1.0</Text>
                     </View>
 
-                    <Text style = {{
-                          fontFamily: 'nunitoregular',
-                          fontSize: 15,
-                          paddingLeft: 25
+                    <Text style={{
+                        fontFamily: 'nunitoregular',
+                        fontSize: 15,
+                        paddingLeft: 25
                     }}>Application permission requirements: </Text>
 
-                    <View style={{
-                        flexDirection: 'row',
-                        padding: 5,
-                        marginLeft: 30
+                    <View style = {{
+                        flexDirection: 'column'
                     }}>
-                        <AntDesign name="camera" size={24} color="dimgray" />
-                        <View style = {{
-                            flexDirection : 'row'
+                        <View style={{
+                            flexDirection: 'row',
+                            padding: 5,
+                            marginLeft: 30
                         }}>
-                            <Text style = {styles.permissionTitle}>Camera: </Text>
-                            <View style = {{flexDirection: 'column'}}>
-                                <Text style = {styles.permissionContent}>Take photo </Text>
+                            <AntDesign name="camera" size={23} color="dimgray"
+                                style={{
+                                    paddingTop: 3
+                                }} />
+                            <View style={{
+                                flexDirection: 'column'
+                            }}>
+                                <Text style={styles.permissionTitle}>Camera: </Text>
+                                <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                                    <Entypo name="dot-single" size={23} color="dimgray" />
+                                    <Text style={styles.permissionContent}>Take photo </Text>
+                                </View>
+
                             </View>
-                            
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            padding: 5,
+                            marginLeft: 30
+                        }}>
+                            <MaterialIcons name="storage" size={24} color="dimgray" 
+                                style={{
+                                    paddingTop: 3
+                                }} />
+                            <View style={{
+                                flexDirection: 'column'
+                            }}>
+                                <Text style={styles.permissionTitle}>Storage: </Text>
+                                <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                                    <Entypo name="dot-single" size={23} color="dimgray" />
+                                    <Text style={styles.permissionContent}>Read data in storage</Text>
+                                </View>
+
+                            </View>
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            padding: 5,
+                            marginLeft: 30
+                        }}>
+                            <MaterialIcons name="devices-other" size={24} color="dimgray" 
+                                style={{
+                                    paddingTop: 3
+                                }} />
+                            <View style={{
+                                flexDirection: 'column'
+                            }}>
+                                <Text style={styles.permissionTitle}>Others: </Text>
+                                <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                                    <Entypo name="dot-single" size={23} color="dimgray" />
+                                    <Text style={styles.permissionContent}>Wifi connection</Text>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                                    <Entypo name="dot-single" size={23} color="dimgray" />
+                                    <Text style={styles.permissionContent}>Fetch data from the Internet</Text>
+                                </View>
+                            </View>
                         </View>
                     </View>
+
                 </View>
 
 
@@ -231,9 +289,9 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingLeft: 15,
         textAlign: 'left',
-        fontFamily: 'nunitoregular',
+        fontFamily: 'nunitobold',
         fontSize: 20,
-        fontWeight: 'bold'
+        //fontWeight: 'bold'
     },
 
     memberList: {
@@ -260,7 +318,7 @@ const styles = StyleSheet.create({
     },
 
     infoContent: {
-      ///  fontStyle: 'italic',
+        ///  fontStyle: 'italic',
         fontFamily: 'nunitoregular',
         fontSize: 15,
     },
@@ -269,7 +327,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'nunitoregular',
         paddingLeft: 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingVertical: 5
     },
 
     permissionContent: {

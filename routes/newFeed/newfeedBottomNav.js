@@ -86,7 +86,8 @@ export const BottomNavigator = (props) => {
                     height: 72,
                     borderRadius: 35,
                     backgroundColor: 'ghostwhite',
-                    position: 'absolute'
+                   /// position: 'absolute'
+                   position: 'relative'
                 }}>
                 <View
                     style={{
