@@ -53,11 +53,18 @@ const AboutScreen = ({ navigation }) => {
         " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. \n\nIt is Flâner! Best way to entertain!"
 
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator = {false}>
             <View style={styles.container}>
                 {/* About Flaner */}
                 <View>
-                    <Text style={styles.title}> Flâner </Text>
+                    <View style ={{
+                        backgroundColor:'black',
+                        padding:10,
+                        borderRadius:5
+                        
+                    }}>
+                    <Text style={styles.title}> Flâner</Text>
+                    </View>
 
                     <View style={{
                         flexDirection: 'row',
@@ -103,7 +110,7 @@ const AboutScreen = ({ navigation }) => {
 
                 {/* About Team */}
                 <View>
-                    <Text style={styles.title}>Our Team</Text>
+                    <Text style={{...styles.title,color:'black',marginStart:10}}>Our Team</Text>
 
                     <Text style={{
                         fontFamily: 'nunitoregular',
@@ -180,7 +187,7 @@ const AboutScreen = ({ navigation }) => {
 
                 {/* Software Information */}
                 <View>
-                    <Text style={styles.title}>Application Infomation </Text>
+                    <Text style={{...styles.title,color:'black',marginStart:10}}>Application Infomation </Text>
                     <View style={styles.softwareInfoView}>
                         <Text style={styles.infoCaption}
                         >Version: </Text>
@@ -282,15 +289,15 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         flex: 1,
         backgroundColor: 'whitesmoke',
-        marginBottom: 50
+        marginBottom: 10
     },
 
     title: {
-        paddingTop: 10,
-        paddingLeft: 15,
+        
         textAlign: 'left',
         fontFamily: 'nunitobold',
         fontSize: 20,
+        color:'white'
         //fontWeight: 'bold'
     },
 
