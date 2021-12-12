@@ -375,7 +375,7 @@ export default function EditKnowledge({ route, navigation }) {
                     data={image}
                     renderItem={({ item }) => (
                         <View style={{ flexDirection: 'column' }}>
-                            <Image style={styles.image} source={{ uri: item.uri }} />
+                            <Image style={styles.image} source={{ uri: item.url ? item.url : item.uri }} />
                             <TouchableOpacity style={{ position: 'absolute' }} onPress={() => {
                                 DeleteImagelist(item.uri)
                             }}>
