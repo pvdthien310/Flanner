@@ -8,8 +8,6 @@ const JWTRoute = require('./routes/JWTRoute')
 const JWTRefTokens = require('../server/models/JWTRefTokens')
 const jwt = require('jsonwebtoken')
 
-
-
 /// Process file json and env
 app.use(bodyParser.json())
 dotenv.config();
@@ -74,8 +72,7 @@ app.use('/get-accessToken', (req, res) => {
 
 app.use('/logout', (req, res) => {
     const refreshToken = req.body.token;
-    refreshTokens = refreshTokens.filter((refToken) => refToken !== refreshToken);
-
+    refreshTokens = refreshTokens.filter((refToken) => refToken !== refreshToken); 
     ///update Update refreshTokens into database 
     JWTRefTokens.findByIdAndUpdate('61a3b4c93b737600e720e39f',
         { "$pull": { "refreshTokens": refreshToken } },

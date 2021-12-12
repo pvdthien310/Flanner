@@ -171,7 +171,7 @@ export default function SignInScreen({ navigation }) {
                 if (element.password == base64.encode(dataTemp.password)) {
                     dispatch({ type: 'ADD_USER', payload: element })
                     _storeData()
-                    await JWTApi.getToken().then(
+                    await JWTApi.getToken(element.userID).then(
                         res => {
                             if (element.position == '2') {
                                 navigation.navigate('DrawerStack', {

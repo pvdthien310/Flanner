@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, View, Image, Text, TouchableOpacity, AppState } from 'react-native'
+import { StyleSheet, View, Image, Text, TouchableOpacity, AppState, AsyncStorage } from 'react-native'
 import { images, Poststyle } from '../styles/poststyle'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
@@ -15,7 +15,7 @@ export const CustomDrawer = (props) => {
     const dispatch = useDispatch();
     const { _chosen } = useSelector(state => state.DrawerController)
     const { user } = useSelector(state => state.User)
-    const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
+   
     const { navigation } = props
     const [, forceRerender] = useState();
     useEffect(() => {
@@ -27,7 +27,8 @@ export const CustomDrawer = (props) => {
     }, [user.avatar])
 
     const Logout = async () => {
-        await JWTApi.logout(refreshToken)
+        let token = await AsyncStorage.getItem('refreshToken');
+        await JWTApi.logout(token)
             .then(res => {
                 navigation.navigate('SignInScreen');
             })
