@@ -177,7 +177,7 @@ function authenToken(req, res, next) {
 }
 
 KnowledgeRoute.get('/load-data/newsfeed/random', authenToken, (req, res) => {
-    Knowledge.aggregate([{ $sample: { size: 10 } }])
+    Knowledge.aggregate([{ $sample: { size: 15 } }])
         .then(data => {
             let processedList = data.filter(item => {
                 if(item.mode == 'public') return item

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import Post, { PostText, UserInfo, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -25,6 +25,28 @@ const DetailKnowledge = ({ route, navigation }) => {
     const [loading, setLoading] = useState(true)
     const [isNull, setIsNull] = useState(false)
 
+    const createTwoButtonAlert = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to navigate your profile?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => NavigateToCurrentUserProfile()
+                }
+            ]
+        );
+
+    const NavigateToCurrentUserProfile = () => {
+        navigation.navigate('User Information', {
+            screen: 'User Dashboard',
+            params: { user: '' },
+        })
+        dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+    }
 
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
@@ -65,7 +87,7 @@ const DetailKnowledge = ({ route, navigation }) => {
             senderID: user.userID,
             type: '1',
             action: 'React'
-        }).then(res => {})
+        }).then(res => { })
             .catch(err => console.log('Error send noti'))
 
     }
@@ -129,7 +151,8 @@ const DetailKnowledge = ({ route, navigation }) => {
             })
             .catch(err => {
                 setIsNull(true)
-                console.log(err)})
+                console.log(err)
+            })
     }
     const fetchHostData = () => {
         // const url = URL_local + 'user/load-user-by-userID/' + item.userID;
@@ -146,7 +169,7 @@ const DetailKnowledge = ({ route, navigation }) => {
             .then(res => {
                 setHost(res)
             })
-            .catch(err => console.log('Loi set user by id',err))
+            .catch(err => console.log('Loi set user by id', err))
     }
 
     useEffect(() => {
@@ -337,16 +360,16 @@ const DetailKnowledge = ({ route, navigation }) => {
                                     data={data.listImage}
                                     renderItem={({ item }) => (
                                         <View>
-                                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                                            <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
                                         </View>
                                     )}
                                     keyExtractor={item => item.key} />
                             </View>
 
                             <PostText>
-                               
+
                                 <Text style={Poststyle_Status.posttime_detail}>{data.posttime}</Text>
-                               
+
 
                                 <Text style={Poststyle_Status.title_detail}>{data.title}</Text>
                                 <Text style={Poststyle_Status.description_detail}>{data.description}</Text>
@@ -363,7 +386,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                                 <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.push('Knowledge Comment', { item : data })} >
+                                <TouchableOpacity onPress={() => navigation.push('Knowledge Comment', { item: data })} >
                                     <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>
@@ -378,38 +401,53 @@ const DetailKnowledge = ({ route, navigation }) => {
                                     marginEnd: 10
                                 }}
                             />
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'flex-start',
-                                backgroundColor: 'grey',
-                                shadowOffset: { width: 1, height: 1 },
-                                shadowColor: 'black',
-                                shadowOpacity: 0.2,
-                                shadowRadius: 2,
-                                borderRadius: 10,
-                                padding: 10
-                            }}>
-                                {
-                                    host.length > 0 ?
+                            <TouchableOpacity onPress={() => {
 
-                                        <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
-                                        :
-                                        <Image source={require('../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                                if (host.length > 0) {
+                                    if (host[0].email != user.email) {
+                                        navigation.push(
+                                            'Knowledge Friend Profile',
+                                            { item: host })
+                                    }
+                                    else {
+                                        createTwoButtonAlert()
+                                    }
                                 }
+                            }}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    backgroundColor: '#272727',
+                                    shadowOffset: { width: 1, height: 1 },
+                                    shadowColor: 'black',
+                                    shadowOpacity: 0.2,
+                                    shadowRadius: 2,
+                                    borderRadius: 10,
+                                    padding: 10
+                                }}>
+                                    {
+                                        host.length > 0 ?
 
-                                <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {host[0] ? host[0].name : item.username}</Text>
-                                    <Text style={{
-                                        fontFamily: 'nunitobold',
-                                        fontSize: 12,
-                                        marginStart: 5,
-                                        marginTop: 5,
-                                        color: 'white'
-                                    }}> Author</Text>
+                                            <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                            :
+                                            <Image source={require('../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                                    }
 
-                                </UserInfoText>
+                                    <UserInfoText>
+                                        <Text style={Poststyle_Status._name_detail}> {host[0] ? host[0].name : item.username}</Text>
+                                        <Text style={{
+                                            fontFamily: 'nunitobold',
+                                            fontSize: 12,
+                                            marginStart: 5,
+                                            marginTop: 5,
+                                            color: 'white'
+                                        }}> Author</Text>
 
-                            </View>
+                                    </UserInfoText>
+
+                                </View>
+                            </TouchableOpacity>
+
 
                         </ScrollView>
 

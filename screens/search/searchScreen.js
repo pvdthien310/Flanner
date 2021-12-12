@@ -145,7 +145,7 @@ const SearchScreen = ({ navigation }) => {
                                         <View
                                             style={{
                                                 width: width,
-                                                height: height 
+                                                height: height*0.8
                                             }}>
                                             <Text style={{ fontSize: 30, fontWeight: 'bold',padding:5, alignSelf: 'flex-start', color: 'black' }}>Result</Text>
                                             <ScrollView>
@@ -340,8 +340,8 @@ const styles = StyleSheet.create({
         paddingEnd: 5,
         paddingTop: 5,
         flex: 1,
-        backgroundColor: 'white'
-
+        backgroundColor: 'white',
+      
     },
     SearchBar: {
         paddingStart: 10,

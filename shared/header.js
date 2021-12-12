@@ -41,7 +41,7 @@ export const HeaderNews = ({ navigation, title }) => {
                 <View style={styles.headerTitle}>
 
                     <Image style={styles.headerImage} source={require('../assets/logo/logo.png')} />
-                    <Text style={styles.headerText}>{title}</Text>
+                    <Text style={{...styles.headerText}}>{title}</Text>
                 </View>
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} >
@@ -77,11 +77,7 @@ export const HeaderDrawer = ({ navigation, title }) => {
     }
     return (
         <View  style={styles.headerDrawer}>
-             {/* <TouchableOpacity onPress={pressgobackHandler}>
-                    <View style={{ flexDirection: 'row' }}>
-                    <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                    </View>
-                </TouchableOpacity> */}
+            
                 <Text style={styles.headerText}>{title}</Text>
         </View>
 
@@ -100,18 +96,20 @@ const styles = StyleSheet.create({
 
     },
     headerDrawer: {
-        width: '120%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         padding: 0,
-        marginStart: 0
+        marginStart: 0,
+       
+       
     },
     headerText: {
         fontWeight: 'bold',
         fontSize: 20,
         letterSpacing: 1,
         marginTop: 5,
+        fontFamily:'nunitobold'
     },
     icon: {
         position: 'absolute',
@@ -119,7 +117,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     headerImage: {
 

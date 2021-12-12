@@ -8,6 +8,7 @@ import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { URL_local } from '../../../constant';
 import { MaterialIcons } from '@expo/vector-icons';
 import StatusApi from '../../../API/StatusAPI';
+import Toast from 'react-native-root-toast';
 
 
 
@@ -30,10 +31,27 @@ export default function EditStatus({ route, navigation }) {
     const [body, setBody] = useState(GetDetail('body'));
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
+    const [data,SetData] = useState(undefined)
 
     const pressgobackHandler = () => {
         navigation.goBack();
     }
+    const fetchData = () => {
+        StatusApi.getItem(item._id)
+            .then(res => {
+                SetData(res)
+            })
+            .catch(err => console.log(err))
+    }
+    useEffect(() => {
+        fetchData()
+    }, [])
+    useEffect(() => {
+        if (data) {
+            setBody(data.body)
+            setImage(data.listImage)
+        }
+    }, [data])
 
 
     const AddBody = (val) => {
@@ -138,8 +156,24 @@ export default function EditStatus({ route, navigation }) {
             })
             .then(res => {
                 fetchStatusData()
+                let toast = Toast.show('Add post successful!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
             })
-            .catch(err => console.log('Error Edit Status'))
+            .catch(err => {
+                let toast = Toast.show('Add post failed, please try again!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+             console.log('Error Edit Status')
+            })
         fetchStatusData();
         navigation.goBack();
     }
@@ -280,7 +314,7 @@ export default function EditStatus({ route, navigation }) {
                     data={image}
                     renderItem={({ item }) => (
                         <View style={{ flexDirection: 'column' }}>
-                            <Image style={styles.image} source={{ uri: item.uri }} />
+                            <Image style={styles.image} source={{uri: item.url ? item.url : item.uri  }} />
                             <TouchableOpacity style={{ position: 'absolute' }} onPress={() => {
                                 DeleteImagelist(item.uri)
                             }}>

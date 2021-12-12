@@ -9,10 +9,7 @@ export const StaffManagerStack = (props) => {
     const { navigation } = props
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            
             <Stack.Screen name='Staff Screen' component={StaffScreen} />
-
-
         </Stack.Navigator>
     )
 }

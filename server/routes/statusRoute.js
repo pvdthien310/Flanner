@@ -19,7 +19,7 @@ StatusRoute.post('/delete', authenToken, (req, res) => {
 
 /// Add new member
 StatusRoute.post('/send-data', authenToken, (req, res) => {
-    console.log(req.body.mode)
+    // console.log(req.body.mode)
     const newStatus = new Status({
         username: req.body.username,
         userID: req.body.userID,
@@ -221,7 +221,7 @@ StatusRoute.get('/load-data/newsfeed/random/:userID', authenToken, (req, res) =>
                 if (item.following.indexOf(req.params.userID) != -1 && item.followed.indexOf(req.params.userID) != -1)
                     return item;
             })
-            console.log(processedList)
+            // console.log(processedList)
 
             Status.aggregate([{ $sample: { size: 10 } }])
                 .then(data => {

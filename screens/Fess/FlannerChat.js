@@ -1,145 +1,49 @@
-import React, {useState, useEffect, useRef} from 'react'
-import { View, Text, ActivityIndicator, StyleSheet, Animated, Image } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Entypo, MaterialIcons } from '@expo/vector-icons'
-import { ScrollView } from 'react-native-gesture-handler'
-import Profiles from '../../components/Fess/Profiles'
-import Messages from '../../components/Fess/Messages'
+import React, {useState, useEffect, useRef, useContext} from 'react'
+import { LogBox, ActivityIndicator, ScrollView, Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import {useChatContext, 
+        OverlayProvider, 
+        ChannelList, 
+        useChannelsContext} from 'stream-chat-expo'
+import {LinearGradient} from 'expo-linear-gradient';
+import UserListItemInFessScr from './../../components/Fess/ChannelList/UserListItemInFessScr';
+import {SafeAreaView} from 'react-native-safe-area-context'
 
-const Chat = (props) => {
-    const URL = `https://api.github.com/users`;  //Tap cac user 
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true)
-    
-    const pan = useRef(new Animated.ValueXY()).current;
-    const list = useRef(new Animated.ValueXY()).current;
 
-    useEffect(function() {
-        const getData = async () => {
-            const resp = await fetch(URL);
-            const data = await resp.json();
-            setData(data);
-            setLoading(false);
-        };
-        getData();
-
-        Animated.timing(pan, {
-            toValue:{x:-400,y:0},
-            delay:1000,
-            useNativeDriver:false
-        }).start();
-
-        Animated.timing(list, {
-            toValue:{x:0,y:-300},
-            delay:2000,
-            useNativeDriver:false
-        }).start();
-
-    }, [])
-
-    console.log(data.login)
-
-    return(
-       <LinearGradient
-        colors={['black', 'black', 'black']}
-        style={styles.gradient}
-       >
-           <View style={styles.headerContainer}>
-                <Text style={styles.header}>Fess</Text>
-                <MaterialIcons name="add" color='#fff' size={35}/>
-           </View>
-           <ScrollView
-                horizontal
-                style={styles.proContainer}
-                showsHorizontalScrollIndicator={false}
-           >
-                {loading ? 
-                    (
-                        <ActivityIndicator size='small' color='#FFF'/>
-                    ):(
-                        <Animated.View style={[pan.getLayout(),styles.card]}>
-                            {
-                                data.map((item, index) => (
-                                    <Profiles
-                                        key={item.id}
-                                        username={item.login}
-                                        uri={item.avatar_url}
-                                    />
-                                ))
-                            }
-                        </Animated.View>
-                    )
-                }
-           </ScrollView>
-           <View style={styles.ops}>
-                <View style={styles.col}>
-                    <Text style={styles.day}>Sunday</Text>
-                    <Entypo name='dots-three-horizontal' color='#000119' size={30}/>
-                </View>
-                <ScrollView>
-                    {
-                        loading ? 
-                        (
-                            <ActivityIndicator size='large' color='#f20042'/>
-                        ):(
-                            <Animated.View style={[list.getLayout(), styles.list]}>
-                                {
-                                    data.map((item, index) => (
-                                            <Messages
-                                                key={item.id}
-                                                username={item.login}
-                                                uri={item.avatar_url}
-                                                count={Math.floor(Math.random() * 3)}
-                                                onPress={()=>{
-                                                    props.navigation.navigate('Discussion',{
-                                                        itemId:item.id,
-                                                        itemName:item.login,
-                                                        itemPic:item.avatar_url
-                                                    });
-                                                }}
-                                            />
-                                    ))}
-                            </Animated.View>
-                        )}
-                </ScrollView>
-           </View>
-       </LinearGradient>
-    )
-}
-export default Chat;
-
+LogBox.ignoreAllLogs(true);
 const styles = StyleSheet.create({
-    list:{
-        marginTop:300,
+  gradient:{
+        height:'100%',
+        position:"absolute",
+        backgroundColor: '#313149',
+        paddingHorizontal:20,
+        paddingTop:30
+    },
+    headerContainer:{
+        justifyContent: 'center',
+        flexDirection:'row',
+        alignSelf:'center',
+        alignItems: 'center',
+    },
+    header:{
+        color:'#FFF',
+        fontSize:24,
+        fontWeight:'bold',
+        alignSelf: 'center',
+    },
+     proContainer:{
+        marginRight:-20,
+        alignSelf:'center',
+      
+        marginBottom: 0,
+        height: "5%",
     },
     card:{
         marginLeft:400,
-        width:400,
+        width:"100%",
+        height: "100%",
         flexDirection:'row'
-    },
-    gradient:{
-        height:'100%',
-        position:"absolute",
-        left:0,
-        right:0,
-        top:0,
-        paddingHorizontal:20,
-        paddingTop:50
-    },
-    headerContainer:{
-        flexDirection:'row',
-        alignItems:'center'
-    },
-    header:{
-        fontFamily:'nunitobold',
-        color:'#FFF',
-        flex:1,
-        fontSize:30,
-        
-    },
-    proContainer:{
-        marginRight:-20,
-        alignSelf:'center'
     },
     ops:{
         borderTopLeftRadius:40,
@@ -155,9 +59,123 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     day:{
-        fontFamily:'nunitobold',
         color:'#000119',
         flex:1,
-        fontSize:25
+        fontSize:17,
+        fontWeight:'bold'
+    },
+});
+
+const sort = { last_message_at: -1 };
+
+const Fess = ({navigation}) => {
+   
+ const { user } = useSelector(state => { return state.User })
+ const[isReady, setIsReady] = useState(false);
+ const{client} = useChatContext();
+ const[users, setUsers] = useState([]);
+ const [loading, setLoading] = useState(true)
+    
+ const pan = useRef(new Animated.ValueXY()).current;
+ const list = useRef(new Animated.ValueXY()).current;
+
+
+    useEffect( () =>
+    {
+        const connectUser = async () =>{
+            await client.connectUser(
+                {
+                    id: user.userID,
+                    name: user.name,
+                    image: user.avatar,
+                },
+                client.devToken(user.userID)
+            );
+            setIsReady(true);
+        };
+         const fetchUsers = async () => {
+            const resp = await client.queryUsers({});
+            setUsers(resp.users);
+            setLoading(false);
+        };
+        connectUser();
+        fetchUsers();
+        Animated.timing(pan, {
+            toValue:{x:-400,y:0},
+            delay:1000,
+            useNativeDriver:false
+        }).start();
+
+        Animated.timing(list, {
+            toValue:{x:0,y:-300},
+            delay:2000,
+            useNativeDriver:false
+        }).start();
+        return () => client.disconnectUser();
+    },[]);
+
+    const filters = {
+        members: {
+            $in: [user.userID]
+        }
     }
-})
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+    var yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+    const onChannelPressed = (channel) => {
+        navigation.navigate("Channel", {channel});
+    }
+
+    console.log(isReady);
+    if(!isReady)
+    {
+        return null;
+    } else {
+        return(
+            <View style={styles.gradient}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.header}>Fess</Text>
+                </View>
+                <ScrollView
+                horizontal
+                style={styles.proContainer}
+                showsHorizontalScrollIndicator={false}
+                >
+                {loading ? 
+                    (
+                        <ActivityIndicator size='small' color='#FFF'/>
+                    ):(
+                        <Animated.View style={[pan.getLayout(),styles.card]}>
+                            {
+                                users.map((item) => (
+                                    <UserListItemInFessScr
+                                        tempUser={item}
+                                        keyExtractor={item => item.id.toString()}
+                                        key={item.id.toString()}
+                                    />
+                                ))
+                            }
+                        </Animated.View>
+                    )
+                }
+                </ScrollView>
+                <View style={{marginTop: "-270%" ,height: 1, borderWidth: 1, backgroundColor: 'black', width: '100%'}}></View>
+                <SafeAreaProvider style={{ backgroundColor: '#313149',marginTop: "110%", marginBottom: '20%'}}>
+                    <OverlayProvider>
+                        <ChannelList onSelect={onChannelPressed} filters={filters} 
+                                     sort={sort} />  
+                    </OverlayProvider>
+                </SafeAreaProvider>
+         </View>   
+    )
+    }
+   
+}
+export default Fess;
+
+
+
