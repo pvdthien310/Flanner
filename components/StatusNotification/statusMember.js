@@ -112,7 +112,10 @@ const StatusMemberForStatusNoti = ({ item, navigation }) => {
                     style: "cancel"
                 },
 
-            ]
+            ],
+            {
+                cancelable:true
+            }
         );
 
     const ReportPost = (reason) => {

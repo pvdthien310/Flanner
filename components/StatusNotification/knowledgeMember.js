@@ -85,7 +85,10 @@ const AddSavedPost = () => {
                     style: "cancel"
                 },
 
-            ]
+            ],
+            {
+                cancelable:true
+            }
         );
 
 
