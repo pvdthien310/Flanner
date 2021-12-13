@@ -10,20 +10,20 @@ const AboutMember = ({ item, navigation }) => {
     const dispatch = useDispatch()
     const { user } = useSelector(state => { return state.User })
 
-    const createTwoButtonAlert = () =>
-        Alert.alert(
-            "Notification",
-            "Do you want to navigate your profile?",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                },
-                {
-                    text: "OK", onPress: () => NavigateToCurrentUserProfile()
-                }
-            ]
-        );
+    // const createTwoButtonAlert = () =>
+    //     Alert.alert(
+    //         "Notification",
+    //         "Do you want to navigate your profile?",
+    //         [
+    //             {
+    //                 text: "Cancel",
+    //                 onPress: () => console.log("Cancel Pressed"),
+    //             },
+    //             {
+    //                 text: "OK", onPress: () => NavigateToCurrentUserProfile()
+    //             }
+    //         ]
+    //     );
 
     const NavigateToCurrentUserProfile = () => {
         navigation.navigate('User Information', {

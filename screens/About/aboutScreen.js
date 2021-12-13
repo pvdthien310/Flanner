@@ -16,6 +16,7 @@ import { AntDesign } from '@expo/vector-icons';
 import AboutMember from '../../components/About/AboutMember';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
@@ -191,6 +192,27 @@ const AboutScreen = ({ navigation }) => {
                                 <View style={{ flexDirection: 'row', marginLeft: 30 }}>
                                     <Entypo name="dot-single" size={23} color="dimgray" />
                                     <Text style={styles.permissionContent}>Take photo </Text>
+                                </View>
+
+                            </View>
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            padding: 5,
+                            marginLeft: 30
+                        }}>
+                            <Ionicons name="library" size={23} color="gray" 
+                                style={{
+                                    paddingTop: 3
+                                }} />
+                            <View style={{
+                                flexDirection: 'column'
+                            }}>
+                                <Text style={styles.permissionTitle}>Library: </Text>
+                                <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                                    <Entypo name="dot-single" size={23} color="dimgray" />
+                                    <Text style={styles.permissionContent}>Get photo in your library</Text>
                                 </View>
 
                             </View>
