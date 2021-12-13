@@ -55,16 +55,18 @@ app.use('/get-refreshToken', (req, res) => {
 })
 app.use('/get-accessToken', (req, res) => {
     const data = req.body;
-    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' });
+    const accessToken = jwt.sign(data,  process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' });
     const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
     refreshTokens.push(refreshToken);
-    console.log(data)
+    console.log(process.env.ACCESS_TOKEN_SECRET)
+    
     //// Update refreshTokens into database
     JWTRefTokens.findByIdAndUpdate('61a3b4c93b737600e720e39f',
         { "$push": { "refreshTokens": refreshToken } },
         { "new": true, "upsert": true }
     ).then((data) => {
         res.json({ accessToken, refreshToken });
+        console.log({ accessToken, refreshToken })
     })
         .catch(err => console.log(err))
     //
