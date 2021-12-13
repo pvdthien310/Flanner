@@ -103,7 +103,7 @@ const AboutScreen = ({ navigation }) => {
                         fontSize: 15,
                         paddingTop: 0,
                         textAlign: 'justify',
-                        ///   backgroundColor: 'blue',
+                   
                         marginTop: -25,
                     }}> {aboutFlaner2} </Text>
                 </View>
@@ -120,35 +120,7 @@ const AboutScreen = ({ navigation }) => {
                     <FlatList data={members}
                         keyExtractor={members.id}
                         renderItem={({ item }) => (
-                            // <View style={styles.memberList}>
-                            //     <Image style={{
-                            //         backgroundColor: 'black',
-                            //         borderRadius: 20,
-                            //         width: 60,
-                            //         height: 60
-                            //     }} ///source={}
-                            //     />
-
-                            //     <View style={{
-                            //         marginLeft: 20,
-                            //         paddingTop: 5
-                            //     }}>
-                            //         <Text style={{
-                            //             fontFamily: 'nunitobold',
-                            //             fontStyle: 'bold',
-                            //             fontSize: 15
-                            //         }}
-                            //         >{item.name}</Text>
-
-                            //         <Text style={{
-                            //             fontFamily: 'nunitobold',
-                            //             fontStyle: 'italic',
-                            //             fontSize: 12,
-                            //             paddingTop: 10,
-
-                            //         }}>{item.email}</Text>
-
-                            //     </View>
+                          
 
                             <AboutMember item={item.id}></AboutMember>
                             // </View>

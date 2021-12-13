@@ -117,7 +117,7 @@ const AboutMember = ({ item, navigation }) => {
                         }}>
                             <Text style={{
                                 fontFamily: 'nunitobold',
-                                fontStyle: 'bold',
+                                
                                 fontSize: 15,
                                 color: 'black'
                             }}
@@ -125,7 +125,7 @@ const AboutMember = ({ item, navigation }) => {
 
                             <Text style={{
                                 fontFamily: 'nunitobold',
-                                fontStyle: 'italic',
+                                fontStyle:'italic',
                                 fontSize: 12,
                                 paddingTop: 10,
                                 
