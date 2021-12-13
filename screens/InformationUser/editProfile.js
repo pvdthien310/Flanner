@@ -3,6 +3,7 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacit
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { MaterialIcons } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
@@ -103,7 +104,7 @@ const EditProFile = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsMultipleSelection: true,
       allowsEditing: true,
-      aspect: [4, 6],
+      aspect: [4, 5],
       quality: 1,
     });
 
@@ -265,6 +266,11 @@ const EditProFile = ({ navigation }) => {
           <AntDesign name="edit" size={24} color="black" />
         </TouchableOpacity>
 
+        <TouchableOpacity style={{ width: 45, position: 'absolute' }} onPress={pressgobackHandler}>
+          <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
+            <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+          </View>
+        </TouchableOpacity>
 
         <View style={{ marginLeft: 20, marginRight: 30, marginTop: 10 }}>
           <Text style={styles.title}>Email Address</Text>
@@ -274,18 +280,8 @@ const EditProFile = ({ navigation }) => {
           <TextInput style={styles.info} onChangeText={changeName} value={name} />
 
           <Text style={styles.title}>Bio</Text>
-          <View style={{
-
-            borderRadius: 5,
-            padding: 10,
-            backgroundColor: 'white',
-            shadowColor: 'black',
-            shadowOpacity: 0.5,
-            shadowRadius: 2,
-            shadowOffset: { width: 1, height: 1 },
-
-          }}>
-            <TextInput multiline={true} style={{ ...styles.info, height: height * 0.2 }} onChangeText={changeBio} value={bio} />
+          <View style={styles.info}>
+            <TextInput multiline={true} textAlignVertical='bottom' style={{ ...styles.info }} onChangeText={changeBio} value={bio} />
           </View>
           <Text style={styles.title}>Contact</Text>
           <TextInput style={styles.info} onChangeText={changeContact} value={contact} />

@@ -12,7 +12,6 @@ export const CensorManagerStack = (props) => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Censor Screen' component={CensorScreen} />
             <Stack.Screen name='Detail Report Screen' component={DetailReport} />
-
         </Stack.Navigator>
     )
 }

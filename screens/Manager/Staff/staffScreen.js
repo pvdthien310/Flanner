@@ -54,6 +54,7 @@ const StaffScreen = ({ navigation }) => {
         pickerChange()
     }, [selectedValue])
 
+
     const pickerChange = () => {
         if (selectedValue == 'all') {
             setSelectedList(data)
@@ -70,7 +71,6 @@ const StaffScreen = ({ navigation }) => {
         else if (selectedValue == 'blocked') {
             setSelectedList(blocked)
         }
-
     }
 
     return (
@@ -79,7 +79,6 @@ const StaffScreen = ({ navigation }) => {
                 <Picker
                     selectedValue={selectedValue}
                     style={{ height: 50, width: 130, }}
-
                     onValueChange={(itemValue, itemIndex) => {
                         setSelectedValue(itemValue)
                     }}
@@ -91,10 +90,10 @@ const StaffScreen = ({ navigation }) => {
                     <Picker.Item label="Blocked" value="blocked" />
                 </Picker>
 
-                <TouchableOpacity style={{ alignContent: 'flex-end' }}>
+                <TouchableOpacity onPress={() => navigation.navigate('New Staff Screen')} style={{ alignContent: 'flex-end' }} >
+
                     <Entypo name="plus" size={24} color="black" />
                 </TouchableOpacity>
-
 
             </View>
 
@@ -106,26 +105,27 @@ const StaffScreen = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => {
                     return (
-                        <View style={styles.flatlist}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Image style={styles.img} source={{ uri: item.avatar }} />
-                                <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                                    <Text style={styles.info}>{item.name}</Text>
-                                    <Text style={styles.title}>{item.email}</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Edit Staff Screen', { item })}>
+                            <View style={styles.flatlist}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image style={styles.img} source={{ uri: item.avatar }} />
+                                    <View style={{ marginLeft: 10, justifyContent: 'center' }}>
+                                        <Text style={styles.info}>{item.name}</Text>
+                                        <Text style={styles.title}>{item.email}</Text>
+                                    </View>
+
                                 </View>
-
+                                <View style={{ position: 'absolute', alignSelf: 'flex-end' }}>
+                                    {item.position == '0' && <Text style={{ fontFamily: 'nunitobold', color: 'darkcyan', }}>Admin</Text>}
+                                    {item.position == '1' && <Text style={{ fontFamily: 'nunitobold', color: 'black', }}>Censor</Text>}
+                                    {item.reportedNum == '3' && <Text style={{ fontFamily: 'nunitobold', color: 'firebrick', }}>Blocked</Text>}
+                                </View>
                             </View>
-                            <View style={{ position: 'absolute', alignSelf: 'flex-end' }}>
-                                {item.position == '0' && <Text style={{ fontFamily: 'nunitobold', color: 'darkcyan', }}>Admin</Text>}
-                                {item.position == '1' && <Text style={{ fontFamily: 'nunitobold', color: 'black', }}>Censor</Text>}
-                                {item.reportedNum == '3' && <Text style={{ fontFamily: 'nunitobold', color: 'firebrick', }}>Blocked</Text>}
-                            </View>
-
-                        </View>
+                        </TouchableOpacity>
                     )
                 }}
             />
-        </View >
+        </View>
     )
 }
 

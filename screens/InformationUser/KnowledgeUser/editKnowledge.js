@@ -157,12 +157,12 @@ export default function EditKnowledge({ route, navigation }) {
             listImage: picture,
             react: route.params.item.react,
             reactNumber: '0',
-            mode : route.params.item.mode
+            mode: route.params.item.mode
         })
-        .then(res => {
-            fetchKnowledgeData()
-        })
-        .catch(err => console.log('Error Edit Knowledge'))
+            .then(res => {
+                fetchKnowledgeData()
+            })
+            .catch(err => console.log('Error Edit Knowledge'))
         fetchKnowledgeData();
         navigation.goBack();
     }
