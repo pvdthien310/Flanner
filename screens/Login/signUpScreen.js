@@ -9,25 +9,45 @@ import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../constant';
 import Api from '../../API/UserAPI';
 
+
 export default function SignUpScreen({ navigation }) {
 
     const dispatch = useDispatch()
+
+    const makeId = (length) => {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() *
+                charactersLength));
+        }
+        return result;
+    }
 
     const [dataTemp, setDataTemp] = useState({
         name: '',
         email: '',
         password: '',
+        contact: '',
         confirm: '',
         showPassword: false,
         showConfirm: false,
         checkUser: false,
         checkPassword: false,
-        verifyCode: makeId()
+        verifyCode: makeId(6)
     });
 
 
     const sendEmail = () => {
-        const url = URL_local + 'sendEmail'
+        // const value = {
+        //     from: 'flanerapplication <trithuc23232@gmail.com>',
+        //     to: '19522321@gm.uit.edu.vn',
+        //     subject: "hello",
+        //     html: '<h1>shin ne html</h1>'
+        // }
+        // sendMail(value)
+        const url = URL_local + '/sendEmail'
         fetch(url, {
             method: 'POST',
             headers: {
@@ -91,6 +111,12 @@ export default function SignUpScreen({ navigation }) {
             name: val
         })
     }
+    const ContactChange = (val) => {
+        setDataTemp({
+            ...dataTemp,
+            contact: val
+        })
+    }
 
     const signInHandle = async () => {
         if (dataTemp.name == "" || dataTemp.email == "" || dataTemp.password == "" || dataTemp.confirm == "") {
@@ -138,6 +164,7 @@ export default function SignUpScreen({ navigation }) {
         await Api.checkEmail(dataTemp.email).then(
             res => {
                 if (res != 'Email already exists') {
+
                     sendEmail()
                     let toast = Toast.show('We just sent you a verify code', {
                         duration: Toast.durations.SHORT,
@@ -187,6 +214,18 @@ export default function SignUpScreen({ navigation }) {
                             style={styles.accountEdt}
                             placeholder='Type your name'
                             onChangeText={(val) => NameChange(val)}
+                        />
+                    </View>
+                </View>
+
+                <View>
+                    <View style={styles.border}></View>
+                    <Text style={styles.accountTxt}> Name</Text>
+                    <View style={styles.accountView}>
+                        <TextInput
+                            style={styles.accountEdt}
+                            placeholder='Type your contact'
+                            onChangeText={(val) => ContactChange(val)}
                         />
                     </View>
                 </View>

@@ -9,7 +9,7 @@ const Api = {
         return res.data
     },
     getAll: async () => {
-        const res = await AuthClient.get(url);
+        const res = await DatabaseClient.get('/user');
         return res.data
     },
     getUserItem: async itemId => {

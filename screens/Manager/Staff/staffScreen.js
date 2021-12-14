@@ -18,6 +18,13 @@ const StaffScreen = ({ navigation }) => {
     const [blocked, setBlock] = useState([])
     const [selectedList, setSelectedList] = useState([])
 
+    const [, resetForm] = useState()
+    useEffect(() => {
+        resetForm()
+        classify()
+        setSelectedList(data)
+    }, [data])
+
     const pressgobackHandler = () => {
         navigation.goBack();
     }

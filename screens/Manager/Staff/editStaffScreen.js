@@ -13,6 +13,8 @@ const logoHeight = height * 0.5;
 const EditStaffScreen = ({ navigation, route }) => {
     const { item, poster } = route.params
 
+    const dispatch = useDispatch()
+
     const [loading, SetLoading] = useState(false)
     const [name, setName] = useState(item.name)
     const [contact, setContact] = useState(item.phoneNumber)
@@ -82,7 +84,7 @@ const EditStaffScreen = ({ navigation, route }) => {
                 animation: true,
                 hideOnPress: true,
             });
-
+            navigation.navigate('Staff Screen')
         }).catch(err => {
             let toast = Toast.show('Unlock failed, please try again', {
                 duration: Toast.durations.SHORT,
@@ -93,13 +95,11 @@ const EditStaffScreen = ({ navigation, route }) => {
             });
         })
     }
-    const fetchUserData = () => {
-        Api.getUserItem(item.userID)
-            .then(res => {
-                dispatch({ type: 'ADD_USER', payload: res[0] })
-                dispatch({ type: 'UPDATE_USER', payload: res[0] })
-            })
-            .catch(err => console.log('Error Load User'))
+    const fetchUserData = async () => {
+        await Api.getAll().then(result => {
+            dispatch({ type: 'ADD_DATA_USER', payload: result })
+
+        })
     }
 
     const unBlockHandle = () => {

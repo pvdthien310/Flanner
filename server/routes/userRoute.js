@@ -38,7 +38,7 @@ function authenToken(req, res, next) {
 }
 
 /// Get all members
-UserRoute.get('/', (req, res) => {
+UserRoute.get('/', authenToken, (req, res) => {
     User.find({})
         .then(data => {
             res.send(data)
@@ -186,8 +186,6 @@ String.prototype.replaceAll = function (
 }
 
 UserRoute.post('/send-data', authenToken, (req, res) => {
-
-
     User.findOne({ email: req.body.email })
         .then(data => {
             if (data) {
@@ -198,7 +196,6 @@ UserRoute.post('/send-data', authenToken, (req, res) => {
                     res.send('Email invalid')
                     return
                 }
-
                 else if (!checkContact(req.body.phoneNumber)) {
                     res.send('Contact consist of numeric and 10 characters')
                     return
@@ -241,8 +238,6 @@ UserRoute.post('/send-data', authenToken, (req, res) => {
             }
         })
         .catch(err => console.log(err))
-
-
 })
 
 UserRoute.post('/checkLogin', (req, res) => {
@@ -270,6 +265,7 @@ UserRoute.post('/checkLogin', (req, res) => {
         })
         .catch(err => console.log(err))
 })
+
 UserRoute.post('/checkEmail', (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
@@ -282,4 +278,6 @@ UserRoute.post('/checkEmail', (req, res) => {
         })
         .catch(err => console.log(err))
 })
+
+
 module.exports = UserRoute
