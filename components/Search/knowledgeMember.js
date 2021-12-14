@@ -85,7 +85,10 @@ const KnowledgeMemberForSearch = ({ item, navigation }) => {
                     style: "cancel"
                 },
 
-            ]
+            ],
+            {
+                cancelable:true
+            }
         );
 
 

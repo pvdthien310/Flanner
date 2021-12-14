@@ -70,10 +70,11 @@ export default function AddKnowledge({ route, navigation }) {
         console.log('In here !!!')
         const data = new FormData();
         data.append("file", photo)
-        data.append("upload_preset", "fyjwewqj")
-        data.append('folder', "Source/avatar")
+        data.append("upload_preset", "poster")
+        data.append('folder', "Source/flaner")
+        
 
-        fetch("https://api.cloudinary.com/v1_1/dithiencloud/image/upload", {
+        fetch("https://api.cloudinary.com/v1_1/flaner/image/upload", {
             method: 'POST',
             body: data,
             header: {

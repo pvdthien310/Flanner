@@ -35,7 +35,6 @@ export default function SplashScreen({ navigation }) {
 
     }, [])
 
-
     const data = [
         {
             key: "0",
@@ -182,7 +181,7 @@ export default function SplashScreen({ navigation }) {
                                         }]
                                     }}
                                 />
-                                <View style={{ position: 'absolute', bottom: 180, paddingLeft: 20, paddingRight: 20 }}>
+                                <View style={{ position: 'absolute', top: height * 0.6, paddingLeft: 20, paddingRight: 20 }}>
                                     <Text style={{ color: 'white', fontFamily: 'nunitobold', fontWeight: 'bold', fontSize: 27 }}>{item.title}</Text>
                                     <Text style={{ color: 'white', fontFamily: 'nunitoregular', fontSize: 15, padding: 10 }}>{item.description}</Text>
                                 </View>

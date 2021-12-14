@@ -15,6 +15,7 @@ import Toast from 'react-native-root-toast';
 import ReportApi from '../../API/ReportAPI';
 import Api from '../../API/UserAPI';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import SavedPostApi from '../../API/SavedPostAPI';
 
 
 
@@ -27,6 +28,46 @@ const KnowledgeStatusMember = ({ item, navigation }) => {
     const [data, setData] = useState(item)
     const [host, setHost] = useState(undefined)
 
+    const createTwoButtonAlert1 = () =>
+    Alert.alert(
+        "Notification",
+        "Do you want to save this post?",
+        [
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+            },
+            {
+                text: "OK", onPress: () => AddSavedPost()
+            }
+        ]
+    );
+const AddSavedPost = () => {
+    SavedPostApi.UpdateTrue(user.userID, item._id)
+        .then(res => {
+            if (res) {
+                dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                let toast = Toast.show('Save successful!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            }
+
+        })
+        .catch(err => {
+            console.log(err)
+            let toast = Toast.show('Save failed, please try again!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        })
+}
 
     const createTwoButtonAlert = () =>
         Alert.alert(
@@ -86,7 +127,10 @@ const KnowledgeStatusMember = ({ item, navigation }) => {
                     style: "cancel"
                 },
 
-            ]
+            ],
+            {
+                cancelable:true
+            }
         );
 
     const ReportPost = (reason) => {
@@ -324,6 +368,8 @@ const KnowledgeStatusMember = ({ item, navigation }) => {
     })
 
     return (
+        <TouchableOpacity onLongPress={() => createTwoButtonAlert1()} 
+        activeOpacity={1}>
         <Post >
             <TouchableOpacity onPress={() => createThreeButtonAlert()}>
                 <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
@@ -392,7 +438,7 @@ const KnowledgeStatusMember = ({ item, navigation }) => {
             </InteractionWrapper>
 
         </Post>
-        // </TouchableOpacity>
+         </TouchableOpacity>
 
     )
 

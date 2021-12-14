@@ -35,6 +35,13 @@ const Api = {
     updateReportNumber: async (updated_User,number) => {
         const res = await DatabaseClient.post('/user/update/'+ updated_User + '/' + number);
         return res.data;
+    } ,
+    checkLogin: async (email,password) => {
+        const res = await AuthClient.post(url + '/checkLogin',{
+            email : email,
+            password: password
+        });
+        return res.data;
     } 
     
 }

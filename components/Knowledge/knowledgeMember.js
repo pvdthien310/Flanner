@@ -87,7 +87,7 @@ const KnowledgeMember = ({ item, navigation }) => {
 
             ],
             {
-                cancelable: true,
+                cancelable:true
             }
         );
 
