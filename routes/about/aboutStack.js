@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import AboutScreen from '../../screens/About/aboutScreen'
 import PrivacyScreen from '../../screens/About/privacyScreen'
 import InstructionScreen from '../../screens/About/instructionScreen'
-
+import VideoInstructionScreen from'../../screens/About/videoInstructionScreen'
 
 
 const Stack = createNativeStackNavigator()
@@ -15,6 +15,7 @@ export const AboutStack = (props) => {
             <Stack.Screen name='About Screen' component={AboutScreen} />
             <Stack.Screen name='PrivacyScreen' component={PrivacyScreen} />
             <Stack.Screen name='InstructionScreen' component={InstructionScreen} />
+            <Stack.Screen name='VideoInstructionScreen' component ={VideoInstructionScreen}/>
         </Stack.Navigator>
     )
 }
