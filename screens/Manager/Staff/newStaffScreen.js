@@ -6,25 +6,24 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Toast from 'react-native-root-toast';
 import { MaterialIcons } from '@expo/vector-icons';
 import Api from '../../../API/UserAPI';
+import base64 from 'react-native-base64'
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 const NewStaffScreen = ({ navigation }) => {
     const [loading, SetLoading] = useState(false)
-    const [name, setName] = useState()
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [contact, setContact] = useState(r)
-    const [birthday, setBirthday] = useState()
-    const [address, setAddress] = useState()
-    const [position, setPosition] = useState()
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [contact, setContact] = useState('')
+    const [birthday, setBirthday] = useState('')
+    const [address, setAddress] = useState('')
 
 
     const pressgobackHandler = () => {
         navigation.goBack();
     }
-    const [selectedValue, setSelectedValue] = useState(item.position);
 
     const changeName = (val) => {
         setName(val);
@@ -56,10 +55,90 @@ const NewStaffScreen = ({ navigation }) => {
         hideDatePicker();
     };
 
-    const _submitData = () => {
+    const checkEmail = (val) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return reg.test(val)
+    }
+    const checkPassword = (val) => {
+        return val.length >= 6
+    }
+    const checkContact = (val) => {
+        return /^-?[\d.]+(?:e-?\d+)?$/.test(val)
+    }
+
+    const checkInfo = () => {
+        if (!checkEmail(email)) {
+            let toast = Toast.show('Email invalid', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return false
+        }
+
+        else if (!checkPassword(password)) {
+            let toast = Toast.show('Password has more than 6 charactor', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return false
+        }
+        else if (name == '') {
+            let toast = Toast.show('Please enter the name', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return false
+        }
+        else if (!checkContact(contact)) {
+            let toast = Toast.show('Contact consist of numeric and 10 characters', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return false
+        }
+        else if (birthday == '') {
+            let toast = Toast.show('Please enter the birthday', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return false
+        }
+        else if (address == '') {
+            let toast = Toast.show('Please enter the address', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return false
+        }
+
+        return true
+    }
+    const saveHandle = () => {
+        if (checkInfo()) {
+            _submitData()
+        }
+    }
+    const _submitData = async () => {
         SetLoading(true)
-        Api.updateUser({
-            userID: email,
+        await Api.AddUser({
             phoneNumber: contact,
             name: name,
             doB: birthday,
@@ -67,25 +146,20 @@ const NewStaffScreen = ({ navigation }) => {
             email: email,
             password: password,
             address: address,
-            position: position,
-            reportedNum: '0',
-            following: [],
-            followed: [],
-            bio: '',
-            job: ''
+            position: '1',
         }).then(res => {
             SetLoading(false)
-            fetchUserData();
-            let toast = Toast.show('Update your profile successful!', {
+            let toast = Toast.show('Insert Censor account successful!', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.CENTER,
                 shadow: true,
                 animation: true,
                 hideOnPress: true,
             });
+            navigation.navigate('Staff Screen')
 
         }).catch(err => {
-            let toast = Toast.show('Update your profile failed, Please try again!', {
+            let toast = Toast.show('Update your profile failed, please try again!', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.CENTER,
                 shadow: true,
@@ -93,16 +167,10 @@ const NewStaffScreen = ({ navigation }) => {
                 hideOnPress: true,
             });
             console.log(err)
+            SetLoading(false)
         })
     }
-    const fetchUserData = () => {
-        Api.getUserItem(item.userID)
-            .then(res => {
-                dispatch({ type: 'ADD_USER', payload: res[0] })
-                dispatch({ type: 'UPDATE_USER', payload: res[0] })
-            })
-            .catch(err => console.log('Error Load User'))
-    }
+
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -132,7 +200,7 @@ const NewStaffScreen = ({ navigation }) => {
                     <Text style={styles.title}>Name</Text>
                     <TextInput style={styles.info} onChangeText={changeName} value={name} />
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={styles.title}>Position</Text>
                         <Picker
                             selectedValue={selectedValue}
@@ -147,7 +215,7 @@ const NewStaffScreen = ({ navigation }) => {
                             <Picker.Item label="User" value="2" />
 
                         </Picker>
-                    </View>
+                    </View> */}
 
                     <Text style={styles.title}>Contact</Text>
                     <TextInput style={styles.info} onChangeText={changeContact} value={contact} />
@@ -194,7 +262,7 @@ const NewStaffScreen = ({ navigation }) => {
 
                             </View>
                             :
-                            <TouchableOpacity onPress={_submitData} >
+                            <TouchableOpacity onPress={saveHandle} >
                                 <View style={{
                                     borderRadius: 15,
                                     padding: 7,
@@ -215,9 +283,11 @@ const NewStaffScreen = ({ navigation }) => {
                     }
                 </View>
             </ScrollView>
+
         </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -225,7 +295,7 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         paddingTop: 5,
         flex: 1,
-        backgroundColor: 'whitesmoke'
+        backgroundColor: 'white'
     },
     title: {
         fontFamily: 'nunitoregular',

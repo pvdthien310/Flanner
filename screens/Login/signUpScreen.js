@@ -7,21 +7,12 @@ import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-root-toast';
 import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../constant';
+import Api from '../../API/UserAPI';
 
 export default function SignUpScreen({ navigation }) {
 
     const dispatch = useDispatch()
-    const { data, loading } = useSelector(state => { return state.User })
 
-    function makeId() {
-        let result = '';
-        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let charactersLength = characters.length;
-        for (let i = 0; i < 6; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result
-    }
     const [dataTemp, setDataTemp] = useState({
         name: '',
         email: '',
@@ -101,7 +92,7 @@ export default function SignUpScreen({ navigation }) {
         })
     }
 
-    const signInHandle = () => {
+    const signInHandle = async () => {
         if (dataTemp.name == "" || dataTemp.email == "" || dataTemp.password == "" || dataTemp.confirm == "") {
             let toast = Toast.show('Please fill out your information', {
                 duration: Toast.durations.SHORT,
@@ -143,35 +134,32 @@ export default function SignUpScreen({ navigation }) {
             });
             return
         }
-        let flag = false
-        data.forEach(element => {
-            if (element.email === dataTemp.email) {
-                let toast = Toast.show('Email is already in use', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
-                flag = true
-                return
+
+        await Api.checkEmail(dataTemp.email).then(
+            res => {
+                if (res != 'Email already exists') {
+                    sendEmail()
+                    let toast = Toast.show('We just sent you a verify code', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    navigation.navigate('ConfirmEmail', { dataTemp })
+                }
+                else {
+                    let toast = Toast.show(res, {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
             }
-        });
-        if (!flag) {
-            setDataTemp({
-                ...dataTemp,
-                verifyCode: makeId()
-            })
-            sendEmail()
-            let toast = Toast.show('We just sent you a verify code', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            navigation.navigate('ConfirmEmail', { dataTemp })
-        }
+        )
+
 
     }
     const valueMail = {
@@ -346,7 +334,7 @@ const styles = StyleSheet.create({
         marginLeft: 25,
         backgroundColor: 'white',
         width: 70,
-        
+
     },
     passwordEdt: {
         paddingLeft: 13,

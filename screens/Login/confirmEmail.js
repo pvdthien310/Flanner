@@ -42,16 +42,6 @@ export default function ConfirmEmail({ route, navigation }) {
             })
     }
 
-    function makeUserId() {
-        let temp = ''
-        let i = 0
-
-        while (email.charAt(i) != '@' || email.charAt(i) != '.') {
-            temp += email.charAt(i)
-            i++;
-        }
-        return temp;
-    }
     const _submitData = () => {
         const url = URL_local + 'user/send-data'
         fetch(url, {
@@ -60,7 +50,7 @@ export default function ConfirmEmail({ route, navigation }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userID: makeUserId(),
+                userID: email,
                 phoneNumber: '',
                 name: name,
                 doB: '',
@@ -122,7 +112,6 @@ export default function ConfirmEmail({ route, navigation }) {
         }
         else {
             _submitData()
-            
         }
     }
     return (
