@@ -172,6 +172,17 @@ export default function SignInScreen({ navigation }) {
                 if (res != 'Invalid Password!' && res != 'Login failed! Account was not registered!') {
                     res.forEach(async element => {
                         if (element.email === dataTemp.email) {
+                            if (element.reportedNum == "3") 
+                            {
+                                let toast = Toast.show('Account was blocked. Please contact with us to get more information!', {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                });
+                                return;
+                            }
                             flag = true;
                             dispatch({ type: 'ADD_DATA_USER', payload: res })
                             dispatch({ type: 'SET_LOADING_USER', payload: false })
