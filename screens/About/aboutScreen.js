@@ -1,7 +1,4 @@
-import React, {
-    useState,
-    useEffect
-} from 'react';
+import * as React from 'react';
 
 import {
     StyleSheet,
@@ -51,7 +48,7 @@ const AboutScreen = ({ navigation }) => {
 
     const aboutFlaner2 = "\nFlâner will broadly your mind. All kinds of experience on one screen. " +
         "Flâner dictionary has no word like nodus tollen for you. Let make some friends!" +
-        " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. "+
+        " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. " +
         "\n\nIt is Flâner! Best way to entertain!"
 
     return (
@@ -131,7 +128,9 @@ const AboutScreen = ({ navigation }) => {
                             <TouchableOpacity style={{
                                 alignSelf: 'center',
                                 paddingTop: 5
-                            }}>
+                            }}
+                                onPress={() => navigation.navigate('InstructionScreen')}
+                            >
                                 <Text style={{
                                     // paddingRight: 15,
                                     fontFamily: 'nunitobold',
@@ -146,7 +145,8 @@ const AboutScreen = ({ navigation }) => {
                             <TouchableOpacity style={{
                                 alignSelf: 'center',
                                 paddingTop: 8
-                            }}>
+                            }}
+                                onPress={() => navigation.navigate('PrivacyScreen')}>
                                 <Text style={{
                                     // paddingRight: 15,
                                     fontFamily: 'nunitobold',
