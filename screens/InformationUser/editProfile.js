@@ -3,7 +3,7 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacit
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
@@ -248,22 +248,25 @@ const EditProFile = ({ navigation }) => {
           shadowOffset: { width: 1, height: 1 },
           shadowColor: 'black',
           shadowOpacity: 0.5,
+          opacity:0.7
         }} source={{ uri: image }} />
 
 
         <TouchableOpacity onPress={pickImage}
           style={{
-            height: 40,
-            width: 40,
+            height: 100,
+            width: 100,
+            top:height * 0.2,
             position: 'absolute',
-            backgroundColor: 'white',
+            alignItems:'center',
             justifyContent: 'center',
             padding: 5,
             borderRadius: 20,
-            alignSelf: 'flex-end',
-            margin: 10
+            alignSelf: 'center',
+            margin: 10,
+            
           }}>
-          <AntDesign name="edit" size={24} color="black" />
+          <Ionicons name="images-outline" size={70} style = {{alignSelf: 'center'}} color="dimgray" />
         </TouchableOpacity>
 
         <TouchableOpacity style={{ width: 45, position: 'absolute' }} onPress={pressgobackHandler}>

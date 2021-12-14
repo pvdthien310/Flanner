@@ -6,6 +6,7 @@ import EditProFile from '../../screens/InformationUser/editProfile'
 import { UserSavedPostStack } from './userPostStack'
 import { UserKnowledgeStack } from './userKnowledgestack'
 import { UserStatusStack } from './userStatusStack'
+import ShowFriendInfo from '../../screens/InformationUser/showFollowingList'
 const Stack = createNativeStackNavigator()
 
 export const UserInformationStack = (props) => {
@@ -17,6 +18,7 @@ export const UserInformationStack = (props) => {
             <Stack.Screen name='User Knowledge Stack' component= {UserKnowledgeStack} />
             <Stack.Screen name='User Status Stack' component= {UserStatusStack} />
             <Stack.Screen name='User Saved Post Stack' component= {UserSavedPostStack} />
+            <Stack.Screen name='User Friend Screen' component= {ShowFriendInfo} />
         </Stack.Navigator>
     )
 }

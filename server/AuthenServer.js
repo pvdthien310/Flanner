@@ -64,7 +64,7 @@ app.use('/get-accessToken', (req, res) => {
         { "new": true, "upsert": true }
     ).then((data) => {
         res.json({ accessToken, refreshToken });
-        console.log({ accessToken, refreshToken })
+       
     })
         .catch(err => console.log(err))
     //

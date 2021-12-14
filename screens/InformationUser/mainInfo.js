@@ -26,10 +26,7 @@ const MainInfor = ({ navigation, item }) => {
         CountPost
         , [user_knowledge, user_status])
 
-    useEffect(() =>
-        CountPost
-        , [])
-
+ 
     useEffect(() =>
         forceRerender()
         , [user])
@@ -80,18 +77,32 @@ const MainInfor = ({ navigation, item }) => {
                             paddingStart: 10,
                             paddingEnd: 10,
                         }}>
-                            <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', marginEnd: 5 }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{postNumber}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Post</Text>
                             </View>
+                            <TouchableOpacity  style={{ justifyContent: 'center', alignItems: 'center' }} 
+                            onPress={() =>
+                                navigation.navigate('User Information', {
+                                    screen: 'User Friend Screen', params : {data :user, type: 1}
+                                })}
+                            >
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.following.length}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Following</Text>
                             </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity  style={{ justifyContent: 'center', alignItems: 'center' }} 
+                             onPress={() =>
+                                navigation.navigate('User Information', {
+                                    screen: 'User Friend Screen', params : {data :user, type: 2}
+                                })}
+                            >
                             <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.followed.length}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Followers</Text>
                             </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={{ flexDirection: 'column', padding: 10 }}>
                             <Text style={{
