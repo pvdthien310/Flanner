@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator, Text, Button } from 'react-native';
+import { View, FlatList, ActivityIndicator, Text, Button, Dimensions } from 'react-native';
 import { globalStyles } from '../../styles/global';
 
 import KnowledgeMember from '../../components/Knowledge/knowledgeMember';
@@ -12,6 +12,8 @@ import NotificationApi from '../../API/NotificationAPI';
 
 
 
+const { height } = Dimensions.get("screen");
+const logoHeight = height * 0.5;
 
 
 const Knowledge = ({ navigation }) => {

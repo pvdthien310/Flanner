@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 0,
+        top:-5
 
     },
     headerDrawer: {

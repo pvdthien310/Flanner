@@ -149,7 +149,7 @@ const MainInfor = ({ navigation, item }) => {
                         </View>
                     </View>
                     <View style={{
-                        marginTop: height * 0.38,
+                        marginTop: height < 800 ? height *0.33: height * 0.38,
                         position: 'absolute',
                         flexDirection: 'column',
                         width: '90%',

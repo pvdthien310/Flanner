@@ -1,7 +1,7 @@
 import * as  React from 'react'
 import { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Image, Text, View, TouchableOpacity, useState } from 'react-native'
+import { StyleSheet, Image, Text, View, TouchableOpacity, useState,Dimensions } from 'react-native'
 import { HeaderNews } from '../../shared/header'
 
 import { KnowledgeStack } from './knowledgeStack';
@@ -18,6 +18,8 @@ const Tab = createBottomTabNavigator();
 const user = {name : 'Thien Pham', age : '20', avatar : '1'}
 
 
+const { height } = Dimensions.get("screen");
+const logoHeight = height * 0.5;
 const CustomAddPostButton = ({ children, onPress }) => (
 
     <TouchableOpacity
@@ -72,7 +74,7 @@ export const BottomNavigator = (props) => {
             }}
 
             style={{
-                top: -10,
+                top: height < 800 ? -20 : -10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 
@@ -131,7 +133,7 @@ export const BottomNavigator = (props) => {
                             style={{
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                top: 10,
+                                top: height < 800 ? 0 : 10,
                                 marginTop: 5
 
                             }}>
@@ -182,7 +184,7 @@ export const BottomNavigator = (props) => {
                         style={{
                             alignItems: 'center',
                             justifyContent: 'center',
-                            top: 10,
+                            top: height < 800 ? 0 : 10,
                             marginTop: 5
                         }}>
                         <Image source={require('../../assets/icon/status.png')}
