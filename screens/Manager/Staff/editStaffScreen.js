@@ -53,19 +53,21 @@ const EditStaffScreen = ({ navigation, route }) => {
         hideDatePicker();
     };
 
+
+
     const _submitData = () => {
         SetLoading(true)
         Api.updateUser({
             userID: item.userID,
-            phoneNumber: contact,
-            name: name,
-            doB: birthday,
+            phoneNumber: item.contact,
+            name: item.name,
+            doB: item.birthday,
             avatar: item.avatar,
             email: item.email,
             password: item.password,
-            address: address,
-            position: position,
-            reportedNum: item.reportedNum,
+            address: item.address,
+            position: item.position,
+            reportedNum: '0',
             following: item.following,
             followed: item.followed,
             bio: item.bio,
@@ -73,7 +75,7 @@ const EditStaffScreen = ({ navigation, route }) => {
         }).then(res => {
             SetLoading(false)
             fetchUserData();
-            let toast = Toast.show('Update your profile successful!', {
+            let toast = Toast.show('Unlock successfully', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.CENTER,
                 shadow: true,
@@ -82,14 +84,13 @@ const EditStaffScreen = ({ navigation, route }) => {
             });
 
         }).catch(err => {
-            let toast = Toast.show('Update your profile failed, Please try again!', {
+            let toast = Toast.show('Unlock failed, please try again', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.CENTER,
                 shadow: true,
                 animation: true,
                 hideOnPress: true,
             });
-            console.log(err)
         })
     }
     const fetchUserData = () => {
@@ -99,6 +100,25 @@ const EditStaffScreen = ({ navigation, route }) => {
                 dispatch({ type: 'UPDATE_USER', payload: res[0] })
             })
             .catch(err => console.log('Error Load User'))
+    }
+
+    const unBlockHandle = () => {
+        Alert.alert(
+            "Unlock confirmation",
+            "Are you sure to unlock this account?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+
+                {
+                    text: "Confirm",
+                    onPress: () => { _submitData() }
+                },
+
+            ]
+        );
     }
     return (
         <View style={styles.container}>
@@ -120,16 +140,30 @@ const EditStaffScreen = ({ navigation, route }) => {
                     </View>
                 </TouchableOpacity>
 
-                <View style={{ marginLeft: 20, marginRight: 30, marginTop: 10 }}>
-                    <Text style={styles.title}>Email Address</Text>
-                    <Text style={{ fontFamily: 'nunitobold', }}>{item.email}</Text>
+                <View style={{ marginLeft: 20, marginRight: 10, marginTop: 10 }}>
+                    <View >
+                        <Text style={styles.title}>Email Address</Text>
+                        <Text style={{ fontFamily: 'nunitobold', }}>{item.email}</Text>
+                        {item.reportedNum == '3' &&
+                            <TouchableOpacity style={styles.blockBtn} onPress={unBlockHandle}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ fontFamily: 'nunitobold', color: 'white', marginRight: 5 }}>Locked</Text>
+                                    <MaterialIcons name="block" size={24} color="white" />
+                                </View>
+                            </TouchableOpacity>
+
+                        }
+                    </View>
+
 
                     <Text style={styles.title}>Name</Text>
-                    {item.position != "2" ?
-                        <TextInput style={styles.info} onChangeText={changeName} value={name} /> : <Text style={{ fontFamily: 'nunitobold', }}>{item.name}</Text>}
+                    <Text style={{ fontFamily: 'nunitobold', }}>{item.name}</Text>
+
+                    {/* {item.position != "2" ?
+                        <TextInput style={styles.info} onChangeText={changeName} value={name} /> : <Text style={{ fontFamily: 'nunitobold', }}>{item.name}</Text>} */}
 
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={styles.title}>Position</Text>
                         <Picker
                             selectedValue={selectedValue}
@@ -144,14 +178,16 @@ const EditStaffScreen = ({ navigation, route }) => {
                             <Picker.Item label="User" value="2" />
 
                         </Picker>
-                    </View>
+                    </View> */}
 
                     <Text style={styles.title}>Contact</Text>
-                    {item.position != "2" ?
-                        <TextInput style={styles.info} onChangeText={changeContact} value={contact} /> : <Text style={{ fontFamily: 'nunitobold', }}>{item.contact}</Text>}
+                    <Text style={{ fontFamily: 'nunitobold', }}>{item.contact}</Text>
+                    {/* {item.position != "2" ?
+                        <TextInput style={styles.info} onChangeText={changeContact} value={contact} /> : <Text style={{ fontFamily: 'nunitobold', }}>{item.contact}</Text>} */}
 
                     <Text style={styles.title} >Birthday</Text>
-                    {item.position != "2" ?
+                    <Text style={{ fontFamily: 'nunitobold', }}>{item.birthday}</Text>
+                    {/* {item.position != "2" ?
                         <View>
                             <Text style={styles.info} onPress={showDatePicker}>{birthday}</Text>
                             <DateTimePickerModal
@@ -162,15 +198,16 @@ const EditStaffScreen = ({ navigation, route }) => {
                             />
                         </View>
                         :
-                        <Text style={{ fontFamily: 'nunitobold', }}>{item.birthday}</Text>}
+                        <Text style={{ fontFamily: 'nunitobold', }}>{item.birthday}</Text>} */}
 
 
                     <Text style={styles.title}>Address</Text>
-                    {item.position != "2" ?
-                        <TextInput style={styles.info} onChangeText={changeAddress} value={address} /> : <Text style={{ fontFamily: 'nunitobold', }}>{item.address}</Text>}
+                    <Text style={{ fontFamily: 'nunitobold', marginBottom: 20 }}>{item.address}</Text>
+                    {/* {item.position != "2" ?
+                        <TextInput style={styles.info} onChangeText={changeAddress} value={address} /> : <Text style={{ fontFamily: 'nunitobold', }}>{item.address}</Text>} */}
 
 
-                    {
+                    {/* {
                         loading == true ?
                             <View style={{
                                 flexDirection: 'row',
@@ -219,7 +256,7 @@ const EditStaffScreen = ({ navigation, route }) => {
                                     <Text style={{ alignSelf: 'center', color: 'white', fontSize: 15, fontFamily: 'nunitobold' }}>Save</Text>
                                 </View>
                             </TouchableOpacity>
-                    }
+                    } */}
                 </View>
             </ScrollView>
         </View>
@@ -249,6 +286,15 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold'
     },
+    blockBtn: {
+        marginTop: 15,
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        backgroundColor: 'red',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 20
+    }
 });
 
 export default EditStaffScreen

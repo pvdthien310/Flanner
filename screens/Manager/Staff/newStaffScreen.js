@@ -184,6 +184,7 @@ const NewStaffScreen = ({ navigation }) => {
                     shadowOpacity: 0.5,
                 }} source={{ uri: 'https://i2.wp.com/www.cssscript.com/wp-content/uploads/2020/12/Customizable-SVG-Avatar-Generator-In-JavaScript-Avataaars.js.png' }} />
 
+                <Text style={{ fontFamily: 'nunitobold', fontSize: 22 }}>New Censor</Text>
                 <TouchableOpacity style={{ width: 45, position: 'absolute' }} onPress={pressgobackHandler}>
                     <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
                         <MaterialIcons name="keyboard-backspace" size={30} color="black" />
