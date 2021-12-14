@@ -322,7 +322,15 @@ export default function AddKnowledge({ route, navigation }) {
                     <TouchableOpacity onPress={pickImage}>
                         <Ionicons name="image-sharp" size={24} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={pickImage}>
+                    <TouchableOpacity onPress={() => {
+                         let toast = Toast.show('The feature will open in the near future!', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                        });
+                    }}>
                         <Ionicons name="pricetag" size={24} color="black" />
                     </TouchableOpacity>
 

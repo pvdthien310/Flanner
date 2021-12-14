@@ -77,7 +77,7 @@ export default function AddStatus({ route, navigation }) {
     }
     const SendNewpost = () => {
         // setLoading(true)
-        
+
         // const url = URL_local + 'status/send-data'
         // fetch(url, {
         //     method: 'POST',
@@ -117,7 +117,7 @@ export default function AddStatus({ route, navigation }) {
             mode: "public"
         })
             .then(res => {
-                fetchStatusData() 
+                fetchStatusData()
                 let toast = Toast.show('Add post successful!', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.BOTTOM,
@@ -266,7 +266,15 @@ export default function AddStatus({ route, navigation }) {
                     <TouchableOpacity onPress={pickImage}>
                         <Ionicons name="image-sharp" size={24} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={pickImage}>
+                    <TouchableOpacity onPress={() => {
+                        let toast = Toast.show('The feature will open in the near future!', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                        });
+                    }}>
                         <Ionicons name="pricetag" size={24} color="black" />
                     </TouchableOpacity>
 
