@@ -9,6 +9,7 @@ import {useChatContext,
 import {LinearGradient} from 'expo-linear-gradient';
 import UserListItemInFessScr from './../../components/Fess/ChannelList/UserListItemInFessScr';
 import {SafeAreaView} from 'react-native-safe-area-context'
+import { Ionicons } from '@expo/vector-icons';
 
 
 LogBox.ignoreAllLogs(true);
@@ -21,16 +22,18 @@ const styles = StyleSheet.create({
         paddingTop:30
     },
     headerContainer:{
-        justifyContent: 'center',
-        flexDirection:'row',
-        alignSelf:'center',
-        alignItems: 'center',
+       // justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignSelf: 'stretch',
     },
     header:{
         color:'#FFF',
+        flexDirection: 'row',
+        flex: 1,
         fontSize:24,
         fontWeight:'bold',
-        alignSelf: 'center',
+        marginLeft: '35%'
+
     },
      proContainer:{
         marginRight:-20,
@@ -130,6 +133,10 @@ const Fess = ({navigation}) => {
         navigation.navigate("Channel", {channel});
     }
 
+    const openDrawer = () => {
+        navigation.openDrawer()
+    }
+
     console.log(isReady);
     if(!isReady)
     {
@@ -138,6 +145,7 @@ const Fess = ({navigation}) => {
         return(
             <View style={styles.gradient}>
                 <View style={styles.headerContainer}>
+                    <Ionicons style={{alignSelf: 'flex-start', justifyContent: 'space-around'}} onPress={openDrawer} name="menu-outline" size={30} color="white" />
                     <Text style={styles.header}>Fess</Text>
                 </View>
                 <ScrollView
