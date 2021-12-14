@@ -122,7 +122,8 @@ const AboutScreen = ({ navigation }) => {
 
 
                         <View style={{
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            marginTop: 5
                         }}>
 
                             <TouchableOpacity style={{
@@ -144,7 +145,8 @@ const AboutScreen = ({ navigation }) => {
 
                             <TouchableOpacity style={{
                                 alignSelf: 'center',
-                                paddingTop: 8
+                                paddingTop: 8,
+                                marginTop: 2
                             }}
                                 onPress={() => navigation.navigate('PrivacyScreen')}>
                                 <Text style={{

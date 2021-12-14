@@ -14,9 +14,14 @@ import {
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { Video, AVPlaybackStatus } from 'expo-av'
+import { ScrollView } from 'react-native-gesture-handler';
 //import Video from 'react-native-video';
 
+const { height, width } = Dimensions.get("screen")
+
 const InstructionScreen = ({ navigation }) => {
+    const video = React.useRef(null);
+    const [status, setStatus] = React.useState({});
 
     const listInstruction = [
         {
@@ -30,7 +35,13 @@ const InstructionScreen = ({ navigation }) => {
             name: 'Custom your profile',
             url: 'https://res.cloudinary.com/flaner/video/upload/v1632720356/samples/sea-turtle.mp4',
             instruction: 'All about your profile. Follow us!'
-        }
+        },
+        {
+            id: 3,
+            name: 'Report posts',
+            url: 'https://res.cloudinary.com/flaner/video/upload/v1632720358/samples/elephants.mp4',
+            instruction: 'Did you accidentally see a post that violates our standards? Please feel free to report!'
+        },
     ]
 
     const pressgobackHandler = () => {
@@ -58,6 +69,7 @@ const InstructionScreen = ({ navigation }) => {
                             <MaterialIcons name="keyboard-backspace" size={30} color="black" />
                         </View>
                     </TouchableOpacity>
+
                     <View style={{
                         flexDirection: 'row',
                         flex: 1,
@@ -81,41 +93,68 @@ const InstructionScreen = ({ navigation }) => {
 
             </SafeAreaView>
 
-            <FlatList data={listInstruction}
-                keyExtractor={listInstruction.id}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => navigation.navigate('VideoInstructionScreen', { ins:item })}>
-                        <View style={{ flexDirection: 'row', padding: 10 }}>
+            <ScrollView>
+                <Video
+                        ref={video}
+                        style={styles.video}
+                        source={{
+                        uri:'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
+                        }}
+                        useNativeControls
+                        resizeMode="cover"
+                        shouldPlay
+                        isLooping
+                        onPlaybackStatusUpdate={status => setStatus(() => status)}
+                        onPress={() => {
+                            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+                        }}
+                    />
 
-                            <Text style={{
-                                textAlign: 'left',
-                                fontFamily: 'nunitobold',
-                                fontSize: 20,
-                                marginLeft: 10,
-                                color: 'black'
-                            }}>{item.id}. </Text>
+                <Text style={{
+                    fontFamily: 'nunitoregular',
+                    fontSize: 18,
+                    color: 'black',
+                    margin: 15
+                }}>We always look forward to helping you have a good Flâner experience.
+                    If you are not sure how to use it, we have prepared some instructions for you below:
+                </Text>
 
-                            <View>
+                <FlatList style={{ marginTop: 5 }}
+                    data={listInstruction}
+                    keyExtractor={listInstruction.id}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => navigation.navigate('VideoInstructionScreen', { ins: item })}>
+                            <View style={{ flexDirection: 'row', padding: 10 }}>
+
                                 <Text style={{
+                                    textAlign: 'left',
                                     fontFamily: 'nunitobold',
                                     fontSize: 20,
-                                    color: 'black',
-                                    textDecorationLine: 'underline',
-                                }}>{item.name}</Text>
+                                    marginLeft: 10,
+                                    color: 'black'
+                                }}>{item.id}. </Text>
 
-                                <Text style={{
-                                    fontFamily: 'nunitoregular',
-                                    fontSize: 18,
-                                    color: 'black',
-                                    marginRight: 10
-                                }}>{item.instruction}</Text>
+                                <View>
+                                    <Text style={{
+                                        fontFamily: 'nunitobold',
+                                        fontSize: 18,
+                                        color: 'black',
+                                        textDecorationLine: 'underline',
+                                    }}>{item.name}</Text>
 
+                                    <Text style={{
+                                        fontFamily: 'nunitoregular',
+                                        fontSize: 15,
+                                        color: 'black',
+                                        marginRight: 15
+                                    }}>{item.instruction}</Text>
+
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
-                )}
-            />
-
+                        </TouchableOpacity>
+                    )}
+                />
+            </ScrollView>
         </View>
     )
 }
@@ -138,8 +177,9 @@ const styles = StyleSheet.create({
     },
     video: {
         alignSelf: 'center',
-        width: 320,
-        height: 200,
+        width: width* 0.9,
+        height: width * 0.9 * 1080 / 1920,
+        marginTop: 15,
     },
     buttons: {
         flexDirection: 'row',

@@ -29,8 +29,6 @@ const VideoInstructionScreen = ({ navigation, route }) => {
     const instruction = item.instruction
     const name = item.name
 
-    
-
     const pressgobackHandler = () => {
         navigation.goBack();
     }
@@ -94,6 +92,7 @@ const VideoInstructionScreen = ({ navigation, route }) => {
                     }}
                     useNativeControls
                     resizeMode="cover"
+                   /// onReadyForDisplay={naturr}
                     isLooping
                     onPlaybackStatusUpdate={status => setStatus(() => status)}
                     onPress={() => {
