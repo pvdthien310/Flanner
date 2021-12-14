@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { Alert, StyleSheet, Text, View, FlatList, TouchableOpacity, Image, } from 'react-native';
+import { Alert, StyleSheet, Text, View, FlatList,Image, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../shared/post'
 import { UserInfo } from '../../shared/post'
 import { Poststyle } from '../../styles/poststyle'
@@ -13,6 +13,8 @@ import NotificationApi from '../../API/NotificationAPI';
 import ReportApi from '../../API/ReportAPI';
 import Toast from 'react-native-root-toast';
 import Api from '../../API/UserAPI';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 
 const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
@@ -25,6 +27,46 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
     const [data, setData] = useState(item)
     const [host, setHost] = useState(undefined)
 
+    const createTwoButtonAlert1 = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to save this post?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => AddSavedPost()
+                }
+            ]
+        );
+    const AddSavedPost = () => {
+        SavedPostApi.UpdateTrue(user.userID, item._id)
+            .then(res => {
+                if (res) {
+                    dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                    let toast = Toast.show('Save successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+                let toast = Toast.show('Save failed, please try again!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
+    }
 
     const createTwoButtonAlert = () =>
         Alert.alert(
@@ -84,7 +126,10 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
                     style: "cancel"
                 },
 
-            ]
+            ],
+            {
+                cancelable:true
+            }
         );
 
     const ReportPost = (reason) => {
@@ -320,6 +365,8 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
 
 
     return (
+        <TouchableOpacity onLongPress={() => createTwoButtonAlert1()} 
+        activeOpacity={1}>
         <Post >
             <TouchableOpacity onPress={() => createThreeButtonAlert()}>
                 <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
@@ -361,7 +408,7 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     data={item.listImage}
                     renderItem={({ item }) => (
-                        <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                        <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
 
                     )}
                     keyExtractor={item => item.key}
@@ -387,7 +434,7 @@ const StatusMemberForKnowledgeNoti = ({ item, navigation }) => {
             </InteractionWrapper>
 
         </Post>
-        // </TouchableOpacity>
+         </TouchableOpacity>
 
     )
 

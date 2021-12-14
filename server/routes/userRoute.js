@@ -2,6 +2,7 @@ const UserRoute = require('express').Router();
 const User = require("../models/User")
 const sendMail = require("../../gmail-api/sendEmail");
 const jwt = require('jsonwebtoken')
+const {Base64} = require('js-base64');
 
 
 //Get a member by ID
@@ -177,6 +178,40 @@ UserRoute.post('/send-data',authenToken, (req, res) => {
         .catch(err => {
             console.log('Error')
         })
+})
+
+UserRoute.post('/checkLogin', (req,res) => {
+    console.log(req.body)
+    User.findOne({email : req.body.email})
+    .then(data => {
+        
+        if (data)
+        {
+            console.log(Base64.encode(req.body.password))
+            if (data.password == Base64.encode(req.body.password))
+            {
+                User.find({})
+                .then(result => {
+                    res.send(result)
+                    //sendMail({ value })
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+            else 
+            {
+                res.send('Invalid Password!')
+            }
+        }
+        else 
+        {
+            res.send('Login failed! Account was not registered!')
+        }
+        
+    })
+    .catch(err => console.log(err))
+    
+
 })
 
 module.exports = UserRoute

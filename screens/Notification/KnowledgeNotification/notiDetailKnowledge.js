@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
 import Post, { PostText, UserInfo, UserInfoText } from '../../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Poststyle_Status, images, Poststyle } from '../../../styles/poststyle';
@@ -24,7 +24,28 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
     const [isNull, setIsNull] = useState(true)
     const [host, setHost] = useState({})
 
-  
+    const createTwoButtonAlert = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to navigate your profile?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => NavigateToCurrentUserProfile()
+                }
+            ]
+        );
+
+    const NavigateToCurrentUserProfile = () => {
+        navigation.navigate('User Information', {
+            screen: 'User Dashboard',
+            params: { user: '' },
+        })
+        dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+    }
 
     // const [reactnumber, setReactnumber] = useState(null)
     const [pressed, setPressed] = useState(false)
@@ -123,18 +144,18 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
         //         console.log('Error')
         //     });
         KnowLedgeApi.getItem(data._id.toString())
-        .then(res => {
-            setData(res)
-            setLoading(false)
-            if ((res.react).indexOf(user.userID) != -1)
-                setPressed(true)
-            else setPressed(false)
-            fetchHostData()
-        })
-        .catch(err => {
-            setIsNull(true)
-            console.log(err)
-        })
+            .then(res => {
+                setData(res)
+                setLoading(false)
+                if ((res.react).indexOf(user.userID) != -1)
+                    setPressed(true)
+                else setPressed(false)
+                fetchHostData()
+            })
+            .catch(err => {
+                setIsNull(true)
+                console.log(err)
+            })
     }
     const fetchHostData = () => {
         // const url = URL_local + 'user/load-user-by-userID/' + item.userID;
@@ -157,13 +178,11 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
     }
 
     useEffect(() => {
-        if (data)
-        {
+        if (data) {
             fetchData();
             console.log('load')
-        } 
-        else
-        {
+        }
+        else {
             console.log('khong')
             setIsNull(false)
         }
@@ -176,7 +195,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
 
     const PressHandle = () => {
         // let numberReact = data.reactNumber;
-        
+
         // const url_true = URL_local + 'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
         // const url_false = URL_local +  'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
@@ -206,15 +225,15 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
             //     console.log("error", err)
             // })
             KnowLedgeApi.updateFalse(data._id.toString(), user.userID.toString())
-            .then(res => {
-                removeNotification()
-                setData(res)
-                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            })
-            .catch(err => console.log('Error update false'))
+                .then(res => {
+                    removeNotification()
+                    setData(res)
+                    dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                })
+                .catch(err => console.log('Error update false'))
         }
         else if (pressed == false) {
             // fetch(url_true, {
@@ -240,15 +259,15 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
             //     console.log("error", err)
             // })
             KnowLedgeApi.updateTrue(data._id.toString(), user.userID.toString())
-            .then(res => {
-                sendNotification()
-                setData(res)
-                dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            })
-            .catch(err => console.log('Error update true'))
+                .then(res => {
+                    sendNotification()
+                    setData(res)
+                    dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                })
+                .catch(err => console.log('Error update true'))
         }
 
     }
@@ -288,7 +307,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
                                     data={data.listImage}
                                     renderItem={({ item }) => (
                                         <View>
-                                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                                            <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
 
                                         </View>
 
@@ -318,7 +337,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
                                 <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.push('Knowledge Notification Comment', { item : data })} >
+                                <TouchableOpacity onPress={() => navigation.push('Knowledge Notification Comment', { item: data })} >
                                     <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>
@@ -333,41 +352,54 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
                                     marginEnd: 10
                                 }}
                             />
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'flex-start',
-                                backgroundColor: 'grey',
-                                shadowOffset: { width: 1, height: 1 },
-                                shadowColor: 'black',
-                                shadowOpacity: 0.2,
-                                shadowRadius: 2,
-                                borderRadius: 10,
-                                padding: 10
-                            }}>
-                               
-                                   
-
-                               {
-                                    host.length > 0 ?
-
-                                        <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
-                                        :
-                                        <Image source={require('../../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                            <TouchableOpacity onPress={() => {
+                                if (host.length > 0) {
+                                    if (host[0].email != user.email) {
+                                        navigation.push(
+                                            'Knowledge Notification Friend Profile',
+                                            { item: host })
+                                    }
+                                    else {
+                                        createTwoButtonAlert()
+                                    }
                                 }
-                                       
-                                <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
-                                    <Text style={{
-                                        fontFamily: 'nunitobold',
-                                        fontSize: 12,
-                                        marginStart: 5,
-                                        marginTop: 5,
-                                        color: 'white'
-                                    }}> Author</Text>
+                            }}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    backgroundColor: '#272727',
+                                    shadowOffset: { width: 1, height: 1 },
+                                    shadowColor: 'black',
+                                    shadowOpacity: 0.2,
+                                    shadowRadius: 2,
+                                    borderRadius: 10,
+                                    padding: 10
+                                }}>
 
-                                </UserInfoText>
 
-                            </View>
+
+                                    {
+                                        host.length > 0 ?
+
+                                            <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                            :
+                                            <Image source={require('../../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                                    }
+
+                                    <UserInfoText>
+                                        <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
+                                        <Text style={{
+                                            fontFamily: 'nunitobold',
+                                            fontSize: 12,
+                                            marginStart: 5,
+                                            marginTop: 5,
+                                            color: 'white'
+                                        }}> Author</Text>
+
+                                    </UserInfoText>
+
+                                </View>
+                            </TouchableOpacity>
 
                         </ScrollView>
 
@@ -382,7 +414,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
                         flexDirection: 'column',
                         alignSelf: 'center',
                         marginTop: 40,
-                        
+
                     }}>
 
                         <Image source={require('../../../assets/icon/error.png')}
@@ -433,10 +465,10 @@ const styles = StyleSheet.create({
         shadowRadius: 0,
         marginBottom: 100,
         margin: 5,
-        
+
     },
     post1: {
-        
-      
+
+
     },
 })

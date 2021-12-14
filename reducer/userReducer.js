@@ -1,7 +1,8 @@
 const initState = {
     data: [],
     user: {},
-    loading: true
+    loading: true,
+    saved_post:[]
 }
 
 const UserReducer = (state = initState, action) => {
@@ -10,6 +11,13 @@ const UserReducer = (state = initState, action) => {
         const newState = {
             ...state,
             data: action.payload
+        }
+        return newState;
+    }
+    if (action.type == 'ADD_SAVED_POST_USER') {
+        const newState = {
+            ...state,
+            saved_post: action.payload
         }
         return newState;
     }

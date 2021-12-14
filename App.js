@@ -12,11 +12,19 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { reducer } from './reducer/knowledgeReducer'
 import RootReducer from './reducer/rootReducer'
+
+import {Chat} from "stream-chat-expo"
+import {StreamChat} from "stream-chat"
+
 // import { useFonts } from "@expo-google-fonts/montserrat";
 // import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
 // import { Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 // import { Montserrat_800ExtraBold } from "@expo-google-fonts/montserrat";
 const store = createStore(RootReducer);
+
+const API_KEY = "bv3z9gc54mck"
+const client = StreamChat.getInstance(API_KEY);
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     capricaScript: require('./assets/fonts/CAPRICA_SCRIPT.ttf'),
@@ -24,12 +32,6 @@ export default function App() {
     nunitoregular: require('./assets/fonts/Nunito_Regular.ttf'),
     robotobold: require('./assets/fonts/RobotoSlabBold.ttf'),
     robotoregular: require('./assets/fonts/RobotoSlabRegular.ttf'),
-
-    // 'nunito-bold': require('./assets/fonts/Nunito-Bold.ttf'),
-    // nunitoregular: require('./assets/fonts/Nunito-Regular.ttf'),
-    // Montserrat_600SemiBold,
-    // Montserrat_700Bold,
-    // Montserrat_800ExtraBold
   });
 
   if (!fontsLoaded) {
@@ -37,9 +39,11 @@ export default function App() {
   }
   return (
     <RootSiblingParent>
+       <Chat client={client}>
       <Provider store={store}>
         <LoginStack />
       </Provider>
+      </Chat>
     </RootSiblingParent>
 
   );

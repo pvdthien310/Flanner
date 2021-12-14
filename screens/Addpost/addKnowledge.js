@@ -10,6 +10,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { URL_local } from '../../constant';
 import KnowLedgeApi from '../../API/KnowledgeAPI';
+import Toast from 'react-native-root-toast';
+
 
 
 
@@ -68,10 +70,11 @@ export default function AddKnowledge({ route, navigation }) {
         console.log('In here !!!')
         const data = new FormData();
         data.append("file", photo)
-        data.append("upload_preset", "fyjwewqj")
-        data.append('folder', "Source/avatar")
+        data.append("upload_preset", "poster")
+        data.append('folder', "Source/flaner")
+        
 
-        fetch("https://api.cloudinary.com/v1_1/dithiencloud/image/upload", {
+        fetch("https://api.cloudinary.com/v1_1/flaner/image/upload", {
             method: 'POST',
             body: data,
             header: {
@@ -136,7 +139,16 @@ export default function AddKnowledge({ route, navigation }) {
         //     console.log("error", err)
         // })
         KnowLedgeApi.AddPost(newPost)
-        .then(res => {fetchKnowledgeData()})
+        .then(res => {
+            fetchKnowledgeData()
+            let toast = Toast.show('Add post successful!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        })
         .catch(err => console.log('Error Add New Knowledge'))
        
         fetchKnowledgeData()

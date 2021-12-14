@@ -10,7 +10,7 @@ const url = '/savedpost';
         return res.data
     },
     
-    AddPost: async item => {
+    AddSavedPost: async item => {
         const res = await DatabaseClient.post(url +'/send-data',item );
         return res.data
     },
@@ -19,11 +19,11 @@ const url = '/savedpost';
         return res.data
     },
     UpdateFalse: async (userID,postID) => {
-        const res = await DatabaseClient.post(url +'/update/false/' + userID +'/' + postID );
+        const res = await DatabaseClient.post(url +'/update/' + userID +'/false/' + postID );
         return res.data
     },
     UpdateTrue: async (userID,postID) => {
-        const res = await DatabaseClient.post(url +'/update/true/' + userID +'/' + postID );
+        const res = await DatabaseClient.post(url +'/update/' + userID +'/true/' + postID );
         return res.data
     },
   

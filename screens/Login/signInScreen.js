@@ -28,20 +28,21 @@ export default function SignInScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading, user } = useSelector(state => { return state.User })
     const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
-    const fetchData = async () => {
-        // const url = URL_local_user + 'user'
-        // fetch(url)
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         dispatch({ type: 'ADD_DATA_USER', payload: result })
-        //         dispatch({ type: 'SET_LOADING_USER', payload: false })
+    
+    // const fetchData = async () => {
+    //     // const url = URL_local_user + 'user'
+    //     // fetch(url)
+    //     //     .then(res => res.json())
+    //     //     .then(result => {
+    //     //         dispatch({ type: 'ADD_DATA_USER', payload: result })
+    //     //         dispatch({ type: 'SET_LOADING_USER', payload: false })
 
-        //     }).catch(err => console.log('Error'));
-        await Api.getAll().then(result => {
-            dispatch({ type: 'ADD_DATA_USER', payload: result })
-            dispatch({ type: 'SET_LOADING_USER', payload: false })
-        })
-    }
+    //     //     }).catch(err => console.log('Error'));
+    //     await Api.getAll().then(result => {
+    //         dispatch({ type: 'ADD_DATA_USER', payload: result })
+    //         dispatch({ type: 'SET_LOADING_USER', payload: false })
+    //     })
+    // }
 
 
     _storeData = async () => {
@@ -91,7 +92,7 @@ export default function SignInScreen({ navigation }) {
     };
 
     useEffect(() => {
-        fetchData();
+        // fetchData();
         _retrieveData();
     }
         , [])
@@ -141,63 +142,81 @@ export default function SignInScreen({ navigation }) {
 
 
 
-    const _submit = () => {
+    const _submit = async () => {
 
-        if (!dataTemp.checkUser) {
-            let toast = Toast.show('Email invalid', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            return
-        }
-        else if (!dataTemp.checkPassword) {
-            let toast = Toast.show('Password must be more than 5 characters', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            return
-        }
+        // if (!dataTemp.checkUser) {
+        //     let toast = Toast.show('Email invalid', {
+        //         duration: Toast.durations.SHORT,
+        //         position: Toast.positions.BOTTOM,
+        //         shadow: true,
+        //         animation: true,
+        //         hideOnPress: true,
+        //     });
+        //     return
+        // }
+        // else if (!dataTemp.checkPassword) {
+        //     let toast = Toast.show('Password must be more than 5 characters', {
+        //         duration: Toast.durations.SHORT,
+        //         position: Toast.positions.BOTTOM,
+        //         shadow: true,
+        //         animation: true,
+        //         hideOnPress: true,
+        //     });
+        //     return
+        // }
 
         let flag = false;
-        data.forEach(async element => {
-            if (element.email === dataTemp.email) {
-                flag = true;
-                if (element.password == base64.encode(dataTemp.password)) {
-                    dispatch({ type: 'ADD_USER', payload: element })
-                    _storeData()
-                    await JWTApi.getToken().then(
-                        res => {
-                            if (element.position == '2') {
-                                navigation.navigate('DrawerStack', {
-                                    screen: 'NewsFeed',
-                                    params: {},
-                                })
-                                dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
-                            }
-                            else if (element.position == '0' || element.position == '1') {
-                                navigation.navigate('DrawerStack', {
-                                    screen: 'User Information',
-                                    params: {},
-                                })
-                                dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
-                            }
-                           
 
+        await Api.checkLogin(dataTemp.email, dataTemp.password)
+            .then(res => {
+                if (res != 'Invalid Password!' && res != 'Login failed! Account was not registered!') {
+                    res.forEach(async element => {
+                        if (element.email === dataTemp.email) {
+                            flag = true;
+                            dispatch({ type: 'ADD_DATA_USER', payload: res })
+                            dispatch({ type: 'SET_LOADING_USER', payload: false })
+                            dispatch({ type: 'ADD_USER', payload: element })
+                            _storeData()
+
+                            await JWTApi.getToken(element.userID).then(
+                                res => {
+                                    // console.log(element.position)
+                                    // console.log(res)
+                                    if (element.position == '2') {
+                                        navigation.navigate('DrawerStack', {
+                                            screen: 'NewsFeed',
+                                            params: {},
+                                        })
+                                        dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+                                        let toast = Toast.show('Login Successful', {
+                                            duration: Toast.durations.SHORT,
+                                            position: Toast.positions.BOTTOM,
+                                            shadow: true,
+                                            animation: true,
+                                            hideOnPress: true,
+                                        });
+                                    }
+                                    else if (element.position == '0' || element.position == '1') {
+                                        navigation.navigate('DrawerStack', {
+                                            screen: 'User Information',
+                                            params: {},
+                                        })
+                                        dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+                                        let toast = Toast.show('Login Successful', {
+                                            duration: Toast.durations.SHORT,
+                                            position: Toast.positions.BOTTOM,
+                                            shadow: true,
+                                            animation: true,
+                                            hideOnPress: true,
+                                        });
+                                    }
+                                }
+                            )
                         }
-                    )
-
-
-
-
+                    });
                 }
                 else {
-                    let toast = Toast.show('Password is incorrect', {
+                    let toast = Toast.show(res, {
                         duration: Toast.durations.SHORT,
                         position: Toast.positions.BOTTOM,
                         shadow: true,
@@ -206,18 +225,61 @@ export default function SignInScreen({ navigation }) {
                     });
                     return
                 }
-            }
+            })
 
-        });
-        if (!flag) {
-            let toast = Toast.show('Email is not registered', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-        }
+        // data.forEach(async element => {
+        //     if (element.email === dataTemp.email) {
+        //         flag = true;
+        //         if (element.password == base64.encode(dataTemp.password)) {
+        //             dispatch({ type: 'ADD_USER', payload: element })
+        //             _storeData()
+        //             await JWTApi.getToken(element.userID).then(
+        //                 res => {
+        //                     if (element.position == '2') {
+        //                         navigation.navigate('DrawerStack', {
+        //                             screen: 'NewsFeed',
+        //                             params: {},
+        //                         })
+        //                         dispatch({ type: 'UPDATE_FEATURE', payload: 1 })
+        //                     }
+        //                     else if (element.position == '0' || element.position == '1') {
+        //                         navigation.navigate('DrawerStack', {
+        //                             screen: 'User Information',
+        //                             params: {},
+        //                         })
+        //                         dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+        //                     }
+
+
+        //                 }
+        //             )
+
+
+
+
+        //         }
+        //         else {
+        //             let toast = Toast.show('Password is incorrect', {
+        //                 duration: Toast.durations.SHORT,
+        //                 position: Toast.positions.BOTTOM,
+        //                 shadow: true,
+        //                 animation: true,
+        //                 hideOnPress: true,
+        //             });
+        //             return
+        //         }
+        //     }
+
+        // });
+        // if (!flag) {
+        //     let toast = Toast.show('Email is not registered', {
+        //         duration: Toast.durations.SHORT,
+        //         position: Toast.positions.BOTTOM,
+        //         shadow: true,
+        //         animation: true,
+        //         hideOnPress: true,
+        //     });
+        // }
 
     }
     return (

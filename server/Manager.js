@@ -12,9 +12,6 @@ const CommentRoute = require('./routes/commentRoute');
 const ReportRoute = require('./routes/ReportRoute');
 const SavePostInfoRoute = require('./routes/savePostInfoRoute');
 
-
-
-
 /// Process file json and env
 app.use(bodyParser.json())
 dotenv.config();
@@ -28,8 +25,6 @@ mongoose.connection.on("error", () => {
     console.log("Connect MongoDB Failed !")
 })
 
-
-
 /// Handle All API 
 app.use("/api/knowledge", KnowledgeRoute)
 app.use("/api/status", StatusRoute)
@@ -39,7 +34,6 @@ app.use("/api/sendEmail", EmailRoute)
 app.use("/api/comment", CommentRoute)
 app.use("/api/report", ReportRoute)
 app.use("/api/savedpost", SavePostInfoRoute)
-
 
 //// Open port
 const port = process.env.PORT || 3001

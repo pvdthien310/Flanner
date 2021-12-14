@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Alert, } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, Alert, } from 'react-native';
 import Post, { InteractionWrapper, PostImage, PostText, UserImage, UserInfoText, ReactNumber } from '../../shared/post'
 import { UserInfo } from '../../shared/post'
 import { images, imagespost, Poststyle } from '../../styles/poststyle'
@@ -14,6 +14,9 @@ import NotificationApi from '../../API/NotificationAPI';
 import ReportApi from '../../API/ReportAPI';
 import Api from '../../API/UserAPI';
 import Toast from 'react-native-root-toast';
+import SavedPostApi from '../../API/SavedPostAPI';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 
 const StatusMember = ({ item, navigation }) => {
@@ -26,7 +29,46 @@ const StatusMember = ({ item, navigation }) => {
     const [data, setData] = useState(item)
     const [host, setHost] = useState(undefined)
 
+    const createTwoButtonAlert = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to save this post?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => AddSavedPost()
+                }
+            ]
+        );
+    const AddSavedPost = () => {
+        SavedPostApi.UpdateTrue(user.userID, item._id)
+            .then(res => {
+                if (res) {
+                    dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                    let toast = Toast.show('Save successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
 
+            })
+            .catch(err => {
+                console.log(err)
+                let toast = Toast.show('Save failed, please try again!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
+    }
     const fetchHostData = async () => {
         await Api.getUserItem(item.userID)
             .then(res => {
@@ -70,7 +112,10 @@ const StatusMember = ({ item, navigation }) => {
                     style: "cancel"
                 },
 
-            ]
+            ],
+            {
+                cancelable:true
+            }
         );
 
     const ReportPost = (reason) => {
@@ -171,8 +216,8 @@ const StatusMember = ({ item, navigation }) => {
             type: '2',
             action: 'React'
         })
-        .then(res => {})
-        .catch(err => console.log('Error Send Noti',err))
+            .then(res => { })
+            .catch(err => console.log('Error Send Noti', err))
 
     }
     const removeNotification = () => {
@@ -212,25 +257,25 @@ const StatusMember = ({ item, navigation }) => {
 
     const PressHandle1 = () => {
         // let numberReact = data.reactNumber;
-        
-        const url_true =  URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
+
+        const url_true = URL_local + 'status/update/' + item._id.toString() + '/true/' + user.userID.toString();
         const url_false = URL_local + 'status/update/' + item._id.toString() + '/false/' + user.userID.toString();
 
 
         if (pressed == true) {
-            
+
             StatusApi.updateFalse(item._id.toString(), user.userID.toString())
-            .then(res => {
-                removeNotification()
-                setData(res)
-                setReactnumber(res.react.length)
-                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-            })
-            .catch(err => console.log('Error update false'))
-        
+                .then(res => {
+                    removeNotification()
+                    setData(res)
+                    setReactnumber(res.react.length)
+                    dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                })
+                .catch(err => console.log('Error update false'))
+
         }
         else if (pressed == false) {
             // fetch(url_true, {
@@ -259,17 +304,17 @@ const StatusMember = ({ item, navigation }) => {
             //     console.log("error", err)
             // })
             StatusApi.updateTrue(item._id.toString(), user.userID.toString())
-            .then(res => {
-                sendNotification()
-                setData(res)
-                dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
-                if ((res.react).indexOf(user.userID) != -1)
-                    setPressed(true)
-                else setPressed(false)
-                setReactnumber(res.react.length)
+                .then(res => {
+                    sendNotification()
+                    setData(res)
+                    dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
+                    if ((res.react).indexOf(user.userID) != -1)
+                        setPressed(true)
+                    else setPressed(false)
+                    setReactnumber(res.react.length)
 
-            })
-            .catch(err => console.log('Error update true'))
+                })
+                .catch(err => console.log('Error update true'))
         }
 
 
@@ -282,76 +327,82 @@ const StatusMember = ({ item, navigation }) => {
 
     useEffect(() => {
         // console.log('render post')
-       
+
     })
 
     return (
-        <Post >
-             <TouchableOpacity onPress={() => createThreeButtonAlert()}>
-                <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
-            </TouchableOpacity>
+        <TouchableOpacity activeOpacity={1}
+            onLongPress={() => createTwoButtonAlert()}>
+            <Post>
+                <TouchableOpacity onPress={() => createThreeButtonAlert()}>
+                    <MaterialIcons style={{ alignSelf: 'flex-end', marginBottom: 5 }} name="report" size={24} color="black" />
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => {
-                if (item.userID != user.userID) {
-                    navigation.push(
-                        'Status Friend Profile',
-                        { item: [host] })
+                <TouchableOpacity onPress={() => {
+                    if (item.userID != user.userID) {
+                        navigation.push(
+                            'Status Friend Profile',
+                            { item: [host] })
+                    }
+                    else {
+                        createTwoButtonAlert()
+                    }
                 }
-                else {
-                    createTwoButtonAlert()
-                }
-            }
-            }>
-                <UserInfo>
-                    <Image source={{ uri: host ? host.avatar : item.avatar }} style={Poststyle.imageavatar} />
-                    <UserInfoText>
-                        <Text style={Poststyle.name}> {host ? host.name : item.username}</Text>
-                        <Text style={Poststyle.posttime}> {item.posttime}</Text>
-                    </UserInfoText>
-                </UserInfo>
-            </TouchableOpacity>
-            <PostText>
-                {/* <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}> */}
+                }>
+                    <UserInfo>
+                        <Image source={{ uri: host ? host.avatar : item.avatar }} style={Poststyle.imageavatar} />
+                        <UserInfoText>
+                            <Text style={Poststyle.name}> {host ? host.name : item.username}</Text>
+                            <Text style={Poststyle.posttime}> {item.posttime}</Text>
+                        </UserInfoText>
+                    </UserInfo>
+                </TouchableOpacity>
+                <PostText>
+                    {/* <TouchableOpacity onPress={() => navigation.navigate('Status Detail', { item })}> */}
                     <Text style={Poststyle.body}>{item.body}</Text>
-                  
-                {/* </TouchableOpacity> */}
-            </PostText>
-            <PostImage>
-                <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
-                <FlatList
-                    scrollEnabled={true}
-                    horizontal={true}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={item.listImage}
-                    renderItem={({ item }) => (
-                        <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
 
-                    )}
-                    keyExtractor={item => item.key}
+                    {/* </TouchableOpacity> */}
+                </PostText>
 
-                />
-            </PostImage>
-            <TouchableOpacity onPress ={() => navigation.push('Status Show React User', { data: item })}>
-            <ReactNumber  >
-                <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
-            </ReactNumber>
-            </TouchableOpacity>
-            <InteractionWrapper style={Poststyle.interactionwrapper}>
-                <TouchableOpacity style={Poststyle.buttonpost}
-                    onPress={PressHandle1}>
-                    <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
-                    <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
+                <PostImage>
+                    <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
+                    <FlatList
+                        style ={{
+                            
+                        }}
+                        scrollEnabled={true}
+                        horizontal={true}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={item.listImage}
+                        renderItem={({ item }) => (
+                            <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
+
+                        )}
+                        keyExtractor={item => item.key}
+                    />
+                </PostImage>
+
+                <TouchableOpacity onPress={() => navigation.push('Status Show React User', { data: item })}>
+                    <ReactNumber  >
+                        <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
+                    </ReactNumber>
                 </TouchableOpacity>
-                <TouchableOpacity  onPress={() => navigation.push('Status Comment', { item : data })}
-                style={Poststyle.buttonpost}>
-                    <Octicons style={Poststyle.buttonicon} name="comment" size={20} color="black" />
-                    <Text style={Poststyle.buttontext}>Comment</Text>
-                </TouchableOpacity>
-            </InteractionWrapper>
+                <InteractionWrapper style={Poststyle.interactionwrapper}>
+                    <TouchableOpacity style={Poststyle.buttonpost}
+                        onPress={PressHandle1}>
+                        <Ionicons style={pressed ? Poststyle.buttonicon1 : Poststyle.buttonicon} name="md-heart-sharp" size={20} />
+                        <Text style={pressed ? Poststyle.buttontext1 : Poststyle.buttontext}>React</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.push('Status Comment', { item: data })}
+                        style={Poststyle.buttonpost}>
+                        <Octicons style={Poststyle.buttonicon} name="comment" size={20} color="black" />
+                        <Text style={Poststyle.buttontext}>Comment</Text>
+                    </TouchableOpacity>
+                </InteractionWrapper>
 
-        </Post>
-        // </TouchableOpacity>
+            </Post>
+        </TouchableOpacity>
 
     )
 

@@ -44,7 +44,7 @@ export const DrawerStack = (props) => {
     return (
         
             
-        <Drawer.Navigator initialRouteName="Home" 
+        <Drawer.Navigator initialRouteName="User Information" 
         screenOptions= {{
             headerTintColor: 'black',
         }}

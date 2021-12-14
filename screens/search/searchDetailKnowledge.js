@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View,  Image, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
 import { PostText, UserInfoText } from '../../shared/post';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Poststyle_Status, Poststyle } from '../../styles/poststyle';
@@ -31,6 +31,28 @@ const SearchDetailKnowledge = ({ route, navigation }) => {
         forceRerender
     }, [item])
 
+    const createTwoButtonAlert = () =>
+        Alert.alert(
+            "Notification",
+            "Do you want to navigate your profile?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                },
+                {
+                    text: "OK", onPress: () => NavigateToCurrentUserProfile()
+                }
+            ]
+        );
+
+    const NavigateToCurrentUserProfile = () => {
+        navigation.navigate('User Information', {
+            screen: 'User Dashboard',
+            params: { user: '' },
+        })
+        dispatch({ type: 'UPDATE_FEATURE', payload: 0 })
+    }
     const sendNotification = () => {
         // const url = URL_local + 'notification/send-data'
         // fetch(url, {
@@ -281,7 +303,7 @@ const SearchDetailKnowledge = ({ route, navigation }) => {
                                     data={data.listImage}
                                     renderItem={({ item }) => (
                                         <View>
-                                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                                            <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
 
                                         </View>
 
@@ -311,7 +333,7 @@ const SearchDetailKnowledge = ({ route, navigation }) => {
                                 <TouchableOpacity onPress={PressHandle} >
                                     <Ionicons name="heart" size={35} style={pressed ? Poststyle_Status.like_button : Poststyle_Status._like_button} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.push('Search Comment', { item : data })}  >
+                                <TouchableOpacity onPress={() => navigation.push('Search Comment', { item: data })}  >
                                     <MaterialCommunityIcons name="comment-multiple" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>
@@ -326,38 +348,51 @@ const SearchDetailKnowledge = ({ route, navigation }) => {
                                     marginEnd: 10
                                 }}
                             />
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'flex-start',
-                                backgroundColor: 'grey',
-                                shadowOffset: { width: 1, height: 1 },
-                                shadowColor: 'black',
-                                shadowOpacity: 0.2,
-                                shadowRadius: 2,
-                                borderRadius: 10,
-                                padding: 10
-                            }}>
-                                {
-                                    host.length > 0 ?
-
-                                        <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
-                                        :
-                                        <Image source={require('../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                            <TouchableOpacity onPress={() => {
+                                if (host.length > 0) {
+                                    if (host[0].email != user.email) {
+                                        navigation.push(
+                                            'Search Friend Profile',
+                                            { item: host })
+                                    }
+                                    else {
+                                        createTwoButtonAlert()
+                                    }
                                 }
+                            }}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    backgroundColor: 'grey',
+                                    shadowOffset: { width: 1, height: 1 },
+                                    shadowColor: 'black',
+                                    shadowOpacity: 0.2,
+                                    shadowRadius: 2,
+                                    borderRadius: 10,
+                                    padding: 10
+                                }}>
+                                    {
+                                        host.length > 0 ?
 
-                                <UserInfoText>
-                                    <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
-                                    <Text style={{
-                                        fontFamily: 'nunitobold',
-                                        fontSize: 12,
-                                        marginStart: 5,
-                                        marginTop: 5,
-                                        color: 'white'
-                                    }}> Author</Text>
+                                            <Image source={{ uri: host[0].avatar }} style={Poststyle_Status.imageavatar_detai} />
+                                            :
+                                            <Image source={require('../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
+                                    }
 
-                                </UserInfoText>
+                                    <UserInfoText>
+                                        <Text style={Poststyle_Status._name_detail}> {data.username}</Text>
+                                        <Text style={{
+                                            fontFamily: 'nunitobold',
+                                            fontSize: 12,
+                                            marginStart: 5,
+                                            marginTop: 5,
+                                            color: 'white'
+                                        }}> Author</Text>
 
-                            </View>
+                                    </UserInfoText>
+
+                                </View>
+                            </TouchableOpacity>
 
                         </ScrollView>
 

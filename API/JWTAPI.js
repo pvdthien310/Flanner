@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const JWTApi = {
     getToken: async data => {
-        const res = await AuthClient.get('/get-accessToken', { username: data });
+        const res = await AuthClient.post('/get-accessToken', { username: data });
         try {
             await AsyncStorage.setItem('accessToken',res.data.accessToken);
         } catch (e)
@@ -23,7 +23,7 @@ const JWTApi = {
         return res.data;
     },
     logout: async refToken => {
-        const res = await AuthClient.get('/logout', { token: refToken });
+        const res = await AuthClient.post('/logout', { token: refToken });
         return res.data
     }
 }

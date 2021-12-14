@@ -9,7 +9,6 @@ const Stack = createNativeStackNavigator()
 export const StaffManagerStack = (props) => {
     const { navigation } = props
     return (
-
         <Stack.Navigator initialRouteName='Staff Screen' screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Staff Screen' component={StaffScreen} />
             <Stack.Screen name='Edit Staff Screen' component={EditStaffScreen} />

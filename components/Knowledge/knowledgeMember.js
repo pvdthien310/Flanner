@@ -1,22 +1,63 @@
 import React, { useState, useEffect, memo } from 'react';
-import { Text, View, FlatList, TouchableOpacity, Image, DatePickerIOS, Alert } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, Image, DatePickerIOS, Alert, TouchableWithoutFeedback } from 'react-native';
 import Post, { PostImage, PostText } from '../../shared/post'
 import { Poststyle, Poststyle_Status } from '../../styles/poststyle'
 import react from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import ReportApi from '../../API/ReportAPI';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import Toast from 'react-native-root-toast';
+import SavedPostApi from '../../API/SavedPostAPI';
 
 
 const KnowledgeMember = ({ item, navigation }) => {
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
+    const dispatch = useDispatch()
     const { user } = useSelector(state => { return state.User })
     useEffect(() => {
         CheckNew()
         setReactnumber(item.react.length)
     }, [item])
+    const createTwoButtonAlert = () =>
+    Alert.alert(
+        "Notification",
+      "Do you want to save this post?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+        },
+        { text: "OK", onPress: () => AddSavedPost()         
+        }
+      ]
+    );
+    const AddSavedPost = () => {
+        SavedPostApi.UpdateTrue(user.userID,item._id)
+        .then(res => {
+            if (res){
+                dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
+                let toast = Toast.show('Save successful!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            }
+           
+        })
+        .catch(err => {
+            console.log(err)
+            let toast = Toast.show('Save failed, please try again!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        })
+    }
     const createThreeButtonAlert = () =>
         Alert.alert(
             "Report Request:",
@@ -44,7 +85,10 @@ const KnowledgeMember = ({ item, navigation }) => {
                     style: "cancel"
                 },
 
-            ]
+            ],
+            {
+                cancelable:true
+            }
         );
 
 
@@ -93,7 +137,8 @@ const KnowledgeMember = ({ item, navigation }) => {
     }
 
     return (
-        <Post >
+       
+        <Post>
             <PostImage>
                 <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', alignSelf: 'stretch' }}>
                     <Text style={Poststyle_Status.posttime}>{item.posttime}</Text>
@@ -109,7 +154,7 @@ const KnowledgeMember = ({ item, navigation }) => {
                     data={item.listImage}
                     renderItem={({ item }) => (
                         <View>
-                            <Image style={Poststyle.imagepost} source={{ uri: item.uri }} />
+                            <Image style={Poststyle.imagepost} source={{ uri: item.url }} />
                             <View style={{ position: 'absolute', top: 20, left: 10 }}>
                                 <Text style={imagenumber == 1 || imagenumber == 0 ? Poststyle.imagenumber1 : Poststyle.imagenumber}>{imagenumber} pics</Text>
                             </View>
@@ -123,7 +168,9 @@ const KnowledgeMember = ({ item, navigation }) => {
             </PostImage>
 
             <PostText>
-                <TouchableOpacity onPress={() => navigation.push('Knowledge Detail', { item })}>
+                <TouchableOpacity 
+                onLongPress={() => createTwoButtonAlert()}
+                onPress={() => navigation.push('Knowledge Detail', { item })}>
                     <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                         <View style={{ flexDirection: 'row' }}>
                             {CheckNew() == true ? null :
@@ -165,7 +212,7 @@ const KnowledgeMember = ({ item, navigation }) => {
                 <Text style={Poststyle_Status.reactnumber}>{reactnumber} Likes</Text>
             </View>
         </Post>
-        // </TouchableOpacity>
+        
 
     )
 
