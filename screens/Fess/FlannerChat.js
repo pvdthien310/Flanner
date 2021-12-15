@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
-import { LogBox, ActivityIndicator, ScrollView, Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { LogBox, RefreshControl, ActivityIndicator, ScrollView, Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import {useChatContext, 
@@ -78,10 +78,21 @@ const Fess = ({navigation}) => {
  const{client} = useChatContext();
  const[users, setUsers] = useState([]);
  const [loading, setLoading] = useState(true)
+ const[,reRender] = useState();
     
  const pan = useRef(new Animated.ValueXY()).current;
  const list = useRef(new Animated.ValueXY()).current;
 
+
+ const fetchUsers = async () => {
+            const resp = await client.queryUsers({});
+            setUsers(resp.users);
+            setLoading(false);
+        };
+
+    useEffect(() => {
+        reRender();
+    },[users])
 
     useEffect( () =>
     {
@@ -96,13 +107,10 @@ const Fess = ({navigation}) => {
             );
             setIsReady(true);
         };
-         const fetchUsers = async () => {
-            const resp = await client.queryUsers({});
-            setUsers(resp.users);
-            setLoading(false);
-        };
+         
         connectUser();
         fetchUsers();
+        console.log(users);
         Animated.timing(pan, {
             toValue:{x:-400,y:0},
             delay:1000,
@@ -134,7 +142,7 @@ const Fess = ({navigation}) => {
     }
 
     const openDrawer = () => {
-        navigation.openDrawer()
+        navigation.openDrawer();
     }
 
     console.log(isReady);
@@ -152,6 +160,12 @@ const Fess = ({navigation}) => {
                 horizontal
                 style={styles.proContainer}
                 showsHorizontalScrollIndicator={false}
+                refreshControl={
+                <RefreshControl
+                refreshing={loading}
+                onRefresh={() => fetchUsers()}
+          />
+        }
                 >
                 {loading ? 
                     (
