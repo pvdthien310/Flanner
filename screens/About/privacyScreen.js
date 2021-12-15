@@ -68,7 +68,7 @@ const PrivacyScreen = ({ navigation }) => {
 
             </SafeAreaView>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator = {false}>
                 <View style={styles.view}>
                     <Text style={styles.name}>{postPrivacy.name}</Text>
 
@@ -76,7 +76,7 @@ const PrivacyScreen = ({ navigation }) => {
 
                     <Text style={{ ...styles.content, marginLeft: 20 }}>{postPrivacy.content1}</Text>
 
-                    <Text style={styles.itm}>{postPrivacy.itm1}</Text>
+                    <Text style={styles.itm}>{postPrivacy.itm2}</Text>
 
                     <Text style={{ ...styles.content, marginLeft: 20 }}>{postPrivacy.content1}</Text>
 
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     itm: {
-        fontFamily: 'nunitoregular',
+        
         fontSize: 13,
         marginTop: 5,
         marginBottom: 10,
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
 export default PrivacyScreen
 
 const postPrivacy = {
-    name: 'Post',
+    name: '1. Post',
     itm1: 'What is Status Posts?',
     content1: 'Status are posts with content about sharing feelings, personal experiences of the poster.' +
         ' Only when you are friends, you can see each others status.',
@@ -234,7 +234,7 @@ const postPrivacy = {
 }
 
 const fraudPrivacy = {
-    name: 'Fraud',
+    name: '2. Fraud',
     content: 'We will remove content that has the purpose of deceiving, intentionally misrepresenting ' +
         'information or defrauding/taking advantage of others to obtain money/ property, including content that' +
         ' seeks to mediate or promote acts. this through our service. Do not post:',
@@ -249,7 +249,7 @@ const fraudPrivacy = {
 }
 
 const wordPrivacy = {
-    name: 'Words',
+    name: '3. Words',
     content: 'This is a problem that happens frequently. We define attack as violent or degrading language,' +
         ' harmful stereotypes, demeaning language, expressions of contempt, disgust or rejection, swearing, calls' +
         ' for boycotts, or calls for boycotts. isolation. With the desire to bring about a good community,' +
@@ -264,7 +264,7 @@ const wordPrivacy = {
 }
 
 const rightPrivacy = {
-    name: 'Intellectual property rights',
+    name: '4. Intellectual property rights',
     content: 'Flâner does not allow people to post content that infringes on the intellectual property rights' +
         ' of others, including copyrights and trademarks goods.'
 }

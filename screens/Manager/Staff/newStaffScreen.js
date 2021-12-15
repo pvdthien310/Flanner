@@ -230,6 +230,8 @@ const NewStaffScreen = ({ navigation }) => {
                     <Text style={styles.title} >Birthday</Text>
                     <Text style={styles.info} onPress={showDatePicker}>{birthday}</Text>
                     <DateTimePickerModal
+                       textColor='black'
+                       
                         isVisible={isDatePickerVisible}
                         mode="date"
                         onConfirm={handleConfirm}

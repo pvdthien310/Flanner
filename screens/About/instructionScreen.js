@@ -104,7 +104,10 @@ const InstructionScreen = ({ navigation }) => {
                     data={listInstruction}
                     keyExtractor={listInstruction.id}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('VideoInstructionScreen', { ins: item })}>
+                        <TouchableOpacity 
+                        onPress={() => {video.current.pauseAsync()
+                            navigation.navigate('VideoInstructionScreen', { ins: item })
+                            }}>
                             <View style={{ flexDirection: 'row', padding: 10 }}>
 
                                 <Text style={{

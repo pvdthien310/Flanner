@@ -49,7 +49,7 @@ const AboutScreen = ({ navigation }) => {
     const aboutFlaner2 = "\nFlâner will broadly your mind. All kinds of experience on one screen. " +
         "Flâner dictionary has no word like nodus tollen for you. Let make some friends!" +
         " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. " +
-        "\n\nIt is Flâner! Best way to entertain!"
+        "\n\nIt is Flâner! Best way to entertain!\n"
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -213,7 +213,7 @@ const AboutScreen = ({ navigation }) => {
                     <Text style={{
                         fontFamily: 'nunitoregular',
                         paddingLeft: 20,
-                        marginBottom: 25
+                        marginBottom: 25,
                     }}
                     >Don't hesitate to express your ideal. We are honored to hear your opinion. We will respond to all of your questions as quickly as possible.
                         Thank you for coming to Flâner!</Text>

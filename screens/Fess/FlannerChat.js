@@ -99,7 +99,9 @@ const Fess = ({navigation}) => {
                 <View style={{marginTop: "-270%" ,height: 1, borderWidth: 1, backgroundColor: 'black', width: '100%'}}></View>
                 <SafeAreaProvider style={{ backgroundColor: '#313149',marginTop: "110%", marginBottom: '20%'}}>
                     <OverlayProvider>
-                        <ChannelList onSelect={onChannelPressed} filters={filters} 
+                        <ChannelList
+                        
+                         onSelect={onChannelPressed} filters={filters} 
                                      sort={sort} />  
                     </OverlayProvider>
                 </SafeAreaProvider>
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
      proContainer:{
         marginRight:-20,
         alignSelf:'center',
-      
+        
         marginBottom: 0,
         height: "5%",
     },

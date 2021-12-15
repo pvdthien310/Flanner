@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, CheckBox, AppRegistry } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, AppRegistry, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { Entypo } from '@expo/vector-icons';
@@ -15,6 +15,10 @@ import Api from '../../API/UserAPI'
 import JWTApi from '../../API/JWTAPI'
 import DatabaseClient from '../../API/DatabaseAPI.js';
 import KnowLedgeApi from '../../API/KnowledgeAPI.js';
+import { Checkbox } from 'react-native-paper';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+
+
 
 
 
@@ -295,86 +299,100 @@ export default function SignInScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Animatable.View style={styles.header} animation='zoomInRight' >
-                <Text style={styles.welcome}>Welcome to, </Text>
-                <Text style={styles.flanner}>Flâner</Text>
+                <View style={{ flexDirection: 'row', alignSelf:'stretch' ,justifyContent:'flex-start', alignItems: 'center', marginStart: 20, marginTop:10 }}>
+                <Image  source={require('../../assets/flaner.png')} style= {{height:80, width:80}}></Image>
+                    <View>
+                        <Text style={styles.welcome}>Welcome to, </Text>
+                        <Text style={styles.flanner}>Flâner</Text>
+                    </View>
+                    
+                </View>
             </Animatable.View>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
+                    <Text style={styles.signInTxt}>Sign In</Text>
 
-            <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
-                <Text style={styles.signInTxt}>Sign In</Text>
+                    <View>
+                        {/* <View style={styles.border}></View> */}
+                        {/* <Text style={styles.accountTxt}> Account</Text> */}
+                        <View style={styles.accountView}>
+                            <TextInput
+                                style={styles.accountEdt}
+                                placeholder='Type your account'
+                                onChangeText={(val) => EmailChange(val)}
+                                defaultValue={saveData.email}
+                            />
+                            {dataTemp.checkUser ? <Ionicons style={{ marginEnd: 10 }} name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
 
-                <View>
-                    {/* <View style={styles.border}></View> */}
-                    {/* <Text style={styles.accountTxt}> Account</Text> */}
-                    <View style={styles.accountView}>
-                        <TextInput
-                            style={styles.accountEdt}
-                            placeholder='Type your account'
-                            onChangeText={(val) => EmailChange(val)}
-                            defaultValue={saveData.email}
-                        />
-                        {dataTemp.checkUser ? <Ionicons style={{ marginEnd: 10 }} name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
-
+                        </View>
                     </View>
-                </View>
 
-                <View style={{ marginTop: 5 }}>
-                    {/* <View style={styles.border}></View>
+                    <View style={{ marginTop: 5 }}>
+                        {/* <View style={styles.border}></View>
                     <Text style={styles.passwordTxt}> Password</Text> */}
-                    <View style={styles.passwordView}>
-                        <TextInput
-                            style={styles.passwordEdt}
-                            placeholder='Type your password'
-                            secureTextEntry={!dataTemp.showPassword}
-                            onChangeText={(val) => PasswordChange(val)}
-                            defaultValue={saveData.password}
-                        />
-                        <Ionicons
-                            style={{ alignSelf: 'center', marginEnd: 10 }}
-                            name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
-                            size={24}
-                            color="black"
-                            onPress={() => setData({ ...dataTemp, showPassword: !dataTemp.showPassword })}
-                        />
+                        <View style={styles.passwordView}>
+                            <TextInput
+                                style={styles.passwordEdt}
+                                placeholder='Type your password'
+                                secureTextEntry={!dataTemp.showPassword}
+                                onChangeText={(val) => PasswordChange(val)}
+                                defaultValue={saveData.password}
+                            />
+                            <Ionicons
+                                style={{ alignSelf: 'center', marginEnd: 10 }}
+                                name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
+                                size={24}
+                                color="black"
+                                onPress={() => setData({ ...dataTemp, showPassword: !dataTemp.showPassword })}
+                            />
+                        </View>
                     </View>
-                </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <CheckBox
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            {/* <Checkbox
+                           style= {{alignSelf:'center', height: 10, width: 10, marginEnd: 10, backgroundColor:'red'}}
                             value={isSelected}
-                            onValueChange={setSelection}
+                            onValueChange={(value) => setSelection}
                             tintColors={{ true: 'black', false: 'black' }}
-                        />
-                        <Text>Remember me</Text>
+                        /> */}
+                            <Checkbox
+                                color='#8CAD81'
+                                uncheckedColor='#8CAD81'
+                                status={isSelected ? 'checked' : 'unchecked'}
+                                onPress={() => setSelection(!isSelected)}
+                            />
+                            <Text>Remember me</Text>
+                        </View>
+
+                        <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                            <Text style={styles.forgot} >Forgot password?</Text>
+                        </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-                        <Text style={styles.forgot} >Forgot password?</Text>
+                    <TouchableOpacity style={styles.signInBtn} onPress={_submit}>
+                        <Text style={styles.textSign}>SIGN IN</Text>
                     </TouchableOpacity>
-                </View>
 
-                <TouchableOpacity style={styles.signInBtn} onPress={_submit}>
-                    <Text style={styles.textSign}>SIGN IN</Text>
-                </TouchableOpacity>
+                    <View style={{ marginTop: height*0.3 }}>
+                        <View style={{ borderBottomColor: 'grey', borderWidth: 1, opacity: 0.5, marginTop: 11 }}></View>
+                        <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
+                    </View>
 
-                <View style={{ marginTop: 20 }}>
-                    <View style={{ borderBottomColor: 'grey', borderWidth: 0.3, opacity: 0.5, marginTop: 11 }}></View>
-                    <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
-                </View>
-
-                {/* <TouchableOpacity style={styles.facebookGoogleBtn}>
+                    {/* <TouchableOpacity style={styles.facebookGoogleBtn}>
                     <AntDesign name="google" size={24} color="black" />
                     <Text style={styles.googleTxt}>Login with Google</Text>
                 </TouchableOpacity> */}
 
-                <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: height * 0.2, alignItems: 'flex-end', }}
-                    onPress={() => navigation.navigate('SignUpScreen')}
-                >
-                    <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
-                    <Text style={styles.signUpTxt}>Sign Up</Text>
-                </TouchableOpacity>
-            </Animatable.View>
+                    <TouchableOpacity
+                        style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20, alignItems: 'flex-end', }}
+                        onPress={() => navigation.navigate('SignUpScreen')}
+                    >
+                        <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
+                        <Text style={styles.signUpTxt}>Sign Up</Text>
+                    </TouchableOpacity>
+                </Animatable.View>
+            </TouchableWithoutFeedback>
         </View>
     )
 }
@@ -397,8 +415,8 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     welcome: {
-        marginTop: 10,
-        fontSize: 30,
+        fontFamily: 'nunitobold',
+        fontSize: 20,
         marginLeft: 20
     },
     header: {
@@ -412,7 +430,14 @@ const styles = StyleSheet.create({
         //borderTopLeftRadius: 30,
         borderTopRightRadius: 70,
         paddingVertical: 40,
-        paddingHorizontal: 30
+        paddingHorizontal: 30,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 3.84,
     },
     accountView: {
         flexDirection: 'row',

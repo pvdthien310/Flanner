@@ -117,14 +117,13 @@ const AboutMember = ({ item, navigation }) => {
                         }}>
                             <Text style={{
                                 fontFamily: 'nunitobold',
-                                
                                 fontSize: 15,
                                 color: 'black'
                             }}
                             >{host[0].name}</Text>
 
                             <Text style={{
-                                fontFamily: 'nunitobold',
+                                
                                 fontStyle:'italic',
                                 fontSize: 12,
                                 paddingTop: 10,

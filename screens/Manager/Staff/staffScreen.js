@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react'
 import { FlatList } from 'react-native-gesture-handler';
 import { Entypo } from '@expo/vector-icons';
+import RNPickerSelect from 'react-native-picker-select';
+
 
 
 const { height } = Dimensions.get("screen");
@@ -82,10 +84,11 @@ const StaffScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Picker
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding:10 }}>
+                {/* <Picker
+                
                     selectedValue={selectedValue}
-                    style={{ height: 50, width: 130, }}
+                    style={{ height: 100, width: 100 }}
                     onValueChange={(itemValue, itemIndex) => {
                         setSelectedValue(itemValue)
                     }}
@@ -95,7 +98,38 @@ const StaffScreen = ({ navigation }) => {
                     <Picker.Item label="Censor" value="censor" />
                     <Picker.Item label="User" value="user" />
                     <Picker.Item label="Blocked" value="blocked" />
-                </Picker>
+                </Picker> */}
+                <RNPickerSelect
+                     placeholder={{
+                        label: 'Select position',
+                        value: null,
+                    }}
+                    style={{ inputIOS: {
+                        fontSize: 12,
+                        paddingTop: 5,
+                        paddingHorizontal: 10,
+                        paddingBottom: 5,
+                        borderWidth: 1,
+                        borderColor: 'gray',
+                        borderRadius: 4,
+                        backgroundColor: 'white',
+                        color: 'black',
+                        fontFamily:'nunitobold'
+                    }}}
+                    onValueChange={
+                        (itemValue, itemIndex) => {
+                            setSelectedValue(itemValue)}
+                    }
+                    value= {selectedValue}
+                    items={[
+                        { label: 'All', value: 'all' },
+                        { label: 'Admin', value: 'admin' },
+                        { label: 'Censor', value: 'censor' },
+                        { label: 'User', value: 'user' },
+                        { label: 'Blocked', value: 'blocked' },
+
+                    ]}
+                />
 
                 <TouchableOpacity onPress={() => navigation.navigate('New Staff Screen')} style={{ alignContent: 'flex-end' }} >
 

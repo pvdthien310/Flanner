@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         position: 'absolute',
         alignSelf: 'flex-end',
-        backgroundColor: 'red',
+        backgroundColor: 'maroon',
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 20
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         position: 'absolute',
         alignSelf: 'flex-end',
-        backgroundColor: 'green',
+        backgroundColor: 'teal',
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 20

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Alert } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Alert, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-root-toast';
@@ -200,8 +200,14 @@ export default function SignUpScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Animatable.View style={styles.header} animation='zoomInRight' >
-                <Text style={styles.welcome}>Create your </Text>
-                <Text style={styles.flanner}>Flâner</Text>
+                <View style={{ flexDirection: 'row', alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', marginStart: 20, marginTop: 10 }}>
+                    <Image source={require('../../assets/flaner.png')} style={{ height: 80, width: 80 }}></Image>
+                    <View>
+                        <Text style={styles.welcome}>Create Your, </Text>
+                        <Text style={styles.flanner}>Flâner</Text>
+                    </View>
+
+                </View>
             </Animatable.View>
 
             <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
@@ -209,31 +215,35 @@ export default function SignUpScreen({ navigation }) {
                 <View style={{ marginTop: 15 }}>
                     {/* <View style={styles.border}></View>
                     <Text style={styles.accountTxt}> Name</Text> */}
-                    <View style={styles.accountView}>
+                    <View style={styles.passwordView}>
                         <TextInput
                             style={styles.accountEdt}
                             placeholder='Type your name'
                             onChangeText={(val) => NameChange(val)}
                         />
+                        <View style={{ width: 24, height: 24 }}></View>
+
                     </View>
                 </View>
 
                 <View>
                     {/* <View style={styles.border}></View>
                     <Text style={styles.accountTxt}> Name</Text> */}
-                    <View style={styles.accountView}>
+                    <View style={styles.passwordView}>
                         <TextInput
                             style={styles.accountEdt}
                             placeholder='Type your contact'
                             onChangeText={(val) => ContactChange(val)}
                         />
+                        <View style={{ width: 24, height: 24 }}></View>
+
                     </View>
                 </View>
 
                 <View>
                     {/* <View style={styles.border}></View>
                     <Text style={styles.accountTxt}> Email</Text> */}
-                    <View style={styles.accountView}>
+                    <View style={styles.passwordView}>
                         <TextInput
                             style={styles.accountEdt}
                             placeholder='Type your email'
@@ -284,14 +294,14 @@ export default function SignUpScreen({ navigation }) {
                 </View>
 
                 <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
-                    <Text style={styles.textSign}>Sign Up</Text>
+                    <Text style={styles.textSign}>SIGN UP</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: height * 0.095 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: height * 0.23 }}
                     onPress={() => navigation.navigate('SignInScreen')}
                 >
-                    <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
+                    <Text style={{ fontStyle: 'italic' }}>Have you already had an account? </Text>
                     <Text style={styles.signUpTxt}>Sign In</Text>
                 </TouchableOpacity>
 
@@ -319,8 +329,9 @@ const styles = StyleSheet.create({
     },
     welcome: {
         marginTop: 10,
-        fontSize: 30,
-        marginLeft: 20
+        fontSize: 20,
+        marginLeft: 20,
+        fontFamily: 'nunitobold'
     },
     header: {
         height: height * 0.25,
@@ -333,7 +344,14 @@ const styles = StyleSheet.create({
         //borderTopLeftRadius: 30,
         borderTopRightRadius: 70,
         paddingVertical: 40,
-        paddingHorizontal: 30
+        paddingHorizontal: 30,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 3.84,
     },
     accountView: {
         flexDirection: 'row',

@@ -73,7 +73,7 @@ const VideoInstructionScreen = ({ navigation, route }) => {
                 </View>
             </SafeAreaView>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator ={false}>
                 <Text style={{
                     fontFamily: 'nunitoregular',
                     fontSize: 18,
