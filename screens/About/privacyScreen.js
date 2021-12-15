@@ -20,6 +20,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
+const { height, width } = Dimensions.get("screen")
+
 const PrivacyScreen = ({ navigation }) => {
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -72,11 +74,11 @@ const PrivacyScreen = ({ navigation }) => {
 
                     <Text style={styles.itm}>{postPrivacy.itm1}</Text>
 
-                    <Text style={styles.content}>{postPrivacy.content1}</Text>
+                    <Text style={{ ...styles.content, marginLeft: 20 }}>{postPrivacy.content1}</Text>
 
                     <Text style={styles.itm}>{postPrivacy.itm1}</Text>
 
-                    <Text style={styles.content}>{postPrivacy.content1}</Text>
+                    <Text style={{ ...styles.content, marginLeft: 20 }}>{postPrivacy.content1}</Text>
 
                     <Text style={styles.content}>{postPrivacy.content2}</Text>
                 </View >
@@ -90,24 +92,24 @@ const PrivacyScreen = ({ navigation }) => {
                         flexDirection: 'row',
                         marginLeft: 30
                     }}>
-                        <Entypo name="dot-single" size={23} color="dimgray" />
-                        <Text style={...styles.content}>{fraudPrivacy.listDoNot[0]} </Text>
+                        <Entypo name="dot-single" size={23} color="dimgray" style={{ marginTop: 5 }} />
+                        <Text style={{ ...styles.content, marginRight: 30 }}>{fraudPrivacy.listDoNot[0]} </Text>
                     </View>
 
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 30
                     }}>
-                        <Entypo name="dot-single" size={23} color="dimgray" />
-                        <Text style={...styles.content}>{fraudPrivacy.listDoNot[1]} </Text>
+                        <Entypo name="dot-single" size={23} color="dimgray" style={{ marginTop: 5 }} />
+                        <Text style={{ ...styles.content, marginRight: 30 }}>{fraudPrivacy.listDoNot[1]} </Text>
                     </View>
 
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 30
                     }}>
-                        <Entypo name="dot-single" size={23} color="dimgray" />
-                        <Text style={...styles.content}>{fraudPrivacy.listDoNot[2]} </Text>
+                        <Entypo name="dot-single" size={23} color="dimgray" style={{ marginTop: 5 }} />
+                        <Text style={{ ...styles.content, marginRight: 30 }}>{fraudPrivacy.listDoNot[2]} </Text>
                     </View>
                 </View>
 
@@ -120,36 +122,43 @@ const PrivacyScreen = ({ navigation }) => {
                         flexDirection: 'row',
                         marginLeft: 30
                     }}>
-                        <Entypo name="dot-single" size={23} color="dimgray" />
-                        <Text style={...styles.content}>{wordPrivacy.listDoNot[0]} </Text>
+                        <Entypo name="dot-single" size={23} color="dimgray" style={{ marginTop: 5 }} />
+                        <Text style={{ ...styles.content, marginRight: 30 }}>{wordPrivacy.listDoNot[0]} </Text>
                     </View>
 
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 30
                     }}>
-                        <Entypo name="dot-single" size={23} color="dimgray" />
-                        <Text style={...styles.content}>{fraudPrivacy.listDoNot[1]} </Text>
+                        <Entypo name="dot-single" size={23} color="dimgray" style={{ marginTop: 5 }} />
+                        <Text style={{ ...styles.content, marginRight: 30 }}>{fraudPrivacy.listDoNot[1]} </Text>
                     </View>
 
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 30
                     }}>
-                        <Entypo name="dot-single" size={23} color="dimgray" />
-                        <Text style={...styles.content}>{fraudPrivacy.listDoNot[2]} </Text>
+                        <Entypo name="dot-single" size={23} color="dimgray" style={{ marginTop: 5 }} />
+                        <Text style={{ ...styles.content, marginRight: 30 }}>{fraudPrivacy.listDoNot[2]} </Text>
                     </View>
                 </View>
 
-                <View style = {styles.view}>
-                    <Text style = {styles.name}>{rightPrivacy.name}</Text>
+                <View style={styles.view}>
+                    <Text style={styles.name}>{rightPrivacy.name}</Text>
 
-                    <Text style = {styles.content}>{rightPrivacy.content}</Text>
+                    <Text style={styles.content}>{rightPrivacy.content}</Text>
                 </View>
+                
+                <View style={{
+                        height: 1,
+                        width: 300,
+                        alignSelf: 'center',
+                        backgroundColor: 'gray',
+                        margin: 10
+                    }}></View>
 
-                <View style = {styles.view}>
-                    <Text style = {styles.thanks}>{thanks}</Text>
-                </View>
+                <Text style={styles.thanks}>{thanks}</Text>
+
             </ScrollView>
         </View>
     )
@@ -165,7 +174,10 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     view: {
-        margin: 15,
+        marginLeft: 15,
+        marginRight: 15,
+        marginTop: 10,
+        marginRight: 10
     },
     name: {
         textAlign: 'left',
@@ -182,19 +194,27 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 10,
         marginRight: 10,
+        textAlign: 'justify'
     },
     thanks: {
         fontFamily: 'nunitobold',
         fontSize: 15,
-        margin: 10
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10,
+        marginTop: 5
     },
     itm: {
         fontFamily: 'nunitoregular',
-        fontSize: 15,
+        fontSize: 13,
         marginTop: 5,
         marginBottom: 10,
         marginRight: 10,
-        fontStyle: 'italic'
+        fontStyle: 'italic',
+        textAlign: 'auto',
+        fontWeight: 'bold',
+        textAlign: 'justify',
+        marginLeft: 10
     }
 })
 export default PrivacyScreen
@@ -206,8 +226,8 @@ const postPrivacy = {
         ' Only when you are friends, you can see each others status.',
     itm2: 'What is Knowledge Posts?',
     content2: 'Knowledge are articles sharing about common knowledge, in many fields such as education, ' +
-        'culture, economy, science, entertainment ... that the writer wants to bring the value of knowledge to ' +
-        'all Flâner users. . These articles must have clear grounds and evidence.',
+        'culture, economy, science, entertainment... that the writer wants to bring the value of knowledge to ' +
+        'all Flâner users. These articles must have clear grounds and evidence.',
     content3: 'Users need to clearly distinguish the purpose of the two types of posts. We do not accept' +
         ' confusion between them. There are also some regulations below. Please read carefully so as not to make' +
         ' mistakes, because if you make a mistake, we will take appropriate action!'
@@ -232,7 +252,7 @@ const wordPrivacy = {
     name: 'Words',
     content: 'This is a problem that happens frequently. We define attack as violent or degrading language,' +
         ' harmful stereotypes, demeaning language, expressions of contempt, disgust or rejection, swearing, calls' +
-        ' for boycotts, or calls for boycotts. isolation. With the desire to bring about a healthy community,' +
+        ' for boycotts, or calls for boycotts. isolation. With the desire to bring about a good community,' +
         ' we decided that users should not post:',
     listDoNot: [
         'Do not use hate speech, swear words, insult any other personal or collective identity',
@@ -250,5 +270,5 @@ const rightPrivacy = {
 }
 
 const thanks = 'Once again, we thank you for choosing Flâner. With the mission to bring you the best experience, ' +
-    'we will strive to perfect and improve Flâner even more. For a nice and healthy community, in addition to the ' +
-    'development team, we need you to work with us. Wish you the best!'
+    'we will strive to perfect and improve Flâner even more. For a nice and sound community, in addition to the ' +
+    'Flâner team, we need you to join with us. Wish you all the best!'
