@@ -28,7 +28,6 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     useEffect(() => {
         let temp = Api.getUserByEmail(email)
         setUser(temp)
-        console.log(password)
     }
         , [])
 
@@ -51,7 +50,6 @@ export default function ConfirmEmailForgot({ route, navigation }) {
             job: user.job
         }).then(res => {
             fetchUserData();
-            console.log(user)
             let toast = Toast.show('Reset successfully', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
@@ -99,7 +97,6 @@ export default function ConfirmEmailForgot({ route, navigation }) {
             });
         }
         else {
-            console.log(user)
             _ResetData()
 
         }
@@ -118,7 +115,6 @@ export default function ConfirmEmailForgot({ route, navigation }) {
             <Formik
                 initialValues={{ key1: '', key2: '', key3: '', key4: '', key5: '', key6: '' }}
                 onSubmit={values => {
-                    console.log(values)
                     confirmHandle(values)
                 }}
             >
@@ -189,6 +185,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     )
 }
 const { height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 const logoHeight = height * 0.2;
 
 const styles = StyleSheet.create({
@@ -198,6 +195,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     input: {
+        height: width * 0.115,
+        width: width * 0.115,
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 5,

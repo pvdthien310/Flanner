@@ -165,9 +165,9 @@ export default function ForgotPasswordScreen({ navigation }) {
 
             <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
                 <Text style={styles.signInTxt}>Reset Password</Text>
-                <View>
-                    <View style={styles.border}></View>
-                    <Text style={styles.accountTxt}> Email</Text>
+                <View style={{ marginTop: 20 }}>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.accountTxt}> Email</Text> */}
                     <View style={styles.accountView}>
                         <TextInput
                             style={styles.accountEdt}
@@ -179,8 +179,8 @@ export default function ForgotPasswordScreen({ navigation }) {
                 </View>
 
                 <View style={{ marginTop: 5 }}>
-                    <View style={styles.border}></View>
-                    <Text style={styles.newTxt}> New password</Text>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.newTxt}> New password</Text> */}
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
@@ -199,8 +199,8 @@ export default function ForgotPasswordScreen({ navigation }) {
                 </View>
 
                 <View style={{ marginTop: 5 }}>
-                    <View style={styles.border}></View>
-                    <Text style={styles.confirmTxt}> Confirm password </Text>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.confirmTxt}> Confirm password </Text> */}
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
@@ -219,18 +219,14 @@ export default function ForgotPasswordScreen({ navigation }) {
                 </View>
 
                 <TouchableOpacity style={styles.signInBtn} onPress={_resetHandle} >
-                    <LinearGradient
-                        colors={['black', 'black']}
-                        style={styles.signIn}
-                    >
-                        <Text style={styles.textSign}>Reset password</Text>
-                    </LinearGradient>
+
+                    <Text style={styles.textSign}>Reset password</Text>
                 </TouchableOpacity>
 
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 250 }}
-                    onPress={() => navigation.navigate('SignInScreen')}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: height * 0.32 }}
+                    onPress={() => navigation.navigate('SignUpScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
                     <Text style={styles.signUpTxt}>Sign Up</Text>
@@ -276,7 +272,20 @@ const styles = StyleSheet.create({
     },
     accountView: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginTop: 10
     },
     border: {
         borderColor: 'grey',
@@ -297,12 +306,25 @@ const styles = StyleSheet.create({
         marginTop: 17
     },
     accountEdt: {
-        paddingLeft: 20,
+        paddingLeft: 13,
         flex: 1
     },
     passwordView: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginTop: 10
     },
     verifyTxt: {
         fontWeight: 'bold',
@@ -326,17 +348,19 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
     passwordEdt: {
-        paddingLeft: 20,
+        paddingLeft: 13,
         flex: 1,
-        marginTop: 10
     },
     signInBtn: {
-        alignItems: 'flex-end',
-        marginTop: 30
+        backgroundColor: 'black',
+        marginTop: 25,
+        borderRadius: 20,
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     signIn: {
-        width: 150,
-        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,

@@ -94,7 +94,6 @@ export default function ConfirmEmail({ route, navigation }) {
             <Formik
                 initialValues={{ key1: '', key2: '', key3: '', key4: '', key5: '', key6: '' }}
                 onSubmit={values => {
-                    console.log(values)
                     confirmHandle(values)
                 }}
             >
@@ -165,6 +164,7 @@ export default function ConfirmEmail({ route, navigation }) {
     )
 }
 const { height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 const logoHeight = height * 0.2;
 
 const styles = StyleSheet.create({
@@ -174,6 +174,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     input: {
+        height: width * 0.115,
+        width: width * 0.115,
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 5,
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: 20,
         fontSize: 15,
-        //fontFamily: 'nunitobold'
+        fontFamily: 'nunitobold'
     },
     logo: {
         height: logoHeight,
@@ -199,7 +201,7 @@ const styles = StyleSheet.create({
     },
     textConfirm: {
         color: 'white',
-        //fontFamily: 'nunitobold'
+        fontFamily: 'nunitobold'
     },
     gradient: {
         justifyContent: 'center',

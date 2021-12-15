@@ -206,9 +206,9 @@ export default function SignUpScreen({ navigation }) {
 
             <Animatable.View style={styles.footer} animation='fadeInUpBig' easing='ease-out-back'>
                 <Text style={styles.signInTxt}>Sign Up</Text>
-                <View>
-                    <View style={styles.border}></View>
-                    <Text style={styles.accountTxt}> Name</Text>
+                <View style={{ marginTop: 15 }}>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.accountTxt}> Name</Text> */}
                     <View style={styles.accountView}>
                         <TextInput
                             style={styles.accountEdt}
@@ -219,8 +219,8 @@ export default function SignUpScreen({ navigation }) {
                 </View>
 
                 <View>
-                    <View style={styles.border}></View>
-                    <Text style={styles.accountTxt}> Name</Text>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.accountTxt}> Name</Text> */}
                     <View style={styles.accountView}>
                         <TextInput
                             style={styles.accountEdt}
@@ -231,8 +231,8 @@ export default function SignUpScreen({ navigation }) {
                 </View>
 
                 <View>
-                    <View style={styles.border}></View>
-                    <Text style={styles.accountTxt}> Email</Text>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.accountTxt}> Email</Text> */}
                     <View style={styles.accountView}>
                         <TextInput
                             style={styles.accountEdt}
@@ -243,9 +243,9 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{ marginTop: 10 }}>
-                    <View style={styles.border}></View>
-                    <Text style={styles.passwordTxt}> Password</Text>
+                <View>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.passwordTxt}> Password</Text> */}
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
@@ -254,6 +254,7 @@ export default function SignUpScreen({ navigation }) {
                             onChangeText={(val) => PasswordChange(val)}
                         />
                         <Ionicons
+                            style={{ alignSelf: 'center', marginEnd: 10 }}
                             name={dataTemp.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
@@ -262,9 +263,9 @@ export default function SignUpScreen({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{ marginTop: 5 }}>
-                    <View style={styles.border}></View>
-                    <Text style={styles.confirmPasswordTxt}> Confirm password </Text>
+                <View >
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.confirmPasswordTxt}> Confirm password </Text> */}
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
@@ -273,6 +274,7 @@ export default function SignUpScreen({ navigation }) {
                             onChangeText={(val) => ConfirmPasswordChange(val)}
                         />
                         <Ionicons
+                            style={{ alignSelf: 'center', marginEnd: 10 }}
                             name={dataTemp.showConfirm ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
@@ -282,22 +284,17 @@ export default function SignUpScreen({ navigation }) {
                 </View>
 
                 <TouchableOpacity style={styles.signInBtn} onPress={(signInHandle)}>
-                    <LinearGradient
-                        colors={['black', 'black']}
-                        style={styles.signIn}
-                    >
-                        <Text style={styles.textSign}>Sign Up</Text>
-                    </LinearGradient>
+                    <Text style={styles.textSign}>Sign Up</Text>
                 </TouchableOpacity>
 
-
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 120 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: height * 0.095 }}
                     onPress={() => navigation.navigate('SignInScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
                     <Text style={styles.signUpTxt}>Sign In</Text>
                 </TouchableOpacity>
+
             </Animatable.View>
         </View>
     )
@@ -340,7 +337,20 @@ const styles = StyleSheet.create({
     },
     accountView: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginTop: 10
     },
     border: {
         borderColor: 'grey',
@@ -366,7 +376,20 @@ const styles = StyleSheet.create({
     },
     passwordView: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginTop: 10
     },
     passwordTxt: {
         fontWeight: 'bold',
@@ -387,12 +410,15 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
     signInBtn: {
-        alignItems: 'flex-end',
-        marginTop: 30
+        backgroundColor: 'black',
+        marginTop: 25,
+        borderRadius: 20,
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     signIn: {
-        width: 150,
-        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,
