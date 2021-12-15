@@ -59,8 +59,8 @@ const VideoInstructionScreen = ({ navigation, route }) => {
                     }}>
                         <Image source={require('../../assets/flaner.png')}
                             style={{
-                                width: 40,
-                                height: 40,
+                                width: 30,
+                                height: 30,
                                 ///  backgroundColor: 'red',
                             }}>
                         </Image>

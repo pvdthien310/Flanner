@@ -25,19 +25,19 @@ const InstructionScreen = ({ navigation }) => {
 
     const listInstruction = [
         {
-            id: 1,
+            id: '1',
             name: 'Add Post',
             url: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
             instruction: 'Do you want to add a post? Follow here to know! ',
         },
         {
-            id: 2,
+            id: '2',
             name: 'Custom your profile',
             url: 'https://res.cloudinary.com/flaner/video/upload/v1632720356/samples/sea-turtle.mp4',
             instruction: 'All about your profile. Follow us!'
         },
         {
-            id: 3,
+            id: '3',
             name: 'Report posts',
             url: 'https://res.cloudinary.com/flaner/video/upload/v1632720358/samples/elephants.mp4',
             instruction: 'Did you accidentally see a post that violates our standards? Please feel free to report!'
@@ -78,8 +78,8 @@ const InstructionScreen = ({ navigation }) => {
                     }}>
                         <Image source={require('../../assets/flaner.png')}
                             style={{
-                                width: 40,
-                                height: 40,
+                                width: 30,
+                                height: 30,
                                 ///  backgroundColor: 'red',
                             }}>
                         </Image>
@@ -114,7 +114,9 @@ const InstructionScreen = ({ navigation }) => {
                     fontFamily: 'nunitoregular',
                     fontSize: 18,
                     color: 'black',
-                    margin: 15
+                    marginTop: 20,
+                    marginLeft: 15,
+                    marginRight: 15
                 }}>We always look forward to helping you have a good Flâner experience.
                     If you are not sure how to use it, we have prepared some instructions for you below:
                 </Text>
