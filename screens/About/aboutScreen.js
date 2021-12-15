@@ -1,7 +1,4 @@
-import React, {
-    useState,
-    useEffect
-} from 'react';
+import * as React from 'react';
 
 import {
     StyleSheet,
@@ -11,7 +8,7 @@ import {
     Dimensions,
     FlatList
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import AboutMember from '../../components/About/AboutMember';
 import { Entypo } from '@expo/vector-icons';
@@ -50,21 +47,22 @@ const AboutScreen = ({ navigation }) => {
     const aboutFlaner1 = "Your knowledge sharing will be mapped out in Flâner. Significant worklet  for you not to chop and change. Be a great knowledge sharer."
 
     const aboutFlaner2 = "\nFlâner will broadly your mind. All kinds of experience on one screen. " +
-        "Flâner dictionary has no word like nodus tollen for you. Let make some friends" +
-        " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. \n\nIt is Flâner! Best way to entertain!"
+        "Flâner dictionary has no word like nodus tollen for you. Let make some friends!" +
+        " Flâner helps you ambedo. Not like chrysalism or flummoxed feeling, there is always a room for doubt. " +
+        "\n\nIt is Flâner! Best way to entertain!"
 
     return (
-        <ScrollView showsVerticalScrollIndicator = {false}>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
                 {/* About Flaner */}
                 <View>
-                    <View style ={{
-                        backgroundColor:'black',
-                        padding:10,
-                        borderRadius:5
-                        
+                    <View style={{
+                        backgroundColor: 'black',
+                        padding: 10,
+                        borderRadius: 5
+
                     }}>
-                    <Text style={styles.title}> Flâner</Text>
+                        <Text style={styles.title}> Flâner</Text>
                     </View>
 
                     <View style={{
@@ -99,32 +97,93 @@ const AboutScreen = ({ navigation }) => {
                     <Text style={{
                         paddingLeft: 18,
                         paddingRight: 15,
-                        paddingBottom: 10,
+                        ///  paddingBottom: 5,
                         fontFamily: 'nunitoregular',
                         fontSize: 15,
                         paddingTop: 0,
                         textAlign: 'justify',
-                   
+
                         marginTop: -25,
                     }}> {aboutFlaner2} </Text>
+
+
+                    <View style={{
+                        ///  flexDirection: 'row'
+                    }}>
+                        <Text style={{
+                            paddingLeft: 18,
+                            // paddingRight: 15,
+                            marginTop: -5,
+                            fontFamily: 'nunitoregular',
+                            fontSize: 15,
+                            textAlign: 'auto',
+                            marginBottom: -2,
+                        }}>Have you just got Flâner? Don't worry, we've prepared something to help you improve your experience. For a rewarding community, please take a look at:</Text>
+
+
+                        <View style={{
+                            flexDirection: 'column',
+                            marginTop: 5
+                        }}>
+
+                            <TouchableOpacity style={{
+                                alignSelf: 'center',
+                                paddingTop: 5
+                            }}
+                                onPress={() => navigation.navigate('InstructionScreen')}
+                            >
+                                <Text style={{
+                                    // paddingRight: 15,
+                                    fontFamily: 'nunitobold',
+                                    fontSize: 15,
+                                    textAlign: 'auto',
+                                    color: 'black',
+                                    marginBottom: -2,
+                                    textDecorationLine: 'underline'
+                                }}>Flâner using instruction</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{
+                                alignSelf: 'center',
+                                paddingTop: 8,
+                                marginTop: 2
+                            }}
+                                onPress={() => navigation.navigate('PrivacyScreen')}>
+                                <Text style={{
+                                    // paddingRight: 15,
+                                    fontFamily: 'nunitobold',
+                                    fontSize: 15,
+                                    color: 'black',
+                                    textAlign: 'auto',
+                                    marginBottom: -2,
+                                    textDecorationLine: 'underline'
+                                }}>Flâner privacy</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+
                 </View>
 
                 {/* About Team */}
                 <View>
-                    <Text style={{...styles.title,color:'black',marginStart:10}}>Our Team</Text>
+                    <Text style={{
+                        ...styles.title,
+                        color: 'black',
+                        marginStart: 10,
+                        marginTop: 20
+                    }}>Our Team</Text>
 
                     <Text style={{
                         fontFamily: 'nunitoregular',
                         paddingLeft: 20,
                         paddingTop: 10
                     }}>Developer team information: </Text>
+
                     <FlatList data={members}
                         keyExtractor={members.id}
                         renderItem={({ item }) => (
-                          
-
                             <AboutMember item={item.id}></AboutMember>
-                            // </View>
                         )}
                     />
 
@@ -140,6 +199,7 @@ const AboutScreen = ({ navigation }) => {
                         fontFamily: 'nunitoregular',
                         paddingLeft: 20
                     }}>To further information, please contact: </Text>
+
                     <Text style={{
                         fontFamily: 'nunitoregular',
                         paddingLeft: 20,
@@ -149,6 +209,7 @@ const AboutScreen = ({ navigation }) => {
                         paddingTop: 5,
                         paddingBottom: 5
                     }}>flannerapplication@gmail.com</Text>
+
                     <Text style={{
                         fontFamily: 'nunitoregular',
                         paddingLeft: 20,
@@ -160,10 +221,16 @@ const AboutScreen = ({ navigation }) => {
 
                 {/* Software Information */}
                 <View>
-                    <Text style={{...styles.title,color:'black',marginStart:10}}>Application Infomation </Text>
+                    <Text style={{
+                        ...styles.title,
+                        color: 'black',
+                        marginStart: 10
+                    }}>Application Infomation </Text>
+
                     <View style={styles.softwareInfoView}>
                         <Text style={styles.infoCaption}
                         >Version: </Text>
+
                         <Text style={styles.infoContent}>1.0</Text>
                     </View>
 
@@ -173,7 +240,7 @@ const AboutScreen = ({ navigation }) => {
                         paddingLeft: 25
                     }}>Application permission requirements: </Text>
 
-                    <View style = {{
+                    <View style={{
                         flexDirection: 'column'
                     }}>
                         <View style={{
@@ -185,6 +252,7 @@ const AboutScreen = ({ navigation }) => {
                                 style={{
                                     paddingTop: 3
                                 }} />
+
                             <View style={{
                                 flexDirection: 'column'
                             }}>
@@ -202,10 +270,12 @@ const AboutScreen = ({ navigation }) => {
                             padding: 5,
                             marginLeft: 30
                         }}>
-                            <Ionicons name="library" size={23} color="gray" 
+
+                            <Ionicons name="library" size={23} color="gray"
                                 style={{
                                     paddingTop: 3
                                 }} />
+
                             <View style={{
                                 flexDirection: 'column'
                             }}>
@@ -223,10 +293,11 @@ const AboutScreen = ({ navigation }) => {
                             padding: 5,
                             marginLeft: 30
                         }}>
-                            <MaterialIcons name="storage" size={24} color="dimgray" 
+                            <MaterialIcons name="storage" size={24} color="dimgray"
                                 style={{
                                     paddingTop: 3
                                 }} />
+
                             <View style={{
                                 flexDirection: 'column'
                             }}>
@@ -244,14 +315,16 @@ const AboutScreen = ({ navigation }) => {
                             padding: 5,
                             marginLeft: 30
                         }}>
-                            <MaterialIcons name="devices-other" size={24} color="dimgray" 
+                            <MaterialIcons name="devices-other" size={24} color="dimgray"
                                 style={{
                                     paddingTop: 3
                                 }} />
+
                             <View style={{
                                 flexDirection: 'column'
                             }}>
                                 <Text style={styles.permissionTitle}>Others: </Text>
+
                                 <View style={{ flexDirection: 'row', marginLeft: 30 }}>
                                     <Entypo name="dot-single" size={23} color="dimgray" />
                                     <Text style={styles.permissionContent}>Wifi connection</Text>
@@ -287,11 +360,11 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        
+
         textAlign: 'left',
         fontFamily: 'nunitobold',
         fontSize: 20,
-        color:'white'
+        color: 'white'
         //fontWeight: 'bold'
     },
 

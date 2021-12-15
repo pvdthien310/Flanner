@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Text, StyleSheet, Pressable, Alert} from 'react-native'
+import { Image, View, Text, StyleSheet, Pressable, Alert} from 'react-native'
 import {useChatContext} from "stream-chat-expo"
 import { useSelector, useDispatch } from 'react-redux';
 import {useNavigation} from '@react-navigation/core'
@@ -48,7 +48,17 @@ const UserListItem = ({tempUser}) => {
 
     return (
         <Pressable onPress={onPress} style={styles.root}>
+             <View style={{justifyContent: 'flex-end', flexDirection: 'row'}}>
             <Image style={styles.image} source={{uri: tempUser.image}} />
+                {
+                    tempUser.online && 
+                    <View style={{height: 15, width: 15, 
+                                  borderRadius: 7, 
+                                  backgroundColor: '#31cb00', 
+                                  position: 'absolute', 
+                                  alignItems: 'flex-end'}}></View>
+                }
+            </View>
             <Text style={{color: 'white', fontSize: 15, fontWeight: 'bold'}} > {tempUser.name}</Text>
         </Pressable>
     )
@@ -63,11 +73,10 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     image:{
-        width: 50,
-        height: 50,
-        borderRadius: 50,
-        marginRight: 10,
-        borderWidth: 1,
-        borderColor: 'white'
+         width:50,
+        height:50,
+        borderRadius: 30,
+        borderColor: 'white',
+        borderWidth: 1
     },
 })

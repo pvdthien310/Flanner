@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Text, StyleSheet, Pressable, Alert} from 'react-native'
+import { Image, Text, StyleSheet, Pressable, Alert, View} from 'react-native'
 import {useChatContext} from "stream-chat-expo"
 import { useSelector, useDispatch } from 'react-redux';
 import {useNavigation} from '@react-navigation/core'
@@ -42,13 +42,23 @@ const UserListItemInFessScr = ({tempUser}) => {
                 await channel.watch();
                 navigation.navigate("Channel", {channel: channel});
             }
-        }
-        
+        }  
     }
 
     return (
         <Pressable onPress={onPress} style={styles.root}>
+            <View style={{justifyContent: 'flex-end', flexDirection: 'row'}}>
             <Image style={styles.image} source={{uri: tempUser.image}} />
+                {
+                    tempUser.online && 
+                    <View style={{height: 15, width: 15, 
+                                  borderRadius: 7, 
+                                  backgroundColor: '#31cb00', 
+                                  position: 'absolute', 
+                                  alignItems: 'flex-end'}}></View>
+                }
+            </View>
+
             <Text style={{
                 marginTop:5,
                 fontSize:12,
