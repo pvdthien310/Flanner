@@ -23,27 +23,6 @@ const InstructionScreen = ({ navigation }) => {
     const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
 
-    const listInstruction = [
-        {
-            id: '1',
-            name: 'Add Post',
-            url: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-            instruction: 'Do you want to add a post? Follow here to know! ',
-        },
-        {
-            id: '2',
-            name: 'Custom your profile',
-            url: 'https://res.cloudinary.com/flaner/video/upload/v1632720356/samples/sea-turtle.mp4',
-            instruction: 'All about your profile. Follow us!'
-        },
-        {
-            id: '3',
-            name: 'Report posts',
-            url: 'https://res.cloudinary.com/flaner/video/upload/v1632720358/samples/elephants.mp4',
-            instruction: 'Did you accidentally see a post that violates our standards? Please feel free to report!'
-        },
-    ]
-
     const pressgobackHandler = () => {
         navigation.goBack();
     }
@@ -191,3 +170,24 @@ const styles = StyleSheet.create({
 })
 
 export default InstructionScreen
+
+const listInstruction = [
+    {
+        id: '1',
+        name: 'Add Post',
+        url: 'https://res.cloudinary.com/flaner/video/upload/v1639561394/samples/IMG_5894_qcnnwf.mp4?fbclid=IwAR0ormbvScosc9YNJr6OXlxPv66nxpUvkP8eJzk-GeupZ_8Txoz1rcCSjMM',
+        instruction: 'Do you want to add a post? Follow here to know! ',
+    },
+    {
+        id: '2',
+        name: 'Custom your profile',
+        url: 'https://res.cloudinary.com/flaner/video/upload/v1632720356/samples/sea-turtle.mp4',
+        instruction: 'All about your profile. Follow us!'
+    },
+    {
+        id: '3',
+        name: 'Report posts',
+        url: 'https://res.cloudinary.com/flaner/video/upload/v1632720358/samples/elephants.mp4',
+        instruction: 'Did you accidentally see a post that violates our standards? Please feel free to report!'
+    },
+]

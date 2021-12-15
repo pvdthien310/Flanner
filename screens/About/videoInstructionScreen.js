@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
     },
     video: {
         alignSelf: 'center',
-        width: width* 0.95,
-        height: height * 0.8,
+        width: width* 0.9,
+        height: width * 0.9 * 1792 / 828,
         marginTop: 10
 
     },
