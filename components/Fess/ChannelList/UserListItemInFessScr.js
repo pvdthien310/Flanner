@@ -47,17 +47,17 @@ const UserListItemInFessScr = ({tempUser}) => {
 
     return (
         <Pressable onPress={onPress} style={styles.root}>
-            {/* <View style={{justifyContent: 'flex-end', flexDirection: 'row'}}> */}
+            <View style={{justifyContent: 'flex-end', flexDirection: 'row'}}>
             <Image style={styles.image} source={{uri: tempUser.image}} />
-                {/* {
+                {
                     tempUser.online && 
                     <View style={{height: 15, width: 15, 
                                   borderRadius: 7, 
                                   backgroundColor: '#31cb00', 
                                   position: 'absolute', 
                                   alignItems: 'flex-end'}}></View>
-                } */}
-            {/* </View> */}
+                }
+            </View>
 
             <Text style={{
                 marginTop:5,

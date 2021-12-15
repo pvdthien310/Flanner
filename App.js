@@ -16,13 +16,9 @@ import RootReducer from './reducer/rootReducer'
 import {Chat} from "stream-chat-expo"
 import {StreamChat} from "stream-chat"
 
-// import { useFonts } from "@expo-google-fonts/montserrat";
-// import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
-// import { Montserrat_700Bold } from "@expo-google-fonts/montserrat";
-// import { Montserrat_800ExtraBold } from "@expo-google-fonts/montserrat";
 const store = createStore(RootReducer);
 
-const API_KEY = "bv3z9gc54mck"
+const API_KEY = "ypa7vxd248v5"
 const client = StreamChat.getInstance(API_KEY);
 
 export default function App() {
