@@ -78,9 +78,9 @@ const PrivacyScreen = ({ navigation }) => {
 
                     <Text style={styles.itm}>{postPrivacy.itm2}</Text>
 
-                    <Text style={{ ...styles.content, marginLeft: 20 }}>{postPrivacy.content1}</Text>
+                    <Text style={{ ...styles.content, marginLeft: 20 }}>{postPrivacy.content2}</Text>
 
-                    <Text style={styles.content}>{postPrivacy.content2}</Text>
+                    <Text style={styles.content}>{postPrivacy.content3}</Text>
                 </View >
 
                 <View style={styles.view}>
