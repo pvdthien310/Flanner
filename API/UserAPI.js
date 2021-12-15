@@ -9,11 +9,15 @@ const Api = {
         return res.data
     },
     getAll: async () => {
-        const res = await AuthClient.get(url);
+        const res = await DatabaseClient.get('/user');
         return res.data
     },
     getUserItem: async itemId => {
         const res = await DatabaseClient.get('/user/load-user-by-userID/' + itemId);
+        return res.data;
+    },
+    getUserByEmail: async email => {
+        const res = await DatabaseClient.get('/user/load-user-by-email/' + email);
         return res.data;
     },
     addFollowing: async (userID, friendUserID) => {

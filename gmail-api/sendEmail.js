@@ -4,7 +4,7 @@ const { google } = require('googleapis')
 const CLIENT_ID = '580901955209-d09qf9thmab1epi7069qi3dj6b5g1vlr.apps.googleusercontent.com'
 const CLIENT_SECRET = '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'
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground'
-const REFRESH_TOKEN = '1//04y-mdiErXfRnCgYIARAAGAQSNwF-L9IrKEMPw9X621y0kJFNmshEsmQPdl32DqT2p-IkLzNDK5YvWkwDmNDO6tKCumf5K4f8NrE'
+const REFRESH_TOKEN = '1//049C2SLCB_z4wCgYIARAAGAQSNwF-L9Ir1stzW5JKoYCRgZUNK1HPEpeBL70109pShqNkyXPUzaYiAvRr2y4Nmp1UYrkX4OthD5U'
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
@@ -25,7 +25,7 @@ module.exports = async function sendMail({ value }) {
         })
         // const mailOption = {
         //     from: 'flanerapplication <trithuc23232@gmail.com>',
-        //     to: '19522321@gm.uit.edu.vn',
+        //     to: 'trithuc23232@gmail.com',
         //     subject: "hello",
         //     text: 'thuc ne',
         //     html: '<h1>thuc ne html</h1>'
@@ -47,6 +47,6 @@ module.exports = async function sendMail({ value }) {
     }
 }
 
-//module.exports = sendMail()
+// module.exports = sendMail()
 //     .then((result) => console.log('Email send...', result))
 //     .catch((error) => console.log(error.message))

@@ -20,6 +20,7 @@ const NewStaffScreen = ({ navigation }) => {
     const [birthday, setBirthday] = useState('')
     const [address, setAddress] = useState('')
 
+    const dispatch = useDispatch()
 
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -147,6 +148,7 @@ const NewStaffScreen = ({ navigation }) => {
             password: password,
             address: address,
             position: '1',
+            job: 'Censor'
         }).then(res => {
             SetLoading(false)
             let toast = Toast.show('Insert Censor account successful!', {
@@ -156,7 +158,11 @@ const NewStaffScreen = ({ navigation }) => {
                 animation: true,
                 hideOnPress: true,
             });
-            navigation.navigate('Staff Screen')
+
+            Api.getAll().then(result => {
+                dispatch({ type: 'ADD_DATA_USER', payload: result })
+                navigation.navigate('Staff Screen')
+            })
 
         }).catch(err => {
             let toast = Toast.show('Update your profile failed, please try again!', {

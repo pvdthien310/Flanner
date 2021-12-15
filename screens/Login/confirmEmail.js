@@ -7,6 +7,7 @@ import Toast from 'react-native-root-toast';
 import base64 from 'react-native-base64'
 import { URL_local } from '../../constant.js';
 import SavedPostApi from '../../API/SavedPostAPI.js';
+import Api from '../../API/UserAPI'
 
 export default function ConfirmEmail({ route, navigation }) {
 
@@ -14,6 +15,7 @@ export default function ConfirmEmail({ route, navigation }) {
         name,
         email,
         password,
+        contact,
         confirm,
         showPassword,
         showConfirm,
@@ -22,74 +24,38 @@ export default function ConfirmEmail({ route, navigation }) {
         verifyCode
     } = route.params.dataTemp
 
-    const sendEmail = () => {
-        const url = URL_local + 'sendEmail'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                from: 'flanerapplication <trithuc23232@gmail.com>',
-                to: email,
-                subject: 'Verify code',
-                html: 'Your verify code is: '
-            })
-        }).then(res => res.json())
-            .then(data => { })
-            .catch(err => {
-                console.log("error", err)
-            })
-    }
+    const _submitData = async () => {
+        await Api.AddUser({
+            phoneNumber: contact,
+            name: name,
+            doB: '',
+            avatar: 'https://i2.wp.com/www.cssscript.com/wp-content/uploads/2020/12/Customizable-SVG-Avatar-Generator-In-JavaScript-Avataaars.js.png',
+            email: email,
+            password: password,
+            address: '',
+            position: '2',
+            job: 'None'
+        }).then(res => {
 
-    const _submitData = () => {
-        const url = URL_local + 'user/send-data'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userID: email,
-                phoneNumber: '',
-                name: name,
-                doB: '',
-                avatar: '',
-                email: email,
-                password: base64.encode(password),
-                address: '',
-                position: '0',
-                reportedNum: '0',
-            })
-        }).then(res => res.json())
-            .then(data => {
-                SavedPostApi.AddSavedPost({
-                    userID: makeUserId()
-                }).then(result => {
-                    let toast = Toast.show('Sign up successfully', {
-                        duration: Toast.durations.SHORT,
-                        position: Toast.positions.BOTTOM,
-                        shadow: true,
-                        animation: true,
-                        hideOnPress: true,
-                    });
-                    navigation.navigate('DrawerStack')
-                }
-                )
-                    .catch(err => {
-                        console.log(err)
-                        let toast = Toast.show('Sign up failed', {
-                            duration: Toast.durations.SHORT,
-                            position: Toast.positions.BOTTOM,
-                            shadow: true,
-                            animation: true,
-                            hideOnPress: true,
-                        });
-                    })
-            })
-            .catch(err => {
-                console.log("error", err)
-            })
+            let toast = Toast.show('Register successful', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            navigation.navigate('SignInScreen')
+
+        }).catch(err => {
+            let toast = Toast.show('Register failed, please try again', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            console.log(err)
+        })
     }
 
     const confirmHandle = (value) => {
@@ -128,7 +94,6 @@ export default function ConfirmEmail({ route, navigation }) {
             <Formik
                 initialValues={{ key1: '', key2: '', key3: '', key4: '', key5: '', key6: '' }}
                 onSubmit={values => {
-                    console.log(values)
                     confirmHandle(values)
                 }}
             >
@@ -199,6 +164,7 @@ export default function ConfirmEmail({ route, navigation }) {
     )
 }
 const { height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 const logoHeight = height * 0.2;
 
 const styles = StyleSheet.create({
@@ -208,6 +174,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     input: {
+        height: width * 0.115,
+        width: width * 0.115,
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 5,
@@ -219,7 +187,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: 20,
         fontSize: 15,
-        //fontFamily: 'nunitobold'
+        fontFamily: 'nunitobold'
     },
     logo: {
         height: logoHeight,
@@ -233,7 +201,7 @@ const styles = StyleSheet.create({
     },
     textConfirm: {
         color: 'white',
-        //fontFamily: 'nunitobold'
+        fontFamily: 'nunitobold'
     },
     gradient: {
         justifyContent: 'center',

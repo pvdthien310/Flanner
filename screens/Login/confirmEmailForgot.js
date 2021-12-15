@@ -7,6 +7,7 @@ import Toast from 'react-native-root-toast';
 import base64 from 'react-native-base64'
 import { useSelector, useDispatch } from 'react-redux';
 import { URL_local } from '../../constant.js';
+import Api from '../../API/UserAPI'
 
 export default function ConfirmEmailForgot({ route, navigation }) {
     const dispatch = useDispatch()
@@ -25,42 +26,56 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     const [user, setUser] = useState()
 
     useEffect(() => {
-        data.forEach(element => {
-            if (element.email === email) {
-                setUser(element)
-                return
-            }
-        });
+        let temp = Api.getUserByEmail(email)
+        setUser(temp)
     }
         , [])
 
-    const _ResetData = () => {
-        const url = URL_local + 'user/update'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: user._id,
-                userID: user.userID,
-                phoneNumber: user.phoneNumber,
-                name: user.name,
-                doB: user.doB,
-                avatar: user.avatar,
-                email: email,
-                friendArray: user.friendArray,
-                password: base64.encode(password),
-                score: user.score,
-                address: user.address,
-                position: user.position,
-                reportedNum: user.reportedNum,
-            })
-        }).then(res => res.json())
-            .then(data => { })
-            .catch(err => {
-                console.log("error", err)
-            })
+    const _ResetData = async () => {
+
+        await Api.updateUser({
+            userID: user.userID,
+            phoneNumber: user.contact,
+            name: user.name,
+            doB: user.birthday,
+            avatar: user.avatar,
+            email: user.email,
+            password: base64.encode(password),
+            address: user.address,
+            position: user.position,
+            reportedNum: user.reportedNum,
+            following: user.following,
+            followed: user.followed,
+            bio: user.bio,
+            job: user.job
+        }).then(res => {
+            fetchUserData();
+            let toast = Toast.show('Reset successfully', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            navigation.navigate('SignInScreen')
+        }).catch(err => {
+            let toast = Toast.show('Reset fail, please try again', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        })
+
+
+    }
+
+    const fetchUserData = async () => {
+        await Api.getAll().then(result => {
+            dispatch({ type: 'ADD_DATA_USER', payload: result })
+
+        })
     }
 
     const confirmHandle = (value) => {
@@ -83,15 +98,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
         }
         else {
             _ResetData()
-            let toast = Toast.show('Reset successfully', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            console.log(password)
-            navigation.navigate('SignInScreen')
+
         }
     }
     return (
@@ -108,7 +115,6 @@ export default function ConfirmEmailForgot({ route, navigation }) {
             <Formik
                 initialValues={{ key1: '', key2: '', key3: '', key4: '', key5: '', key6: '' }}
                 onSubmit={values => {
-                    console.log(values)
                     confirmHandle(values)
                 }}
             >
@@ -179,6 +185,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     )
 }
 const { height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 const logoHeight = height * 0.2;
 
 const styles = StyleSheet.create({
@@ -188,6 +195,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     input: {
+        height: width * 0.115,
+        width: width * 0.115,
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 5,

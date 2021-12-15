@@ -28,7 +28,7 @@ export default function SignInScreen({ navigation }) {
     const dispatch = useDispatch()
     const { data, loading, user } = useSelector(state => { return state.User })
     const { accessToken, refreshToken } = useSelector(state => { return state.JWT })
-    
+
     // const fetchData = async () => {
     //     // const url = URL_local_user + 'user'
     //     // fetch(url)
@@ -172,8 +172,7 @@ export default function SignInScreen({ navigation }) {
                 if (res != 'Invalid Password!' && res != 'Login failed! Account was not registered!') {
                     res.forEach(async element => {
                         if (element.email === dataTemp.email) {
-                            if (element.reportedNum == "3") 
-                            {
+                            if (element.reportedNum == "3") {
                                 let toast = Toast.show('Account was blocked. Please contact with us to get more information!', {
                                     duration: Toast.durations.SHORT,
                                     position: Toast.positions.BOTTOM,
@@ -304,8 +303,8 @@ export default function SignInScreen({ navigation }) {
                 <Text style={styles.signInTxt}>Sign In</Text>
 
                 <View>
-                    <View style={styles.border}></View>
-                    <Text style={styles.accountTxt}> Account</Text>
+                    {/* <View style={styles.border}></View> */}
+                    {/* <Text style={styles.accountTxt}> Account</Text> */}
                     <View style={styles.accountView}>
                         <TextInput
                             style={styles.accountEdt}
@@ -319,8 +318,8 @@ export default function SignInScreen({ navigation }) {
                 </View>
 
                 <View style={{ marginTop: 5 }}>
-                    <View style={styles.border}></View>
-                    <Text style={styles.passwordTxt}> Password</Text>
+                    {/* <View style={styles.border}></View>
+                    <Text style={styles.passwordTxt}> Password</Text> */}
                     <View style={styles.passwordView}>
                         <TextInput
                             style={styles.passwordEdt}
@@ -358,18 +357,18 @@ export default function SignInScreen({ navigation }) {
                     <Text style={styles.textSign}>SIGN IN</Text>
                 </TouchableOpacity>
 
-                {/* <View style={{ marginTop: 20 }}>
+                <View style={{ marginTop: 20 }}>
                     <View style={{ borderBottomColor: 'grey', borderWidth: 0.3, opacity: 0.5, marginTop: 11 }}></View>
                     <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
                 </View>
 
-                <TouchableOpacity style={styles.facebookGoogleBtn}>
+                {/* <TouchableOpacity style={styles.facebookGoogleBtn}>
                     <AntDesign name="google" size={24} color="black" />
                     <Text style={styles.googleTxt}>Login with Google</Text>
                 </TouchableOpacity> */}
 
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 110, flex: 1, alignItems: 'flex-end', marginBottom: 120 }}
+                    style={{ flexDirection: 'row', justifyContent: 'center', marginTop: height * 0.2, alignItems: 'flex-end', }}
                     onPress={() => navigation.navigate('SignUpScreen')}
                 >
                     <Text style={{ fontStyle: 'italic' }}>You don't have account? </Text>
@@ -408,7 +407,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     footer: {
-        height: 700,
+        height: height * 0.9,
         backgroundColor: 'white',
         //borderTopLeftRadius: 30,
         borderTopRightRadius: 70,
@@ -417,7 +416,20 @@ const styles = StyleSheet.create({
     },
     accountView: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginTop: 20
     },
     border: {
         borderColor: 'grey',
@@ -443,7 +455,20 @@ const styles = StyleSheet.create({
     },
     passwordView: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginTop: 20
     },
     passwordTxt: {
         fontWeight: 'bold',
@@ -460,7 +485,7 @@ const styles = StyleSheet.create({
     signInBtn: {
         backgroundColor: 'black',
         marginTop: 15,
-        borderRadius: 50,
+        borderRadius: 20,
         padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
@@ -469,7 +494,7 @@ const styles = StyleSheet.create({
     signIn: {
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50,
+        borderRadius: 20,
         flexDirection: 'row'
     },
     textSign: {

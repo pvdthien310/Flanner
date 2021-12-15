@@ -13,13 +13,14 @@ const logoHeight = height * 0.5;
 const EditStaffScreen = ({ navigation, route }) => {
     const { item, poster } = route.params
 
+    const dispatch = useDispatch()
+
     const [loading, SetLoading] = useState(false)
     const [name, setName] = useState(item.name)
     const [contact, setContact] = useState(item.phoneNumber)
     const [birthday, setBirthday] = useState(item.doB)
     const [address, setAddress] = useState(item.address)
     const [position, setPosition] = useState(item.position)
-
 
     const pressgobackHandler = () => {
         navigation.goBack();
@@ -55,7 +56,7 @@ const EditStaffScreen = ({ navigation, route }) => {
 
 
 
-    const _submitData = () => {
+    const unlockData = () => {
         SetLoading(true)
         Api.updateUser({
             userID: item.userID,
@@ -82,7 +83,7 @@ const EditStaffScreen = ({ navigation, route }) => {
                 animation: true,
                 hideOnPress: true,
             });
-
+            navigation.navigate('Staff Screen')
         }).catch(err => {
             let toast = Toast.show('Unlock failed, please try again', {
                 duration: Toast.durations.SHORT,
@@ -93,16 +94,14 @@ const EditStaffScreen = ({ navigation, route }) => {
             });
         })
     }
-    const fetchUserData = () => {
-        Api.getUserItem(item.userID)
-            .then(res => {
-                dispatch({ type: 'ADD_USER', payload: res[0] })
-                dispatch({ type: 'UPDATE_USER', payload: res[0] })
-            })
-            .catch(err => console.log('Error Load User'))
+    const fetchUserData = async () => {
+        await Api.getAll().then(result => {
+            dispatch({ type: 'ADD_DATA_USER', payload: result })
+
+        })
     }
 
-    const unBlockHandle = () => {
+    const unLockHandle = () => {
         Alert.alert(
             "Unlock confirmation",
             "Are you sure to unlock this account?",
@@ -114,12 +113,71 @@ const EditStaffScreen = ({ navigation, route }) => {
 
                 {
                     text: "Confirm",
-                    onPress: () => { _submitData() }
+                    onPress: () => { unlockData() }
                 },
 
             ]
         );
     }
+
+
+    const LockHandle = () => {
+        Alert.alert(
+            "Lock confirmation",
+            "Are you sure to lock this account?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+
+                {
+                    text: "Confirm",
+                    onPress: () => { lockData() }
+                },
+
+            ]
+        );
+    }
+    const lockData = () => {
+        SetLoading(true)
+        Api.updateUser({
+            userID: item.userID,
+            phoneNumber: item.contact,
+            name: item.name,
+            doB: item.birthday,
+            avatar: item.avatar,
+            email: item.email,
+            password: item.password,
+            address: item.address,
+            position: item.position,
+            reportedNum: '3',
+            following: item.following,
+            followed: item.followed,
+            bio: item.bio,
+            job: item.job
+        }).then(res => {
+            SetLoading(false)
+            fetchUserData();
+            let toast = Toast.show('Lock successfully', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            navigation.navigate('Staff Screen')
+        }).catch(err => {
+            let toast = Toast.show('Lock failed, please try again', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+        })
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -144,14 +202,22 @@ const EditStaffScreen = ({ navigation, route }) => {
                     <View >
                         <Text style={styles.title}>Email Address</Text>
                         <Text style={{ fontFamily: 'nunitobold', }}>{item.email}</Text>
+
                         {item.reportedNum == '3' &&
-                            <TouchableOpacity style={styles.blockBtn} onPress={unBlockHandle}>
+                            <TouchableOpacity style={styles.lockBtn} onPress={unLockHandle}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ fontFamily: 'nunitobold', color: 'white', marginRight: 5 }}>Locked</Text>
                                     <MaterialIcons name="block" size={24} color="white" />
                                 </View>
                             </TouchableOpacity>
-
+                        }
+                        {item.reportedNum != '3' && item.position == '1' &&
+                            <TouchableOpacity style={styles.unLockBtn} onPress={LockHandle}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ fontFamily: 'nunitobold', color: 'white', marginRight: 5, marginLeft: 3 }}>Active</Text>
+                                    <MaterialIcons name="check-circle-outline" size={24} color="white" />
+                                </View>
+                            </TouchableOpacity>
                         }
                     </View>
 
@@ -286,11 +352,20 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold'
     },
-    blockBtn: {
+    lockBtn: {
         marginTop: 15,
         position: 'absolute',
         alignSelf: 'flex-end',
         backgroundColor: 'red',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 20
+    },
+    unLockBtn: {
+        marginTop: 15,
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        backgroundColor: 'green',
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 20
