@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useChatContext } from "stream-chat-expo";
 import UserListItem from "./UserListItem";
-import { Alert, ActivityIndicator, ScrollView, Animated, StyleSheet, Text, Pressable, View, Modal, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Alert, ActivityIndicator, FlatList, Animated, StyleSheet, Text, Pressable, View, Modal, TextInput, Image, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FAB } from 'react-native-paper';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+
 
 
 
@@ -12,7 +12,7 @@ const GlobalPeople = ({ navigation }) => {
 
     const [users, setUsers] = useState([]);
     const [masterData, setmasterData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [search, setSearch] = useState('');
 
@@ -105,30 +105,26 @@ const GlobalPeople = ({ navigation }) => {
                 onChangeText={(text) => searchFilter(text)}
 
             />
-            <ScrollView
-                style={styles.proContainer}
-                showsHorizontalScrollIndicator={false}
-                onRefresh={fetchUsers}
-                refreshing={isLoading}
-            >
-                {isLoading ?
-                    (
-                        <ActivityIndicator size='small' color='#FFF' />
-                    ) : (
-                        <Animated.View style={[list.getLayout(), styles.list]}>
-                            {
-                                users.map((item) => (
+            {
+                isLoading ? 
+                (
+                    <ActivityIndicator size='small' color='#FFF' />
+                ) : (
+                    <FlatList
+                        style={styles.proContainer}
+                        showsHorizontalScrollIndicator={false}
+                        onRefresh={fetchUsers}
+                        refreshing={isLoading}
+                        data={users} 
+                        renderItem={({ item}) => (
                                     <UserListItem
                                         tempUser={item}
                                         keyExtractor={item => item.id.toString()}
                                         key={item.id.toString()}
                                     />
-                                ))
-                            }
-                        </Animated.View>
-                    )
-                }
-            </ScrollView>
+                        )}/>
+                )
+            }
 
             <Modal
                 animationType="slide"
@@ -226,35 +222,6 @@ const GlobalPeople = ({ navigation }) => {
                 </View>
             </Modal>
 
-            {/* <FAB.Group
-          style={{marginBottom: '19%', marginEnd: '0%'}}
-          open={open}
-          icon={open ? {uri: "https://img.icons8.com/ios-filled/100/000000/expand-arrow.png"} : {uri: 'https://img.icons8.com/ios-filled/100/000000/collapse-arrow.png'}}
-          actions={[
-            {
-              icon : {uri: "https://img.icons8.com/ios/50/000000/search-client.png"},
-              label: 'Search',
-              labelTextColor: 'black',
-              style: {backgroundColor: '#313149'},
-              onPress: () => console.log("Press search part")
-            },
-            {
-              icon: 'plus',
-              label: 'New Fess',
-              labelTextColor: 'black',
-              style: {backgroundColor: '#313149'},
-              onPress: () => setModalVisible(true),
-              small: false,
-            },
-          ]}
-          onStateChange={onStateChange}
-          onPress={() => {
-            if (open) {
-              // do something if the speed dial is open
-            }
-          }}
-        /> */}
-
             <FAB
                 style={{
                     width: 60,
@@ -304,9 +271,6 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginRight: -20,
         alignSelf: 'flex-start'
-    },
-    list: {
-        marginTop: 0,
     },
     centeredView: {
         flex: 1,
