@@ -235,7 +235,13 @@ KnowledgeRoute.post('/update/mode/:postID/public', authenToken,(req, res) => {
     }}).
     catch(err => console.log('Loi load user'))
 })
-
+KnowledgeRoute.post('/update-post',authenToken, (req,res) => {
+    Knowledge.updateMany({userID: req.body.userID}, {'username': req.body.name, 'avatar' : req.body.avatar})
+    .then(result => {
+        res.send('Update Knowledge Successful!')
+    })
+    .catch(err => console.log(err))
+})
 
 
 module.exports = KnowledgeRoute

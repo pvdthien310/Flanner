@@ -10,6 +10,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { URL_local } from '../../constant';
 import Api from '../../API/UserAPI';
 import Toast from 'react-native-root-toast';
+import KnowLedgeApi from '../../API/KnowledgeAPI';
+import StatusApi from '../../API/StatusAPI';
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
@@ -213,6 +215,21 @@ const EditProFile = ({ navigation }) => {
         animation: true,
         hideOnPress: true,
       });
+
+      KnowLedgeApi.UpdateUserInfo({
+        userID: user.userID,
+        avatar: picture,
+        name: name,
+      }).then(res => console.log('update knowledge'))
+      .catch(err => console.log(err))
+
+      StatusApi.UpdateUserInfo({
+        userID: user.userID,
+        avatar: picture,
+        name: name,
+      }).then(res => console.log('update status'))
+      .catch(err => console.log(err))
+
 
     }).catch(err => {
       let toast = Toast.show('Update your profile failed, Please try again!', {

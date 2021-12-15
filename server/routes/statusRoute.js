@@ -267,6 +267,14 @@ StatusRoute.get('/load-data/newsfeed/random/:userID', authenToken, (req, res) =>
 
 })
 
+StatusRoute.post('/update-post',authenToken, (req,res) => {
+    Status.updateMany({userID: req.body.userID}, {'username': req.body.name, 'avatar' : req.body.avatar})
+    .then(result => {
+        res.send('Update Status Successful!')
+    })
+    .catch(err => console.log(err))
+})
+
 
 
 

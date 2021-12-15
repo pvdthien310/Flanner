@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const { Base64 } = require('js-base64');
 
 
+
 //Get a member by ID
 UserRoute.get('/:id', (req, res) => {
     User.find({ userID: req.params.id })

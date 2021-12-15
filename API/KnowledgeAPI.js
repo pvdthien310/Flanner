@@ -57,6 +57,10 @@ const url = '/knowledge';
         const res = await DatabaseClient.post(url +'/update/mode/'+ postID +'/limitary' );
         return res.data
     },
+    UpdateUserInfo: async item => {
+        const res = await DatabaseClient.post(url +'/update-post',item );
+        return res.data
+    }
 
 
    
