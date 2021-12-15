@@ -197,20 +197,43 @@ KnowledgeRoute.post('/update/mode/:postID/limitary',authenToken, (req, res) => {
         })
 })
 KnowledgeRoute.post('/update/mode/:postID/private',authenToken, (req, res) => {
-    Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'private' }, { new: true })
-        .then((data) => {
-            res.send(data)
-        }).catch(err => {
-            console.log(err)
-        })
+    Knowledge.findById(req.params.postID)
+    .then(result => {
+        if (result.mode == 'limitary')
+        {
+            res.send(result)
+            return;
+        }
+        else 
+        {
+            Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'private' }, { new: true })
+            .then((data) => {
+                res.send(data)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    }).catch(err => console.log('Loi load user'))
+   
 })
 KnowledgeRoute.post('/update/mode/:postID/public', authenToken,(req, res) => {
+    Knowledge.findById(req.params.postID)
+    .then(result => {
+        if (result.mode == 'limitary')
+        {
+            res.send(result)
+            return;
+        }
+        else 
+        {
     Knowledge.findByIdAndUpdate(req.params.postID, { "mode": 'public' }, { new: true })
         .then((data) => {
             res.send(data)
         }).catch(err => {
             console.log(err)
         })
+    }}).
+    catch(err => console.log('Loi load user'))
 })
 
 

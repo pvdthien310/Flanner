@@ -70,10 +70,11 @@ const CommentScreenForKUser = ({ navigation, route }) => {
                 setListComment(newList)
                 setBody('')
                 setLoading(false)
-                sendNotification()
+                if (item.userID != user.userID)
+                    sendNotification()
             })
             .catch(err => console.log(err))
-        
+
     }
     const sendNotification = () => {
         // const url = URL_local + 'notification/send-data'
@@ -108,7 +109,7 @@ const CommentScreenForKUser = ({ navigation, route }) => {
             senderID: user.userID,
             type: item.title ? '1' : '2',
             action: 'Comment'
-        }).then(res => {})
+        }).then(res => { })
             .catch(err => console.log('Error send noti'))
 
     }
@@ -185,7 +186,7 @@ const CommentScreenForKUser = ({ navigation, route }) => {
                                 showsHorizontalScrollIndicator={false}
                                 data={listComment}
                                 renderItem={({ item }) => (
-                                    <CommentMemberForKUser item={item} navigation = {navigation} ></CommentMemberForKUser>
+                                    <CommentMemberForKUser item={item} navigation={navigation} ></CommentMemberForKUser>
                                 )}
                                 keyExtractor={item => item._id} />
                         </View>

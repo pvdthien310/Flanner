@@ -55,13 +55,24 @@ const UserStatusMember = ({ item, navigation }) => {
             .then(res => {
                 setData(res)
                 dispatch({ type: 'UPDATE_USER_STATUS_MEMBER', payload: res })
-                let toast = Toast.show('Set up successful public mode post', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
+                if (res.mode == 'public') {
+                    let toast = Toast.show('Set up successful public mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+                else {
+                    let toast = Toast.show('Set up failed public mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
             }
             )
             .catch(err => console.log('Error Update Public Mode'))
@@ -71,13 +82,24 @@ const UserStatusMember = ({ item, navigation }) => {
             .then(res => {
                 setData(res)
                 dispatch({ type: 'UPDATE_USER_STATUS_MEMBER', payload: res })
-                let toast = Toast.show('Set up successful private mode post', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
+                if (res.mode == 'private') {
+                    let toast = Toast.show('Set up successful public mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+                else {
+                    let toast = Toast.show('Set up failed public mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
             }
             )
             .catch(err => console.log('Error Update Public Mode'))

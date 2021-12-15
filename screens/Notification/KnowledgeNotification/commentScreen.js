@@ -66,7 +66,8 @@ const CommentScreenForKNoti = ({ navigation, route }) => {
                 setListComment(newList)
                 setBody('')
                 setLoading(false)
-                sendNotification()
+                if (item.userID != user.userID)
+                    sendNotification()
             })
             .catch(err => console.log(err))
         

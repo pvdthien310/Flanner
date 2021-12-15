@@ -68,6 +68,7 @@ const Knowledge = ({ navigation }) => {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
                     <FlatList
+                   
                         showsVerticalScrollIndicator={false}
                         data={data}
                         renderItem={({ item }) => (

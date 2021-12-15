@@ -41,13 +41,24 @@ const UserKnowledgeMember = ({ item, navigation }) => {
             .then(res => {
                 setData(res)
                 dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: res })
-                let toast = Toast.show('Set up successful public mode post', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
+                if (res.mode == 'public') {
+                    let toast = Toast.show('Set up successful public mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+                else {
+                    let toast = Toast.show('Set up failed public mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
             }
             )
             .catch(err => console.log('Error Update Public Mode'))
@@ -55,15 +66,27 @@ const UserKnowledgeMember = ({ item, navigation }) => {
     const UpdatePrivateMode = () => {
         KnowLedgeApi.UpdatePrivate(data._id)
             .then(res => {
+
                 setData(res)
                 dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: res })
-                let toast = Toast.show('Set up successful private mode post', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
+                if (res.mode == 'private') {
+                    let toast = Toast.show('Set up successful private mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+                else {
+                    let toast = Toast.show('Set up failed private mode post', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
             }
             )
             .catch(err => console.log('Error Update Public Mode'))
@@ -151,17 +174,16 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                 hideOnPress: true,
             });
         })
-            .catch(err => 
-                {
-                    console.log('Error Delete Knowledge')
-                    let toast = Toast.show('Add post failed!', {
-                        duration: Toast.durations.SHORT,
-                        position: Toast.positions.BOTTOM,
-                        shadow: true,
-                        animation: true,
-                        hideOnPress: true,
-                    });
-                })
+            .catch(err => {
+                console.log('Error Delete Knowledge')
+                let toast = Toast.show('Add post failed!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+            })
         fetchKnowledgeData()
 
     }
@@ -181,11 +203,11 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center', borderRadius: 10, borderColor: 'black', borderWidth: 1, paddingStart: 5, paddingEnd: 5, }}>
                         {
                             data.mode == 'private' &&
-                            <TouchableOpacity 
-                            onPress = {
-                                () => UpdatePublicMode()
-                            }
-                             activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                            <TouchableOpacity
+                                onPress={
+                                    () => UpdatePublicMode()
+                                }
+                                activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                                 <MaterialIcons name="person-outline" size={24} color="black" />
                             </TouchableOpacity>
                         }
@@ -197,17 +219,17 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                         }
                         {
                             data.mode == 'public' &&
-                            <TouchableOpacity onPress = {
+                            <TouchableOpacity onPress={
                                 () => UpdatePrivateMode()
                             }
-                             activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
+                                activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                                 <Ionicons name="ios-earth-sharp" size={24} color="black" />
                             </TouchableOpacity>
                         }
 
                         <TouchableOpacity onPress={() => {
                             if (data.mode != 'limitary')
-                                navigation.navigate('Knowledge User Edit Knowledge', { item : data })
+                                navigation.navigate('Knowledge User Edit Knowledge', { item: data })
                             else {
                                 let toast = Toast.show('Sorry! Limitary post can not be edited.', {
                                     duration: Toast.durations.SHORT,
