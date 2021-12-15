@@ -16,6 +16,10 @@ const Api = {
         const res = await DatabaseClient.get('/user/load-user-by-userID/' + itemId);
         return res.data;
     },
+    getUserByEmail: async email => {
+        const res = await DatabaseClient.get('/user/load-user-by-email/' + email);
+        return res.data;
+    },
     addFollowing: async (userID, friendUserID) => {
         const res = await DatabaseClient.post('/user/add/' + userID + '/following/' + friendUserID);
         return res.data

@@ -9,9 +9,9 @@ import { AntDesign } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-root-toast';
 import { URL_local } from '../../constant.js';
+import Api from '../../API/UserAPI'
 
 export default function ForgotPasswordScreen({ navigation }) {
-    const { data, loading } = useSelector(state => { return state.User })
 
     function makeId() {
         let result = '';
@@ -36,7 +36,7 @@ export default function ForgotPasswordScreen({ navigation }) {
     });
 
     const sendEmail = () => {
-        const url = URL_local + 'sendEmail'
+        const url = URL_local + '/sendEmail'
         fetch(url, {
             method: 'POST',
             headers: {
@@ -94,7 +94,7 @@ export default function ForgotPasswordScreen({ navigation }) {
         })
     }
 
-    const _resetHandle = () => {
+    const _resetHandle = async () => {
         if (dataForgot.email == "" || dataForgot.password == "" || dataForgot.confirm == "") {
             let toast = Toast.show('Please fill out your information', {
                 duration: Toast.durations.SHORT,
@@ -128,36 +128,32 @@ export default function ForgotPasswordScreen({ navigation }) {
         }
 
         let flag = false
-        data.forEach(element => {
-            if (element.email === dataForgot.email) {
-                flag = true
-                return
-            }
+
+        let user = await Api.getUserByEmail(dataForgot.email)
+        if (user.reportedNum == '3') {
+            let toast = Toast.show('Account was blocked. Please contact with us to get more information!', {
+                duration: Toast.durations.LONG,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return;
+        }
+        setDataForgot({
+            ...dataForgot,
+            verifyCode: makeId()
+        })
+        sendEmail()
+        let toast = Toast.show('We just sent you a verify code', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
         });
-        if (flag) {
-            setDataForgot({
-                ...dataForgot,
-                verifyCode: makeId()
-            })
-            sendEmail()
-            let toast = Toast.show('We just sent you a verify code', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            navigation.navigate('ConfirmEmailForgot', { dataForgot })
-        }
-        else {
-            let toast = Toast.show('Email is not registered', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-        }
+        navigation.navigate('ConfirmEmailForgot', { dataForgot })
+
     }
 
     return (
@@ -195,7 +191,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                         <Ionicons
                             name={dataForgot.showPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
-                            style = {{marginEnd: 10}}
+                            style={{ marginEnd: 10 }}
                             color="black"
                             onPress={() => setDataForgot({ ...dataForgot, showPassword: !dataForgot.showPassword })}
                         />
@@ -213,7 +209,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                             onChangeText={(val) => ConfirmPasswordChange(val)}
                         />
                         <Ionicons
-                        style = {{marginEnd: 10}}
+                            style={{ marginEnd: 10 }}
                             name={dataForgot.showConfirmPassword ? "eye-outline" : "eye-off-outline"}
                             size={24}
                             color="black"
@@ -332,7 +328,7 @@ const styles = StyleSheet.create({
     passwordEdt: {
         paddingLeft: 20,
         flex: 1,
-        marginTop:10
+        marginTop: 10
     },
     signInBtn: {
         alignItems: 'flex-end',

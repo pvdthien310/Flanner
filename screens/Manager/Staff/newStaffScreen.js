@@ -148,6 +148,7 @@ const NewStaffScreen = ({ navigation }) => {
             password: password,
             address: address,
             position: '1',
+            job: 'Censor'
         }).then(res => {
             SetLoading(false)
             let toast = Toast.show('Insert Censor account successful!', {
@@ -162,8 +163,6 @@ const NewStaffScreen = ({ navigation }) => {
                 dispatch({ type: 'ADD_DATA_USER', payload: result })
                 navigation.navigate('Staff Screen')
             })
-
-
 
         }).catch(err => {
             let toast = Toast.show('Update your profile failed, please try again!', {

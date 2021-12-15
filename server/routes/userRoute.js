@@ -53,6 +53,11 @@ UserRoute.get('/load-user-by-userID/:userID', authenToken, (req, res) => {
         .then(data => res.send(data))
         .catch(err => console.log(err))
 })
+UserRoute.get('/load-user-by-email/:email', authenToken, (req, res) => {
+    User.findOne({ email: req.params.email })
+        .then(data => res.send(data))
+        .catch(err => console.log(err))
+})
 
 UserRoute.post('/update', authenToken, (req, res) => {
     User.findOneAndUpdate({ userID: req.body.userID }, {
@@ -223,7 +228,7 @@ UserRoute.post('/send-data', authenToken, (req, res) => {
                         following: [],
                         followed: [],
                         bio: "Hi, I'm a new member of Flaner. Hope you will enjoy your visit to my home wall. Let's be friend!",
-                        job: ""
+                        job: req.body.job
                     })
 
                     newUser.save()

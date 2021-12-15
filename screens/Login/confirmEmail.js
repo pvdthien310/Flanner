@@ -34,6 +34,7 @@ export default function ConfirmEmail({ route, navigation }) {
             password: password,
             address: '',
             position: '2',
+            job: 'None'
         }).then(res => {
 
             let toast = Toast.show('Register successful', {
