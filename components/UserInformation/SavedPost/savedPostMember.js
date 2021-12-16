@@ -109,10 +109,21 @@ const SavedPostMember = ({ item, navigation }) => {
     return (
         <TouchableOpacity activeOpacity={type == 1 ? 0.5 : 1}
             onPress={() => {
-                if (type == 1)
-                    navigation.navigate('Detail Saved Post Screen', { item: data, poster: host[0] })
-                else if (type == 2) {
-                    let toast = Toast.show('Status has no details!', {
+                if (data.mode == 'public') {
+                    if (type == 1)
+                        navigation.navigate('Detail Saved Post Screen', { item: data, poster: host[0] })
+                    else if (type == 2) {
+                        let toast = Toast.show('Status has no details!', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.CENTER,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                        });
+                    }
+                }
+                else {
+                    let toast = Toast.show('This post does not exists anymore!', {
                         duration: Toast.durations.SHORT,
                         position: Toast.positions.CENTER,
                         shadow: true,
@@ -241,12 +252,12 @@ const SavedPostMember = ({ item, navigation }) => {
                     data && <View>
                         {
                             data.listImage.length > 0 ?
-                                <Image source={{ uri:data.listImage[0].url  }}
+                                <Image source={{ uri: data.listImage[0].url }}
                                     resizeMode='contain'
                                     style={{
                                         minHeight: 300,
                                         minWidth: 400,
-                                        
+
                                     }
                                     }
                                 />

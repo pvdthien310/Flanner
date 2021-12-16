@@ -34,6 +34,7 @@ const UserKnowledge = ({ navigation }) => {
         
             KnowLedgeApi.getKnowledgeUser(user.userID)
             .then(res => {
+              
                 dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
             })
             .catch(err => console.log(err))

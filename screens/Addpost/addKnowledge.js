@@ -295,7 +295,7 @@ export default function AddKnowledge({ route, navigation }) {
                         
                     ></TextInput>
                     <View style={styles.bodytitle}>
-                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Descript about your topic.</Text>
+                        <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Descript your topic.</Text>
                     </View>
 
 

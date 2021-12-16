@@ -59,12 +59,12 @@ const DetailSavedPost = ({ navigation, route }) => {
                     <Text style={Poststyle_Status.posttime_detail}>{item.posttime}</Text>
 
                     {
-                        item.title &&
+                        item.title !='' &&
                         <Text style={Poststyle_Status.title_detail}>{item.title}</Text>
 
                     }
                     {
-                        item.description && <Text style={Poststyle_Status.description_detail}>{item.description}</Text>
+                        item.description !='' && <Text style={Poststyle_Status.description_detail}>{item.description}</Text>
 
                     }
                     <View style={{ borderRadius: 10, backgroundColor: 'lightgray', padding: 5, marginTop: 10, marginStart: 10 }}>
@@ -81,43 +81,6 @@ const DetailSavedPost = ({ navigation, route }) => {
                         marginEnd: 10
                     }}
                 />
-                {/* <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    backgroundColor: 'black',
-                    shadowOffset: { width: 1, height: 1 },
-                    shadowColor: 'black',
-                    shadowOpacity: 0.2,
-                    shadowRadius: 2,
-                    borderRadius: 10,
-                    padding: 10
-                }}>
-                    {
-                        poster ?
-
-                            <Image source={{ uri: poster.avatar }} style={Poststyle_Status.imageavatar_detai} />
-                            :
-                            <Image source={require('../../../assets/icon/userPhoto.png')} style={Poststyle_Status.imageavatar_detai} />
-                    }
-
-                    <View style ={{
-                        justifyContent: 'space-around',
-                        alignItems:'flex-start',
-                        marginStart: 5
-                        
-                    }}>
-                        <Text style={Poststyle_Status._name_detail}>{poster ?poster.name :item.username}</Text>
-                        <Text style={{
-                            fontFamily: 'nunitobold',
-                            fontSize: 15,
-                            color: 'white'
-                        }}> {poster.userID}</Text>
-                       
-                    </View>
-
-                </View> */}
-
             </ScrollView>
         </View >
 

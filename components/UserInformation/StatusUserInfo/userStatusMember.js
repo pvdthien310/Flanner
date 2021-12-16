@@ -375,7 +375,7 @@ const UserStatusMember = ({ item, navigation }) => {
                 opacity: item.mode == 'limitary' ? '0.5' : 1
             }}>
                 {
-                    data.mode == 'public' &&
+                    item.mode == 'public' &&
                     <TouchableOpacity onPress={
                         () => UpdatePrivateMode()
                     }
@@ -385,7 +385,7 @@ const UserStatusMember = ({ item, navigation }) => {
                 }
 
                 {
-                    data.mode == 'private' &&
+                    item.mode == 'private' &&
                     <TouchableOpacity onPress={
                         () => UpdatePublicMode()
                     }
@@ -395,7 +395,7 @@ const UserStatusMember = ({ item, navigation }) => {
                     </TouchableOpacity>
                 }
                 {
-                    data.mode == 'limitary' &&
+                    item.mode == 'limitary' &&
                     <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                         <MaterialIcons name="privacy-tip" size={24} color="maroon" />
                     </TouchableOpacity>

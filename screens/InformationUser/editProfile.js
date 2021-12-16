@@ -130,10 +130,10 @@ const EditProFile = ({ navigation }) => {
     SetLoading(true)
     const data = new FormData();
     data.append("file", photo)
-    data.append("upload_preset", "fyjwewqj")
-    data.append('folder', "Source/avatar")
+    data.append("upload_preset", "poster")
+    data.append('folder', "Source/flaner")
 
-    fetch("https://api.cloudinary.com/v1_1/dithiencloud/image/upload", {
+    fetch("https://api.cloudinary.com/v1_1/flaner/image/upload", {
       method: 'POST',
       body: data,
       header: {
@@ -221,14 +221,14 @@ const EditProFile = ({ navigation }) => {
         avatar: picture,
         name: name,
       }).then(res => console.log('update knowledge'))
-      .catch(err => console.log(err))
+        .catch(err => console.log(err))
 
       StatusApi.UpdateUserInfo({
         userID: user.userID,
         avatar: picture,
         name: name,
       }).then(res => console.log('update status'))
-      .catch(err => console.log(err))
+        .catch(err => console.log(err))
 
 
     }).catch(err => {
@@ -265,7 +265,7 @@ const EditProFile = ({ navigation }) => {
           shadowOffset: { width: 1, height: 1 },
           shadowColor: 'black',
           shadowOpacity: 0.5,
-          opacity:0.7
+          opacity: 0.7
         }} source={{ uri: image }} />
 
 
@@ -273,17 +273,17 @@ const EditProFile = ({ navigation }) => {
           style={{
             height: 100,
             width: 100,
-            top:height * 0.2,
+            top: height * 0.2,
             position: 'absolute',
-            alignItems:'center',
+            alignItems: 'center',
             justifyContent: 'center',
             padding: 5,
             borderRadius: 20,
             alignSelf: 'center',
             margin: 10,
-            
+
           }}>
-          <Ionicons name="images-outline" size={70} style = {{alignSelf: 'center'}} color="dimgray" />
+          <Ionicons name="images-outline" size={70} style={{ alignSelf: 'center' }} color="dimgray" />
         </TouchableOpacity>
 
         <TouchableOpacity style={{ width: 45, position: 'absolute' }} onPress={pressgobackHandler}>

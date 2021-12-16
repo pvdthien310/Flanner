@@ -25,17 +25,18 @@ export default function EditStatus({ route, navigation }) {
             }
         }
     }
-    const {item} = route.params
+    const { item } = route.params
     const { user } = useSelector(state => state.User)
     const [image, setImage] = useState(GetDetail('image'));
     const [body, setBody] = useState(GetDetail('body'));
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
-    const [data,SetData] = useState(undefined)
+    const [data, SetData] = useState(undefined)
 
     const pressgobackHandler = () => {
         navigation.goBack();
     }
+
     const fetchData = () => {
         StatusApi.getItem(item._id)
             .then(res => {
@@ -43,9 +44,11 @@ export default function EditStatus({ route, navigation }) {
             })
             .catch(err => console.log(err))
     }
+
     useEffect(() => {
         fetchData()
     }, [])
+
     useEffect(() => {
         if (data) {
             setBody(data.body)
@@ -63,10 +66,10 @@ export default function EditStatus({ route, navigation }) {
         setLoading(true)
         const data = new FormData();
         data.append("file", photo)
-        data.append("upload_preset", "fyjwewqj")
+        data.append("upload_preset", "poster")
         data.append('folder', "Source/avatar")
 
-        fetch("https://api.cloudinary.com/v1_1/dithiencloud/image/upload", {
+        fetch("https://api.cloudinary.com/v1_1/flaner/image/upload", {
             method: 'POST',
             body: data,
             header: {
@@ -92,7 +95,7 @@ export default function EditStatus({ route, navigation }) {
         //     .then(result => {
         //         dispatch({ type: 'ADD_USER_STATUS', payload: result })
         //     }).catch(err => console.log('Error'));
-        
+
         StatusApi.getStatusUser(user.userID)
             .then(res => {
                 dispatch({ type: 'ADD_USER_STATUS', payload: res })
@@ -111,7 +114,7 @@ export default function EditStatus({ route, navigation }) {
             posttime: route.params.item.posttime,
             listImage: picture,
             react: route.params.item.react,
-            mode :route.params.item.mode
+            mode: route.params.item.mode
         }
 
         // const url = URL_local + 'status/update'
@@ -143,38 +146,56 @@ export default function EditStatus({ route, navigation }) {
         // }).catch(err => {
         //     console.log("error", err)
         // })
-        StatusApi.UpdateItem({
-                id: route.params.item._id,
-                username: user.name,
-                body: body,
-                userID: user.userID,
-                avatar: user.avatar,
-                posttime: route.params.item.posttime,
-                listImage: picture,
-                react: route.params.item.react,
-                mode: route.params.item.mode
-            })
+        StatusApi.getItem(route.params.item._id.toString())
             .then(res => {
-                fetchStatusData()
-                let toast = Toast.show('Add post successful!', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
+                console.log(res)
+                if (res.mode == 'limitary') {
+                    fetchStatusData()
+                    dispatch({ type: 'UPDATE_USER_STATUS_MEMBER', payload: res })
+                    let toast = Toast.show('Add post failed, please try again!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+                else {
+                    StatusApi.UpdateItem({
+                        id: route.params.item._id,
+                        username: user.name,
+                        body: body,
+                        userID: user.userID,
+                        avatar: user.avatar,
+                        posttime: route.params.item.posttime,
+                        listImage: picture,
+                        react: route.params.item.react,
+                        
+                    })
+                        .then(res => {
+                            fetchStatusData()
+                            let toast = Toast.show('Add post successful!', {
+                                duration: Toast.durations.SHORT,
+                                position: Toast.positions.BOTTOM,
+                                shadow: true,
+                                animation: true,
+                                hideOnPress: true,
+                            });
+                        })
+                        .catch(err => {
+                            let toast = Toast.show('Add post failed, please try again!', {
+                                duration: Toast.durations.SHORT,
+                                position: Toast.positions.BOTTOM,
+                                shadow: true,
+                                animation: true,
+                                hideOnPress: true,
+                            });
+                            console.log('Error Edit Status')
+                        })
+                }
             })
-            .catch(err => {
-                let toast = Toast.show('Add post failed, please try again!', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
-             console.log('Error Edit Status')
-            })
-        fetchStatusData();
+            .catch(err => console.log(err))
+       
         navigation.goBack();
     }
 
@@ -314,7 +335,7 @@ export default function EditStatus({ route, navigation }) {
                     data={image}
                     renderItem={({ item }) => (
                         <View style={{ flexDirection: 'column' }}>
-                            <Image style={styles.image} source={{uri: item.url ? item.url : item.uri  }} />
+                            <Image style={styles.image} source={{ uri: item.url ? item.url : item.uri }} />
                             <TouchableOpacity style={{ position: 'absolute' }} onPress={() => {
                                 DeleteImagelist(item.uri)
                             }}>

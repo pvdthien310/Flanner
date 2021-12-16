@@ -57,7 +57,7 @@ KnowledgeRoute.post('/update', authenToken, (req, res) => {
                 mode: _mode
             })
                 .then((data) => {
-                    res.send("update thanh cong")
+                    res.send(data)
                 }).catch(err => {
                     console.log(err)
                 })
@@ -129,7 +129,6 @@ KnowledgeRoute.get('/:id',authenToken, (req, res) => {
 KnowledgeRoute.get('/load-data/:userID', authenToken, (req, res) => {
     Knowledge.find({ userID: req.params.userID })
         .then(data => {
-            // console.log(data)
             res.send(data)
         })
         .catch(err => console.log(err))

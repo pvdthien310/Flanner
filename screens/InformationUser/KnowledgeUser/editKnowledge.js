@@ -83,10 +83,10 @@ export default function EditKnowledge({ route, navigation }) {
         setLoading(true)
         const data = new FormData();
         data.append("file", photo)
-        data.append("upload_preset", "fyjwewqj")
+        data.append("upload_preset", "poster")
         data.append('folder', "Source/avatar")
 
-        fetch("https://api.cloudinary.com/v1_1/dithiencloud/image/upload", {
+        fetch("https://api.cloudinary.com/v1_1/flaner/image/upload", {
             method: 'POST',
             body: data,
             header: {
@@ -118,6 +118,7 @@ export default function EditKnowledge({ route, navigation }) {
             })
             .catch(err => console.log('Error Load User Knowledge'))
     }
+ 
     const EditPost = () => {
         // const d = new Date();
         const updateditem = {
@@ -166,41 +167,99 @@ export default function EditKnowledge({ route, navigation }) {
         // }).catch(err => {
         //     console.log("error", err)
         // })
-        KnowLedgeApi.UpdateItem({
-            id: route.params.item._id,
-            username: user.name,
-            body: body,
-            userID: user.userID,
-            title: title,
-            description: description,
-            avatar: user.avatar,
-            posttime: route.params.item.posttime,
-            listImage: picture,
-            react: route.params.item.react,
-            reactNumber: '0',
-            mode: route.params.item.mode
+        KnowLedgeApi.getItem(route.params.item._id.toString())
+        .then(res => {
+            console.log(res)
+           if (res.mode == 'limitary')
+           {
+            fetchKnowledgeData()
+            dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: res })
+            let toast = Toast.show('Add post failed, please try again!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+           }
+           else
+           {
+            KnowLedgeApi.UpdateItem({
+                id: route.params.item._id,
+                username: user.name,
+                body: body,
+                userID: user.userID,
+                title: title,
+                description: description,
+                avatar: user.avatar,
+                posttime: route.params.item.posttime,
+                listImage: picture,
+                react: route.params.item.react,
+                reactNumber: '0',
+                
+            })
+                .then(res => {
+                    dispatch({ type: 'UPDATE_USER_KNOWLEDGE_MEMBER', payload: res })
+                    fetchKnowledgeData()
+                    let toast = Toast.show('Edit post successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                })
+                .catch(err => {
+                    console.log('Error Edit Knowledge')
+                    let toast = Toast.show('Add post failed, please try again!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                })
+           }
         })
-            .then(res => {
-                fetchKnowledgeData()
-                let toast = Toast.show('Edit post successful!', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
-            })
-            .catch(err => {
-                console.log('Error Edit Knowledge')
-                let toast = Toast.show('Add post failed, please try again!', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
-            })
-        fetchKnowledgeData();
+        .catch(err => {
+            setIsNull(true)
+            console.log(err)
+        })
+        // KnowLedgeApi.UpdateItem({
+        //     id: route.params.item._id,
+        //     username: user.name,
+        //     body: body,
+        //     userID: user.userID,
+        //     title: title,
+        //     description: description,
+        //     avatar: user.avatar,
+        //     posttime: route.params.item.posttime,
+        //     listImage: picture,
+        //     react: route.params.item.react,
+        //     reactNumber: '0',
+            
+        // })
+        //     .then(res => {
+        //         fetchKnowledgeData()
+        //         let toast = Toast.show('Edit post successful!', {
+        //             duration: Toast.durations.SHORT,
+        //             position: Toast.positions.BOTTOM,
+        //             shadow: true,
+        //             animation: true,
+        //             hideOnPress: true,
+        //         });
+        //     })
+        //     .catch(err => {
+        //         console.log('Error Edit Knowledge')
+        //         let toast = Toast.show('Add post failed, please try again!', {
+        //             duration: Toast.durations.SHORT,
+        //             position: Toast.positions.BOTTOM,
+        //             shadow: true,
+        //             animation: true,
+        //             hideOnPress: true,
+        //         });
+        //     })
+      
         navigation.goBack();
     }
 

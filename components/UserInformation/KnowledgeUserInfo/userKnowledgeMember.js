@@ -18,6 +18,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
     const [reactnumber, setReactnumber] = useState(parseInt(item.react.length))
     const imagenumber = item.listImage.length
     const [data, setData] = useState(item)
+    
     const { user } = useSelector(state => state.User)
     const dispatch = useDispatch()
 
@@ -34,7 +35,11 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                 dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
             })
             .catch(err => console.log('Error Load User Knowledge'))
+
+
     }
+ 
+
 
     const UpdatePublicMode = () => {
         KnowLedgeApi.UpdatePublic(data._id)
@@ -191,7 +196,8 @@ const UserKnowledgeMember = ({ item, navigation }) => {
     useEffect(() => {
         setReactnumber(data.react.length)
     }, [data])
-
+    
+   
     return (
         <Post >
             <PostImage>
@@ -202,7 +208,7 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                     <Text style={{ ...Poststyle_Status.posttime, alignSelf: 'center' }}>{item.posttime}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center', borderRadius: 10, borderColor: 'black', borderWidth: 1, paddingStart: 5, paddingEnd: 5, }}>
                         {
-                            data.mode == 'private' &&
+                            item.mode == 'private' &&
                             <TouchableOpacity
                                 onPress={
                                     () => UpdatePublicMode()
@@ -212,13 +218,13 @@ const UserKnowledgeMember = ({ item, navigation }) => {
                             </TouchableOpacity>
                         }
                         {
-                            data.mode == 'limitary' &&
+                            item.mode == 'limitary' &&
                             <TouchableOpacity activeOpacity={1} style={{ justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
                                 <MaterialIcons name="privacy-tip" size={24} color="maroon" />
                             </TouchableOpacity>
                         }
                         {
-                            data.mode == 'public' &&
+                            item.mode == 'public' &&
                             <TouchableOpacity onPress={
                                 () => UpdatePrivateMode()
                             }

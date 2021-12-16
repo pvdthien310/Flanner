@@ -33,8 +33,9 @@ const SavedPost = ({ navigation }) => {
 
         SavedPostApi.GetByUserID(user.userID)
             .then(res => {
-                console.log('vao day')
+                
                 SetData(res.postIDList)
+                dispatch({ type: 'ADD_SAVED_POST_USER', payload: res.postIDList })
                 SetLoading(false)
 
             })
