@@ -59,7 +59,7 @@ const UserListItem = ({tempUser}) => {
                                   alignItems: 'flex-end'}}></View>
                 }
             </View>
-            <Text style={{color: 'white', fontSize: 15, fontWeight: 'bold'}} > {tempUser.name}</Text>
+            <Text style={{color: 'white', fontSize: 15, fontWeight: 'bold', marginLeft: 7}} > {tempUser.name}</Text>
         </Pressable>
     )
 }
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     root:{
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 10,
+        margin: 7,
     },
     image:{
          width:50,
