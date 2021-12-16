@@ -11,6 +11,7 @@ import { LogBox, StyleSheet, View, TouchableOpacity, Text, Image } from 'react-n
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSelector } from 'react-redux';
 import { AntDesign, Ionicons } from '@expo/vector-icons'
+import {ChannelAvatar} from 'stream-chat-expo'
 
 
 // Ignore log notification by message
@@ -104,7 +105,8 @@ const ChannelScreen = ({ navigation, route }) => {
                         alignItems: 'center'
 
                     }}>
-                        <Image style={styles.avatar} source={{ uri: imgHeader }} />
+                        {/* <Image style={styles.avatar} source={{ uri: imgHeader }} /> */}
+                        <ChannelAvatar channel={channel} />
                         <Text style={styles.username}>{nameHeader}</Text>
                     </View>
                 </View>
@@ -178,8 +180,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         fontSize: 20,
-        fontFamily: 'nunitobold'
-
+        fontFamily: 'nunitobold',
+        marginLeft: 10
     },
     avatar: {
         width: 40,

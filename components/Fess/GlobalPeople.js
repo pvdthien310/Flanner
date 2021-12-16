@@ -99,7 +99,6 @@ const GlobalPeople = ({ navigation }) => {
             </View>
             <TextInput style={{ backgroundColor: 'whitesmoke', paddingLeft: 15, marginTop: 10, height: 40, borderRadius: 15, color: 'black', fontSize: 15 }}
                 placeholder="Search here..."
-
                 value={search}
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => searchFilter(text)}
@@ -112,7 +111,7 @@ const GlobalPeople = ({ navigation }) => {
                 ) : (
                     <FlatList
                         style={styles.proContainer}
-                        showsHorizontalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={true}
                         onRefresh={fetchUsers}
                         refreshing={isLoading}
                         data={users} 
@@ -270,7 +269,8 @@ const styles = StyleSheet.create({
     proContainer: {
         marginTop: 15,
         marginRight: -20,
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        // position: 'absolute',
     },
     centeredView: {
         flex: 1,
