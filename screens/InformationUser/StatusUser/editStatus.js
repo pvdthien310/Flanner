@@ -148,7 +148,7 @@ export default function EditStatus({ route, navigation }) {
         // })
         StatusApi.getItem(route.params.item._id.toString())
             .then(res => {
-                console.log(res)
+               
                 if (res.mode == 'limitary') {
                     fetchStatusData()
                     dispatch({ type: 'UPDATE_USER_STATUS_MEMBER', payload: res })

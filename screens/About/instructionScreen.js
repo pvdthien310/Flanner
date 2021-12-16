@@ -24,10 +24,9 @@ const InstructionScreen = ({ navigation }) => {
     const [status, setStatus] = React.useState({});
 
     const pressgobackHandler = () => {
+        status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
         navigation.goBack();
     }
-
-
 
     return (
 
@@ -77,7 +76,7 @@ const InstructionScreen = ({ navigation }) => {
                         ref={video}
                         style={styles.video}
                         source={{
-                        uri:'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
+                        uri:'https://res.cloudinary.com/flaner/video/upload/v1639644042/Source/flaner/Flaner_1_mawhga.mp4'
                         }}
                         useNativeControls
                         resizeMode="cover"

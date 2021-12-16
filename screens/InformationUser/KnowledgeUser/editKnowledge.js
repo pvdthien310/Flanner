@@ -169,7 +169,7 @@ export default function EditKnowledge({ route, navigation }) {
         // })
         KnowLedgeApi.getItem(route.params.item._id.toString())
         .then(res => {
-            console.log(res)
+            
            if (res.mode == 'limitary')
            {
             fetchKnowledgeData()
