@@ -72,7 +72,7 @@ const InstructionScreen = ({ navigation }) => {
 
             </SafeAreaView>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator ={false}>
                 <Video
                         ref={video}
                         style={styles.video}
@@ -100,7 +100,7 @@ const InstructionScreen = ({ navigation }) => {
                     If you are not sure how to use it, we have prepared some instructions for you below:
                 </Text>
 
-                <FlatList style={{ marginTop: 5 }}
+                <FlatList style={{ marginTop: 5, marginBottom: 10 }}
                     data={listInstruction}
                     keyExtractor={listInstruction.id}
                     renderItem={({ item }) => (
@@ -108,7 +108,10 @@ const InstructionScreen = ({ navigation }) => {
                         onPress={() => {video.current.pauseAsync()
                             navigation.navigate('VideoInstructionScreen', { ins: item })
                             }}>
-                            <View style={{ flexDirection: 'row', padding: 10 }}>
+                            <View style={{ 
+                                flexDirection: 'row',
+                                 padding: 10 
+                                 }}>
 
                                 <Text style={{
                                     textAlign: 'left',
@@ -130,7 +133,8 @@ const InstructionScreen = ({ navigation }) => {
                                         fontFamily: 'nunitoregular',
                                         fontSize: 15,
                                         color: 'black',
-                                        marginRight: 15
+                                        marginRight: 35,
+                                        textAlign: 'justify'
                                     }}>{item.instruction}</Text>
 
                                 </View>
@@ -178,19 +182,32 @@ const listInstruction = [
     {
         id: '1',
         name: 'Add Post',
-        url: 'https://res.cloudinary.com/flaner/video/upload/v1639561394/samples/IMG_5894_qcnnwf.mp4?fbclid=IwAR0ormbvScosc9YNJr6OXlxPv66nxpUvkP8eJzk-GeupZ_8Txoz1rcCSjMM',
-        instruction: 'Do you want to add a post? Follow here to know! ',
+        url: 'https://res.cloudinary.com/flaner/video/upload/v1639631685/Source/flaner/IMG_6049_hhfizk.mov',
+        instruction: 'How are you today? Do you have something to share, or do you have a valuable source of knowledge'+
+        ' that you want to spread to everyone? You can add a post. Follow here to know! ',
     },
+
     {
         id: '2',
         name: 'Custom your profile',
-        url: 'https://res.cloudinary.com/flaner/video/upload/v1632720356/samples/sea-turtle.mp4',
-        instruction: 'All about your profile. Follow us!'
+        url: 'https://res.cloudinary.com/flaner/video/upload/v1639631680/Source/flaner/IMG_6047_xdmtid.mov',
+        instruction: 'All about your profile, including your personal information and your avatar.'+
+        ' At Flâner, you are yourself and you can express yourself. Follow us!'
     },
+
     {
         id: '3',
-        name: 'Report posts',
-        url: 'https://res.cloudinary.com/flaner/video/upload/v1632720358/samples/elephants.mp4',
-        instruction: 'Did you accidentally see a post that violates our standards? Please feel free to report!'
+        name: 'Report a post',
+        url: 'https://res.cloudinary.com/flaner/video/upload/v1639631671/Source/flaner/IMG_6048_yoa454.mov',
+        instruction: 'Do you accidentally see a post that violates our privacy and you concern about that it will '+
+        'give a bad affect to this community? Please feel free to report!'
     },
+
+    {
+        id: '4',
+        name: 'Save a post',
+        url: 'https://res.cloudinary.com/flaner/video/upload/v1639631685/Source/flaner/IMG_6044_svipyg.mov',
+        instruction: 'What a fantastic content! It is a great status or a valuable piece of knowledge, and you want'+
+        ' to save it. Do not worry, we have supported!'
+    }
 ]
