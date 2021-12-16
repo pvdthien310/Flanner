@@ -76,7 +76,7 @@ const InstructionScreen = ({ navigation }) => {
                         ref={video}
                         style={styles.video}
                         source={{
-                        uri:'https://res.cloudinary.com/flaner/video/upload/v1639644042/Source/flaner/Flaner_1_mawhga.mp4'
+                        uri:'https://res.cloudinary.com/flaner/video/upload/v1639646238/Source/flaner/Flaner_1_fe3bae.mp4'
                         }}
                         useNativeControls
                         resizeMode="cover"
