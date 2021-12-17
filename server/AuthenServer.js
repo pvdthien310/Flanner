@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser')
 const UserRoute = require('./routes/userRoute')
 const JWTRoute = require('./routes/JWTRoute')
-const JWTRefTokens = require('../server/models/JWTRefTokens')
+const JWTRefTokens = require('./models/JWTRefTokens')
 const jwt = require('jsonwebtoken')
 
 /// Process file json and env
