@@ -47,6 +47,38 @@ module.exports = async function sendMail({ value }) {
     }
 }
 
+// async function sendMail() {
+//     try {
+//         const accessToken = await oAuth2Client.getAccessToken()
+//         const transport = nodemailer.createTransport({
+//             service: 'gmail',
+//             auth: {
+//                 type: 'OAuth2',
+//                 user: 'trithuc23232@gmail.com',
+//                 clientId: CLIENT_ID,
+//                 clientSecret: CLIENT_SECRET,
+//                 refreshToken: REFRESH_TOKEN,
+//                 accessToken: accessToken,
+//             }
+//         })
+//         const mailOption = {
+//             from: 'flanerapplication <trithuc23232@gmail.com>',
+//             to: 'trithuc23232@gmail.com',
+//             subject: "hello",
+//             text: 'thuc ne',
+//             html: '<h1>thuc ne html</h1>'
+//         }
+
+//         const result = await transport.sendMail(mailOption)
+//         console.log(result)
+//         return result
+
+//     }
+//     catch (error) {
+//         return error
+//     }
+// }
+
 // module.exports = sendMail()
 //     .then((result) => console.log('Email send...', result))
 //     .catch((error) => console.log(error.message))

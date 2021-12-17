@@ -117,7 +117,9 @@ export default function SignUpScreen({ navigation }) {
             contact: val
         })
     }
-
+    const checkContact = (val) => {
+        return /^-?[\d.]+(?:e-?\d+)?$/.test(val)
+    }
     const signInHandle = async () => {
         if (dataTemp.name == "" || dataTemp.email == "" || dataTemp.password == "" || dataTemp.confirm == "") {
             let toast = Toast.show('Please fill out your information', {
@@ -129,6 +131,17 @@ export default function SignUpScreen({ navigation }) {
             });
             return
         }
+        if (!checkContact(dataTemp.contact)) {
+            let toast = Toast.show('Phone number invalid', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return
+        }
+
         if (!dataTemp.checkUser) {
             let toast = Toast.show('Invalid email', {
                 duration: Toast.durations.SHORT,
@@ -139,6 +152,7 @@ export default function SignUpScreen({ navigation }) {
             });
             return
         }
+
         if (!dataTemp.checkPassword) {
             let toast = Toast.show('Password must be more than 5 characters', {
                 duration: Toast.durations.SHORT,

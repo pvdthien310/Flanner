@@ -158,6 +158,9 @@ const EditProFile = ({ navigation }) => {
       })
       .catch(err => console.log('Error Load User'))
   }
+  const checkContact = (val) => {
+    return /^-?[\d.]+(?:e-?\d+)?$/.test(val)
+  }
   const _submitData = () => {
 
     // const url = URL_local + 'user/send-data'
@@ -189,6 +192,7 @@ const EditProFile = ({ navigation }) => {
     //   .catch(err => {
     //     console.log("error", err)
     //   })
+
     SetLoading(true)
     Api.updateUser({
       userID: user.userID,
@@ -243,6 +247,17 @@ const EditProFile = ({ navigation }) => {
     })
   }
   const saveHandle = async () => {
+    if (!checkContact(contact)) {
+      let toast = Toast.show('Phone number invalid', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+      });
+      return
+    }
+
     let toast = Toast.show('The system is processing, please wait!', {
       duration: Toast.durations.SHORT,
       position: Toast.positions.CENTER,

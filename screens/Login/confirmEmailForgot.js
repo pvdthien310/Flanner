@@ -26,8 +26,15 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     const [user, setUser] = useState()
 
     useEffect(() => {
-        let temp = Api.getUserByEmail(email)
-        setUser(temp)
+        console.log(email)
+
+        Api.getUserByEmail(email).then(
+            res => {
+                if (res) setUser(res)
+                console.log(res)
+            }
+        )
+
     }
         , [])
 
@@ -74,7 +81,6 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     const fetchUserData = async () => {
         await Api.getAll().then(result => {
             dispatch({ type: 'ADD_DATA_USER', payload: result })
-
         })
     }
 
