@@ -148,7 +148,7 @@ export default function ConfirmEmail({ route, navigation }) {
                             <LinearGradient
                                 colors={['black', 'black']}
                                 style={styles.gradient}>
-                                <Text style={styles.textConfirm}>Confirm</Text>
+                                <Text style={styles.textConfirm}>CONFIRM</Text>
                             </LinearGradient>
 
                         </TouchableOpacity>

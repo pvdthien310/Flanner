@@ -270,7 +270,7 @@ export default function ForgotPasswordScreen({ navigation }) {
 
                 <TouchableOpacity style={styles.signInBtn} onPress={_resetHandle} >
 
-                    <Text style={styles.textSign}>Reset password</Text>
+                    <Text style={styles.textSign}>RESET PASSWORD</Text>
                 </TouchableOpacity>
 
 
