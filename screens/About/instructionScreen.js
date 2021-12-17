@@ -182,7 +182,7 @@ const listInstruction = [
         id: '1',
         name: 'Add Post',
         url: 'https://res.cloudinary.com/flaner/video/upload/v1639631685/Source/flaner/IMG_6049_hhfizk.mov',
-        instruction: 'How are you today? Do you have something to share, or do you have a valuable source of knowledge'+
+        instruction: 'How are you today? Do you have somethings to share or a valuable source of knowledge'+
         ' that you want to spread to everyone? You can add a post. Follow here to know! ',
     },
 

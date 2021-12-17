@@ -43,7 +43,6 @@ const UserListItem = ({tempUser}) => {
                 navigation.navigate("Channel", {channel});
             }
         }
-        
     }
 
     return (

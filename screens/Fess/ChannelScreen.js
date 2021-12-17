@@ -7,7 +7,7 @@ import {
     OverlayProvider,
 } from "stream-chat-react-native-core"
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { LogBox, StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { LogBox, Alert, StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSelector } from 'react-redux';
 import { AntDesign, Ionicons } from '@expo/vector-icons'
@@ -74,6 +74,14 @@ const ChannelScreen = ({ navigation, route }) => {
         }
     })
 
+    const createOneButtonAlert = () =>
+        Alert.alert(
+            "From Flâner team",
+            "Sorry! Fess-calling is in developement",
+            [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+        );
     const onDoubleTapMessage = ({
         actionHandlers
     }) => {
@@ -119,10 +127,10 @@ const ChannelScreen = ({ navigation, route }) => {
                 }>
                     <TouchableOpacity style ={{
                         marginEnd: 15
-                    }}>
+                    }} onPress={createOneButtonAlert}>
                         <Ionicons name="call-outline" size={27} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={createOneButtonAlert} >
                         <Ionicons name="videocam-outline" size={30} color="white" />
                     </TouchableOpacity>
 
