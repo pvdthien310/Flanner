@@ -51,6 +51,13 @@ const Api = {
         });
         return res.data;
     },
+    updatePassword: async (email, password) => {
+        const res = await AuthClient.post(url + '/updatePassword', {
+            email: email,
+            password: password
+        });
+        return res.data;
+    },
     checkEmail: async (email) => {
         const res = await AuthClient.post(url + '/checkEmail', {
             email: email,

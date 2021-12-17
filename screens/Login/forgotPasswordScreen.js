@@ -95,81 +95,113 @@ export default function ForgotPasswordScreen({ navigation }) {
     }
 
     const _resetHandle = async () => {
+
         if (dataForgot.email == "" || dataForgot.password == "" || dataForgot.confirm == "") {
             let toast = Toast.show('Please fill out your information', {
                 duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
+                position: Toast.positions.CENTER,
                 shadow: true,
                 animation: true,
                 hideOnPress: true,
             });
             return
         }
-        if (!dataForgot.checkPassword) {
-            let toast = Toast.show('Password must be more than 5 characters', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            return
-        }
-
-        if (dataForgot.confirm != dataForgot.password) {
-            let toast = Toast.show('Confirm password is incorrect', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            return
-        }
-
-        let flag = false
-        Api.getUserByEmail(dataForgot.email).then(
-            res => {
-                if (!res) {
-                    console.log('null')
-                    let toast = Toast.show('Email is not registered', {
-                        duration: Toast.durations.LONG,
-                        position: Toast.positions.BOTTOM,
-                        shadow: true,
-                        animation: true,
-                        hideOnPress: true,
-                    });
-                    return;
-                }
-
-                else {
-                    if (res.reportedNum == '3') {
-                        let toast = Toast.show('Account was blocked. Please contact with us to get more information!', {
-                            duration: Toast.durations.LONG,
-                            position: Toast.positions.BOTTOM,
-                            shadow: true,
-                            animation: true,
-                            hideOnPress: true,
-                        });
-                        return;
-                    }
-                    setDataForgot({
-                        ...dataForgot,
-                        verifyCode: makeId()
-                    })
-                    sendEmail()
-                    let toast = Toast.show('We just sent you a verify code', {
-                        duration: Toast.durations.SHORT,
-                        position: Toast.positions.BOTTOM,
-                        shadow: true,
-                        animation: true,
-                        hideOnPress: true,
-                    });
-                    navigation.navigate('ConfirmEmailForgot', { dataForgot })
-                }
+        else
+            if (!dataForgot.checkPassword) {
+                let toast = Toast.show('Password must be more than 5 characters', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+                return
             }
-        )
+            else
+                if (dataForgot.confirm != dataForgot.password) {
+                    let toast = Toast.show('Confirm password is incorrect', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    return
+                }
+                else {
+                    // let flag = false
+                    // Api.getUserByEmail(dataForgot.email).then(
+                    //     res => {
+                    //         console.log(res)
+                    //         if (!res) {
+                    //             console.log('null')
+                    //             let toast = Toast.show('Email is not registered', {
+                    //                 duration: Toast.durations.LONG,
+                    //                 position: Toast.positions.CENTER,
+                    //                 shadow: true,
+                    //                 animation: true,
+                    //                 hideOnPress: true,
+                    //             });
+                    //             return;
+                    //         }
 
+                    //         else {
+                    //             if (res.reportedNum == '3') {
+                    //                 let toast = Toast.show('Account was blocked. Please contact with us to get more information!', {
+                    //                     duration: Toast.durations.LONG,
+                    //                     position: Toast.positions.CENTER,
+                    //                     shadow: true,
+                    //                     animation: true,
+                    //                     hideOnPress: true,
+                    //                 });
+                    //                 return;
+                    //             }
+                    //             setDataForgot({
+                    //                 ...dataForgot,
+                    //                 verifyCode: makeId()
+                    //             })
+                    //             sendEmail()
+                    //             let toast = Toast.show('We just sent you a verify code', {
+                    //                 duration: Toast.durations.SHORT,
+                    //                 position: Toast.positions.CENTER,
+                    //                 shadow: true,
+                    //                 animation: true,
+                    //                 hideOnPress: true,
+                    //             });
+                    //             navigation.navigate('ConfirmEmailForgot', { dataForgot })
+                    //         }
+                    //     }
+                    // )
+
+                    Api.checkEmail(dataForgot.email)
+                        .then(res => {
+                            if (res == 'Email is not registered' || res == 'Account was blocked. Please contact with us to get more information!') {
+                                let toast = Toast.show(res, {
+                                    duration: Toast.durations.LONG,
+                                    position: Toast.positions.CENTER,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                });
+                                return;
+                            }
+                            else if (res == 'Correct') {
+                                setDataForgot({
+                                    ...dataForgot,
+                                    verifyCode: makeId()
+                                })
+                                sendEmail()
+                                let toast = Toast.show('We just sent you a verify code', {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.CENTER,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                });
+                                navigation.navigate('ConfirmEmailForgot', { dataForgot })
+                            }
+                        })
+                }
 
 
     }

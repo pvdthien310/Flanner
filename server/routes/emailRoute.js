@@ -1,6 +1,7 @@
 const EmailRoute = require('express').Router();
 const Email = require("../models/Email")
-// const sendMail = require("../../gmail-api/sendEmail")
+const sendMail = require("../sendEmail");
+
 
 
 EmailRoute.post('/', (req, res) => {
@@ -12,13 +13,13 @@ EmailRoute.post('/', (req, res) => {
     }
     // const value = {
     //     from: 'flanerapplication <trithuc23232@gmail.com>',
-    //     to: '19522321@gm.uit.edu.vn',
+    //     to: '19522267@gm.uit.edu.vn',
     //     subject: "hello",
     //     html: '<h1>shin ne html</h1>'
     // }
 
     console.log(value)
-    // sendMail({ value })
+    sendMail({ value })
     res.send('send ok')
 })
 

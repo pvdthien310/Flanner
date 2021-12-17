@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image,Keyboard } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
 import Toast from 'react-native-root-toast';
@@ -26,12 +26,12 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     const [user, setUser] = useState()
 
     useEffect(() => {
-        console.log(email)
+        
 
         Api.getUserByEmail(email).then(
             res => {
                 if (res) setUser(res)
-                console.log(res)
+                
             }
         )
 
@@ -40,49 +40,72 @@ export default function ConfirmEmailForgot({ route, navigation }) {
 
     const _ResetData = async () => {
 
-        await Api.updateUser({
-            userID: user.userID,
-            phoneNumber: user.contact,
-            name: user.name,
-            doB: user.birthday,
-            avatar: user.avatar,
-            email: user.email,
-            password: base64.encode(password),
-            address: user.address,
-            position: user.position,
-            reportedNum: user.reportedNum,
-            following: user.following,
-            followed: user.followed,
-            bio: user.bio,
-            job: user.job
-        }).then(res => {
-            fetchUserData();
-            let toast = Toast.show('Reset successfully', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            navigation.navigate('SignInScreen')
-        }).catch(err => {
-            let toast = Toast.show('Reset fail, please try again', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.CENTER,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-        })
+        // await Api.updateUser({
+        //     userID: user.userID,
+        //     phoneNumber: user.contact,
+        //     name: user.name,
+        //     doB: user.birthday,
+        //     avatar: user.avatar,
+        //     email: user.email,
+        //     password: base64.encode(password),
+        //     address: user.address,
+        //     position: user.position,
+        //     reportedNum: user.reportedNum,
+        //     following: user.following,
+        //     followed: user.followed,
+        //     bio: user.bio,
+        //     job: user.job
+        // }).then(res => {
+        //     let toast = Toast.show('Reset successfully', {
+        //         duration: Toast.durations.SHORT,
+        //         position: Toast.positions.BOTTOM,
+        //         shadow: true,
+        //         animation: true,
+        //         hideOnPress: true,
+        //     });
+        //     navigation.navigate('SignInScreen')
+        // }).catch(err => {
+        //     let toast = Toast.show('Reset fail, please try again', {
+        //         duration: Toast.durations.SHORT,
+        //         position: Toast.positions.CENTER,
+        //         shadow: true,
+        //         animation: true,
+        //         hideOnPress: true,
+        //     });
+        // })
+
+        Api.updatePassword(user.email, base64.encode(password))
+            .then(res => {
+                if (res != 'Email is not registered' && res != 'Account was blocked. Please contact with us to get more information!') {
+                    {
+                        let toast = Toast.show('Reset successfully', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                        });
+                        navigation.navigate('SignInScreen')
+                    }
+                }
+                else 
+                {
+                    let toast = Toast.show('Reset failed', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                }
+                })
+            .catch(err => {
+                console.log(err)
+            })
 
 
     }
 
-    const fetchUserData = async () => {
-        await Api.getAll().then(result => {
-            dispatch({ type: 'ADD_DATA_USER', payload: result })
-        })
-    }
 
     const confirmHandle = (value) => {
         let result = ''
@@ -109,6 +132,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     }
     return (
         <View style={styles.container}>
+           
             <Image
                 style={styles.logo}
                 source={require('../../assets/flaner.png')}

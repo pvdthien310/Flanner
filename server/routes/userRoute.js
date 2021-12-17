@@ -1,8 +1,9 @@
 const UserRoute = require('express').Router();
 const User = require("../models/User")
-// const sendMail = require("../../gmail-api/sendEmail");
+
 const jwt = require('jsonwebtoken')
 const { Base64 } = require('js-base64');
+
 
 
 
@@ -54,8 +55,7 @@ UserRoute.get('/load-user-by-userID/:userID', authenToken, (req, res) => {
         .then(data => res.send(data))
         .catch(err => console.log(err))
 })
-UserRoute.get('/load-user-by-email/:email', authenToken, (req, res) => {
-    console.log(req.params.email)
+UserRoute.get('/load-user-by-email/:email', (req, res) => {
     User.findOne({ email: req.params.email })
         .then(data => res.send(data))
         .catch(err => console.log(err))
@@ -277,14 +277,53 @@ UserRoute.post('/checkEmail', (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
             if (data) {
-                res.send('Email already exists')
+                if (data.reportedNum == '3')
+                {
+                    res.send('Account was blocked. Please contact with us to get more information!');
+                    return;
+                }
+                else
+                {
+                    res.send('Correct')
+                    return;
+                }
+             }
+             else {
+                 res.send('Email is not registered')
+             }
+        })
+        .catch(err => console.log(err))
+
+
+})
+
+UserRoute.post('/updatePassword', (req, res) => {
+    User.findOne({ email: req.body.email })
+        .then(data => {
+            if (data) {
+               if (data.reportedNum == '3')
+               {
+                   res.send('Account was blocked. Please contact with us to get more information!');
+                   return;
+               }
+               else
+               {
+                    User.findOneAndUpdate({email: req.body.email}, {password: req.body.password}, {new: true})
+                    .then(result => {
+                        res.send(result)
+                    })
+                    .catch(err => {console.log('Update Failed!')})
+               }
             }
             else {
-                res.send('EmailOK')
+                res.send('Email is not registered')
             }
         })
         .catch(err => console.log(err))
 })
+
+
+
 
 
 module.exports = UserRoute
