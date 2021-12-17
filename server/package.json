@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startAuthen": "npx nodemon AuthenServer.js",
-    "start": "npx nodemon Manager.js"
+    "start": "npx nodemon AuthenServer.js",
+    "startDB": "npx nodemon Manager.js"
   },
   "author": "",
   "license": "ISC",
