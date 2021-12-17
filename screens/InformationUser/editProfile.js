@@ -156,6 +156,9 @@ const EditProFile = ({ navigation }) => {
       })
       .catch(err => console.log('Error Load User'))
   }
+  const checkContact = (val) => {
+    return /^-?[\d.]+(?:e-?\d+)?$/.test(val)
+  }
   const _submitData = () => {
 
     // const url = URL_local + 'user/send-data'
@@ -187,6 +190,7 @@ const EditProFile = ({ navigation }) => {
     //   .catch(err => {
     //     console.log("error", err)
     //   })
+
     SetLoading(true)
     Api.updateUser({
       userID: user.userID,
@@ -226,6 +230,17 @@ const EditProFile = ({ navigation }) => {
     })
   }
   const saveHandle = async () => {
+    if (!checkContact(contact)) {
+      let toast = Toast.show('Phone number invalid', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+      });
+      return
+    }
+
     let toast = Toast.show('The system is processing, please wait!', {
       duration: Toast.durations.SHORT,
       position: Toast.positions.CENTER,
@@ -248,7 +263,7 @@ const EditProFile = ({ navigation }) => {
           shadowOffset: { width: 1, height: 1 },
           shadowColor: 'black',
           shadowOpacity: 0.5,
-          opacity:0.7
+          opacity: 0.7
         }} source={{ uri: image }} />
 
 
@@ -256,17 +271,17 @@ const EditProFile = ({ navigation }) => {
           style={{
             height: 100,
             width: 100,
-            top:height * 0.2,
+            top: height * 0.2,
             position: 'absolute',
-            alignItems:'center',
+            alignItems: 'center',
             justifyContent: 'center',
             padding: 5,
             borderRadius: 20,
             alignSelf: 'center',
             margin: 10,
-            
+
           }}>
-          <Ionicons name="images-outline" size={70} style = {{alignSelf: 'center'}} color="dimgray" />
+          <Ionicons name="images-outline" size={70} style={{ alignSelf: 'center' }} color="dimgray" />
         </TouchableOpacity>
 
         <TouchableOpacity style={{ width: 45, position: 'absolute' }} onPress={pressgobackHandler}>

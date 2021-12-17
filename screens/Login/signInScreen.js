@@ -299,13 +299,13 @@ export default function SignInScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Animatable.View style={styles.header} animation='zoomInRight' >
-                <View style={{ flexDirection: 'row', alignSelf:'stretch' ,justifyContent:'flex-start', alignItems: 'center', marginStart: 20, marginTop:10 }}>
-                <Image  source={require('../../assets/flaner.png')} style= {{height:80, width:80}}></Image>
+                <View style={{ flexDirection: 'row', alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', marginStart: 20, marginTop: 10 }}>
+                    <Image source={require('../../assets/flaner.png')} style={{ height: 80, width: 80 }}></Image>
                     <View>
                         <Text style={styles.welcome}>Welcome to, </Text>
                         <Text style={styles.flanner}>Flâner</Text>
                     </View>
-                    
+
                 </View>
             </Animatable.View>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -374,7 +374,7 @@ export default function SignInScreen({ navigation }) {
                         <Text style={styles.textSign}>SIGN IN</Text>
                     </TouchableOpacity>
 
-                    <View style={{ marginTop: height*0.3 }}>
+                    <View style={{ marginTop: height * 0.2 }}>
                         <View style={{ borderBottomColor: 'grey', borderWidth: 1, opacity: 0.5, marginTop: 11 }}></View>
                         <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
                     </View>

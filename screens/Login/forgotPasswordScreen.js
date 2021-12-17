@@ -128,31 +128,49 @@ export default function ForgotPasswordScreen({ navigation }) {
         }
 
         let flag = false
+        Api.getUserByEmail(dataForgot.email).then(
+            res => {
+                if (!res) {
+                    console.log('null')
+                    let toast = Toast.show('Email is not registered', {
+                        duration: Toast.durations.LONG,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    return;
+                }
 
-        let user = await Api.getUserByEmail(dataForgot.email)
-        if (user.reportedNum == '3') {
-            let toast = Toast.show('Account was blocked. Please contact with us to get more information!', {
-                duration: Toast.durations.LONG,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            return;
-        }
-        setDataForgot({
-            ...dataForgot,
-            verifyCode: makeId()
-        })
-        sendEmail()
-        let toast = Toast.show('We just sent you a verify code', {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-            hideOnPress: true,
-        });
-        navigation.navigate('ConfirmEmailForgot', { dataForgot })
+                else {
+                    if (res.reportedNum == '3') {
+                        let toast = Toast.show('Account was blocked. Please contact with us to get more information!', {
+                            duration: Toast.durations.LONG,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                        });
+                        return;
+                    }
+                    setDataForgot({
+                        ...dataForgot,
+                        verifyCode: makeId()
+                    })
+                    sendEmail()
+                    let toast = Toast.show('We just sent you a verify code', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                    navigation.navigate('ConfirmEmailForgot', { dataForgot })
+                }
+            }
+        )
+
+
 
     }
 
@@ -174,7 +192,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                             placeholder='Type your email'
                             onChangeText={(val) => EmailChange(val)}
                         />
-                        {dataForgot.checkUser ? <Ionicons name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
+                        {dataForgot.checkUser ? <Ionicons style={{ marginEnd: 10 }} name="checkmark-circle-outline" size={24} color="black" /> : <View style={{ width: 24, height: 24 }}></View>}
                     </View>
                 </View>
 

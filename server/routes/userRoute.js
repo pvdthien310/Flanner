@@ -54,6 +54,7 @@ UserRoute.get('/load-user-by-userID/:userID', authenToken, (req, res) => {
         .catch(err => console.log(err))
 })
 UserRoute.get('/load-user-by-email/:email', authenToken, (req, res) => {
+    console.log(req.params.email)
     User.findOne({ email: req.params.email })
         .then(data => res.send(data))
         .catch(err => console.log(err))
