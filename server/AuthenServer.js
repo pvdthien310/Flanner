@@ -85,7 +85,7 @@ app.use('/get-refreshToken', (req, res) => {
 // })
 
 //// Open port
-const port = process.env.AUTHEN_PORT || 8800
+const port = process.env.PORT || 8800
 app.listen(port, () => {
     // JWTRefTokens.find({})
     //     .then(data => {
