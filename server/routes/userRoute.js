@@ -1,6 +1,6 @@
 const UserRoute = require('express').Router();
 const User = require("../models/User")
-const sendMail = require("../../gmail-api/sendEmail");
+// const sendMail = require("../../gmail-api/sendEmail");
 const jwt = require('jsonwebtoken')
 const { Base64 } = require('js-base64');
 
