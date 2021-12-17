@@ -192,7 +192,7 @@ String.prototype.replaceAll = function (
     return (strText);
 }
 
-UserRoute.post('/send-data', authenToken, (req, res) => {
+UserRoute.post('/send-data', (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
             if (data) {

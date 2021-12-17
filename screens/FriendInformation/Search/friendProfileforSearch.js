@@ -38,8 +38,7 @@ const FriendInfoForSearch = ({ navigation, route }) => {
 
     const FetchFriendInfo = () => {
         Api.getUserItem(friendInfo.userID)
-            .then(res => {
-
+            .then(res => {             
                 SetfriendInfo(res[0])
                 CheckFollowStatus()
                 fetchKnowledgeData();

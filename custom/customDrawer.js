@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Api from '../API/UserAPI';
 import JWTApi from '../API/JWTAPI';
+import Toast from 'react-native-root-toast';
 
 
 
@@ -31,6 +32,13 @@ export const CustomDrawer = (props) => {
         await JWTApi.logout(token)
             .then(res => {
                 navigation.navigate('SignInScreen');
+                let toast = Toast.show('Log out successful!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
             })
             .catch(err => console.log('Error Log out'))
     }
