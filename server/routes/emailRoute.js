@@ -1,6 +1,6 @@
 const EmailRoute = require('express').Router();
 const Email = require("../models/Email")
-const sendMail = require("../../gmail-api/sendEmail")
+// const sendMail = require("../../gmail-api/sendEmail")
 
 
 EmailRoute.post('/', (req, res) => {
@@ -18,7 +18,7 @@ EmailRoute.post('/', (req, res) => {
     // }
 
     console.log(value)
-    sendMail({ value })
+    // sendMail({ value })
     res.send('send ok')
 })
 
