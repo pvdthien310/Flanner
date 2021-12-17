@@ -87,11 +87,11 @@ app.use('/logout', (req, res) => {
 //// Open port
 const port = process.env.AUTHEN_PORT || 8800
 app.listen(port, () => {
-    JWTRefTokens.find({})
-        .then(data => {
-            refreshTokens = data[0].refreshTokens
-        })
-        .catch(err => console.log(err))
+    // JWTRefTokens.find({})
+    //     .then(data => {
+    //         refreshTokens = data[0].refreshTokens
+    //     })
+    //     .catch(err => console.log(err))
     console.log('AuThen backends server is running!')
 })
 
