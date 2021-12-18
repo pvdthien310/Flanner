@@ -112,6 +112,7 @@ const GlobalPeople = ({ navigation }) => {
                     <FlatList
                         style={styles.proContainer}
                         showsHorizontalScrollIndicator={true}
+                        showsVerticalScrollIndicator = {false}
                         onRefresh={fetchUsers}
                         refreshing={isLoading}
                         data={users} 
@@ -270,6 +271,9 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginRight: -20,
         alignSelf: 'flex-start',
+        marginBottom:90,
+        backgroundColor: 'red',
+        width: '100%'
         // position: 'absolute',
     },
     centeredView: {
