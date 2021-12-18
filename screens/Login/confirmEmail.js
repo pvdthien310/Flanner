@@ -36,15 +36,22 @@ export default function ConfirmEmail({ route, navigation }) {
             position: '2',
             job: 'None'
         }).then(res => {
-            console.log(res)
-            let toast = Toast.show('Register successful', {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.CENTER,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-            });
-            navigation.navigate('SignInScreen')
+            if (res) {
+                SavedPostApi.AddSavedPost({
+                    userID: res.userID
+                }).then(result => {
+                    console.log(result)
+                }).catch(err => console.log('Err init saved post'))
+
+                let toast = Toast.show('Register successful', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                });
+                navigation.navigate('SignInScreen')
+            }
 
         }).catch(err => {
             let toast = Toast.show('Register failed, please try again', {

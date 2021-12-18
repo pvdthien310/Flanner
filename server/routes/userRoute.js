@@ -1,6 +1,5 @@
 const UserRoute = require('express').Router();
 const User = require("../models/User")
-
 const jwt = require('jsonwebtoken')
 const { Base64 } = require('js-base64');
 
@@ -235,12 +234,14 @@ UserRoute.post('/send-data', (req, res) => {
 
                     newUser.save()
                         .then((data) => {
-                            // console.log(data)
                             res.send(data)
                         })
                         .catch(err => {
                             console.log('Error')
                         })
+
+
+
                 }
             }
         })
@@ -277,20 +278,18 @@ UserRoute.post('/checkEmail', (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
             if (data) {
-                if (data.reportedNum == '3')
-                {
+                if (data.reportedNum == '3') {
                     res.send('Account was blocked. Please contact with us to get more information!');
                     return;
                 }
-                else
-                {
+                else {
                     res.send('Correct')
                     return;
                 }
-             }
-             else {
-                 res.send('Email is not registered')
-             }
+            }
+            else {
+                res.send('Email is not registered')
+            }
         })
         .catch(err => console.log(err))
 
@@ -301,19 +300,17 @@ UserRoute.post('/updatePassword', (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
             if (data) {
-               if (data.reportedNum == '3')
-               {
-                   res.send('Account was blocked. Please contact with us to get more information!');
-                   return;
-               }
-               else
-               {
-                    User.findOneAndUpdate({email: req.body.email}, {password: req.body.password}, {new: true})
-                    .then(result => {
-                        res.send(result)
-                    })
-                    .catch(err => {console.log('Update Failed!')})
-               }
+                if (data.reportedNum == '3') {
+                    res.send('Account was blocked. Please contact with us to get more information!');
+                    return;
+                }
+                else {
+                    User.findOneAndUpdate({ email: req.body.email }, { password: req.body.password }, { new: true })
+                        .then(result => {
+                            res.send(result)
+                        })
+                        .catch(err => { console.log('Update Failed!') })
+                }
             }
             else {
                 res.send('Email is not registered')

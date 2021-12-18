@@ -15,7 +15,7 @@ SavePostInfoRoute.post('/delete', authenToken, (req, res) => {
 })
 
 /// Add new member
-SavePostInfoRoute.post('/send-data',authenToken, (req, res) => {
+SavePostInfoRoute.post('/send-data', (req, res) => {
     SavePostInfo.findOne({userID: req.body.userID})
     .then(result => {
         if (result)
