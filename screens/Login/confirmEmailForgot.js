@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image,Keyboard } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image, Keyboard } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
 import Toast from 'react-native-root-toast';
@@ -26,12 +26,12 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     const [user, setUser] = useState()
 
     useEffect(() => {
-        
+
 
         Api.getUserByEmail(email).then(
             res => {
                 if (res) setUser(res)
-                
+
             }
         )
 
@@ -88,8 +88,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
                         navigation.navigate('SignInScreen')
                     }
                 }
-                else 
-                {
+                else {
                     let toast = Toast.show('Reset failed', {
                         duration: Toast.durations.SHORT,
                         position: Toast.positions.BOTTOM,
@@ -98,7 +97,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
                         hideOnPress: true,
                     });
                 }
-                })
+            })
             .catch(err => {
                 console.log(err)
             })
@@ -132,7 +131,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
     }
     return (
         <View style={styles.container}>
-           
+
             <Image
                 style={styles.logo}
                 source={require('../../assets/flaner.png')}
@@ -199,7 +198,7 @@ export default function ConfirmEmailForgot({ route, navigation }) {
                             <LinearGradient
                                 colors={['black', 'black']}
                                 style={styles.gradient}>
-                                <Text style={styles.textConfirm}>Confirm</Text>
+                                <Text style={styles.textConfirm}>CONFIRM</Text>
                             </LinearGradient>
 
                         </TouchableOpacity>

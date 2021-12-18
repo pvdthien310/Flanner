@@ -19,13 +19,6 @@ import { Checkbox } from 'react-native-paper';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
-
-
-
-
-
-
-
 export default function SignInScreen({ navigation }) {
     // const [data1, setData1] = useState([])
     // const [loading, setLoading] = useState(true)
@@ -88,6 +81,7 @@ export default function SignInScreen({ navigation }) {
                     checkUser: true,
                     checkPassword: true
                 })
+
             }
         }
         catch (error) {
