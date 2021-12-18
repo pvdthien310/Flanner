@@ -79,6 +79,8 @@ export const HeaderDrawer = ({ navigation, title }) => {
         <View  style={styles.headerDrawer}>
             
                 <Text style={styles.headerText}>{title}</Text>
+               
+               
         </View>
 
     )

@@ -78,7 +78,7 @@ const MainInfor = ({ navigation, item }) => {
                             paddingEnd: 10,
                         }}>
                             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginEnd: 5 }}>
-                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{postNumber}</Text>
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 18, color: 'black' }}>{user.position == '2' ? postNumber : '0'}</Text>
                                 <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'dimgrey' }}>Post</Text>
                             </View>
                             <TouchableOpacity  style={{ justifyContent: 'center', alignItems: 'center' }} 

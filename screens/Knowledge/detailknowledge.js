@@ -249,7 +249,8 @@ const DetailKnowledge = ({ route, navigation }) => {
             // })
             KnowLedgeApi.updateTrue(item._id.toString(), user.userID.toString())
                 .then(res => {
-                    sendNotification()
+                    if (item.userID != user.userID)
+                        sendNotification()
                     setData(res)
                     dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: res })
                     if ((res.react).indexOf(user.userID) != -1)

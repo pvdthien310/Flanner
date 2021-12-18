@@ -357,8 +357,8 @@ export default function SignInScreen({ navigation }) {
                             tintColors={{ true: 'black', false: 'black' }}
                         /> */}
                             <Checkbox
-                                color='#8CAD81'
-                                uncheckedColor='#8CAD81'
+                                color='#000000'
+                                uncheckedColor='#000000'
                                 status={isSelected ? 'checked' : 'unchecked'}
                                 onPress={() => setSelection(!isSelected)}
                             />
