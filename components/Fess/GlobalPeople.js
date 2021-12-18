@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
         marginRight: -20,
         alignSelf: 'flex-start',
         marginBottom:90,
-        backgroundColor: 'red',
+        
         width: '100%'
         // position: 'absolute',
     },
