@@ -258,6 +258,12 @@ export default function EditStatus({ route, navigation }) {
 
         const result = await ImagePicker.launchCameraAsync();
         if (!result.cancelled) {
+            console.log(result);
+            const uri = result.uri;
+            const type = result.type;
+            const name = Math.random().toString();
+            const source = { uri, type, name }
+            HandleUpImages(source)
             setImage((current) => {
                 return [...current, { uri: result.uri, key: result.key = Math.random().toString() }]
             });

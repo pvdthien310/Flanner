@@ -228,8 +228,13 @@ export default function AddKnowledge({ route, navigation }) {
 
         // Explore the result
         //console.log(result);
-
         if (!result.cancelled) {
+            console.log(result);
+            const uri = result.uri;
+            const type = result.type;
+            const name = Math.random().toString();
+            const source = { uri, type, name }
+            HandleUpImages(source)
             setImage((current) => {
                 return [...current, { uri: result.uri, key: result.key = Math.random().toString() }]
             });

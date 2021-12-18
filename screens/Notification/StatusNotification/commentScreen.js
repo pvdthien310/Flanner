@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0.1, height: 0.1 },
         shadowColor: 'black',
         paddingTop: 5,
+        paddingEnd: 40,
         backgroundColor: 'white',
         position: 'absolute',
         top: height * 0.1,

@@ -258,6 +258,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'nunitobold',
         paddingHorizontal: 10,
+        paddingEnd: 40,
         borderColor: 'black',
         borderWidth: 1,
         margin: 10,
