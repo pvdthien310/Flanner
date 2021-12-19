@@ -22,32 +22,21 @@ const SavedPost = ({ navigation }) => {
         navigation.goBack();
     }
     const fetchData = () => {
-        // const url = URL_local + 'knowledge/load-data/' + user.userID
-        // console.log(url)
-        // fetch(url)
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         // console.log(result)
-        //         dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: result })
-        //     }).catch(err => console.log('Error'));
-
         SavedPostApi.GetByUserID(user.userID)
             .then(res => {
                 
                 SetData(res.postIDList)
-                dispatch({ type: 'ADD_SAVED_POST_USER', payload: res.postIDList })
+                // dispatch({ type: 'ADD_SAVED_POST_USER', payload: res.postIDList })
                 SetLoading(false)
-
             })
             .catch(err => console.log(err))
-
     }
-    useEffect(() => {
-        fetchData()
-    }, [])
+  
     useEffect(() => {
         fetchData()
     }, [saved_post])
+
+
     return (
         <SafeAreaView style={styles.container}>
             <View style = {{

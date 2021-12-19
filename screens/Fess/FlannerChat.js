@@ -65,7 +65,7 @@ const Fess = ({navigation}) => {
 
     
 
-    console.log(isReady);
+    
     if(!isReady)
     {
         return null;

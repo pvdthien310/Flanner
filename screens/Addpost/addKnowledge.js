@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect} from 'react';
-import {StyleSheet, Alert, Text, View, ScrollView, SafeAreaView,TouchableWithoutFeedback, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Alert, Text, View, ScrollView, SafeAreaView, TouchableWithoutFeedback, Image, TextInput, Dimensions, Platform, Button, FlatList, TouchableOpacity, Keyboard, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { images } from '../../styles/poststyle'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,15 +21,15 @@ import Toast from 'react-native-root-toast';
 const { height } = Dimensions.get("screen");
 export default function AddKnowledge({ route, navigation }) {
 
-    const {user}  = useSelector(state => state.User)
-    const {user_knowledge}  = useSelector(state => state.Knowledge)
+    const { user } = useSelector(state => state.User)
+    const { user_knowledge } = useSelector(state => state.Knowledge)
     const [image, setImage] = useState([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [body, setBody] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
-    
+
 
     const fetchKnowledgeData = () => {
         // const url =  URL_local + 'knowledge/load-data/' + user.userID
@@ -38,14 +38,14 @@ export default function AddKnowledge({ route, navigation }) {
         //     .then(res => res.json())
         //     .then(result => {
         //          console.log(result)
-               
+
         //     }).catch(err => console.log('Error'));
-            KnowLedgeApi.getKnowledgeUser(user.userID)
+        KnowLedgeApi.getKnowledgeUser(user.userID)
             .then(res => {
                 dispatch({ type: 'ADD_USER_KNOWLEDGE', payload: res })
             })
             .catch(err => console.log('Error Load User Knowledge'))
-           
+
     }
 
     const pressgobackHandler = () => {
@@ -72,7 +72,7 @@ export default function AddKnowledge({ route, navigation }) {
         data.append("file", photo)
         data.append("upload_preset", "poster")
         data.append('folder', "Source/flaner")
-        
+
 
         fetch("https://api.cloudinary.com/v1_1/flaner/image/upload", {
             method: 'POST',
@@ -85,7 +85,7 @@ export default function AddKnowledge({ route, navigation }) {
             .then(data => {
                 //console.log(data.url);
                 setPicture((current) => {
-                    return [...current, { url: data.url, key: Math.random().toString(),uri: photo.uri }]
+                    return [...current, { url: data.url, key: Math.random().toString(), uri: photo.uri }]
                 });
                 // console.log(picture)
                 setLoading(false)
@@ -99,61 +99,74 @@ export default function AddKnowledge({ route, navigation }) {
         const d = new Date();
 
         const newPost = {
-                username: user.name,
-                body: body,
-                userID: user.userID,
-                title : title,
-                description: description,
-                avatar: user.avatar,
-                posttime: d.toUTCString(),
-                listImage: picture,
-                react: [],
-                mode: 'public'
+            username: user.name,
+            body: body,
+            userID: user.userID,
+            title: title,
+            description: description,
+            avatar: user.avatar,
+            posttime: d.toUTCString(),
+            listImage: picture,
+            react: [],
+            mode: 'public'
         }
 
-        // const url =  URL_local +'knowledge/send-data'
-        // fetch( url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         username: user.name,
-        //         body: body,
-        //         userID: user.userID,
-        //         title : title,
-        //         description: description,
-        //         avatar: user.avatar,
-        //         posttime: d.toUTCString(),
-        //         listImage: picture,
-        //         react: [],
-        //         reactNumber: '0'
-        //     })
-        // }).then(res => {
-            
-        //     return res.json()                
-        // }).then(data => {
-           
-        // }).catch(err => {        
-            
-        //     console.log("error", err)
-        // })
-        KnowLedgeApi.AddPost(newPost)
-        .then(res => {
-            fetchKnowledgeData()
-            let toast = Toast.show('Add post successful!', {
+        if (title == "" || description == '' || body == '') {
+            let toast = Toast.show('Fill in all the information!', {
                 duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
+                position: Toast.positions.CENTER,
                 shadow: true,
                 animation: true,
                 hideOnPress: true,
             });
-        })
-        .catch(err => console.log('Error Add New Knowledge'))
-       
-        fetchKnowledgeData()
-        navigation.goBack();
-        navigation.navigate('Knowledge');
+            return;
+        }
+        else {
+
+            // const url =  URL_local +'knowledge/send-data'
+            // fetch( url, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //         username: user.name,
+            //         body: body,
+            //         userID: user.userID,
+            //         title : title,
+            //         description: description,
+            //         avatar: user.avatar,
+            //         posttime: d.toUTCString(),
+            //         listImage: picture,
+            //         react: [],
+            //         reactNumber: '0'
+            //     })
+            // }).then(res => {
+
+            //     return res.json()                
+            // }).then(data => {
+
+            // }).catch(err => {        
+
+            //     console.log("error", err)
+            // })
+            KnowLedgeApi.AddPost(newPost)
+                .then(res => {
+                    fetchKnowledgeData()
+                    let toast = Toast.show('Add post successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                })
+                .catch(err => console.log('Error Add New Knowledge'))
+
+            fetchKnowledgeData()
+            navigation.goBack();
+            navigation.navigate('Knowledge');
+        }
 
     }
 
@@ -203,14 +216,14 @@ export default function AddKnowledge({ route, navigation }) {
 
     const DeleteImagelist = (key) => {
         setLoading(true)
-        const deletedimg = image.filter(member => member.key == key )
+        const deletedimg = image.filter(member => member.key == key)
         // console.log(deletedimg)
         // console.log(deletedimg[0].uri)
         setImage(() => {
             return image.filter(member => member.key != key)
         })
         setPicture(() => {
-            return picture.filter(member =>member.uri != deletedimg[0].uri)
+            return picture.filter(member => member.uri != deletedimg[0].uri)
         })
         setLoading(false)
     };
@@ -251,36 +264,36 @@ export default function AddKnowledge({ route, navigation }) {
     return (
 
         <SafeAreaView style={styles.post} >
-            
-            <View style ={{flexDirection: 'row'}}>
-            <TouchableOpacity style ={{width: 45}} onPress={pressgobackHandler}>
-                            <View style={{ flexDirection: 'row', margin: 10,width: 40 }}>
-                                <MaterialIcons name="keyboard-backspace" size={30} color="black" />
-                            </View>
-            </TouchableOpacity>
-            <View style ={{flexDirection: 'row',flex: 1,justifyContent:'center',alignItems:'center'}}>
-                <Text style ={styles.namepage}> Add Knowledge</Text>
-            </View>
-                
+
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={{ width: 45 }} onPress={pressgobackHandler}>
+                    <View style={{ flexDirection: 'row', margin: 10, width: 40 }}>
+                        <MaterialIcons name="keyboard-backspace" size={30} color="black" />
+                    </View>
+                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.namepage}> Add Knowledge</Text>
+                </View>
+
             </View>
             <View style={styles.userinfo} >
-                <Image source={{uri: user.avatar}} style={styles.imageavatar} />
+                <Image source={{ uri: user.avatar }} style={styles.imageavatar} />
                 <View style={{ margin: 7 }}>
                     <Text style={styles.username} > Hello {user.name} , </Text>
                     <Text style={styles.title} > What do you want to share ?</Text>
                 </View>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-           
-          
-              
+
+
+
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: -5 }}>
                     <TextInput
                         multiline={true}
                         style={styles.title_topic}
                         onChangeText={AddTitle}
-                        placeholder = "Write a title..."
-                        
+                        placeholder="Write a title..."
+
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>What is your title.</Text>
@@ -288,16 +301,16 @@ export default function AddKnowledge({ route, navigation }) {
 
 
                 </View>
-                
+
 
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
-                    
+
                     <TextInput
                         multiline={true}
                         style={styles.description}
                         onChangeText={AddDescription}
-                        placeholder = "Write a description..."
-                        
+                        placeholder="Write a description..."
+
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Descript your topic.</Text>
@@ -305,14 +318,14 @@ export default function AddKnowledge({ route, navigation }) {
 
 
                 </View>
-               
+
                 <View style={{ flexDirection: 'column', flex: 1, marginTop: 5 }}>
                     <TextInput
                         multiline={true}
                         style={styles.body}
                         onChangeText={AddBody}
-                        placeholder = "Write your body..."
-                        
+                        placeholder="Write your body..."
+
                     ></TextInput>
                     <View style={styles.bodytitle}>
                         <Text style={{ fontSize: 17, fontFamily: 'nunitoregular' }}>Topic body.</Text>
@@ -328,7 +341,7 @@ export default function AddKnowledge({ route, navigation }) {
                         <Ionicons name="image-sharp" size={24} color="black" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                         let toast = Toast.show('The feature will open in the near future!', {
+                        let toast = Toast.show('The feature will open in the near future!', {
                             duration: Toast.durations.SHORT,
                             position: Toast.positions.BOTTOM,
                             shadow: true,
@@ -363,32 +376,32 @@ export default function AddKnowledge({ route, navigation }) {
 
 
                 />
-                 {loading ? 
-                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
-                
-                 <ActivityIndicator size="small" color="black" /> 
-                <TouchableOpacity activeOpacity ={1}>
-                    <View style={styles.postbutton1}
-                    >
-                        <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
-                        <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                {loading ?
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+
+                        <ActivityIndicator size="small" color="black" />
+                        <TouchableOpacity activeOpacity={1}>
+                            <View style={styles.postbutton1}
+                            >
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                                <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                </View>
-                : 
-                <View style ={{flexDirection: 'row',justifyContent:'flex-end', alignItems: 'center'}}>
-               <TouchableOpacity onPress={SendNewpost} >
-                   <View style={styles.postbutton}
-                   >
-                       <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
-                       <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
-                   </View>
-               </TouchableOpacity>
-               </View> }
-                
-          
+                    :
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={SendNewpost} >
+                            <View style={styles.postbutton}
+                            >
+                                <Text style={{ fontFamily: 'nunitobold', fontSize: 15, color: 'white' }}>Post</Text>
+                                <Ionicons name="ios-send" size={24} color="white" style={{ marginStart: 10 }} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>}
+
+
             </ScrollView>
-          
+
 
         </SafeAreaView>
 
@@ -414,7 +427,7 @@ const styles = StyleSheet.create({
 
 
     },
-    namepage:{
+    namepage: {
         fontSize: 20,
         fontFamily: 'nunitobold'
     },
@@ -451,9 +464,9 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 1 },
         borderRadius: 10,
         backgroundColor: 'ghostwhite',
-        justifyContent:'center',
-        alignSelf:'center'
-        
+        justifyContent: 'center',
+        alignSelf: 'center'
+
 
 
     },

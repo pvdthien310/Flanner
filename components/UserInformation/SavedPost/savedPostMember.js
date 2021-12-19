@@ -24,7 +24,7 @@ const SavedPostMember = ({ item, navigation }) => {
     const createTwoButtonAlert = () =>
         Alert.alert(
             "Notification",
-            "Do you want to deleted this post?",
+            "Do you want to delete this post?",
             [
                 {
                     text: "Cancel",
@@ -38,7 +38,7 @@ const SavedPostMember = ({ item, navigation }) => {
     const RemovePost = () => {
         SavedPostApi.UpdateFalse(user.userID, item)
             .then(res => {
-                console.log(res)
+
                 if (res) {
                     dispatch({ type: 'ADD_SAVED_POST_USER', payload: res })
                     let toast = Toast.show('Delete successful!', {
@@ -69,6 +69,9 @@ const SavedPostMember = ({ item, navigation }) => {
                     SetData(res)
                     SetType(1)
                 }
+                else {
+                    fetchStatusItem()
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -97,7 +100,6 @@ const SavedPostMember = ({ item, navigation }) => {
             })
     }
     useEffect(() => {
-        fetchStatusItem()
         fetchKnowledgeItem()
     }, [])
     useEffect(() => {

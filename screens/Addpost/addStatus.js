@@ -105,32 +105,44 @@ export default function AddStatus({ route, navigation }) {
         // }).catch(err => {
         //     console.log("error", err)
         // })
-        const d = new Date();
-        StatusApi.AddPost({
-            username: user.name,
-            userID: user.userID,
-            body: textinput,
-            avatar: user.avatar,
-            posttime: d.toUTCString(),
-            listImage: picture,
-            react: [],
-            mode: "public"
-        })
-            .then(res => {
-                fetchStatusData()
-                let toast = Toast.show('Add post successful!', {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                });
+        if ( textinput == '') {
+            let toast = Toast.show('Fill in all the information!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+            });
+            return;
+        }
+        else {
+            const d = new Date();
+            StatusApi.AddPost({
+                username: user.name,
+                userID: user.userID,
+                body: textinput,
+                avatar: user.avatar,
+                posttime: d.toUTCString(),
+                listImage: picture,
+                react: [],
+                mode: "public"
             })
-            .catch(err => console.log('Error Add New Knowledge'))
+                .then(res => {
+                    fetchStatusData()
+                    let toast = Toast.show('Add post successful!', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                        shadow: true,
+                        animation: true,
+                        hideOnPress: true,
+                    });
+                })
+                .catch(err => console.log('Error Add New Knowledge'))
 
-        fetchStatusData()
-        navigation.goBack();
-        navigation.navigate('Knowledge');
+            fetchStatusData()
+            navigation.goBack();
+            navigation.navigate('Knowledge');
+        }
 
     }
 

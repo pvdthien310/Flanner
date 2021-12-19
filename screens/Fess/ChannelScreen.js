@@ -57,7 +57,7 @@ const ChannelScreen = ({ navigation, route }) => {
         } else {
             setNameHeader(channel.data.name);
         }
-    })
+    },[members])
 
     useEffect(() => {
         if (members.length === 2) {
@@ -72,7 +72,7 @@ const ChannelScreen = ({ navigation, route }) => {
         } else {
             setImgHeader("https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-communication-communication-kiranshastry-lineal-kiranshastry.png");
         }
-    })
+    },[members])
 
     const createOneButtonAlert = () =>
         Alert.alert(
