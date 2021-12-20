@@ -54,31 +54,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
     }, [item])
 
     const sendNotification = () => {
-        // const url = URL_local + 'notification/send-data'
-        // fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         userID: data.userID,
-        //         message: 'Đã thích bài viết của bạn',
-        //         postID: data._id,
-        //         senderID: user.userID,
-        //         type: '1',
-        //         action: 'React'
-        //     })
-        // }).then(res => {
-        //     if (!res.ok) {
-        //         throw Error('Loi phat sinh')
-        //     }
-        //     else
-        //         return res.json()
-        // }).then(data => {
-        //     // console.log(data)
-        // }).catch(err => {
-        //     console.log("error", err)
-        // })
+        
         NotificationApi.sendNoti({
             userID: data.userID,
             message: ' liked your post ',
@@ -91,30 +67,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
 
     }
     const removeNotification = () => {
-        // const url = URL_local + 'notification/delete'
-        // fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         userID: data.userID,
-        //         postID: data._id,
-        //         senderID: user.userID,
-        //         type: '1',
-        //         action: 'React'
-        //     })
-        // }).then(res => {
-        //     if (!res.ok) {
-        //         throw Error('Loi phat sinh')
-        //     }
-        //     else
-        //         return res.json()
-        // }).then(data => {
-        //     // console.log(data)
-        // }).catch(err => {
-        //     console.log("error", err)
-        // })
+      
         NotificationApi.removeNoti({
             userID: data.userID,
             postID: data._id,
@@ -127,22 +80,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
 
     const fetchData = () => {
 
-        // const url = URL_local + 'knowledge/' + item._id.toString();
-        // console.log(url)
-        // fetch(url)
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         setData(result)
-        //         setLoading(false)
-        //         // console.log(result)
-        //         if ((result.react).indexOf(user.userID) != -1)
-        //             setPressed(true)
-        //         else setPressed(false)
-        //     }).catch(err => {
-        //         setIsNull(true)
-
-        //         console.log('Error')
-        //     });
+       
         KnowLedgeApi.getItem(data._id.toString())
             .then(res => {
                 setData(res)
@@ -158,16 +96,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
             })
     }
     const fetchHostData = () => {
-        // const url = URL_local + 'user/load-user-by-userID/' + item.userID;
-        // console.log(url)
-        // fetch(url)
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         setHost(result)
-        //         console.log(host)
-        //     }).catch(err => { 
-        //         console.log('Error')
-        //     });
+     
         Api.getUserItem(data.userID)
             .then(res => {
                 forceRerender()
@@ -194,36 +123,9 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
     }
 
     const PressHandle = () => {
-        // let numberReact = data.reactNumber;
-
-        // const url_true = URL_local + 'knowledge/update/' + item._id.toString() + '/true/' + user.userID.toString();
-        // const url_false = URL_local +  'knowledge/update/' + item._id.toString() + '/false/' + user.userID.toString();
-
+    
         if (pressed == true) {
-            // console.log(url_false)
-            // fetch(url_false, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     }
-            // }).then(res => {
-            //     if (!res.ok) {
-            //         throw Error('Loi phat sinh')
-            //     }
-            //     else {
-            //         return res.json()
-            //     }
-            // }).then((result) => {
-            //     //  console.log(result)
-            //     removeNotification()
-            //     setData(result)
-            //     dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
-            //     if ((result.react).indexOf(user.userID) != -1)
-            //         setPressed(true)
-            //     else setPressed(false)
-            // }).catch(err => {
-            //     console.log("error", err)
-            // })
+         
             KnowLedgeApi.updateFalse(data._id.toString(), user.userID.toString())
                 .then(res => {
                     removeNotification()
@@ -236,28 +138,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
                 .catch(err => console.log('Error update false'))
         }
         else if (pressed == false) {
-            // fetch(url_true, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // }).then(res => {
-            //     if (!res.ok) {
-            //         throw Error('Loi phat sinh')
-            //     }
-            //     else {
-            //         return res.json()
-            //     }
-            // }).then(result => {
-            //     sendNotification()
-            //     setData(result)
-            //     dispatch({ type: 'UPDATE_KNOWLEDGE_MEMBER', payload: result })
-            //     if ((result.react).indexOf(user.userID) != -1)
-            //         setPressed(true)
-            //     else setPressed(false)
-            // }).catch(err => {
-            //     console.log("error", err)
-            // })
+       
             KnowLedgeApi.updateTrue(data._id.toString(), user.userID.toString())
                 .then(res => {
                     if (item.userID != user.userID)
@@ -272,9 +153,7 @@ const NotiDetailKnowledge = ({ route, navigation }) => {
         }
 
     }
-
-
-
+    
     return (
         <View >
             {

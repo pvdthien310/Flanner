@@ -11,7 +11,6 @@ import KnowLedgeApi from '../../../API/KnowledgeAPI';
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
-
 const UserKnowledgeForKN = ({ navigation, route }) => {
     const [, forceRerender] = useState();
     const dispatch = useDispatch()
@@ -31,15 +30,6 @@ const UserKnowledgeForKN = ({ navigation, route }) => {
 
     }, [])
     const fetchKnowledgeData = () => {
-        // const url = URL_local + 'knowledge/load-data/' + user.userID
-        // console.log(url)
-        // fetch(url)
-        //     .then(res => res.json())
-        //     .then(result => {      
-        //         setUserKnowledge(result)      
-        //         Setloading(false)  
-        //         forceRerender()
-        //     }).catch(err => console.log('Error'));
         KnowLedgeApi.getKnowledgeUserForFriend(user.userID)
             .then(res => {
                 setUserKnowledge(res)

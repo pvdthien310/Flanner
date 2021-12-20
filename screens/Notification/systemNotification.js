@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity,ActivityIndicator,FlatList } from 'react-native';
-import { globalStyles } from '../../styles/global';
-import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/core';
 import { useSelector, useDispatch } from 'react-redux';
 import NotificationMember from '../../components/notificationMember';
-import { URL_local } from '../../constant';
 import NotificationApi from '../../API/NotificationAPI';
-
 
 const SystemNotification = ({ navigation }) => {
     
@@ -15,9 +10,9 @@ const SystemNotification = ({ navigation }) => {
     const { user } = useSelector(state => state.User)
     const { user_system_notification, loading } = useSelector(state => { return state.Notification })
     const [loading2, setLoading2] = useState(false)
-    const url = URL_local +'notification/load-data/' + user.userID  + '/system';
+    // const url = URL_local +'/notification/load-data/' + user.userID  + '/system';
     const fetchData = () => {
-        console.log(url)
+        
         setLoading2(true)
         // fetch(url)
         //     .then(res => res.json())

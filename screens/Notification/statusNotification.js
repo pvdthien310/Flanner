@@ -3,8 +3,6 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, Image,TouchableOpacity
 import { useSelector, useDispatch } from 'react-redux';
 import NotificationApi from '../../API/NotificationAPI';
 import NotificationMember from '../../components/notificationMember';
-import { URL_local } from '../../constant';
-
 
 const StatusNotification = ({ navigation }) => {
     
@@ -12,9 +10,9 @@ const StatusNotification = ({ navigation }) => {
     const { user } = useSelector(state => state.User)
     const { user_status_notification, loading } = useSelector(state => { return state.Notification })
     const [loading2, setLoading2] = useState(false)
-    const url = URL_local +'/notification/load-data/' + user.userID + '/status';
+    // const url = URL_local +'/notification/load-data/' + user.userID + '/status';
     const fetchData = () => {
-        console.log(url)
+       
         setLoading2(true)
 
         // fetch(url)

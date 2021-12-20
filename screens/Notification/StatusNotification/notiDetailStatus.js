@@ -202,7 +202,8 @@ const NotiDetailStatus = ({ route, navigation }) => {
             // })
             StatusApi.updateTrue(item._id.toString(), user.userID.toString())
                 .then(res => {
-                    sendNotification()
+                    if (item.userID != user.userID)
+                        sendNotification()
                     setData(res)
                     dispatch({ type: 'UPDATE_STATUS_MEMBER', payload: res })
                     if ((res.react).indexOf(user.userID) != -1)
@@ -221,8 +222,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
     useEffect(() => {
         if (item)
             fetchData();
-        else 
-        {
+        else {
             setIsNull(true)
         }
     }, [])
@@ -235,7 +235,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
     return (
 
         <View >
-           
+
             {
                 loading ? <ActivityIndicator size="small" color="#0000ff" />
                     :
@@ -294,7 +294,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
 
                     </SafeAreaView>
             }
-              {
+            {
                 isNull == false ? null :
                     <View style={{
                         alignItems: 'center',
@@ -323,7 +323,7 @@ const NotiDetailStatus = ({ route, navigation }) => {
 
                     </View>
             }
-           
+
         </View>
 
 

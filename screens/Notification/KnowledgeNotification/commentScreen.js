@@ -73,31 +73,7 @@ const CommentScreenForKNoti = ({ navigation, route }) => {
         
     }
     const sendNotification = () => {
-        // const url = URL_local + 'notification/send-data'
-        // fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         userID: data.userID,
-        //         message: ' liked your post ',
-        //         postID: data._id,
-        //         senderID: user.userID,
-        //         type: '1',
-        //         action: 'React'
-        //     })
-        // }).then(res => {
-        //     if (!res.ok) {
-        //         throw Error('Loi phat sinh')
-        //     }
-        //     else
-        //         return res.json()
-        // }).then(data => {
-        //     // console.log(data)
-        // }).catch(err => {
-        //     console.log("error", err)
-        // })
+       
         NotificationApi.sendNoti({
             userID: item.userID,
             message: ' just commented your post ',
@@ -113,9 +89,6 @@ const CommentScreenForKNoti = ({ navigation, route }) => {
     useEffect(() => {
         FetchCommentList();
     }, [])
-
-
-
 
     return (
         <View style={styles.container}>
@@ -149,9 +122,6 @@ const CommentScreenForKNoti = ({ navigation, route }) => {
                         showsVerticalScrollIndicator={false}
                         value={body}
                         onChangeText={onValueChange}
-
-
-
                     >
                     </TextInput>
                     {
