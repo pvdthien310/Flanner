@@ -144,7 +144,7 @@ const CommentScreenForSNoti = ({ navigation, route }) => {
 
             }
 
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <TouchableWithoutFeedback  onPress={() => Keyboard.dismiss()}>
                 <View style={styles.commentFrame}>
                     <TextInput style={styles.textInput}
                         placeholder="Write a comment..."
@@ -153,9 +153,6 @@ const CommentScreenForSNoti = ({ navigation, route }) => {
                         showsVerticalScrollIndicator={false}
                         value={body}
                         onChangeText={onValueChange}
-
-
-
                     >
                     </TextInput>
                     {
@@ -249,8 +246,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         shadowOffset: { width: 0.1, height: 0.1 },
         shadowColor: 'black',
-        paddingTop: 5,
-        paddingEnd: 40,
+        
         backgroundColor: 'white',
         position: 'absolute',
         top: height * 0.1,
@@ -265,9 +261,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderColor: 'black',
         borderWidth: 1,
+        paddingEnd:50,
         margin: 10,
+        marginTop:15,
         width: width * 0.9,
         alignSelf: 'center',
+        
 
     }
 

@@ -35,14 +35,17 @@ const ChannelScreen = ({ navigation, route }) => {
 
     const fetchMembers = async () => {
         const response = await channel.queryMembers({});
-        console.log(members)
+        // console.log(members)
         setMembers(response.members);
     };
 
 
     useEffect(() => {
-        fetchMembers();
-    }, [])
+        const timer = setTimeout(() => {
+              fetchMembers();
+        }, 1000);
+        return () => clearTimeout(timer);
+      }, []);
 
     useEffect(() => {
         if (members.length === 2) {

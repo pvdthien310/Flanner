@@ -368,7 +368,7 @@ export default function SignInScreen({ navigation }) {
                         <Text style={styles.textSign}>SIGN IN</Text>
                     </TouchableOpacity>
 
-                    <View style={{ marginTop: height * 0.2 }}>
+                    <View style={{ marginTop: height * 0.3 }}>
                         <View style={{ borderBottomColor: 'grey', borderWidth: 1, opacity: 0.5, marginTop: 11 }}></View>
                         <Text style={{ backgroundColor: 'white', position: 'absolute', alignSelf: 'center' }}> or </Text>
                     </View>
