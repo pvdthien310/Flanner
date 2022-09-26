@@ -1,58 +1,84 @@
-import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import * as React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
 
-import SplashScreen from '../screens/Login/splashScreen'
-import SignInScreen from '../screens/Login/signInScreen';
-import SignUpScreen from '../screens/Login/signUpScreen';
-import ForgotPasswordScreen from '../screens/Login/forgotPasswordScreen';
-import ConfirmEmail from '../screens/Login/confirmEmail';
-import ConfirmEmailForgot from '../screens/Login/confirmEmailForgot';
-import { DrawerStack } from './drawer';
-
+import SplashScreen from "../screens/Login/splashScreen";
+import SignInScreen from "../screens/Login/signInScreen";
+import SignUpScreen from "../screens/Login/signUpScreen";
+import ForgotPasswordScreen from "../screens/Login/forgotPasswordScreen";
+import ConfirmEmail from "../screens/Login/confirmEmail";
+import ConfirmEmailForgot from "../screens/Login/confirmEmailForgot";
+import { DrawerStack } from "./drawer";
 
 const Stack = createNativeStackNavigator();
 
 export default function LoginStack() {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator >
-            <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
-                    headerShown: false
-                }} />
-            <Stack.Screen name="DrawerStack" component={DrawerStack} options={{
-                    headerShown: false
-                }} />
-            
-                <Stack.Screen name="SignInScreen" component={SignInScreen} options={{
-                    headerShown: false,
-                }} />
-                <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{
-                    headerShown: false,
-                }} />
-                <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{
-                    headerShown: false,
-                }} />
-                <Stack.Screen name="ConfirmEmail" component={ConfirmEmail} options={{
-                    headerShown: false,
-                }} />
-                <Stack.Screen name="ConfirmEmailForgot" component={ConfirmEmailForgot} options={{
-                    headerShown: false,
-                }} />
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="SplashScreen"
+          component={SplashScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="DrawerStack"
+          component={DrawerStack}
+          options={{
+            headerShown: false,
+          }}
+        />
 
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+        <Stack.Screen
+          name="SignInScreen"
+          component={SignInScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SignUpScreen"
+          component={SignUpScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ConfirmEmail"
+          component={ConfirmEmail}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ConfirmEmailForgot"
+          component={ConfirmEmailForgot}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const config = {
-    animation: 'spring',
-    config: {
-        stiffness: 1000,
-        damping: 500,
-        mass: 3,
-        overshootClamping: true,
-        restDisplacementThreshold: 0.01,
-        restSpeedThreshold: 0.01,
-    },
+  animation: "spring",
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
 };
