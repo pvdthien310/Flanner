@@ -23,7 +23,8 @@ import Toast from "react-native-root-toast";
 import SavedPostApi from "../../API/SavedPostAPI";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const StatusMember = ({ item, navigation, nextscreen }) => {
+const StatusMember = ({ item, navigation, nextScreen }) => {
+  console.log("aaaa");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.User);
   const [pressed, setPressed] = useState(false);
@@ -155,17 +156,6 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
   };
 
   const LoadData = () => {
-    // const url = URL_local + 'status/' + item._id.toString();
-    // fetch(url)
-    //     .then(res => res.json())
-    //     .then(result => {
-    //         if ((result.react).indexOf(user.userID) != -1)
-
-    //             setPressed(true)
-    //         else setPressed(false)
-    //          setReactnumber(result.react.length)
-    //          setData(result)
-    //     }).catch(err => console.log('Error'));
     StatusApi.getItem(item._id.toString())
       .then((res) => {
         if (res.react.indexOf(user.userID) != -1) setPressed(true);
@@ -181,31 +171,6 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
   }, []);
 
   const sendNotification = () => {
-    // const url = URL_local + 'notification/send-data'
-    // fetch(url, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         userID: item.userID,
-    //         message: 'Đã thích bài viết của bạn',
-    //         postID: item._id,
-    //         senderID: user.userID,
-    //         type: '2',
-    //         action: 'React'
-    //     })
-    // }).then(res => {
-    //     if (!res.ok) {
-    //         throw Error('Loi phat sinh')
-    //     }
-    //     else
-    //         return res.json()
-    // }).then(data => {
-    //     // console.log(data)
-    // }).catch(err => {
-    //     console.log("error", err)
-    // })
     NotificationApi.sendNoti({
       userID: item.userID,
       message: " liked your post",
@@ -218,30 +183,6 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
       .catch((err) => console.log("Error Send Noti", err));
   };
   const removeNotification = () => {
-    // const url = URL_local + 'notification/delete'
-    // fetch(url, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         userID: item.userID,
-    //         postID: item._id,
-    //         senderID: user.userID,
-    //         type: '2',
-    //         action: 'React'
-    //     })
-    // }).then(res => {
-    //     if (!res.ok) {
-    //         throw Error('Loi phat sinh')
-    //     }
-    //     else
-    //         return res.json()
-    // }).then(data => {
-    //     // console.log(data)
-    // }).catch(err => {
-    //     console.log("error", err)
-    // })
     NotificationApi.removeNoti({
       userID: item.userID,
       postID: item._id,
@@ -281,31 +222,6 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
         })
         .catch((err) => console.log("Error update false"));
     } else if (pressed == false) {
-      // fetch(url_true, {
-      //     method: 'POST',
-      //     headers: {
-      //         'Content-Type': 'application/json'
-      //     }
-      // }).then(res => {
-      //     if (!res.ok) {
-      //         throw Error('Loi phat sinh')
-      //     }
-      //     else {
-      //         return res.json()
-      //     }
-      // }).then(result => {
-      //     // setData(result)
-      //     console.log(result)
-      //     sendNotification()
-      //     dispatch({type: 'UPDATE_STATUS_MEMBER', payload: result})
-      //     if ((result.react).indexOf(user.userID) != -1)
-      //         setPressed(true)
-      //     else setPressed(false)
-      //     setReactnumber(result.react.length)
-
-      // }).catch(err => {
-      //     console.log("error", err)
-      // })
       StatusApi.updateTrue(item._id.toString(), user.userID.toString())
         .then((res) => {
           sendNotification();
@@ -317,9 +233,6 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
         })
         .catch((err) => console.log("Error update true"));
     }
-
-    // if (pressed == true) setReactnumber(reactnumber - 1);
-    // else setReactnumber(reactnumber + 1)
   };
 
   useEffect(() => {
@@ -344,7 +257,7 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
         <TouchableOpacity
           onPress={() => {
             if (item.userID != user.userID) {
-              navigation.push(nextscreen[0], { item: [host] });
+              navigation.push(nextScreen[0], { item: [host] });
             } else {
               createTwoButtonAlert();
             }
@@ -396,7 +309,7 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
         </PostImage>
 
         <TouchableOpacity
-          onPress={() => navigation.push(nextscreen[1], { data: item })}
+          onPress={() => navigation.push(nextScreen[1], { data: item })}
         >
           <ReactNumber>
             <Text style={Poststyle.reactnumber}>{reactnumber} Likes</Text>
@@ -416,7 +329,7 @@ const StatusMember = ({ item, navigation, nextscreen }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.push(nextscreen[2], { item: data })}
+            onPress={() => navigation.push(nextScreen[2], { item: data })}
             style={Poststyle.buttonpost}
           >
             <Octicons

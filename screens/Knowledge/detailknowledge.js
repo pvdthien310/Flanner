@@ -288,7 +288,13 @@ const DetailKnowledge = ({ route, navigation }) => {
               onPress={() => {
                 if (host.length > 0) {
                   if (host[0].email != user.email) {
-                    navigation.push("Knowledge Friend Profile", { item: host });
+                    navigation.push("Knowledge Friend Profile", {
+                      item: host,
+                      nextScreen: [
+                        "Knowledge Friend Knowledge",
+                        "Knowledge Friend Status",
+                      ],
+                    });
                   } else {
                     createTwoButtonAlert();
                   }

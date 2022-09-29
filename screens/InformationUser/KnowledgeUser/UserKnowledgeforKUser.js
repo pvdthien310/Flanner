@@ -14,6 +14,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import KnowledgeMemberForKUser from "../../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMemberforFriend";
 import KnowLedgeApi from "../../../API/KnowledgeAPI";
+import KnowledgeMember from "../../../components/Knowledge/knowledgeMember";
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
@@ -135,7 +136,11 @@ const UserKnowledgeForKUSer = ({ navigation, route }) => {
               showsVerticalScrollIndicator={false}
               data={user_knowledge}
               renderItem={({ item }) => (
-                <KnowledgeMemberForKUser item={item} navigation={navigation} />
+                <KnowledgeMember
+                  item={item}
+                  navigation={navigation}
+                  nextScreen={"Knowledge User Detail Knowledge"}
+                />
               )}
               keyExtractor={(item) => item._id}
               onRefresh={() => fetchKnowledgeData()}

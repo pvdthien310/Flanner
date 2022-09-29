@@ -17,7 +17,7 @@ import Toast from "react-native-root-toast";
 import SavedPostApi from "../../API/SavedPostAPI";
 
 const KnowledgeMember = ({ item, navigation, nextScreen }) => {
-  console.log(nextScreen);
+  console.log("reuse knowledge memberpage");
   const [reactnumber, setReactnumber] = useState(parseInt(item.react.length));
   const imagenumber = item.listImage.length;
   const dispatch = useDispatch();

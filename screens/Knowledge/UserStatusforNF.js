@@ -12,16 +12,10 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { globalStyles } from "../../styles/global";
-import KnowledgeStatusMember from "../../components/Knowledge/statusMember";
-import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/core";
-import { ScrollView } from "react-native-gesture-handler";
-import { FontAwesome5 } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
-import { URL_local } from "../../constant";
 import StatusApi from "../../API/StatusAPI";
+import StatusMember from "../../components/Status/statusMember";
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
@@ -154,7 +148,7 @@ const UserStatusForNF = ({ navigation, route }) => {
               showsVerticalScrollIndicator={false}
               data={user_status}
               renderItem={({ item }) => (
-                <KnowledgeStatusMember
+                <StatusMember
                   item={item}
                   navigation={navigation}
                   nextScreen={[

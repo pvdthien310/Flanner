@@ -40,7 +40,7 @@ const Status = ({ navigation }) => {
             <StatusMember
               item={item}
               navigation={navigation}
-              nextscreen={[
+              nextScreen={[
                 "Status Friend Profile",
                 "Status Show React User",
                 "Status Comment",
