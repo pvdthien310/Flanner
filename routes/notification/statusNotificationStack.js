@@ -1,33 +1,68 @@
-import * as  React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
- import StatusNotification from '../../screens/Notification/statusNotification'
-import NotiDetailStatus from '../../screens/Notification/StatusNotification/notiDetailStatus'
-import ShowReactInfoFotStatusNoti from '../../screens/FriendInformation/StatusNotification/showReactInfoforStatusNoti'
-import FriendInfoForStatusNoti from '../../screens/FriendInformation/StatusNotification/friendProfileforStatusNoti'
-import UserKnowledgeForSN from '../../screens/Notification/StatusNotification/UserKnowledgeforSN'
-import UserStatusForSN from '../../screens/Notification/StatusNotification/UserStatusforSN'
-import StatusNotiDetailKnowledge from '../../screens/Notification/StatusNotification/notiDetailKnowledge'
-import CommentScreenForSNoti from '../../screens/Notification/StatusNotification/commentScreen'
+import * as React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import StatusNotification from "../../screens/Notification/statusNotification";
+import ShowReactInfoFotStatusNoti from "../../screens/FriendInformation/StatusNotification/showReactInfoforStatusNoti";
+import FriendInfoForStatusNoti from "../../screens/FriendInformation/StatusNotification/friendProfileforStatusNoti";
+import UserKnowledgeForSN from "../../screens/Notification/StatusNotification/UserKnowledgeforSN";
+import UserStatusForSN from "../../screens/Notification/StatusNotification/UserStatusforSN";
+import StatusNotiDetailKnowledge from "../../screens/Notification/StatusNotification/notiDetailKnowledge";
+import CommentScreenForSNoti from "../../screens/Notification/StatusNotification/commentScreen";
+import { StackRoutes } from "../../routes";
+import DetailStatus from "../../screens/Status/detailstatus";
+import DetailKnowledge from "../../screens/Knowledge/detailknowledge";
+import ShowReactInfo from "../../screens/FriendInformation/Knowledge/showReactInfo";
+import FriendInfo from "../../screens/FriendInformation/Knowledge/friendProfile";
+import UserKnowledgeForNF from "../../screens/Knowledge/UserKnowledgeforNF";
+import UserStatusForNF from "../../screens/Knowledge/UserStatusforNF";
+import CommentScreen from "../../screens/Knowledge/commentScreen";
 
-
-
-
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
 
 export const StatusNotificationStack = (props) => {
-    const { navigation } = props
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='Status Notification' component={StatusNotification} />
-            <Stack.Screen name='Status Detail Notification' component={NotiDetailStatus} />
-            <Stack.Screen name='Status Notification Detail Knowledge' component={StatusNotiDetailKnowledge} />
-            <Stack.Screen name='Status Notification Show React User' component={ShowReactInfoFotStatusNoti} />
-            <Stack.Screen name='Status Notification Friend Profile' component={FriendInfoForStatusNoti} />
-            <Stack.Screen name='Status Notification Friend Knowledge' component={UserKnowledgeForSN} />
-            <Stack.Screen name='Status Notification Friend Status' component={UserStatusForSN} />
-            <Stack.Screen name='Status Notification Comment' component={CommentScreenForSNoti} />
-            
-
-        </Stack.Navigator>
-    )
-}
+  const { navigation } = props;
+  const Routes = StackRoutes.notification.status;
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="Status Notification"
+        component={StatusNotification}
+        initialParams={{ routes: Routes }}
+      />
+      <Stack.Screen
+        name="Status Notification Detail Status"
+        component={DetailStatus}
+        initialParams={{ routes: Routes }}
+      />
+      <Stack.Screen
+        name="Status Notification Detail Knowledge"
+        component={DetailKnowledge}
+        initialParams={{ routes: Routes }}
+      />
+      <Stack.Screen
+        name="Status Notification Show React User"
+        component={ShowReactInfo}
+        initialParams={{ routes: Routes }}
+      />
+      <Stack.Screen
+        name="Status Notification Friend Profile"
+        component={FriendInfo}
+        initialParams={{ routes: Routes }}
+      />
+      <Stack.Screen
+        name="Status Notification Friend Knowledge"
+        component={UserKnowledgeForNF}
+        initialParams={{ routes: Routes }}
+      />
+      <Stack.Screen
+        name="Status Notification Friend Status"
+        component={UserStatusForNF}
+        initialParams={{ routes: Routes }}
+      />
+      <Stack.Screen
+        name="Status Notification Comment"
+        component={CommentScreen}
+        initialParams={{ routes: Routes }}
+      />
+    </Stack.Navigator>
+  );
+};

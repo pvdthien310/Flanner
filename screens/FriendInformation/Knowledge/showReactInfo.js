@@ -19,7 +19,7 @@ const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 const ShowReactInfo = ({ route, navigation }) => {
-  const { data, nextScreen } = route.params;
+  const { data, routes } = route.params;
   const pressgobackHandler = () => {
     navigation.goBack();
   };
@@ -60,7 +60,7 @@ const ShowReactInfo = ({ route, navigation }) => {
           <ReactMember
             item={item}
             navigation={navigation}
-            nextScreen={nextScreen}
+            nextScreen={routes.friendInfo}
           ></ReactMember>
         )}
         keyExtractor={(item) => item}

@@ -20,8 +20,7 @@ const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 const FriendInfo = ({ navigation, route }) => {
-  const { item, nextScreen } = route.params;
-  console.log(nextScreen);
+  const { item, routes } = route.params;
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.User);
   const [knowledge, setKnowledge] = useState([]);
@@ -29,7 +28,6 @@ const FriendInfo = ({ navigation, route }) => {
   const [postNumber, setPostNumber] = useState(
     knowledge.length + status.length
   );
-
   const [isfollowing, Setisfollowing] = useState(false);
   const [isfollowed, Setisfollowed] = useState(false);
   const [friendInfo, SetfriendInfo] = useState(item[0]);
@@ -59,6 +57,7 @@ const FriendInfo = ({ navigation, route }) => {
       });
     });
   };
+
   const FollowingButtonHandler = async () => {
     await Api.removeFollowing(friendInfo.userID, user.userID).then(
       async (res) => {
@@ -70,6 +69,7 @@ const FriendInfo = ({ navigation, route }) => {
       }
     );
   };
+
   const AcceptButtonHandler = async () => {
     await Api.addFollowing(friendInfo.userID, user.userID).then(async (res) => {
       dispatch({ type: "ADD_USER", payload: res });
@@ -79,6 +79,7 @@ const FriendInfo = ({ navigation, route }) => {
       });
     });
   };
+
   const FriendButtonHandler = async () => {
     await Api.removeFollowing(friendInfo.userID, user.userID).then(
       async (res) => {
@@ -103,6 +104,7 @@ const FriendInfo = ({ navigation, route }) => {
       })
       .catch((err) => console.log("Error"));
   };
+
   const fetchStatusData = () => {
     StatusApi.getStatusUser(friendInfo.userID)
       .then((result) => {
@@ -111,6 +113,7 @@ const FriendInfo = ({ navigation, route }) => {
       })
       .catch((err) => console.log("Error"));
   };
+
   useEffect(() => {
     FetchFriendInfo();
   }, []);
@@ -118,9 +121,11 @@ const FriendInfo = ({ navigation, route }) => {
   const CountPost = () => {
     setPostNumber(knowledge.length + status.length);
   };
+
   const pressgobackHandler = () => {
     navigation.goBack();
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -281,7 +286,7 @@ const FriendInfo = ({ navigation, route }) => {
               >
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.push(nextScreen[0], {
+                    navigation.push(routes.knowledgeForUser, {
                       user: friendInfo,
                       knowledge: knowledge,
                     })
@@ -303,7 +308,7 @@ const FriendInfo = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.push(nextScreen[1], {
+                    navigation.push(routes.statusForUser, {
                       user: friendInfo,
                       status: status,
                     })
@@ -555,12 +560,6 @@ const FriendInfo = ({ navigation, route }) => {
               )}
             </View>
           </View>
-
-          {/* <TouchableOpacity style={{ position: 'absolute', marginTop: 5, marginStart: 15 }} onPress = {CountPost} >
-                        <View style={{ flexDirection: 'row', marginBottom: 15, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Thien Pham</Text>
-                        </View>
-                    </TouchableOpacity> */}
           <TouchableOpacity
             onPress={pressgobackHandler}
             style={{

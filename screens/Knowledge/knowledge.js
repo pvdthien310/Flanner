@@ -20,7 +20,8 @@ import NotificationApi from "../../API/NotificationAPI";
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
-const Knowledge = ({ navigation }) => {
+const Knowledge = ({ route, navigation }) => {
+  const { routes } = route.params;
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => {
@@ -76,7 +77,7 @@ const Knowledge = ({ navigation }) => {
             <KnowledgeMember
               item={item}
               navigation={navigation}
-              nextScreen={"Knowledge Detail"}
+              nextScreen={routes.detail}
             />
           )}
           keyExtractor={(item) => item._id}

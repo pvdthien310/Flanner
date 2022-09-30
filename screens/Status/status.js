@@ -5,7 +5,8 @@ import StatusMember from "../../components/Status/statusMember";
 import { useSelector, useDispatch } from "react-redux";
 import { URL_local } from "../../constant";
 import StatusApi from "../../API/StatusAPI";
-const Status = ({ navigation }) => {
+const Status = ({ navigation, route }) => {
+  const { routes } = route.params;
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => {
@@ -41,9 +42,9 @@ const Status = ({ navigation }) => {
               item={item}
               navigation={navigation}
               nextScreen={[
-                "Status Friend Profile",
-                "Status Show React User",
-                "Status Comment",
+                routes.friendInfo,
+                routes.showReactInfo,
+                routes.comment,
               ]}
             />
           )}

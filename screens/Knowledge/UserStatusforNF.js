@@ -23,7 +23,7 @@ const logoHeight = height * 0.5;
 const UserStatusForNF = ({ navigation, route }) => {
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
-  const { user, status } = route.params;
+  const { user, status, routes } = route.params;
   const [user_status, setUserStatus] = useState(status);
   const [loading, Setloading] = useState(false);
 
@@ -152,9 +152,9 @@ const UserStatusForNF = ({ navigation, route }) => {
                   item={item}
                   navigation={navigation}
                   nextScreen={[
-                    "Knowledge Friend Profile",
-                    "Knowledge Show React User",
-                    "Knowledge Comment",
+                    routes.friendInfo,
+                    routes.showReactInfo,
+                    routes.comment,
                   ]}
                 />
               )}

@@ -18,11 +18,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { URL_local } from "../../constant";
 import KnowLedgeApi from "../../API/KnowledgeAPI";
 import KnowledgeMember from "../../components/Knowledge/knowledgeMember";
+import UserKnowledgeForKUSer from "./KnowledgeUser/UserKnowledgeforKUser";
+import UserKnowledgeMemberforFriend from "../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMemberforFriend";
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
-const UserKnowledge = ({ navigation }) => {
+const UserKnowledge = ({ route, navigation }) => {
+  const { routes } = route.params;
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { user_knowledge, data, loading } = useSelector((state) => {
@@ -146,10 +149,10 @@ const UserKnowledge = ({ navigation }) => {
               showsVerticalScrollIndicator={false}
               data={user_knowledge}
               renderItem={({ item }) => (
-                <KnowledgeMember
+                <UserKnowledgeMember
                   item={item}
                   navigation={navigation}
-                  nextScreen={"Knowledge User Detail Knowledge"}
+                  routes={routes}
                 />
               )}
               keyExtractor={(item) => item._id}

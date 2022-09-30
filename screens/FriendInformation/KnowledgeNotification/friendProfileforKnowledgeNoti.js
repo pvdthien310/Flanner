@@ -97,14 +97,6 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
   }, [knowledge, status]);
 
   const fetchKnowledgeData = () => {
-    // const url = URL_local + 'knowledge/load-data/' + item[0].userID
-    // console.log(url)
-    // fetch(url)
-    //     .then(res => res.json())
-    //     .then(result => {
-    //         setKnowledge(result)
-    //         console.log('bbb')
-    //     }).catch(err => console.log('Error'));
     KnowLedgeApi.getKnowledgeUser(friendInfo.userID)
       .then((result) => {
         setKnowledge(result);
@@ -112,15 +104,6 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
       .catch((err) => console.log("Error"));
   };
   const fetchStatusData = () => {
-    // const url = URL_local + 'status/load-data/' + item[0].userID
-    // console.log(url)
-    // fetch(url)
-    //     .then(res => res.json())
-    //     .then(result => {
-    //         console.log('aaa')
-    //         setStatus(result)
-    //         CountPost()
-    //     }).catch(err => console.log('Error'));
     StatusApi.getStatusUser(friendInfo.userID)
       .then((result) => {
         setStatus(result);

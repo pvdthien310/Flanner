@@ -24,7 +24,6 @@ import SavedPostApi from "../../API/SavedPostAPI";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const StatusMember = ({ item, navigation, nextScreen }) => {
-  console.log("aaaa");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.User);
   const [pressed, setPressed] = useState(false);

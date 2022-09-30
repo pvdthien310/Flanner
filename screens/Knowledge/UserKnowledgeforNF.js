@@ -25,7 +25,7 @@ const logoHeight = height * 0.5;
 const UserKnowledgeForNF = ({ navigation, route }) => {
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
-  const { user, knowledge } = route.params;
+  const { user, knowledge, routes } = route.params;
 
   const [user_knowledge, setUserKnowledge] = useState(knowledge);
   const [loading, Setloading] = useState(false);
@@ -37,15 +37,8 @@ const UserKnowledgeForNF = ({ navigation, route }) => {
   useEffect(() => {
     fetchKnowledgeData();
   }, []);
-  const fetchKnowledgeData = () => {
-    // const url = URL_local + 'knowledge/load-data/' + user.userID
-    // console.log(url)
-    // fetch(url)
-    //     .then(res => res.json())
-    //     .then(result => {
-
-    //     }).catch(err => console.log('Error'));
-    KnowLedgeApi.getKnowledgeUserForFriend(user.userID)
+  const fetchKnowledgeData = async () => {
+    await KnowLedgeApi.getKnowledgeUserForFriend(user.userID)
       .then((res) => {
         setUserKnowledge(res);
         Setloading(false);
@@ -149,7 +142,7 @@ const UserKnowledgeForNF = ({ navigation, route }) => {
                 <KnowledgeMember
                   item={item}
                   navigation={navigation}
-                  nextScreen={"Knowledge Detail"}
+                  nextScreen={routes.detail}
                 />
               )}
               keyExtractor={(item) => item._id}

@@ -19,11 +19,10 @@ import KnowledgeMember from "../../../components/Knowledge/knowledgeMember";
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
-const UserKnowledgeForKUSer = ({ navigation, route }) => {
+const UserKnowledgeForKUSer = ({ route, navigation }) => {
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { user, knowledge } = route.params;
-
   const [user_knowledge, setUserKnowledge] = useState(knowledge);
   const [loading, Setloading] = useState(false);
   const pressgobackHandler = () => {

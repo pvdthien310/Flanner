@@ -22,12 +22,14 @@ import { URL_local } from "../../constant";
 import KnowLedgeApi from "../../API/KnowledgeAPI";
 import NotificationApi from "../../API/NotificationAPI";
 import Api from "../../API/UserAPI";
+import FriendInfo from "../FriendInformation/Knowledge/friendProfile";
 
 const DetailKnowledge = ({ route, navigation }) => {
+  console.log(route);
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.User);
-  const { item } = route.params;
+  const { item, routes } = route.params;
   const [data, setData] = useState(route.params.item);
   const [host, setHost] = useState({});
   const [loading, setLoading] = useState(true);
@@ -234,9 +236,7 @@ const DetailKnowledge = ({ route, navigation }) => {
               </View>
             </PostText>
             <TouchableOpacity
-              onPress={() =>
-                navigation.push("Knowledge Show React User", { data })
-              }
+              onPress={() => navigation.push(routes.showReactInfo, { data })}
             >
               <Text style={Poststyle_Status.reactnumber_detail}>
                 {data.react.length} likes
@@ -263,9 +263,7 @@ const DetailKnowledge = ({ route, navigation }) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.push("Knowledge Comment", { item: data })
-                }
+                onPress={() => navigation.push(routes.comment, { item: data })}
               >
                 <MaterialCommunityIcons
                   name="comment-multiple"
@@ -288,7 +286,7 @@ const DetailKnowledge = ({ route, navigation }) => {
               onPress={() => {
                 if (host.length > 0) {
                   if (host[0].email != user.email) {
-                    navigation.push("Knowledge Friend Profile", {
+                    navigation.push(routes.friendInfo, {
                       item: host,
                       nextScreen: [
                         "Knowledge Friend Knowledge",

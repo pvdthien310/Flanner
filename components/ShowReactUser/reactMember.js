@@ -70,10 +70,6 @@ const ReactMember = ({ item, navigation, nextScreen }) => {
           if (host[0].email != user.email) {
             navigation.push(nextScreen, {
               item: host,
-              nextScreen: [
-                "Knowledge Friend Knowledge",
-                "Knowledge Friend Status",
-              ],
             });
           } else {
             createTwoButtonAlert();
