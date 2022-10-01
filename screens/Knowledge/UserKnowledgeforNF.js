@@ -1,32 +1,21 @@
 import React, { useState, useEffect } from "react";
 import {
-  Alert,
-  Modal,
   FlatList,
   StyleSheet,
   Text,
-  Pressable,
   View,
   Image,
   TouchableOpacity,
-  Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
-import { URL_local } from "../../constant";
 import KnowledgeMember from "../../components/Knowledge/knowledgeMember";
-import Knowledge from "./knowledge";
 import KnowLedgeApi from "../../API/KnowledgeAPI";
-
-const { height } = Dimensions.get("screen");
-const logoHeight = height * 0.5;
 
 const UserKnowledgeForNF = ({ navigation, route }) => {
   const [, forceRerender] = useState();
-  const dispatch = useDispatch();
   const { user, knowledge, routes } = route.params;
-
   const [user_knowledge, setUserKnowledge] = useState(knowledge);
   const [loading, Setloading] = useState(false);
   const pressgobackHandler = () => {

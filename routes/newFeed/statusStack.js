@@ -1,17 +1,8 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Status from "../../screens/Status/status";
-import DetailStatus from "../../screens/Status/detailstatus";
-import statusMember from "../../components/Status/statusMember";
-import ShowReactInfoForStatus from "../../screens/FriendInformation/Status/showReactInfoforStatus";
-import ReactMemberforStatus from "../../components/ShowReactUser/reactMemberforStatus";
-import FriendInfoForStatus from "../../screens/FriendInformation/Status/friendProfileforStatus";
-import UserKnowledgeForNFS from "../../screens/Status/UserKnowledgeforNFS";
-import UserStatusForNFS from "../../screens/Status/UserStatusforNFS";
-import StatusDetailKnowledge from "../../screens/Status/statusDetailKnowledge";
-import CommentScreenForStatus from "../../screens/Status/commentScreen";
-import FriendInfo from "../../screens/FriendInformation/Knowledge/friendProfile";
-import ShowReactInfo from "../../screens/FriendInformation/Knowledge/showReactInfo";
+import FriendInfo from "../../screens/FriendInformation/friendProfile";
+import ShowReactInfo from "../../screens/FriendInformation/showReactInfo";
 import UserKnowledgeForNF from "../../screens/Knowledge/UserKnowledgeforNF";
 import UserStatusForNF from "../../screens/Knowledge/UserStatusforNF";
 import DetailKnowledge from "../../screens/Knowledge/detailknowledge";
@@ -20,7 +11,6 @@ import { StackRoutes } from "../../routes";
 const Stack = createNativeStackNavigator();
 
 export const StatusStack = (props) => {
-  const { navigation } = props;
   const Routes = StackRoutes.status;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

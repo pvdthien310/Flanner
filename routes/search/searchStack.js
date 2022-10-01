@@ -1,15 +1,9 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SearchScreen from "../../screens/search/searchScreen";
-import FriendInfoForSearch from "../../screens/FriendInformation/Search/friendProfileforSearch";
-import ShowReactInfoForSearch from "../../screens/FriendInformation/Search/showReactInfoforSearch";
-import UserKnowledgeForSearch from "../../screens/search/UserKnowledgeforSearch";
-import UserStatusForSearch from "../../screens/search/UserStatusforSearch";
-import SearchDetailKnowledge from "../../screens/search/searchDetailKnowledge";
-import CommentScreenForSearch from "../../screens/search/commentScreen";
 import { StackRoutes } from "../../routes";
-import FriendInfo from "../../screens/FriendInformation/Knowledge/friendProfile";
-import ShowReactInfo from "../../screens/FriendInformation/Knowledge/showReactInfo";
+import FriendInfo from "../../screens/FriendInformation/friendProfile";
+import ShowReactInfo from "../../screens/FriendInformation/showReactInfo";
 import UserKnowledgeForNF from "../../screens/Knowledge/UserKnowledgeforNF";
 import UserStatusForNF from "../../screens/Knowledge/UserStatusforNF";
 import DetailKnowledge from "../../screens/Knowledge/detailknowledge";

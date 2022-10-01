@@ -17,9 +17,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
 import { URL_local } from "../../constant";
 import KnowLedgeApi from "../../API/KnowledgeAPI";
-import KnowledgeMember from "../../components/Knowledge/knowledgeMember";
-import UserKnowledgeForKUSer from "./KnowledgeUser/UserKnowledgeforKUser";
-import UserKnowledgeMemberforFriend from "../../components/UserInformation/KnowledgeUserInfo/userKnowledgeMemberforFriend";
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;

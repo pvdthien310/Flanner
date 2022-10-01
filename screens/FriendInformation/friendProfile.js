@@ -12,16 +12,15 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
-import KnowLedgeApi from "../../../API/KnowledgeAPI";
-import StatusApi from "../../../API/StatusAPI";
-import Api from "../../../API/UserAPI";
+import KnowLedgeApi from "../../API/KnowledgeAPI";
+import StatusApi from "../../API/StatusAPI";
+import Api from "../../API/UserAPI";
 
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
-const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
-  const { item } = route.params;
-
+const FriendInfo = ({ navigation, route }) => {
+  const { item, routes } = route.params;
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.User);
   const [knowledge, setKnowledge] = useState([]);
@@ -29,7 +28,6 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
   const [postNumber, setPostNumber] = useState(
     knowledge.length + status.length
   );
-
   const [isfollowing, Setisfollowing] = useState(false);
   const [isfollowed, Setisfollowed] = useState(false);
   const [friendInfo, SetfriendInfo] = useState(item[0]);
@@ -59,6 +57,7 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
       });
     });
   };
+
   const FollowingButtonHandler = async () => {
     await Api.removeFollowing(friendInfo.userID, user.userID).then(
       async (res) => {
@@ -70,6 +69,7 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
       }
     );
   };
+
   const AcceptButtonHandler = async () => {
     await Api.addFollowing(friendInfo.userID, user.userID).then(async (res) => {
       dispatch({ type: "ADD_USER", payload: res });
@@ -79,6 +79,7 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
       });
     });
   };
+
   const FriendButtonHandler = async () => {
     await Api.removeFollowing(friendInfo.userID, user.userID).then(
       async (res) => {
@@ -103,6 +104,7 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
       })
       .catch((err) => console.log("Error"));
   };
+
   const fetchStatusData = () => {
     StatusApi.getStatusUser(friendInfo.userID)
       .then((result) => {
@@ -111,6 +113,7 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
       })
       .catch((err) => console.log("Error"));
   };
+
   useEffect(() => {
     FetchFriendInfo();
   }, []);
@@ -118,9 +121,11 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
   const CountPost = () => {
     setPostNumber(knowledge.length + status.length);
   };
+
   const pressgobackHandler = () => {
     navigation.goBack();
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -281,7 +286,7 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
               >
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.push("Knowledge Notification Friend Knowledge", {
+                    navigation.push(routes.knowledgeForUser, {
                       user: friendInfo,
                       knowledge: knowledge,
                     })
@@ -303,7 +308,7 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.push("Knowledge Notification Friend Status", {
+                    navigation.push(routes.statusForUser, {
                       user: friendInfo,
                       status: status,
                     })
@@ -437,11 +442,12 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
                     <View>
                       {friendInfo.followed.length > 0 ? (
                         <Image
-                          source={require("../../../assets/overrall.png")}
+                          source={require("../../assets/overrall.png")}
                           resizeMode="contain"
                           style={{
                             width: 25,
                             height: 25,
+                            alignSelf: "center",
                           }}
                         />
                       ) : null}
@@ -554,12 +560,6 @@ const FriendInfoForKnowledgeNoti = ({ navigation, route }) => {
               )}
             </View>
           </View>
-
-          {/* <TouchableOpacity style={{ position: 'absolute', marginTop: 5, marginStart: 15 }} onPress = {CountPost} >
-                        <View style={{ flexDirection: 'row', marginBottom: 15, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'nunitobold' }}>Thien Pham</Text>
-                        </View>
-                    </TouchableOpacity> */}
           <TouchableOpacity
             onPress={pressgobackHandler}
             style={{
@@ -607,6 +607,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     flex: 1,
     backgroundColor: "whitesmoke",
+    marginBottom: 90,
   },
   button1: {
     shadowOffset: { width: 1, height: 1 },
@@ -641,4 +642,4 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
   },
 });
-export default FriendInfoForKnowledgeNoti;
+export default FriendInfo;

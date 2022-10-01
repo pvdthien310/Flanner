@@ -1,17 +1,9 @@
-import React, { useState, useEffect, memo } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import react from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 const NotificationMember = ({ item, navigation, nextScreen }) => {
-  const dispatch = useDispatch();
   const user_data = useSelector((state) => {
     return state.User;
   });

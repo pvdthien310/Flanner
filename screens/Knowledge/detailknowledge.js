@@ -22,7 +22,6 @@ import { URL_local } from "../../constant";
 import KnowLedgeApi from "../../API/KnowledgeAPI";
 import NotificationApi from "../../API/NotificationAPI";
 import Api from "../../API/UserAPI";
-import FriendInfo from "../FriendInformation/Knowledge/friendProfile";
 
 const DetailKnowledge = ({ route, navigation }) => {
   console.log(route);

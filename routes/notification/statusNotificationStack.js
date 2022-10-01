@@ -1,17 +1,11 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StatusNotification from "../../screens/Notification/statusNotification";
-import ShowReactInfoFotStatusNoti from "../../screens/FriendInformation/StatusNotification/showReactInfoforStatusNoti";
-import FriendInfoForStatusNoti from "../../screens/FriendInformation/StatusNotification/friendProfileforStatusNoti";
-import UserKnowledgeForSN from "../../screens/Notification/StatusNotification/UserKnowledgeforSN";
-import UserStatusForSN from "../../screens/Notification/StatusNotification/UserStatusforSN";
-import StatusNotiDetailKnowledge from "../../screens/Notification/StatusNotification/notiDetailKnowledge";
-import CommentScreenForSNoti from "../../screens/Notification/StatusNotification/commentScreen";
 import { StackRoutes } from "../../routes";
 import DetailStatus from "../../screens/Status/detailstatus";
 import DetailKnowledge from "../../screens/Knowledge/detailknowledge";
-import ShowReactInfo from "../../screens/FriendInformation/Knowledge/showReactInfo";
-import FriendInfo from "../../screens/FriendInformation/Knowledge/friendProfile";
+import ShowReactInfo from "../../screens/FriendInformation/showReactInfo";
+import FriendInfo from "../../screens/FriendInformation/friendProfile";
 import UserKnowledgeForNF from "../../screens/Knowledge/UserKnowledgeforNF";
 import UserStatusForNF from "../../screens/Knowledge/UserStatusforNF";
 import CommentScreen from "../../screens/Knowledge/commentScreen";
@@ -19,7 +13,6 @@ import CommentScreen from "../../screens/Knowledge/commentScreen";
 const Stack = createNativeStackNavigator();
 
 export const StatusNotificationStack = (props) => {
-  const { navigation } = props;
   const Routes = StackRoutes.notification.status;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

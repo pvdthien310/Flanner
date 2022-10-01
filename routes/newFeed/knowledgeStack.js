@@ -2,15 +2,11 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Knowledge from "../../screens/Knowledge/knowledge";
 import DetailKnowledge from "../../screens/Knowledge/detailknowledge";
-import KnowledgeMember from "../../components/Knowledge/knowledgeMember";
-import ShowReactInfo from "../../screens/FriendInformation/Knowledge/showReactInfo";
-import ReactMember from "../../components/ShowReactUser/reactMember";
-import FriendInfo from "../../screens/FriendInformation/Knowledge/friendProfile";
+import ShowReactInfo from "../../screens/FriendInformation/showReactInfo";
+import FriendInfo from "../../screens/FriendInformation/friendProfile";
 import UserKnowledgeForNF from "../../screens/Knowledge/UserKnowledgeforNF";
 import UserStatusForNF from "../../screens/Knowledge/UserStatusforNF";
-import DetailStatus from "../../screens/Status/detailstatus";
 import CommentScreen from "../../screens/Knowledge/commentScreen";
-import statusMember from "../../components/Status/statusMember";
 import { StackRoutes } from "../../routes";
 
 const Stack = createNativeStackNavigator();

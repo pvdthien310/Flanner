@@ -12,9 +12,8 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
-import { globalStyles } from "../../../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
-import ReactMember from "../../../components/ShowReactUser/reactMember";
+import ReactMember from "../../components/ShowReactUser/reactMember";
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
