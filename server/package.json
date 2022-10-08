@@ -17,6 +17,7 @@
     "js-base64": "^3.7.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.8",
+    "nodejs-base64": "^2.0.0",
     "nodemailer": "^6.7.1",
     "parse-json": "^5.2.0"
   },

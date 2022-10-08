@@ -40,5 +40,5 @@ app.use("/api/new-comment", NewCommentRoutes);
 //// Open port
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
-  console.log("Backends server is running!");
+  console.log("Backends server is running on port: " + port);
 });
