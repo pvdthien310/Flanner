@@ -1,6 +1,9 @@
 const NewCommentRoute = require("express").Router();
 const NewComment = require("../models/NewComment");
 const jwt = require("jsonwebtoken");
+const { base64encode, base64decode } = require("nodejs-base64");
+const url = require("url");
+const { resolveSoa } = require("dns");
 
 const nullText = " null/ blank";
 
@@ -287,24 +290,37 @@ NewCommentRoute.get("/react/:commentId/:userId", (req, res) => {
 });
 
 // Pagination
-// NewCommentRoute.get("/load-limit-comment/", async (req, res) => {
-//   const LIMIT = 10;
-//   var queryData = url.parse(req.url, true).query;
-//   const { cursor } = queryData;
+NewCommentRoute.get("/load/limit-comment/:postId/:cursor", async (req, res) => {
+  if (req.params.postId === "" || req.params.postId === null) {
+    res.send("Post id " + nullText);
+  }
 
-//   let skip = 0;
-//   if (cursor) skip = base64decode(cursor);
-//   const data = await NewComment.find({ postId: req.params.postId })
-//     .skip(+skip)
-//     .limit(LIMIT)
-//     .exec();
+  if (!Number.isInteger(parseInt(req.params.cursor))) {
+    res.send("Cursor must be an integer");
+  }
+  const LIMIT = 2;
+  ///var queryData = url.parse(req.url, true).query;
+  ///const { cursor } = queryData;
 
-//   skip = +skip + LIMIT;
-//   const cursorEncode = base64encode(skip);
-//   res.send({
-//     data,
-//     cursor: cursorEncode,
-//   });
-// });
+  let skip = 0;
+  // if (req.params.cursor) skip = base64decode(req.params.cursor);
+  if (req.params.cursor) skip = req.params.cursor;
+
+  const data = await NewComment.find({
+    postId: req.params.postId,
+    level: 0,
+  })
+    .skip(++skip)
+    .limit(LIMIT)
+    .exec()
+    .catch((err) => console.log(err));
+
+  skip = skip + LIMIT;
+  const cursorEncode = base64encode(skip);
+  res.send({
+    data,
+    cursor: cursorEncode,
+  });
+});
 
 module.exports = NewCommentRoute;

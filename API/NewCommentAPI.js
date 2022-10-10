@@ -56,6 +56,12 @@ const NewCommentAPI = {
     );
     return res.data;
   },
+
+  getPagination: async (cursor = 0, postId) => {
+    const query = postId + "/" + cursor;
+    const res = await DatabaseClient.get(url + "/load/limit-comment/" + query);
+    return res.data;
+  },
 };
 
 export default NewCommentAPI;
