@@ -22,6 +22,7 @@ const logoHeight = height * 0.5;
 
 const Knowledge = ({ route, navigation }) => {
   const { routes } = route.params;
+  console.log(routes);
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => {
