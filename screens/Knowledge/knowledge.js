@@ -20,7 +20,9 @@ import NotificationApi from "../../API/NotificationAPI";
 const { height } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
-const Knowledge = ({ navigation }) => {
+const Knowledge = ({ route, navigation }) => {
+  const { routes } = route.params;
+  console.log(routes);
   const [, forceRerender] = useState();
   const [cursor, setCursor] = useState();
   const dispatch = useDispatch();
