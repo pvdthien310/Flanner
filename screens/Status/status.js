@@ -31,7 +31,6 @@ const Status = ({ navigation }) => {
   const fetchMoreData = () => {
     StatusApi.getPagination(user.userID, cursor)
       .then((res) => {
-        console.log(res);
         setCursor(res.cursor);
         const payload = [...data, ...res.data];
 
