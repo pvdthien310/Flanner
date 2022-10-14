@@ -12,6 +12,7 @@ NewCommentRoute.post("/add-root", (req, res) => {
   const newComment = new NewComment({
     postId: req.body.postId,
     userId: req.body.userId,
+    userName: req.body.userName,
     reactUsers: req.body.reactUsers,
     body: req.body.body,
     isPositive: req.body.isPositive,
@@ -44,6 +45,7 @@ NewCommentRoute.post("/add-reply", (req, res) => {
   const newComment = new NewComment({
     postId: req.body.postId,
     userId: req.body.userId,
+    userName: req.body.userName,
     reactUsers: req.body.reactUsers,
     body: req.body.body,
     isPositive: req.body.isPositive,
@@ -179,6 +181,7 @@ NewCommentRoute.post("/update", (req, res) => {
   const newComment = new NewComment({
     postId: req.body.postId,
     userId: req.body.userId,
+    userName: req.body.userName,
     reactUsers: req.body.reactUsers,
     body: req.body.body,
     isPositive: req.body.isPositive,

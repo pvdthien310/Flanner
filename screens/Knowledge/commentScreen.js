@@ -40,12 +40,17 @@ const CommentScreen = ({ navigation, route }) => {
     navigation.goBack();
   };
   const FetchCommentList = () => {
-    CommentAPI.getItembyPostID(item._id)
+    let listTemp = [];
+    CommentAPI.GetCommentByPostAndLevel(item._id, 0)
       .then((res) => {
-        if (res) setListComment(res.reverse());
+        res.map((i) => {
+          listTemp.push({ ...i, updatedAt: i.updatedAt.substring(0, 10) });
+        });
+        setListComment(listTemp.reverse());
       })
       .catch((err) => console.log("Error Load Comment List"));
   };
+
   const createTwoButtonAlert = () =>
     Alert.alert("Alert Title", "My Alert Msg", [
       {
@@ -59,21 +64,25 @@ const CommentScreen = ({ navigation, route }) => {
   const SendComment = () => {
     setLoading(true);
     const d = new Date();
-    const newComment = {
-      username: user.name,
-      postID: item._id,
-      userID: user.userID,
-      body: body,
-      posttime: d.toUTCString(),
-      react: [],
+    const newRootComment = {
+      postId: item._id,
+      userId: user.userID,
+      userName: user.name,
+      childCmtId: [],
+      reactUsers: [],
+      body,
+      isPositive: "null",
+      parentCmtId: "null",
+      level: 0,
     };
-    CommentAPI.AddComment(newComment)
+
+    CommentAPI.AddRootComment(newRootComment)
       .then((res) => {
-        const newList = [res, ...listComment];
-        setListComment(newList);
-        setBody("");
-        setLoading(false);
-        if (item.userID != user.userID) sendNotification();
+        // const newList = [res, ...listComment];
+        // setListComment(newList);
+        // setBody("");
+        // setLoading(false);
+        // if (item.userID != user.userID) sendNotification();
       })
       .catch((err) => console.log(err));
   };
@@ -175,13 +184,16 @@ const CommentScreen = ({ navigation, route }) => {
               </Text>
 
               <FlatList
-                style={{ padding: 10, height: height * 0.6 }}
-                scrollEnabled={true}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
+                style={{
+                  padding: 10,
+                  maxHeight: height * 0.6,
+                  height: "auto",
+                  overflow: "scroll",
+                }}
                 data={listComment}
                 renderItem={({ item }) => (
                   <CommentMember
+                    route={routes}
                     item={item}
                     navigation={navigation}
                     nextScreen={routes.friendInfo}

@@ -12,6 +12,11 @@ const NewCommentSchema = new mongoose.Schema(
       type: String,
     },
 
+    userName: {
+      required: true,
+      type: String,
+    },
+
     reactUsers: {
       type: [],
       required: true,

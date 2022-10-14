@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Dimensions,
+  FlatList,
 } from "react-native";
 import react from "react";
 import Api from "../../API/UserAPI";
@@ -14,14 +16,19 @@ import { EvilIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import CommentAPI from "../../API/CommentAPI";
 
-const CommentMember = ({ item, navigation, nextScreen }) => {
+const { height, width } = Dimensions.get("screen");
+
+const CommentMember = ({ item, navigation, nextScreen, route }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => {
     return state.User;
   });
+  //item is surely level 0
   const [host, setHost] = useState(undefined);
   const [isLike, SetisLike] = useState(false);
   const [data, setData] = useState(item);
+  const [listLevel, setListLevel] = useState([]);
+  const [notShowList, setNotShowList] = useState(true);
 
   const createTwoButtonAlert = () =>
     Alert.alert("Notification", "Do you want to navigate your profile?", [
@@ -40,15 +47,31 @@ const CommentMember = ({ item, navigation, nextScreen }) => {
     dispatch({ type: "UPDATE_FEATURE", payload: 0 });
   };
 
+  const fetchLevel = async () => {
+    let tempList = [];
+    await CommentAPI.GetCommentByItsDirectParent(item._id)
+      .then((res) => {
+        res.map((i) => {
+          tempList.push({
+            ...i,
+            updatedAt: i.updatedAt.substring(0, 10),
+          });
+        });
+        setListLevel(tempList);
+      })
+      .catch((err) => console.log("Error to get level 1 comment"));
+  };
+
   const fetchHostData = async () => {
-    await Api.getUserItem(item.userID)
+    await Api.getUserItem(item.userId)
       .then((res) => {
         setHost(res[0]);
-        if (item.react.indexOf(user.userID) == -1) SetisLike(false);
+        if (item.reactUsers.indexOf(user.userId) == -1) SetisLike(false);
         else SetisLike(true);
       })
       .catch((err) => console.log("Loi set user by id", err));
   };
+
   const LikeActionHandler = () => {
     CommentAPI.updateTrue(item._id, user.userID)
       .then((res) => {
@@ -69,150 +92,109 @@ const CommentMember = ({ item, navigation, nextScreen }) => {
   };
   useEffect(() => {
     fetchHostData();
+    fetchLevel();
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
+    <View style={styles.bigContainer}>
+      <View style={styles.container}>
         {host && (
           <Image
             style={{
-              height: 50,
-              width: 50,
+              height: 25,
+              width: 25,
               borderRadius: 30,
             }}
             source={{ uri: host.avatar }}
           ></Image>
         )}
-        <View
-          style={{
-            flexDirection: "column",
-            flex: 1,
-            padding: 0,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignSelf: "stretch",
-              alignItems: "center",
-              flex: 1,
-            }}
-          >
-            {host ? (
-              <TouchableOpacity
-                onPress={() => {
-                  if (host.email != user.email) {
-                    navigation.push(nextScreen, { item: [host] });
-                  } else {
-                    createTwoButtonAlert();
-                  }
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: "robotoregular",
-                    fontWeight: "bold",
-                    fontSize: 17,
-                    color: "lightslategrey",
-                    marginStart: 10,
-                    marginBottom: 10,
+        <View style={styles.contentContainer}>
+          <View style={styles.bodyContainer}>
+            <View style={styles.title}>
+              {host ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (host.email != user.email) {
+                      navigation.push(nextScreen, { item: [host] });
+                    } else {
+                      createTwoButtonAlert();
+                    }
                   }}
                 >
-                  {host.name}
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontFamily: "robotoregular",
-                    fontWeight: "bold",
-                    fontSize: 14,
-                    color: "lightslategrey",
-                    marginStart: 10,
-                    marginBottom: 10,
-                  }}
-                >
-                  {item.username}
-                </Text>
-              </TouchableOpacity>
-            )}
+                  <Text
+                    style={{
+                      fontFamily: "robotoregular",
+                      fontWeight: "bold",
+                      fontSize: 13,
+                      color: "black",
+                      marginStart: 2,
+                    }}
+                  >
+                    {host.name}
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity>
+                  <Text
+                    style={{
+                      fontFamily: "robotoregular",
+                      fontWeight: "bold",
+                      fontSize: 13,
+                      color: "white",
+                    }}
+                  >
+                    {item.userName}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
             <Text
               style={{
-                fontFamily: "robotoregular",
-                fontWeight: "bold",
-                fontSize: 11,
-                color: "lightslategrey",
-                marginStart: 10,
-                opacity: 0.5,
-                marginBottom: 10,
+                fontFamily: "nunitoregular",
+                fontSize: 13,
+                color: "black",
+                marginStart: 2,
+                opacity: 1,
               }}
             >
-              {item.posttime}
+              {item.body}
             </Text>
           </View>
-          <Text
-            style={{
-              fontFamily: "nunitoregular",
-              fontWeight: "bold",
-              fontSize: 15,
-              color: "black",
-              marginStart: 15,
-              opacity: 1,
-            }}
-          >
-            {item.body}
-          </Text>
-          {isLike === false && data ? (
-            <TouchableOpacity onPress={() => LikeActionHandler()}>
-              <View
-                style={{
-                  marginBottom: 10,
-                  marginTop: 10,
-                  alignSelf: "flex-end",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: 5,
-                  borderRadius: 10,
-                  borderWidth: 1,
-                }}
-              >
-                <Ionicons name="ios-heart" size={20} color="black" />
+          <View style={styles.footerComment}>
+            <TouchableOpacity
+              style={{
+                marginRight: 5,
+                marginStart: 5,
+                marginEnd: 5,
+                alignSelf: "flex-end",
+              }}
+            >
+              <Text style={{ fontSize: 11 }}>Reply</Text>
+            </TouchableOpacity>
+            {isLike === false && data ? (
+              <>
+                <TouchableOpacity
+                  style={{ alignSelf: "flex-end" }}
+                  onPress={() => LikeActionHandler()}
+                >
+                  <Ionicons name="ios-heart" size={20} color="black" />
+                </TouchableOpacity>
                 <Text
                   style={{
                     fontFamily: "nunitobold",
-                    fontSize: 15,
+                    fontSize: 11,
                     marginStart: 5,
+                    marginEnd: 5,
                   }}
                 >
-                  {data.react.length}
+                  {data.reactUsers.length}
                 </Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={() => UnlikeActionHandler()}>
-              <View
-                style={{
-                  marginBottom: 10,
-                  marginTop: 10,
-                  alignSelf: "flex-end",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: 5,
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: "maroon",
-                }}
-              >
-                <Ionicons name="ios-heart" size={20} color="maroon" />
+              </>
+            ) : (
+              <>
+                <TouchableOpacity onPress={() => UnlikeActionHandler()}>
+                  <Ionicons name="ios-heart" size={20} color="maroon" />
+                </TouchableOpacity>
                 <Text
                   style={{
                     fontFamily: "nunitobold",
@@ -223,26 +205,94 @@ const CommentMember = ({ item, navigation, nextScreen }) => {
                 >
                   {data.react.length}
                 </Text>
-              </View>
-            </TouchableOpacity>
-          )}
+              </>
+            )}
+          </View>
         </View>
       </View>
-      <View
-        style={{
-          height: 1,
-          backgroundColor: "lightslategrey",
-          opacity: 0.5,
-        }}
-      ></View>
+      {listLevel.length != 0 && notShowList ? (
+        <TouchableOpacity
+          onPress={() => setNotShowList(false)}
+          style={{ marginTop: -2 }}
+        >
+          <Text
+            style={{
+              marginLeft: 10,
+              marginBottom: 10,
+              fontSize: 11,
+              fontStyle: "italic",
+            }}
+          >
+            Show more replies
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+      {!notShowList ? (
+        <View>
+          <TouchableOpacity onPress={() => setNotShowList(true)}>
+            <Text style={{ marginLeft: 10, fontSize: 11, fontStyle: "italic" }}>
+              Hide
+            </Text>
+          </TouchableOpacity>
+          <FlatList
+            style={{
+              marginLeft: 20,
+              overflow: "scroll",
+            }}
+            data={listLevel}
+            renderItem={({ item }) => (
+              <CommentMember
+                route={route}
+                item={item}
+                navigation={navigation}
+                nextScreen={route.friendInfo}
+              ></CommentMember>
+            )}
+            keyExtractor={(item) => item._id}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
 const styles = StyleSheet.create({
+  bigContainer: {
+    display: "flex",
+    height: "auto",
+    flexDirection: "column",
+    marginBottom: 5,
+  },
   container: {
-    padding: 10,
-    backgroundColor: "white",
-    justifyContent: "center",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 10,
+    width: "auto",
+    maxWidth: "85%",
+  },
+  contentContainer: {
+    display: "flex",
+    flexDirection: "column",
+    paddingLeft: 2,
+    width: "auto",
+  },
+  bodyContainer: {
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "#DADDE1",
+    borderRadius: 16,
+    padding: 5,
+  },
+  title: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  footerComment: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
 });
 export default react.memo(CommentMember);
