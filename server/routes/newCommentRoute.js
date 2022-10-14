@@ -89,7 +89,8 @@ NewCommentRoute.post("/add-reply", (req, res) => {
 });
 
 /// Delete comment
-NewCommentRoute.post("/delete", (req, res) => {
+NewCommentRoute.delete("/delete", (req, res) => {
+  console.log(req.body);
   const level = req.body.level;
 
   const deleteLevel2 = (currentId) => {
@@ -127,6 +128,7 @@ NewCommentRoute.post("/delete", (req, res) => {
   };
 
   const deleteLevel0 = (currentId) => {
+    console.log("delete level 0");
     NewComment.findOne({ _id: currentId }).then((commentLvl0) => {
       if (commentLvl0) {
         NewComment.findByIdAndRemove(currentId)
@@ -168,7 +170,7 @@ NewCommentRoute.post("/delete", (req, res) => {
 });
 
 /// Delete all
-NewCommentRoute.post("/delete-all", (req, res) => {
+NewCommentRoute.delete("/delete-all", (req, res) => {
   NewComment.deleteMany()
     .then((data) => {
       res.send("OK");
@@ -177,7 +179,7 @@ NewCommentRoute.post("/delete-all", (req, res) => {
 });
 
 /// Update comment by ID
-NewCommentRoute.post("/update", (req, res) => {
+NewCommentRoute.put("/update", (req, res) => {
   const newComment = new NewComment({
     postId: req.body.postId,
     userId: req.body.userId,
@@ -244,6 +246,13 @@ NewCommentRoute.get("/load-by-post/:postId", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+/// Get number of comments by post Id
+NewCommentRoute.get("/count/:postId", (req, res) => {
+  NewComment.countDocuments({ postId: req.params.postId })
+    .then((data) => res.json(data))
+    .catch((err) => console.log(err));
+});
+
 /// Get comments by its direct parent
 NewCommentRoute.get("/load-by-parent/:parentCmtId", (req, res) => {
   NewComment.find({
@@ -263,8 +272,8 @@ NewCommentRoute.get("/load-by-post-level/:postId/:level", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// Press react comment
-NewCommentRoute.get("/react/:commentId/:userId", (req, res) => {
+/// Press react comment
+NewCommentRoute.put("/react/:commentId/:userId", (req, res) => {
   NewComment.findById(req.params.commentId)
     .then((data) => {
       if (data.reactUsers.indexOf(req.params.userId) == -1) {
@@ -292,7 +301,7 @@ NewCommentRoute.get("/react/:commentId/:userId", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// Pagination
+/// Pagination
 NewCommentRoute.get("/load/limit-comment/:postId/:cursor", async (req, res) => {
   if (req.params.postId === "" || req.params.postId === null) {
     res.send("Post id " + nullText);
@@ -301,7 +310,7 @@ NewCommentRoute.get("/load/limit-comment/:postId/:cursor", async (req, res) => {
   if (!Number.isInteger(parseInt(req.params.cursor))) {
     res.send("Cursor must be an integer");
   }
-  const LIMIT = 2;
+  const LIMIT = 5;
   ///var queryData = url.parse(req.url, true).query;
   ///const { cursor } = queryData;
 
@@ -326,4 +335,15 @@ NewCommentRoute.get("/load/limit-comment/:postId/:cursor", async (req, res) => {
   });
 });
 
+/// Update username
+NewCommentRoute.put("/update/username", async (req, res) => {
+  NewComment.updateMany(
+    { userId: req.body.userId },
+    { userName: req.body.username }
+  )
+    .then((data) => {
+      res.send("OK");
+    })
+    .catch((err) => console.log(err));
+});
 module.exports = NewCommentRoute;

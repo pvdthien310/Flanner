@@ -9,16 +9,18 @@ import {
   Dimensions,
   FlatList,
 } from "react-native";
+import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
 import react from "react";
 import Api from "../../API/UserAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { EvilIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import CommentAPI from "../../API/CommentAPI";
+import NewCommentAPI from "../../API/NewCommentAPI";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 const { height, width } = Dimensions.get("screen");
 
-const CommentMember = ({ item, navigation, nextScreen, route }) => {
+const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => {
     return state.User;
@@ -39,6 +41,16 @@ const CommentMember = ({ item, navigation, nextScreen, route }) => {
       { text: "OK", onPress: () => NavigateToCurrentUserProfile() },
     ]);
 
+  const confirmDelete = () => {
+    Alert.alert("Delete", "Do you want to delete this comment?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log(""),
+      },
+      { text: "OK", onPress: () => deleteComment() },
+    ]);
+  };
+
   const NavigateToCurrentUserProfile = () => {
     navigation.navigate("User Information", {
       screen: "User Dashboard",
@@ -49,7 +61,7 @@ const CommentMember = ({ item, navigation, nextScreen, route }) => {
 
   const fetchLevel = async () => {
     let tempList = [];
-    await CommentAPI.GetCommentByItsDirectParent(item._id)
+    await NewCommentAPI.getByDirectParent(item._id)
       .then((res) => {
         res.map((i) => {
           tempList.push({
@@ -72,32 +84,48 @@ const CommentMember = ({ item, navigation, nextScreen, route }) => {
       .catch((err) => console.log("Loi set user by id", err));
   };
 
-  const LikeActionHandler = () => {
-    CommentAPI.updateTrue(item._id, user.userID)
+  const ReactActionHandler = async () => {
+    await NewCommentAPI.reactComment(item._id, user.userID)
       .then((res) => {
-        if (res.react.indexOf(user.userID) == -1) SetisLike(false);
-        else SetisLike(true);
+        if (res.reactUsers.indexOf(user.userID) === -1) {
+          console.log("aaaaaaaaaaaa");
+          SetisLike(false);
+        } else {
+          console.log(true);
+          SetisLike(true);
+        }
         setData(res);
       })
-      .catch((err) => console.log("Error Like Comment"));
+      .catch((err) => console.log(err));
   };
-  const UnlikeActionHandler = () => {
-    CommentAPI.updateFalse(item._id, user.userID)
+
+  const editComment = () => {};
+
+  const deleteComment = async () => {
+    await NewCommentAPI.delete({
+      id: item._id.toString(),
+      level: item.level,
+    })
       .then((res) => {
-        if (res.react.indexOf(user.userID) == -1) SetisLike(false);
-        else SetisLike(true);
-        setData(res);
+        reload();
       })
-      .catch((err) => console.log("Error Like Comment"));
+      .catch((err) => console.log(err));
   };
   useEffect(() => {
     fetchHostData();
     fetchLevel();
   }, []);
 
+  const [visibleMenu, setVisibleMenu] = useState(false);
+
+  const hideMenu = () => setVisibleMenu(false);
+
+  const showMenu = () => setVisibleMenu(true);
+
   return (
     <View style={styles.bigContainer}>
-      <View style={styles.container}>
+      <View style={styles.wholeComment}>
+        <View style={styles.container}></View>
         {host && (
           <Image
             style={{
@@ -175,7 +203,7 @@ const CommentMember = ({ item, navigation, nextScreen, route }) => {
               <>
                 <TouchableOpacity
                   style={{ alignSelf: "flex-end" }}
-                  onPress={() => LikeActionHandler()}
+                  onPress={() => ReactActionHandler()}
                 >
                   <Ionicons name="ios-heart" size={20} color="black" />
                 </TouchableOpacity>
@@ -192,7 +220,7 @@ const CommentMember = ({ item, navigation, nextScreen, route }) => {
               </>
             ) : (
               <>
-                <TouchableOpacity onPress={() => UnlikeActionHandler()}>
+                <TouchableOpacity onPress={() => ReactActionHandler()}>
                   <Ionicons name="ios-heart" size={20} color="maroon" />
                 </TouchableOpacity>
                 <Text
@@ -203,12 +231,52 @@ const CommentMember = ({ item, navigation, nextScreen, route }) => {
                     color: "maroon",
                   }}
                 >
-                  {data.react.length}
+                  {data.reactUsers.length}
                 </Text>
               </>
             )}
           </View>
         </View>
+        {(user.userID === item.userId ||
+          user.userID === item.userId ||
+          user.userID === item.userID) && (
+          <View style={styles.menu}>
+            <Menu
+              visible={visibleMenu}
+              anchor={
+                <SimpleLineIcons
+                  name="options-vertical"
+                  size={18}
+                  color="gray"
+                  onPress={showMenu}
+                />
+              }
+              onRequestClose={hideMenu}
+            >
+              {user.userID === item.userId && (
+                <MenuItem
+                  onPress={() => {
+                    hideMenu;
+                    editComment;
+                  }}
+                >
+                  Edit
+                </MenuItem>
+              )}
+              <MenuDivider />
+              {(user.userID === item.userId || user.userID === item.userID) && (
+                <MenuItem
+                  onPress={() => {
+                    hideMenu();
+                    confirmDelete();
+                  }}
+                >
+                  <Text style={{ color: "#800000" }}>Delete</Text>
+                </MenuItem>
+              )}
+            </Menu>
+          </View>
+        )}
       </View>
       {listLevel.length != 0 && notShowList ? (
         <TouchableOpacity
@@ -293,6 +361,17 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
+  },
+  wholeComment: {
+    display: "flex",
+    flexDirection: "row",
+    maxWidth: "80%",
+  },
+  menu: {
+    width: 30,
+    height: 30,
+    marginVertical: 15,
+    marginHorizontal: 10,
   },
 });
 export default react.memo(CommentMember);

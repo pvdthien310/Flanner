@@ -24,7 +24,6 @@ import NotificationApi from "../../API/NotificationAPI";
 import Api from "../../API/UserAPI";
 
 const DetailKnowledge = ({ route, navigation }) => {
-  console.log(route);
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.User);

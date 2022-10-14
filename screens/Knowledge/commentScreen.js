@@ -21,6 +21,7 @@ import CommentMember from "../../components/Knowledge/commentMember";
 import { useSelector, useDispatch } from "react-redux";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import NotificationApi from "../../API/NotificationAPI";
+import NewCommentAPI from "./../../API/NewCommentAPI";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -32,6 +33,7 @@ const CommentScreen = ({ navigation, route }) => {
   const { user } = useSelector((state) => state.User);
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
+  const [totalComment, setTotalComment] = useState(0);
 
   const onValueChange = (text) => {
     setBody(text);
@@ -41,7 +43,7 @@ const CommentScreen = ({ navigation, route }) => {
   };
   const FetchCommentList = () => {
     let listTemp = [];
-    CommentAPI.GetCommentByPostAndLevel(item._id, 0)
+    NewCommentAPI.loadByPostLevel(item._id, 0)
       .then((res) => {
         res.map((i) => {
           listTemp.push({ ...i, updatedAt: i.updatedAt.substring(0, 10) });
@@ -49,6 +51,14 @@ const CommentScreen = ({ navigation, route }) => {
         setListComment(listTemp.reverse());
       })
       .catch((err) => console.log("Error Load Comment List"));
+
+    NewCommentAPI.countCommentsByPostId(item._id)
+      .then((res) => {
+        setTotalComment(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const createTwoButtonAlert = () =>
@@ -180,7 +190,7 @@ const CommentScreen = ({ navigation, route }) => {
                   marginBottom: 5,
                 }}
               >
-                {listComment.length} COMMENTS TOTAL
+                {totalComment} COMMENTS TOTAL
               </Text>
 
               <FlatList
@@ -197,6 +207,7 @@ const CommentScreen = ({ navigation, route }) => {
                     item={item}
                     navigation={navigation}
                     nextScreen={routes.friendInfo}
+                    reload={FetchCommentList}
                   ></CommentMember>
                 )}
                 keyExtractor={(item) => item._id}
