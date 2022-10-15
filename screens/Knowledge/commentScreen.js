@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Alert,
   ActivityIndicator,
@@ -34,6 +34,8 @@ const CommentScreen = ({ navigation, route }) => {
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
   const [totalComment, setTotalComment] = useState(0);
+  const [isFocusOnWrite, setIsFocusOnWrite] = useState(false);
+  const inputsRef = useRef(null);
 
   const onValueChange = (text) => {
     setBody(text);
@@ -46,7 +48,7 @@ const CommentScreen = ({ navigation, route }) => {
     NewCommentAPI.loadByPostLevel(item._id, 0)
       .then((res) => {
         res.map((i) => {
-          listTemp.push({ ...i, updatedAt: i.updatedAt.substring(0, 10) });
+          listTemp.push({ ...i, createdAt: i.createdAt.substring(0, 10) });
         });
         setListComment(listTemp.reverse());
       })
@@ -88,11 +90,11 @@ const CommentScreen = ({ navigation, route }) => {
 
     CommentAPI.AddRootComment(newRootComment)
       .then((res) => {
-        // const newList = [res, ...listComment];
-        // setListComment(newList);
-        // setBody("");
-        // setLoading(false);
-        // if (item.userID != user.userID) sendNotification();
+        const newList = [res, ...listComment];
+        setListComment(newList);
+        setBody("");
+        setLoading(false);
+        if (item.userID != user.userID) sendNotification();
       })
       .catch((err) => console.log(err));
   };
@@ -105,8 +107,16 @@ const CommentScreen = ({ navigation, route }) => {
       type: item.title ? "1" : "2",
       action: "Comment",
     })
-      .then((res) => {})
+      .then((res) => {
+        setTotalComment(totalComment + 1);
+      })
       .catch((err) => console.log("Error send noti"));
+  };
+
+  const setFocusReply = (replyToCmt) => {
+    setIsFocusOnWrite(true);
+    inputsRef.current.focus();
+    console.log(replyToCmt);
   };
 
   useEffect(() => {
@@ -142,78 +152,84 @@ const CommentScreen = ({ navigation, route }) => {
           }}
         ></Image>
       )}
-
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.commentFrame}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Write a comment..."
-            placeholderTextColor="dimgrey"
-            multiline={true}
-            showsVerticalScrollIndicator={false}
-            value={body}
-            onChangeText={onValueChange}
-          ></TextInput>
-          {loading && (
-            <ActivityIndicator
-              style={{
-                position: "absolute",
-                marginTop: 25,
-                start: width * 0.77,
-              }}
-              size="small"
-              color="black"
-            />
-          )}
-          <TouchableOpacity
-            onPress={() => SendComment()}
-            style={{ position: "absolute", margin: 10, start: width * 0.83 }}
-          >
-            <Ionicons
-              style={{ marginTop: "30%" }}
-              name="md-send-sharp"
-              size={30}
-              color="black"
-            />
-          </TouchableOpacity>
-
-          {listComment && (
-            <View>
-              <Text
+        <View style={{ height: "auto", backgroundColor: "red" }}>
+          <Text>Replying to ....</Text>
+          <View style={styles.commentFrame}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Write a comment..."
+              placeholderTextColor="dimgrey"
+              multiline={true}
+              showsVerticalScrollIndicator={false}
+              value={body}
+              onChangeText={onValueChange}
+              ref={inputsRef}
+            ></TextInput>
+            {loading && (
+              <ActivityIndicator
                 style={{
-                  fontFamily: "robotoregular",
-                  fontWeight: "bold",
-                  padding: 5,
-                  fontSize: 14,
-                  marginTop: 5,
-                  marginStart: 15,
-                  marginBottom: 5,
+                  position: "absolute",
+                  marginTop: 25,
+                  start: width * 0.77,
                 }}
-              >
-                {totalComment} COMMENTS TOTAL
-              </Text>
-
-              <FlatList
-                style={{
-                  padding: 10,
-                  maxHeight: height * 0.6,
-                  height: "auto",
-                  overflow: "scroll",
-                }}
-                data={listComment}
-                renderItem={({ item }) => (
-                  <CommentMember
-                    route={routes}
-                    item={item}
-                    navigation={navigation}
-                    nextScreen={routes.friendInfo}
-                    reload={FetchCommentList}
-                  ></CommentMember>
-                )}
-                keyExtractor={(item) => item._id}
+                size="small"
+                color="black"
               />
-            </View>
-          )}
+            )}
+            <TouchableOpacity
+              onPress={() => SendComment()}
+              style={{ position: "absolute", margin: 10, start: width * 0.83 }}
+            >
+              <Ionicons
+                style={{ marginTop: "30%" }}
+                name="md-send-sharp"
+                size={30}
+                color="black"
+              />
+            </TouchableOpacity>
+
+            {listComment && (
+              <View>
+                <Text
+                  style={{
+                    fontFamily: "robotoregular",
+                    fontWeight: "bold",
+                    padding: 5,
+                    fontSize: 14,
+                    marginTop: 5,
+                    marginStart: 15,
+                    marginBottom: 5,
+                  }}
+                >
+                  {totalComment} COMMENTS TOTAL
+                </Text>
+
+                <FlatList
+                  style={{
+                    padding: 10,
+                    maxHeight: height * 0.6,
+                    height: "auto",
+                    overflow: "scroll",
+                  }}
+                  data={listComment}
+                  renderItem={({ item }) => (
+                    <CommentMember
+                      route={routes}
+                      item={item}
+                      navigation={navigation}
+                      nextScreen={routes.friendInfo}
+                      reload={FetchCommentList}
+                      setFocusOnReply={(replyToCmt) =>
+                        setFocusReply(replyToCmt)
+                      }
+                    ></CommentMember>
+                  )}
+                  keyExtractor={(item) => item._id}
+                />
+              </View>
+            )}
+          </View>
         </View>
       </TouchableWithoutFeedback>
 
