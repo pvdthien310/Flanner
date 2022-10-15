@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Alert,
   ActivityIndicator,
@@ -39,6 +39,8 @@ const CommentScreen = ({ navigation, route }) => {
   const { cursor } = useSelector((state) => {
     return state.Comment;
   });
+  const [isFocusOnWrite, setIsFocusOnWrite] = useState(false);
+  const inputsRef = useRef(null);
 
   const onValueChange = (text) => {
     setBody(text);
@@ -51,7 +53,7 @@ const CommentScreen = ({ navigation, route }) => {
     NewCommentAPI.loadByPostLevel(item._id, 0)
       .then((res) => {
         res.map((i) => {
-          listTemp.push({ ...i, updatedAt: i.updatedAt.substring(0, 10) });
+          listTemp.push({ ...i, createdAt: i.createdAt.substring(0, 10) });
         });
         setListComment(listTemp.reverse());
         setTotalLevel0(listTemp.length);
@@ -94,11 +96,11 @@ const CommentScreen = ({ navigation, route }) => {
 
     CommentAPI.AddRootComment(newRootComment)
       .then((res) => {
-        // const newList = [res, ...listComment];
-        // setListComment(newList);
-        // setBody("");
-        // setLoading(false);
-        // if (item.userID != user.userID) sendNotification();
+        const newList = [res, ...listComment];
+        setListComment(newList);
+        setBody("");
+        setLoading(false);
+        if (item.userID != user.userID) sendNotification();
       })
       .catch((err) => console.log(err));
   };
@@ -111,7 +113,9 @@ const CommentScreen = ({ navigation, route }) => {
       type: item.title ? "1" : "2",
       action: "Comment",
     })
-      .then((res) => {})
+      .then((res) => {
+        setTotalComment(totalComment + 1);
+      })
       .catch((err) => console.log("Error send noti"));
   };
 
@@ -138,131 +142,145 @@ const CommentScreen = ({ navigation, route }) => {
     loadMoreComment();
     countComment();
     countCommentLevel0();
-  };
+    const setFocusReply = (replyToCmt) => {
+      setIsFocusOnWrite(true);
+      inputsRef.current.focus();
+      console.log(replyToCmt);
+    };
 
-  useEffect(() => {
-    setListComment([]);
-    dispatch({ type: "SET_CURSOR", payload: 0 });
-    LoadComment();
-  }, []);
+    useEffect(() => {
+      setListComment([]);
+      dispatch({ type: "SET_CURSOR", payload: 0 });
+      LoadComment();
+    }, []);
 
-  const loadMoreComment = async () => {
-    await NewCommentAPI.getPagination(cursor, item._id).then((res) => {
-      let listTemp = [];
-      res.data.forEach((element) => {
-        listTemp.push({
-          ...element,
-          updatedAt: element.updatedAt.substring(0, 10),
+    const loadMoreComment = async () => {
+      await NewCommentAPI.getPagination(cursor, item._id).then((res) => {
+        let listTemp = [];
+        res.data.forEach((element) => {
+          listTemp.push({
+            ...element,
+            updatedAt: element.updatedAt.substring(0, 10),
+          });
         });
+        if (listComment === undefined) {
+          setListComment(listTemp.reverse());
+        } else {
+          setListComment([...listComment, ...listTemp.reverse()]);
+        }
+        dispatch({ type: "SET_CURSOR", payload: res.cursor });
       });
-      if (listComment === undefined) {
-        setListComment(listTemp.reverse());
-      } else {
-        setListComment([...listComment, ...listTemp.reverse()]);
-      }
-      dispatch({ type: "SET_CURSOR", payload: res.cursor });
-    });
-  };
+    };
 
-  return (
-    <View style={styles.container}>
-      {item.listImage.length > 0 ? (
-        <Image
-          style={{
-            height: height * 0.3,
-            width: "100%",
+    return (
+      <View style={styles.container}>
+        {item.listImage.length > 0 ? (
+          <Image
+            style={{
+              height: height * 0.3,
+              width: "100%",
 
-            shadowOffset: { width: 1, height: 1 },
-            shadowColor: "black",
-            shadowOpacity: 0.5,
-          }}
-          source={{ uri: item.listImage[0].url }}
-        ></Image>
-      ) : (
-        <Image
-          style={{
-            height: height * 0.3,
-            width: "100%",
+              shadowOffset: { width: 1, height: 1 },
+              shadowColor: "black",
+              shadowOpacity: 0.5,
+            }}
+            source={{ uri: item.listImage[0].url }}
+          ></Image>
+        ) : (
+          <Image
+            style={{
+              height: height * 0.3,
+              width: "100%",
 
-            shadowOffset: { width: 1, height: 1 },
-            shadowColor: "black",
-            shadowOpacity: 0.5,
-          }}
-          source={{
-            uri: "https://images.unsplash.com/photo-1637832282945-093d74a8a0bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80",
-          }}
-        ></Image>
-      )}
-
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.commentFrame}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Write a comment..."
-            placeholderTextColor="dimgrey"
-            multiline={true}
-            showsVerticalScrollIndicator={false}
-            value={body}
-            onChangeText={onValueChange}
-          ></TextInput>
-          {loading && (
-            <ActivityIndicator
-              style={{
-                position: "absolute",
-                marginTop: 25,
-                start: width * 0.77,
-              }}
-              size="small"
-              color="black"
-            />
-          )}
-          <TouchableOpacity
-            onPress={() => SendComment()}
-            style={{ position: "absolute", margin: 10, start: width * 0.83 }}
-          >
-            <Ionicons
-              style={{ marginTop: "30%" }}
-              name="md-send-sharp"
-              size={30}
-              color="black"
-            />
-          </TouchableOpacity>
-
-          {listComment && (
-            <View>
-              <Text
+              shadowOffset: { width: 1, height: 1 },
+              shadowColor: "black",
+              shadowOpacity: 0.5,
+            }}
+            source={{
+              uri: "https://images.unsplash.com/photo-1637832282945-093d74a8a0bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80",
+            }}
+          ></Image>
+        )}
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <View style={{ height: "auto", backgroundColor: "red" }}>
+            <Text>Replying to ....</Text>
+            <View style={styles.commentFrame}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Write a comment..."
+                placeholderTextColor="dimgrey"
+                multiline={true}
+                showsVerticalScrollIndicator={false}
+                value={body}
+                onChangeText={onValueChange}
+                ref={inputsRef}
+              ></TextInput>
+              {loading && (
+                <ActivityIndicator
+                  style={{
+                    position: "absolute",
+                    marginTop: 25,
+                    start: width * 0.77,
+                  }}
+                  size="small"
+                  color="black"
+                />
+              )}
+              <TouchableOpacity
+                onPress={() => SendComment()}
                 style={{
-                  fontFamily: "robotoregular",
-                  fontWeight: "bold",
-                  padding: 5,
-                  fontSize: 14,
-                  marginTop: 5,
-                  marginStart: 15,
-                  marginBottom: 5,
+                  position: "absolute",
+                  margin: 10,
+                  start: width * 0.83,
                 }}
               >
-                {totalComment} COMMENTS TOTAL
-              </Text>
-              {totalComment > 0 && (
-                <FlatList
-                  style={{
-                    padding: 10,
-                    maxHeight: height * 0.6,
-                    height: "auto",
-                    overflow: "scroll",
-                  }}
-                  data={listComment}
-                  renderItem={({ item }) => (
-                    <CommentMember
-                      route={routes}
-                      item={item}
-                      navigation={navigation}
-                      nextScreen={routes.friendInfo}
-                      reload={FetchCommentList}
-                    ></CommentMember>
-                  )}
-                  keyExtractor={(item) => item._id}
+                <Ionicons
+                  style={{ marginTop: "30%" }}
+                  name="md-send-sharp"
+                  size={30}
+                  color="black"
                 />
+              </TouchableOpacity>
+
+              {listComment && (
+                <View>
+                  <Text
+                    style={{
+                      fontFamily: "robotoregular",
+                      fontWeight: "bold",
+                      padding: 5,
+                      fontSize: 14,
+                      marginTop: 5,
+                      marginStart: 15,
+                      marginBottom: 5,
+                    }}
+                  >
+                    {totalComment} COMMENTS TOTAL
+                  </Text>
+
+                  <FlatList
+                    style={{
+                      padding: 10,
+                      maxHeight: height * 0.6,
+                      height: "auto",
+                      overflow: "scroll",
+                    }}
+                    data={listComment}
+                    renderItem={({ item }) => (
+                      <CommentMember
+                        route={routes}
+                        item={item}
+                        navigation={navigation}
+                        nextScreen={routes.friendInfo}
+                        reload={FetchCommentList}
+                        setFocusOnReply={(replyToCmt) =>
+                          setFocusReply(replyToCmt)
+                        }
+                      ></CommentMember>
+                    )}
+                    keyExtractor={(item) => item._id}
+                  />
+                </View>
               )}
               {listComment.length < totalLevel0 && (
                 <Text style={styles.viewMore} onPress={loadMoreComment}>
@@ -270,41 +288,44 @@ const CommentScreen = ({ navigation, route }) => {
                 </Text>
               )}
             </View>
-          )}
-        </View>
-      </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
 
-      <TouchableOpacity
-        onPress={pressgobackHandler}
-        style={{ alignItems: "flex-start", position: "absolute", padding: 10 }}
-      >
-        <View
+        <TouchableOpacity
+          onPress={pressgobackHandler}
           style={{
-            flexDirection: "row",
-            padding: 5,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 10,
-            backgroundColor: "white",
+            alignItems: "flex-start",
+            position: "absolute",
+            padding: 10,
           }}
         >
-          <MaterialIcons name="keyboard-backspace" size={25} color="black" />
-          <Text
+          <View
             style={{
-              color: "black",
-              fontSize: 15,
-              fontFamily: "nunitobold",
-              margin: 5,
+              flexDirection: "row",
+              padding: 5,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 10,
+              backgroundColor: "white",
             }}
           >
-            Back
-          </Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
+            <MaterialIcons name="keyboard-backspace" size={25} color="black" />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                fontFamily: "nunitobold",
+                margin: 5,
+              }}
+            >
+              Back
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

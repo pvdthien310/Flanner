@@ -20,7 +20,14 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 
 const { height, width } = Dimensions.get("screen");
 
-const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
+const CommentMember = ({
+  item,
+  navigation,
+  nextScreen,
+  route,
+  reload,
+  setFocusOnReply,
+}) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => {
     return state.User;
@@ -66,7 +73,7 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
         res.map((i) => {
           tempList.push({
             ...i,
-            updatedAt: i.updatedAt.substring(0, 10),
+            createdAt: i.createdAt.substring(0, 10),
           });
         });
         setListLevel(tempList);
@@ -77,9 +84,12 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
   const fetchHostData = async () => {
     await Api.getUserItem(item.userId)
       .then((res) => {
+        console.log(res[0]);
         setHost(res[0]);
-        if (item.reactUsers.indexOf(user.userId) == -1) SetisLike(false);
-        else SetisLike(true);
+        if (item.reactUsers.indexOf(res.userID) == -1) SetisLike(false);
+        else {
+          SetisLike(true);
+        }
       })
       .catch((err) => console.log("Loi set user by id", err));
   };
@@ -88,10 +98,8 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
     await NewCommentAPI.reactComment(item._id, user.userID)
       .then((res) => {
         if (res.reactUsers.indexOf(user.userID) === -1) {
-          console.log("aaaaaaaaaaaa");
           SetisLike(false);
         } else {
-          console.log(true);
           SetisLike(true);
         }
         setData(res);
@@ -137,6 +145,7 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
               height: 25,
               width: 25,
               borderRadius: 30,
+              marginRight: 10,
             }}
             source={{ uri: host.avatar }}
           ></Image>
@@ -180,6 +189,16 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
                   </Text>
                 </TouchableOpacity>
               )}
+              <Text
+                style={{
+                  fontFamily: "robotoregular",
+                  fontSize: 12,
+                  color: "gray",
+                  opacity: 0.5,
+                }}
+              >
+                {data.createdAt}
+              </Text>
             </View>
             <Text
               style={{
@@ -194,52 +213,75 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
             </Text>
           </View>
           <View style={styles.footerComment}>
-            <TouchableOpacity
+            <View style={{ marginTop: 3 }}>
+              {!notShowList ? (
+                <TouchableOpacity onPress={() => setNotShowList(true)}>
+                  <Text
+                    style={{ fontSize: 11, fontStyle: "italic", opacity: 0.5 }}
+                  >
+                    Hide
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+              {listLevel.length != 0 && notShowList ? (
+                <TouchableOpacity onPress={() => setNotShowList(false)}>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      fontStyle: "italic",
+                      opacity: 0.5,
+                    }}
+                  >
+                    Show more replies
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+            <View
               style={{
-                marginRight: 5,
-                marginStart: 5,
-                marginEnd: 5,
-                alignSelf: "flex-end",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              <Text style={{ fontSize: 11 }}>Reply</Text>
-            </TouchableOpacity>
-            {isLike === false && data ? (
-              <>
-                <TouchableOpacity
-                  style={{ alignSelf: "flex-end" }}
-                  onPress={() => ReactActionHandler()}
-                >
-                  <Ionicons name="ios-heart" size={20} color="black" />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    fontFamily: "nunitobold",
-                    fontSize: 11,
-                    marginStart: 5,
-                    marginEnd: 5,
-                  }}
-                >
-                  {data.reactUsers.length}
-                </Text>
-              </>
-            ) : (
-              <>
-                <TouchableOpacity onPress={() => ReactActionHandler()}>
-                  <Ionicons name="ios-heart" size={20} color="maroon" />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    fontFamily: "nunitobold",
-                    fontSize: 15,
-                    marginStart: 5,
-                    color: "maroon",
-                  }}
-                >
-                  {data.reactUsers.length}
-                </Text>
-              </>
-            )}
+              <TouchableOpacity
+                onPress={() => setFocusOnReply(item)}
+                style={{ marginRight: 5, marginTop: 3 }}
+              >
+                <Text style={{ fontSize: 11 }}>Reply</Text>
+              </TouchableOpacity>
+              {isLike === false && data ? (
+                <>
+                  <TouchableOpacity onPress={() => ReactActionHandler()}>
+                    <Ionicons name="ios-heart" size={20} color="black" />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontFamily: "nunitobold",
+                      fontSize: 11,
+                      marginTop: 3,
+                    }}
+                  >
+                    {data.reactUsers.length}
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <TouchableOpacity onPress={() => ReactActionHandler()}>
+                    <Ionicons name="ios-heart" size={20} color="maroon" />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontFamily: "nunitobold",
+                      fontSize: 15,
+                      color: "maroon",
+                    }}
+                  >
+                    {data.reactUsers.length}
+                  </Text>
+                </>
+              )}
+            </View>
           </View>
         </View>
         {(user.userID === item.userId ||
@@ -283,30 +325,8 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
           </View>
         )}
       </View>
-      {listLevel.length != 0 && notShowList ? (
-        <TouchableOpacity
-          onPress={() => setNotShowList(false)}
-          style={{ marginTop: -2 }}
-        >
-          <Text
-            style={{
-              marginLeft: 10,
-              marginBottom: 10,
-              fontSize: 11,
-              fontStyle: "italic",
-            }}
-          >
-            Show more replies
-          </Text>
-        </TouchableOpacity>
-      ) : null}
       {!notShowList ? (
         <View>
-          <TouchableOpacity onPress={() => setNotShowList(true)}>
-            <Text style={{ marginLeft: 10, fontSize: 11, fontStyle: "italic" }}>
-              Hide
-            </Text>
-          </TouchableOpacity>
           <FlatList
             style={{
               marginLeft: 20,
@@ -333,7 +353,7 @@ const styles = StyleSheet.create({
     display: "flex",
     height: "auto",
     flexDirection: "column",
-    marginBottom: 5,
+    marginBottom: 7,
   },
   container: {
     display: "flex",
@@ -341,20 +361,20 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     width: "auto",
-    maxWidth: "85%",
+    maxWidth: "75%",
   },
   contentContainer: {
     display: "flex",
     flexDirection: "column",
     paddingLeft: 2,
-    width: "auto",
+    width: "90%",
   },
   bodyContainer: {
     display: "flex",
     flexDirection: "column",
     backgroundColor: "#DADDE1",
     borderRadius: 16,
-    padding: 5,
+    padding: 10,
   },
   title: {
     display: "flex",
@@ -365,7 +385,10 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginBottom: 3,
   },
   wholeComment: {
     display: "flex",
