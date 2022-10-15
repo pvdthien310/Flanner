@@ -28,12 +28,17 @@ const { height, width } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 const CommentScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const { item, routes } = route.params;
   const [listComment, setListComment] = useState(undefined);
   const { user } = useSelector((state) => state.User);
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
   const [totalComment, setTotalComment] = useState(0);
+  const [totalLevel0, setTotalLevel0] = useState(0);
+  const { cursor } = useSelector((state) => {
+    return state.Comment;
+  });
 
   const onValueChange = (text) => {
     setBody(text);
@@ -49,6 +54,7 @@ const CommentScreen = ({ navigation, route }) => {
           listTemp.push({ ...i, updatedAt: i.updatedAt.substring(0, 10) });
         });
         setListComment(listTemp.reverse());
+        setTotalLevel0(listTemp.length);
       })
       .catch((err) => console.log("Error Load Comment List"));
 
@@ -109,9 +115,54 @@ const CommentScreen = ({ navigation, route }) => {
       .catch((err) => console.log("Error send noti"));
   };
 
+  const countComment = async () => {
+    await NewCommentAPI.countCommentsByPostId(item._id)
+      .then((res) => {
+        setTotalComment(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const countCommentLevel0 = async () => {
+    let listTemp = [];
+    await NewCommentAPI.loadByPostLevel(item._id, 0)
+      .then((res) => {
+        setTotalLevel0(res.length);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const LoadComment = () => {
+    loadMoreComment();
+    countComment();
+    countCommentLevel0();
+  };
+
   useEffect(() => {
-    FetchCommentList();
+    setListComment([]);
+    dispatch({ type: "SET_CURSOR", payload: 0 });
+    LoadComment();
   }, []);
+
+  const loadMoreComment = async () => {
+    await NewCommentAPI.getPagination(cursor, item._id).then((res) => {
+      let listTemp = [];
+      res.data.forEach((element) => {
+        listTemp.push({
+          ...element,
+          updatedAt: element.updatedAt.substring(0, 10),
+        });
+      });
+      if (listComment === undefined) {
+        setListComment(listTemp.reverse());
+      } else {
+        setListComment([...listComment, ...listTemp.reverse()]);
+      }
+      dispatch({ type: "SET_CURSOR", payload: res.cursor });
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -192,26 +243,32 @@ const CommentScreen = ({ navigation, route }) => {
               >
                 {totalComment} COMMENTS TOTAL
               </Text>
-
-              <FlatList
-                style={{
-                  padding: 10,
-                  maxHeight: height * 0.6,
-                  height: "auto",
-                  overflow: "scroll",
-                }}
-                data={listComment}
-                renderItem={({ item }) => (
-                  <CommentMember
-                    route={routes}
-                    item={item}
-                    navigation={navigation}
-                    nextScreen={routes.friendInfo}
-                    reload={FetchCommentList}
-                  ></CommentMember>
-                )}
-                keyExtractor={(item) => item._id}
-              />
+              {totalComment > 0 && (
+                <FlatList
+                  style={{
+                    padding: 10,
+                    maxHeight: height * 0.6,
+                    height: "auto",
+                    overflow: "scroll",
+                  }}
+                  data={listComment}
+                  renderItem={({ item }) => (
+                    <CommentMember
+                      route={routes}
+                      item={item}
+                      navigation={navigation}
+                      nextScreen={routes.friendInfo}
+                      reload={FetchCommentList}
+                    ></CommentMember>
+                  )}
+                  keyExtractor={(item) => item._id}
+                />
+              )}
+              {listComment.length < totalLevel0 && (
+                <Text style={styles.viewMore} onPress={loadMoreComment}>
+                  View more comments...
+                </Text>
+              )}
             </View>
           )}
         </View>
@@ -304,6 +361,11 @@ const styles = StyleSheet.create({
     margin: 10,
     width: width * 0.9,
     alignSelf: "center",
+  },
+  viewMore: {
+    marginLeft: 20,
+    fontWeight: "bold",
+    size: "15",
   },
 });
 export default CommentScreen;

@@ -14,8 +14,8 @@ const NewCommentAPI = {
   },
 
   delete: async (comment) => {
-    console.log("comment", comment);
-    const res = await DatabaseClient.delete(url + "/delete", comment);
+    console.log(comment);
+    const res = await DatabaseClient.put(url + "/delete", comment);
     return res.data;
   },
 

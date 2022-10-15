@@ -1,9 +1,6 @@
 const NewCommentRoute = require("express").Router();
 const NewComment = require("../models/NewComment");
 const jwt = require("jsonwebtoken");
-const { base64encode, base64decode } = require("nodejs-base64");
-const url = require("url");
-const { resolveSoa } = require("dns");
 
 const nullText = " null/ blank";
 
@@ -89,8 +86,8 @@ NewCommentRoute.post("/add-reply", (req, res) => {
 });
 
 /// Delete comment
-NewCommentRoute.delete("/delete", (req, res) => {
-  console.log(req.body);
+NewCommentRoute.put("/delete", (req, res) => {
+  console.log("uuuuu", req.body);
   const level = req.body.level;
 
   const deleteLevel2 = (currentId) => {
@@ -310,29 +307,29 @@ NewCommentRoute.get("/load/limit-comment/:postId/:cursor", async (req, res) => {
   if (!Number.isInteger(parseInt(req.params.cursor))) {
     res.send("Cursor must be an integer");
   }
-  const LIMIT = 5;
-  ///var queryData = url.parse(req.url, true).query;
-  ///const { cursor } = queryData;
-
+  const LIMIT = 2;
   let skip = 0;
-  // if (req.params.cursor) skip = base64decode(req.params.cursor);
-  if (req.params.cursor) skip = req.params.cursor;
 
-  const data = await NewComment.find({
+  await NewComment.find({
     postId: req.params.postId,
     level: 0,
   })
-    .skip(++skip)
+    .skip(skip)
     .limit(LIMIT)
-    .exec()
+    .then((data) => {
+      skip = skip + LIMIT;
+      res.send({
+        data,
+        cursor: skip,
+      });
+    })
     .catch((err) => console.log(err));
 
-  skip = skip + LIMIT;
-  const cursorEncode = base64encode(skip);
-  res.send({
-    data,
-    cursor: cursorEncode,
-  });
+  // const cursorEncode = base64encode(skip);
+  // res.send({
+  //   data,
+  //   cursor: skip,
+  // });
 });
 
 /// Update username

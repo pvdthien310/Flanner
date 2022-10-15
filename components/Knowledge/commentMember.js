@@ -99,7 +99,11 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
       .catch((err) => console.log(err));
   };
 
-  const editComment = () => {};
+  const editComment = async () => {
+    await NewCommentAPI.update(data)
+      .then((res) => {})
+      .catch((err) => console.log(err));
+  };
 
   const deleteComment = async () => {
     await NewCommentAPI.delete({
@@ -107,6 +111,7 @@ const CommentMember = ({ item, navigation, nextScreen, route, reload }) => {
       level: item.level,
     })
       .then((res) => {
+        console.log(res);
         reload();
       })
       .catch((err) => console.log(err));
