@@ -33,14 +33,14 @@ const CommentScreen = ({ navigation, route }) => {
   const [listComment, setListComment] = useState(undefined);
   const { user } = useSelector((state) => state.User);
   const [body, setBody] = useState("");
-  const [loading, setLoading] = useState(false);
   const [totalComment, setTotalComment] = useState(0);
   const [totalLevel0, setTotalLevel0] = useState(0);
-  const { cursor } = useSelector((state) => {
+  const { nextCursor, loading } = useSelector((state) => {
     return state.Comment;
   });
   const [isFocusOnWrite, setIsFocusOnWrite] = useState(false);
   const inputsRef = useRef(null);
+  const [loadingAddCmt, setLoadingAddCmt] = useState(false);
 
   const onValueChange = (text) => {
     setBody(text);
@@ -55,7 +55,7 @@ const CommentScreen = ({ navigation, route }) => {
         res.map((i) => {
           listTemp.push({ ...i, createdAt: i.createdAt.substring(0, 10) });
         });
-        setListComment(listTemp.reverse());
+        setListComment(listTemp);
         setTotalLevel0(listTemp.length);
       })
       .catch((err) => console.log("Error Load Comment List"));
@@ -67,6 +67,8 @@ const CommentScreen = ({ navigation, route }) => {
       .catch((err) => {
         console.log(err);
       });
+
+    countCommentLevel0();
   };
 
   const createTwoButtonAlert = () =>
@@ -80,7 +82,7 @@ const CommentScreen = ({ navigation, route }) => {
     ]);
 
   const SendComment = () => {
-    setLoading(true);
+    setLoadingAddCmt(true);
     const d = new Date();
     const newRootComment = {
       postId: item._id,
@@ -99,7 +101,7 @@ const CommentScreen = ({ navigation, route }) => {
         const newList = [res, ...listComment];
         setListComment(newList);
         setBody("");
-        setLoading(false);
+        setLoadingAddCmt(false);
         if (item.userID != user.userID) sendNotification();
       })
       .catch((err) => console.log(err));
@@ -123,6 +125,7 @@ const CommentScreen = ({ navigation, route }) => {
     await NewCommentAPI.countCommentsByPostId(item._id)
       .then((res) => {
         setTotalComment(res);
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
       })
       .catch((err) => {
         console.log(err);
@@ -134,6 +137,7 @@ const CommentScreen = ({ navigation, route }) => {
     await NewCommentAPI.loadByPostLevel(item._id, 0)
       .then((res) => {
         setTotalLevel0(res.length);
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
       })
       .catch((err) => console.log(err));
   };
@@ -142,107 +146,138 @@ const CommentScreen = ({ navigation, route }) => {
     loadMoreComment();
     countComment();
     countCommentLevel0();
-    const setFocusReply = (replyToCmt) => {
-      setIsFocusOnWrite(true);
-      inputsRef.current.focus();
-      console.log(replyToCmt);
-    };
+  };
 
-    useEffect(() => {
-      setListComment([]);
-      dispatch({ type: "SET_CURSOR", payload: 0 });
-      LoadComment();
-    }, []);
+  const setFocusReply = (replyToCmt) => {
+    setIsFocusOnWrite(true);
+    inputsRef.current.focus();
+    console.log(replyToCmt);
+  };
 
-    const loadMoreComment = async () => {
-      await NewCommentAPI.getPagination(cursor, item._id).then((res) => {
+  useEffect(() => {
+    setListComment([]);
+    LoadComment();
+    //refresh();
+  }, []);
+
+  const loadMoreComment = async () => {
+    if (listComment == undefined || listComment.length === 0) {
+      dispatch({
+        type: "SET_CURSOR_COMMENT",
+        payload: 0,
+      });
+    }
+    await NewCommentAPI.getPagination(nextCursor, item._id)
+      .then((res) => {
         let listTemp = [];
         res.data.forEach((element) => {
-          listTemp.push({
-            ...element,
-            updatedAt: element.updatedAt.substring(0, 10),
-          });
+          listTemp.push(element);
         });
         if (listComment === undefined) {
-          setListComment(listTemp.reverse());
+          setListComment(listTemp);
         } else {
-          setListComment([...listComment, ...listTemp.reverse()]);
+          setListComment([...listComment, ...listTemp]);
         }
-        dispatch({ type: "SET_CURSOR", payload: res.cursor });
-      });
-    };
+        dispatch({ type: "SET_CURSOR_COMMENT", payload: res.cursor });
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
+      })
+      .catch((err) => console.log(err));
+  };
 
-    return (
-      <View style={styles.container}>
-        {item.listImage.length > 0 ? (
-          <Image
-            style={{
-              height: height * 0.3,
-              width: "100%",
+  const refresh = async () => {
+    setListComment([]);
+    countComment();
+    countCommentLevel0();
+    NewCommentAPI.reload(item._id, nextCursor)
+      .then((data) => {
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
+        setListComment(data);
+      })
+      .catch((err) => console.log(err));
+  };
 
-              shadowOffset: { width: 1, height: 1 },
-              shadowColor: "black",
-              shadowOpacity: 0.5,
-            }}
-            source={{ uri: item.listImage[0].url }}
-          ></Image>
-        ) : (
-          <Image
-            style={{
-              height: height * 0.3,
-              width: "100%",
+  return (
+    <View style={styles.container}>
+      {item.listImage.length > 0 ? (
+        <Image
+          style={{
+            height: height * 0.3,
+            width: "100%",
 
-              shadowOffset: { width: 1, height: 1 },
-              shadowColor: "black",
-              shadowOpacity: 0.5,
-            }}
-            source={{
-              uri: "https://images.unsplash.com/photo-1637832282945-093d74a8a0bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80",
-            }}
-          ></Image>
-        )}
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <View style={{ height: "auto", backgroundColor: "red" }}>
-            <Text>Replying to ....</Text>
-            <View style={styles.commentFrame}>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Write a comment..."
-                placeholderTextColor="dimgrey"
-                multiline={true}
-                showsVerticalScrollIndicator={false}
-                value={body}
-                onChangeText={onValueChange}
-                ref={inputsRef}
-              ></TextInput>
-              {loading && (
-                <ActivityIndicator
-                  style={{
-                    position: "absolute",
-                    marginTop: 25,
-                    start: width * 0.77,
-                  }}
-                  size="small"
-                  color="black"
-                />
-              )}
-              <TouchableOpacity
-                onPress={() => SendComment()}
+            shadowOffset: { width: 1, height: 1 },
+            shadowColor: "black",
+            shadowOpacity: 0.5,
+          }}
+          source={{ uri: item.listImage[0].url }}
+        ></Image>
+      ) : (
+        <Image
+          style={{
+            height: height * 0.3,
+            width: "100%",
+
+            shadowOffset: { width: 1, height: 1 },
+            shadowColor: "black",
+            shadowOpacity: 0.5,
+          }}
+          source={{
+            uri: "https://images.unsplash.com/photo-1637832282945-093d74a8a0bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80",
+          }}
+        ></Image>
+      )}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={{ height: "auto", backgroundColor: "red" }}>
+          <Text>Replying to ....</Text>
+          <View style={styles.commentFrame}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Write a comment..."
+              placeholderTextColor="dimgrey"
+              multiline={true}
+              showsVerticalScrollIndicator={false}
+              value={body}
+              onChangeText={onValueChange}
+              ref={inputsRef}
+            ></TextInput>
+            {loadingAddCmt && (
+              <ActivityIndicator
                 style={{
                   position: "absolute",
-                  margin: 10,
-                  start: width * 0.83,
+                  marginTop: 25,
+                  start: width * 0.77,
                 }}
-              >
-                <Ionicons
-                  style={{ marginTop: "30%" }}
-                  name="md-send-sharp"
-                  size={30}
-                  color="black"
-                />
-              </TouchableOpacity>
-
-              {listComment && (
+                size="small"
+                color="black"
+              />
+            )}
+            <TouchableOpacity
+              onPress={() => SendComment()}
+              style={{
+                position: "absolute",
+                margin: 10,
+                start: width * 0.83,
+              }}
+            >
+              <Ionicons
+                style={{ marginTop: "30%" }}
+                name="md-send-sharp"
+                size={30}
+                color="black"
+              />
+            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator
+                style={{
+                  position: "absolute",
+                  marginTop: 25,
+                  start: width * 0.77,
+                }}
+                size="large"
+                color="black"
+              />
+            ) : (
+              listComment !== undefined &&
+              listComment.length > 0 && (
                 <View>
                   <Text
                     style={{
@@ -272,7 +307,7 @@ const CommentScreen = ({ navigation, route }) => {
                         item={item}
                         navigation={navigation}
                         nextScreen={routes.friendInfo}
-                        reload={FetchCommentList}
+                        reload={refresh}
                         setFocusOnReply={(replyToCmt) =>
                           setFocusReply(replyToCmt)
                         }
@@ -280,51 +315,51 @@ const CommentScreen = ({ navigation, route }) => {
                     )}
                     keyExtractor={(item) => item._id}
                   />
+                  {listComment.length < totalLevel0 && (
+                    <Text style={styles.viewMore} onPress={LoadComment}>
+                      View more comments...
+                    </Text>
+                  )}
                 </View>
-              )}
-              {listComment.length < totalLevel0 && (
-                <Text style={styles.viewMore} onPress={loadMoreComment}>
-                  View more comments...
-                </Text>
-              )}
-            </View>
+              )
+            )}
           </View>
-        </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
 
-        <TouchableOpacity
-          onPress={pressgobackHandler}
+      <TouchableOpacity
+        onPress={pressgobackHandler}
+        style={{
+          alignItems: "flex-start",
+          position: "absolute",
+          padding: 10,
+        }}
+      >
+        <View
           style={{
-            alignItems: "flex-start",
-            position: "absolute",
-            padding: 10,
+            flexDirection: "row",
+            padding: 5,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 10,
+            backgroundColor: "white",
           }}
         >
-          <View
+          <MaterialIcons name="keyboard-backspace" size={25} color="black" />
+          <Text
             style={{
-              flexDirection: "row",
-              padding: 5,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 10,
-              backgroundColor: "white",
+              color: "black",
+              fontSize: 15,
+              fontFamily: "nunitobold",
+              margin: 5,
             }}
           >
-            <MaterialIcons name="keyboard-backspace" size={25} color="black" />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                fontFamily: "nunitobold",
-                margin: 5,
-              }}
-            >
-              Back
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+            Back
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 };
 const styles = StyleSheet.create({
   container: {
@@ -386,7 +421,7 @@ const styles = StyleSheet.create({
   viewMore: {
     marginLeft: 20,
     fontWeight: "bold",
-    size: "15",
+    fontSize: 15,
   },
 });
 export default CommentScreen;
