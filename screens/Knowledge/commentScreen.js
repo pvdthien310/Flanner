@@ -122,7 +122,7 @@ const CommentScreen = ({ navigation, route }) => {
       };
       NewCommentAPI.addReply(newReplyComment)
         .then((res) => {
-          FetchCommentList();
+          // FetchCommentList();
           setBody("");
           setReplyTo(null);
           setLoadingAddCmt(false);
@@ -192,13 +192,24 @@ const CommentScreen = ({ navigation, route }) => {
     //refresh();
   }, []);
 
-  const loadMoreComment = async () => {
-    if (listComment == undefined || listComment.length === 0) {
+  useEffect(() => {
+    if (listComment === undefined || listComment.length === 0) {
       dispatch({
         type: "SET_CURSOR_COMMENT",
         payload: 0,
       });
     }
+  }, [listComment]);
+
+  const loadMoreComment = async () => {
+    console.log(listComment === undefined || listComment.length === 0);
+    if (listComment === undefined || listComment.length === 0) {
+      dispatch({
+        type: "SET_CURSOR_COMMENT",
+        payload: 0,
+      });
+    }
+    console.log("load more cmt", nextCursor);
     await NewCommentAPI.getPagination(nextCursor, item._id)
       .then((res) => {
         let listTemp = [];
@@ -217,6 +228,7 @@ const CommentScreen = ({ navigation, route }) => {
   };
 
   const refresh = async () => {
+    console.log(nextCursor);
     setListComment([]);
     countComment();
     countCommentLevel0();
