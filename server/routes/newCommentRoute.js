@@ -1,9 +1,6 @@
 const NewCommentRoute = require("express").Router();
 const NewComment = require("../models/NewComment");
 const jwt = require("jsonwebtoken");
-const { base64encode, base64decode } = require("nodejs-base64");
-const url = require("url");
-const { resolveSoa } = require("dns");
 
 const nullText = " null/ blank";
 
@@ -89,8 +86,7 @@ NewCommentRoute.post("/add-reply", (req, res) => {
 });
 
 /// Delete comment
-NewCommentRoute.delete("/delete", (req, res) => {
-  console.log(req.body);
+NewCommentRoute.put("/delete", (req, res) => {
   const level = req.body.level;
 
   const deleteLevel2 = (currentId) => {
@@ -99,7 +95,7 @@ NewCommentRoute.delete("/delete", (req, res) => {
         res.send("OK");
       })
       .catch((err) => {
-        console.log("error", err);
+        console.log(err);
       });
   };
 
@@ -128,7 +124,6 @@ NewCommentRoute.delete("/delete", (req, res) => {
   };
 
   const deleteLevel0 = (currentId) => {
-    console.log("delete level 0");
     NewComment.findOne({ _id: currentId }).then((commentLvl0) => {
       if (commentLvl0) {
         NewComment.findByIdAndRemove(currentId)
@@ -179,8 +174,8 @@ NewCommentRoute.delete("/delete-all", (req, res) => {
 });
 
 /// Update comment by ID
-NewCommentRoute.put("/update", (req, res) => {
-  const newComment = new NewComment({
+NewCommentRoute.post("/update", (req, res) => {
+  const newComment = {
     postId: req.body.postId,
     userId: req.body.userId,
     userName: req.body.userName,
@@ -189,8 +184,7 @@ NewCommentRoute.put("/update", (req, res) => {
     isPositive: req.body.isPositive,
     parentCmtId: req.body.parentCmtId,
     level: req.body.level,
-  });
-
+  };
   if (newComment.postId === null || newComment.postId === "") {
     return res.send("PostId" + nullText);
   }
@@ -206,7 +200,7 @@ NewCommentRoute.put("/update", (req, res) => {
     }
   }
 
-  NewComment.findByIdAndUpdate(req.body.id, newComment)
+  NewComment.updateOne({ _id: req.body._id }, newComment)
     .then((data) => {
       res.send("OK");
     })
@@ -242,6 +236,7 @@ NewCommentRoute.get("/:id", (req, res) => {
 /// Get comments by post Id
 NewCommentRoute.get("/load-by-post/:postId", (req, res) => {
   NewComment.find({ postId: req.params.postId })
+    .sort({ createdAt: -1 })
     .then((data) => res.json(data))
     .catch((err) => console.log(err));
 });
@@ -249,6 +244,7 @@ NewCommentRoute.get("/load-by-post/:postId", (req, res) => {
 /// Get number of comments by post Id
 NewCommentRoute.get("/count/:postId", (req, res) => {
   NewComment.countDocuments({ postId: req.params.postId })
+    .sort({ createdAt: -1 })
     .then((data) => res.json(data))
     .catch((err) => console.log(err));
 });
@@ -258,6 +254,7 @@ NewCommentRoute.get("/load-by-parent/:parentCmtId", (req, res) => {
   NewComment.find({
     parentCmtId: req.params.parentCmtId,
   })
+    .sort({ createdAt: -1 })
     .then((data) => res.send(data))
     .catch((err) => console.log(err));
 });
@@ -268,6 +265,7 @@ NewCommentRoute.get("/load-by-post-level/:postId/:level", (req, res) => {
     postId: req.params.postId,
     level: req.params.level,
   })
+    .sort({ createdAt: -1 })
     .then((data) => res.json(data))
     .catch((err) => console.log(err));
 });
@@ -310,30 +308,47 @@ NewCommentRoute.get("/load/limit-comment/:postId/:cursor", async (req, res) => {
   if (!Number.isInteger(parseInt(req.params.cursor))) {
     res.send("Cursor must be an integer");
   }
-  const LIMIT = 5;
-  ///var queryData = url.parse(req.url, true).query;
-  ///const { cursor } = queryData;
-
-  let skip = 0;
-  // if (req.params.cursor) skip = base64decode(req.params.cursor);
-  if (req.params.cursor) skip = req.params.cursor;
-
-  const data = await NewComment.find({
+  const LIMIT = 2;
+  let skip = parseInt(req.params.cursor);
+  await NewComment.find({
     postId: req.params.postId,
     level: 0,
   })
-    .skip(++skip)
+    .sort({ createdAt: -1, _id: -1 })
+    .skip(skip)
     .limit(LIMIT)
-    .exec()
+    .then((data) => {
+      skip = skip + LIMIT;
+      res.send({
+        data,
+        cursor: skip,
+      });
+    })
     .catch((err) => console.log(err));
-
-  skip = skip + LIMIT;
-  const cursorEncode = base64encode(skip);
-  res.send({
-    data,
-    cursor: cursorEncode,
-  });
 });
+
+//reload Comment
+NewCommentRoute.get(
+  "/reload/limit-comment/:postId/:numOfItems",
+  async (req, res) => {
+    if (req.params.postId === "" || req.params.postId === null) {
+      res.send("Post id " + nullText);
+    }
+
+    const to = parseInt(req.params.numOfItems);
+    await NewComment.find({
+      postId: req.params.postId,
+      level: 0,
+    })
+      .sort({ createdAt: -1 })
+      .skip(0)
+      .limit(to)
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((err) => console.log(err));
+  }
+);
 
 /// Update username
 NewCommentRoute.put("/update/username", async (req, res) => {

@@ -1,2 +1,3 @@
-export const URL_local = "http://192.168.1.2:3000/api";
-export const URL_local_user = "http://192.168.1.2:8000";
+const ip = "192.168.137.1";
+export const URL_local = "http://" + ip + ":3000/api";
+export const URL_local_user = "http://" + ip + ":8000";

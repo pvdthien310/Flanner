@@ -28,15 +28,22 @@ const { height, width } = Dimensions.get("screen");
 const logoHeight = height * 0.5;
 
 const CommentScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const { item, routes } = route.params;
   const [listComment, setListComment] = useState(undefined);
   const { user } = useSelector((state) => state.User);
   const [body, setBody] = useState("");
-  const [loading, setLoading] = useState(false);
   const [totalComment, setTotalComment] = useState(0);
   const inputsRef = useRef(null);
   const [isReplying, setIsReplying] = useState(false);
   const [replyTo, setReplyTo] = useState(null);
+  const [totalLevel0, setTotalLevel0] = useState(0);
+  const { nextCursor, loading } = useSelector((state) => {
+    return state.Comment;
+  });
+  const [isFocusOnWrite, setIsFocusOnWrite] = useState(false);
+  const inputsRef = useRef(null);
+  const [loadingAddCmt, setLoadingAddCmt] = useState(false);
 
   const onValueChange = (text) => {
     setBody(text);
@@ -51,7 +58,8 @@ const CommentScreen = ({ navigation, route }) => {
         res.map((i) => {
           listTemp.push({ ...i, createdAt: i.createdAt.substring(0, 10) });
         });
-        setListComment(listTemp.reverse());
+        setListComment(listTemp);
+        setTotalLevel0(listTemp.length);
       })
       .catch((err) => console.log("Error Load Comment List"));
 
@@ -62,6 +70,8 @@ const CommentScreen = ({ navigation, route }) => {
       .catch((err) => {
         console.log(err);
       });
+
+    countCommentLevel0();
   };
 
   const createTwoButtonAlert = () =>
@@ -120,6 +130,29 @@ const CommentScreen = ({ navigation, route }) => {
         })
         .catch((err) => console.log(err));
     }
+    setLoadingAddCmt(true);
+    const d = new Date();
+    const newRootComment = {
+      postId: item._id,
+      userId: user.userID,
+      userName: user.name,
+      childCmtId: [],
+      reactUsers: [],
+      body,
+      isPositive: "null",
+      parentCmtId: "null",
+      level: 0,
+    };
+
+    CommentAPI.AddRootComment(newRootComment)
+      .then((res) => {
+        const newList = [res, ...listComment];
+        setListComment(newList);
+        setBody("");
+        setLoadingAddCmt(false);
+        if (item.userID != user.userID) sendNotification();
+      })
+      .catch((err) => console.log(err));
   };
   const sendNotification = () => {
     NotificationApi.sendNoti({
@@ -136,6 +169,33 @@ const CommentScreen = ({ navigation, route }) => {
       .catch((err) => console.log("Error send noti"));
   };
 
+  const countComment = async () => {
+    await NewCommentAPI.countCommentsByPostId(item._id)
+      .then((res) => {
+        setTotalComment(res);
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const countCommentLevel0 = async () => {
+    let listTemp = [];
+    await NewCommentAPI.loadByPostLevel(item._id, 0)
+      .then((res) => {
+        setTotalLevel0(res.length);
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const LoadComment = () => {
+    loadMoreComment();
+    countComment();
+    countCommentLevel0();
+  };
+
   const setFocusReply = (replyToCmt) => {
     setIsReplying(true);
     inputsRef.current.focus();
@@ -148,8 +208,46 @@ const CommentScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    FetchCommentList();
+    setListComment([]);
+    LoadComment();
+    //refresh();
   }, []);
+
+  const loadMoreComment = async () => {
+    if (listComment == undefined || listComment.length === 0) {
+      dispatch({
+        type: "SET_CURSOR_COMMENT",
+        payload: 0,
+      });
+    }
+    await NewCommentAPI.getPagination(nextCursor, item._id)
+      .then((res) => {
+        let listTemp = [];
+        res.data.forEach((element) => {
+          listTemp.push(element);
+        });
+        if (listComment === undefined) {
+          setListComment(listTemp);
+        } else {
+          setListComment([...listComment, ...listTemp]);
+        }
+        dispatch({ type: "SET_CURSOR_COMMENT", payload: res.cursor });
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const refresh = async () => {
+    setListComment([]);
+    countComment();
+    countCommentLevel0();
+    NewCommentAPI.reload(item._id, nextCursor)
+      .then((data) => {
+        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
+        setListComment(data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <View style={styles.container}>
@@ -285,7 +383,11 @@ const CommentScreen = ({ navigation, route }) => {
 
       <TouchableOpacity
         onPress={pressgobackHandler}
-        style={{ alignItems: "flex-start", position: "absolute", padding: 10 }}
+        style={{
+          alignItems: "flex-start",
+          position: "absolute",
+          padding: 10,
+        }}
       >
         <View
           style={{
@@ -313,7 +415,6 @@ const CommentScreen = ({ navigation, route }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -370,6 +471,11 @@ const styles = StyleSheet.create({
     margin: 10,
     width: width * 0.9,
     alignSelf: "center",
+  },
+  viewMore: {
+    marginLeft: 20,
+    fontWeight: "bold",
+    fontSize: 15,
   },
 });
 export default CommentScreen;
