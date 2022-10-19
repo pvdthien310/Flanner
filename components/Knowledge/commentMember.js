@@ -392,6 +392,7 @@ const CommentMember = ({
                 item={item}
                 navigation={navigation}
                 nextScreen={route.friendInfo}
+                setFocusOnReply={() => setFocusOnReply(item)}
               ></CommentMember>
             )}
             keyExtractor={(item) => item._id}

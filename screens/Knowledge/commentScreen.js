@@ -38,9 +38,10 @@ const CommentScreen = ({ navigation, route }) => {
   const { nextCursor, loading } = useSelector((state) => {
     return state.Comment;
   });
-  const [isFocusOnWrite, setIsFocusOnWrite] = useState(false);
   const inputsRef = useRef(null);
   const [loadingAddCmt, setLoadingAddCmt] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
+  const [replyTo, setReplyTo] = useState(null);
 
   const onValueChange = (text) => {
     setBody(text);
@@ -82,30 +83,56 @@ const CommentScreen = ({ navigation, route }) => {
     ]);
 
   const SendComment = () => {
-    setLoadingAddCmt(true);
-    const d = new Date();
-    const newRootComment = {
-      postId: item._id,
-      userId: user.userID,
-      userName: user.name,
-      childCmtId: [],
-      reactUsers: [],
-      body,
-      isPositive: "null",
-      parentCmtId: "null",
-      level: 0,
-    };
+    if (!isReplying) {
+      setLoadingAddCmt(true);
+      const d = new Date();
+      const newRootComment = {
+        postId: item._id,
+        userId: user.userID,
+        userName: user.name,
+        childCmtId: [],
+        reactUsers: [],
+        body,
+        isPositive: "null",
+        parentCmtId: "null",
+        level: 0,
+      };
 
-    CommentAPI.AddRootComment(newRootComment)
-      .then((res) => {
-        const newList = [res, ...listComment];
-        setListComment(newList);
-        setBody("");
-        setLoadingAddCmt(false);
-        if (item.userID != user.userID) sendNotification();
-      })
-      .catch((err) => console.log(err));
+      CommentAPI.AddRootComment(newRootComment)
+        .then((res) => {
+          const newList = [res, ...listComment];
+          setListComment(newList);
+          setBody("");
+          setLoadingAddCmt(false);
+          if (item.userID != user.userID) sendNotification();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setIsReplying(false);
+      setLoadingAddCmt(true);
+      const newReplyComment = {
+        postId: item._id,
+        userId: user.userID,
+        userName: user.name,
+        reactUsers: [],
+        body,
+        isPositive: "null",
+        parentCmtId: replyTo._id,
+        level: replyTo.level + 1,
+      };
+      NewCommentAPI.addReply(newReplyComment)
+        .then((res) => {
+          FetchCommentList();
+          setBody("");
+          setReplyTo(null);
+          setLoadingAddCmt(false);
+          refresh();
+          if (item.userID != user.userID) sendNotification();
+        })
+        .catch((err) => console.log(err));
+    }
   };
+
   const sendNotification = () => {
     NotificationApi.sendNoti({
       userID: item.userID,
@@ -149,9 +176,14 @@ const CommentScreen = ({ navigation, route }) => {
   };
 
   const setFocusReply = (replyToCmt) => {
-    setIsFocusOnWrite(true);
+    setIsReplying(true);
     inputsRef.current.focus();
-    console.log(replyToCmt);
+    setReplyTo(replyToCmt);
+  };
+
+  const handleCloseReply = () => {
+    setIsReplying(false);
+    setReplyTo(null);
   };
 
   useEffect(() => {
@@ -226,104 +258,130 @@ const CommentScreen = ({ navigation, route }) => {
         ></Image>
       )}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{ height: "auto", backgroundColor: "red" }}>
-          <Text>Replying to ....</Text>
-          <View style={styles.commentFrame}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Write a comment..."
-              placeholderTextColor="dimgrey"
-              multiline={true}
-              showsVerticalScrollIndicator={false}
-              value={body}
-              onChangeText={onValueChange}
-              ref={inputsRef}
-            ></TextInput>
-            {loadingAddCmt && (
-              <ActivityIndicator
-                style={{
-                  position: "absolute",
-                  marginTop: 25,
-                  start: width * 0.77,
-                }}
-                size="small"
-                color="black"
-              />
-            )}
-            <TouchableOpacity
-              onPress={() => SendComment()}
+        <View style={styles.commentFrame}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Write a comment..."
+            placeholderTextColor="dimgrey"
+            multiline={true}
+            showsVerticalScrollIndicator={false}
+            value={body}
+            onChangeText={onValueChange}
+            ref={inputsRef}
+          ></TextInput>
+          {loadingAddCmt && (
+            <ActivityIndicator
               style={{
                 position: "absolute",
-                margin: 10,
-                start: width * 0.83,
+                marginTop: 25,
+                start: width * 0.77,
+              }}
+              size="small"
+              color="black"
+            />
+          )}
+          {isReplying && (
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                marginTop: 25,
+                start: width * 0.77,
+              }}
+              onPress={handleCloseReply}
+            >
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            onPress={() => SendComment()}
+            style={{
+              position: "absolute",
+              margin: 10,
+              start: width * 0.83,
+            }}
+          >
+            <Ionicons
+              style={{ marginTop: "30%" }}
+              name="md-send-sharp"
+              size={30}
+              color="black"
+            />
+          </TouchableOpacity>
+          {isReplying && (
+            <Text
+              style={{
+                fontFamily: "robotoregular",
+                padding: 5,
+                fontSize: 11,
+                marginTop: -15,
+                marginStart: 15,
+                marginBottom: 5,
+                color: "gray",
+                opacity: 0.5,
+                fontStyle: "italic",
               }}
             >
-              <Ionicons
-                style={{ marginTop: "30%" }}
-                name="md-send-sharp"
-                size={30}
-                color="black"
-              />
-            </TouchableOpacity>
-            {loading ? (
-              <ActivityIndicator
-                style={{
-                  position: "absolute",
-                  marginTop: 25,
-                  start: width * 0.77,
-                }}
-                size="large"
-                color="black"
-              />
-            ) : (
-              listComment !== undefined &&
-              listComment.length > 0 && (
-                <View>
-                  <Text
-                    style={{
-                      fontFamily: "robotoregular",
-                      fontWeight: "bold",
-                      padding: 5,
-                      fontSize: 14,
-                      marginTop: 5,
-                      marginStart: 15,
-                      marginBottom: 5,
-                    }}
-                  >
-                    {totalComment} COMMENTS TOTAL
-                  </Text>
+              Replying to {replyTo?.userName}
+            </Text>
+          )}
+          {loading ? (
+            <ActivityIndicator
+              style={{
+                position: "absolute",
+                marginTop: 25,
+                start: width * 0.77,
+              }}
+              size="large"
+              color="black"
+            />
+          ) : (
+            listComment !== undefined &&
+            listComment.length > 0 && (
+              <View>
+                <Text
+                  style={{
+                    fontFamily: "robotoregular",
+                    fontWeight: "bold",
+                    padding: 5,
+                    fontSize: 14,
+                    marginTop: 5,
+                    marginStart: 15,
+                    marginBottom: 5,
+                  }}
+                >
+                  {totalComment} COMMENTS TOTAL
+                </Text>
 
-                  <FlatList
-                    style={{
-                      padding: 10,
-                      maxHeight: height * 0.6,
-                      height: "auto",
-                      overflow: "scroll",
-                    }}
-                    data={listComment}
-                    renderItem={({ item }) => (
-                      <CommentMember
-                        route={routes}
-                        item={item}
-                        navigation={navigation}
-                        nextScreen={routes.friendInfo}
-                        reload={refresh}
-                        setFocusOnReply={(replyToCmt) =>
-                          setFocusReply(replyToCmt)
-                        }
-                      ></CommentMember>
-                    )}
-                    keyExtractor={(item) => item._id}
-                  />
-                  {listComment.length < totalLevel0 && (
-                    <Text style={styles.viewMore} onPress={LoadComment}>
-                      View more comments...
-                    </Text>
+                <FlatList
+                  style={{
+                    padding: 10,
+                    maxHeight: height * 0.6,
+                    height: "auto",
+                    overflow: "scroll",
+                  }}
+                  data={listComment}
+                  renderItem={({ item }) => (
+                    <CommentMember
+                      route={routes}
+                      item={item}
+                      navigation={navigation}
+                      nextScreen={routes.friendInfo}
+                      reload={refresh}
+                      setFocusOnReply={(replyToCmt) =>
+                        setFocusReply(replyToCmt)
+                      }
+                    ></CommentMember>
                   )}
-                </View>
-              )
-            )}
-          </View>
+                  keyExtractor={(item) => item._id}
+                />
+                {listComment.length < totalLevel0 && (
+                  <Text style={styles.viewMore} onPress={LoadComment}>
+                    View more comments...
+                  </Text>
+                )}
+              </View>
+            )
+          )}
         </View>
       </TouchableWithoutFeedback>
 
