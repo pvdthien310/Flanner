@@ -17,8 +17,6 @@ import { EvilIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import NewCommentAPI from "../../API/NewCommentAPI";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import EditCommentDialog from "./editCommentDialog";
-import Toast from "react-native-root-toast";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -34,23 +32,18 @@ const CommentMember = ({
   const { user } = useSelector((state) => {
     return state.User;
   });
-  const { loading, currentEditedId } = useSelector((state) => {
-    return state.Comment;
-  });
   //item is surely level 0
   const [host, setHost] = useState(undefined);
   const [isLike, SetisLike] = useState(false);
   const [data, setData] = useState(item);
   const [listLevel, setListLevel] = useState([]);
   const [notShowList, setNotShowList] = useState(true);
-  const [editMode, setEditMode] = useState(false);
-  const [currentEditedFlag, setCurrentEditedFlag] = useState(false);
 
   const createTwoButtonAlert = () =>
     Alert.alert("Notification", "Do you want to navigate your profile?", [
       {
         text: "Cancel",
-        onPress: () => console.log(""),
+        onPress: () => console.log("Cancel Pressed"),
       },
       { text: "OK", onPress: () => NavigateToCurrentUserProfile() },
     ]);
@@ -78,10 +71,12 @@ const CommentMember = ({
     await NewCommentAPI.getByDirectParent(item._id)
       .then((res) => {
         res.map((i) => {
-          tempList.push(i);
+          tempList.push({
+            ...i,
+            createdAt: i.createdAt.substring(0, 10),
+          });
         });
         setListLevel(tempList);
-        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
       })
       .catch((err) => console.log("Error to get level 1 comment"));
   };
@@ -89,12 +84,12 @@ const CommentMember = ({
   const fetchHostData = async () => {
     await Api.getUserItem(item.userId)
       .then((res) => {
+        console.log(res[0]);
         setHost(res[0]);
-        if (item.reactUsers.indexOf(user.userID) == -1) SetisLike(false);
+        if (item.reactUsers.indexOf(res.userID) == -1) SetisLike(false);
         else {
           SetisLike(true);
         }
-        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
       })
       .catch((err) => console.log("Loi set user by id", err));
   };
@@ -112,6 +107,8 @@ const CommentMember = ({
       .catch((err) => console.log(err));
   };
 
+  const editComment = () => {};
+
   const deleteComment = async () => {
     await NewCommentAPI.delete({
       id: item._id.toString(),
@@ -119,14 +116,6 @@ const CommentMember = ({
     })
       .then((res) => {
         reload();
-        let toast = Toast.show("Save successful!", {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.CENTER,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
-        });
-        dispatch({ type: "SET_LOADING_COMMENT", payload: false });
       })
       .catch((err) => console.log(err));
   };
@@ -134,21 +123,6 @@ const CommentMember = ({
     fetchHostData();
     fetchLevel();
   }, []);
-
-  useEffect(() => {
-    if (item._id === currentEditedId) {
-      let timesRun = 0;
-      setCurrentEditedFlag(true);
-      let timer = setInterval(() => {
-        timesRun++;
-        if (timesRun === 1) {
-          setCurrentEditedFlag(false);
-          dispatch({ type: "SET_EDITED_COMMENT", payload: "" });
-          clearInterval(timer);
-        }
-      }, 1000);
-    }
-  }, [currentEditedId]);
 
   const [visibleMenu, setVisibleMenu] = useState(false);
 
@@ -184,31 +158,17 @@ const CommentMember = ({
                     }
                   }}
                 >
-                  {currentEditedFlag ? (
-                    <Text
-                      style={{
-                        fontFamily: "robotoregular",
-                        fontWeight: "bold",
-                        fontSize: 13,
-                        color: "maroon",
-                        marginStart: 2,
-                      }}
-                    >
-                      {host.name}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{
-                        fontFamily: "robotoregular",
-                        fontWeight: "bold",
-                        fontSize: 13,
-                        color: "black",
-                        marginStart: 2,
-                      }}
-                    >
-                      {host.name}
-                    </Text>
-                  )}
+                  <Text
+                    style={{
+                      fontFamily: "robotoregular",
+                      fontWeight: "bold",
+                      fontSize: 13,
+                      color: "black",
+                      marginStart: 2,
+                    }}
+                  >
+                    {host.name}
+                  </Text>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity>
@@ -232,38 +192,20 @@ const CommentMember = ({
                   opacity: 0.5,
                 }}
               >
-                {data.createdAt.substring(0, 10)}
+                {data.createdAt}
               </Text>
             </View>
-            {currentEditedFlag ? (
-              <Text
-                style={{
-                  fontFamily: "nunitoregular",
-                  fontSize: 14,
-                  color: "black",
-                  marginStart: 2,
-                  opacity: 1,
-                  fontWeight: "500",
-                  textShadowOffset: { width: 1, height: 1 },
-                  textShadowRadius: 10,
-                  textShadowColor: "gray",
-                }}
-              >
-                {item.body}
-              </Text>
-            ) : (
-              <Text
-                style={{
-                  fontFamily: "nunitoregular",
-                  fontSize: 13,
-                  color: "black",
-                  marginStart: 2,
-                  opacity: 1,
-                }}
-              >
-                {item.body}
-              </Text>
-            )}
+            <Text
+              style={{
+                fontFamily: "nunitoregular",
+                fontSize: 13,
+                color: "black",
+                marginStart: 2,
+                opacity: 1,
+              }}
+            >
+              {item.body}
+            </Text>
           </View>
           <View style={styles.footerComment}>
             <View style={{ marginTop: 3 }}>
@@ -357,7 +299,7 @@ const CommentMember = ({
                 <MenuItem
                   onPress={() => {
                     hideMenu;
-                    setEditMode(true);
+                    editComment;
                   }}
                 >
                   Edit
@@ -367,7 +309,7 @@ const CommentMember = ({
               {(user.userID === item.userId || user.userID === item.userID) && (
                 <MenuItem
                   onPress={() => {
-                    hideMenu;
+                    hideMenu();
                     confirmDelete();
                   }}
                 >
@@ -398,13 +340,6 @@ const CommentMember = ({
           />
         </View>
       ) : null}
-      {editMode && (
-        <EditCommentDialog
-          commentItem={item}
-          editMode={setEditMode}
-          reload={reload}
-        />
-      )}
     </View>
   );
 };

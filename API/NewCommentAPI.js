@@ -14,7 +14,8 @@ const NewCommentAPI = {
   },
 
   delete: async (comment) => {
-    const res = await DatabaseClient.put(url + "/delete", comment);
+    console.log("comment", comment);
+    const res = await DatabaseClient.delete(url + "/delete", comment);
     return res.data;
   },
 
@@ -24,7 +25,7 @@ const NewCommentAPI = {
   },
 
   update: async (comment) => {
-    const res = await DatabaseClient.post(url + "/update", comment);
+    const res = await DatabaseClient.put(url + "/update", comment);
     return res.data;
   },
 
@@ -70,14 +71,7 @@ const NewCommentAPI = {
 
   updateUsername: async (info) => {
     /// info includes userId and new username
-    const res = await DatabaseClient.put(url + "/update/username", info);
-    return res.data;
-  },
-
-  reload: async (postId, numOfItems) => {
-    const res = await DatabaseClient.get(
-      url + "/reload/limit-comment/" + postId + "/" + numOfItems
-    );
+    const res = await DatabaseClient.put(url + "update/username", info);
     return res.data;
   },
 };
