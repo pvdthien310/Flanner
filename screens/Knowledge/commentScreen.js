@@ -202,14 +202,12 @@ const CommentScreen = ({ navigation, route }) => {
   }, [listComment]);
 
   const loadMoreComment = async () => {
-    console.log(listComment === undefined || listComment.length === 0);
     if (listComment === undefined || listComment.length === 0) {
       dispatch({
         type: "SET_CURSOR_COMMENT",
         payload: 0,
       });
     }
-    console.log("load more cmt", nextCursor);
     await NewCommentAPI.getPagination(nextCursor, item._id)
       .then((res) => {
         let listTemp = [];
@@ -228,7 +226,6 @@ const CommentScreen = ({ navigation, route }) => {
   };
 
   const refresh = async () => {
-    console.log(nextCursor);
     setListComment([]);
     countComment();
     countCommentLevel0();
