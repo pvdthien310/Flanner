@@ -224,6 +224,16 @@ const DetailKnowledge = ({ route, navigation }) => {
               </Text>
 
               <Text style={Poststyle_Status.title_detail}>{data.title}</Text>
+
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                {data.genres.length > 0 &&
+                  data.genres.map((genre, index) => (
+                    <Text key={index} style={Poststyle_Status.genres}>
+                      {genre.title}
+                    </Text>
+                  ))}
+              </View>
+
               <Text style={Poststyle_Status.description_detail}>
                 {data.description}
               </Text>
@@ -233,7 +243,6 @@ const DetailKnowledge = ({ route, navigation }) => {
                   backgroundColor: "lightgray",
                   padding: 5,
                   marginTop: 10,
-                  marginStart: 10,
                 }}
               >
                 <Text

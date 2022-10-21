@@ -59,7 +59,7 @@ const Status = ({ navigation }) => {
           onRefresh={() => fetchData()}
           refreshing={loading}
           onEndReached={fetchMoreData}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.5}
         />
       )}
     </View>

@@ -291,6 +291,16 @@ export const Poststyle_Status = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
+  genres: {
+    fontFamily: "robotoregular",
+    borderWidth: 1,
+    borderColor: "#272727",
+    borderStyle: "solid",
+    paddingVertical: 2,
+    paddingHorizontal: 5,
+    borderRadius: 5,
+    marginRight: 6,
+  },
   description_detail: {
     fontFamily: "robotoregular",
     fontSize: 20,
@@ -317,14 +327,12 @@ export const Poststyle_Status = StyleSheet.create({
     fontSize: 25,
     marginTop: 10,
     marginBottom: 5,
-    marginStart: 20,
   },
   description: {
     fontFamily: "nunitobold",
     fontSize: 15,
     marginTop: 10,
     marginBottom: 5,
-    marginStart: 20,
     color: "dimgray",
   },
   body: {

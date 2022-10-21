@@ -1,5 +1,9 @@
 const KnowledgeRoute = require("express").Router();
 const Knowledge = require("../models/Knowledge");
+const mongoose = require("mongoose");
+const Gerne = require("../models/Gerne");
+const mergeObjectData = require("../utils/index.js");
+
 const jwt = require("jsonwebtoken");
 const { base64encode, base64decode } = require("nodejs-base64");
 const url = require("url");
@@ -12,13 +16,14 @@ KnowledgeRoute.get("/load-data/newsfeeds", async (req, res) => {
   let skip = 0;
   if (cursor) skip = base64decode(cursor);
   const data = await Knowledge.find({ mode: "public" })
+    .populate("genres")
     .skip(+skip)
     .limit(LIMIT)
     .exec();
-  // const total = await Knowledge.countDocuments({});
 
   skip = +skip + LIMIT;
   const cursorEncode = base64encode(skip);
+
   res.send({
     data,
     cursor: cursorEncode,
@@ -37,7 +42,7 @@ KnowledgeRoute.post("/delete", authenToken, (req, res) => {
 });
 
 /// Add new member
-KnowledgeRoute.post("/send-data", authenToken, (req, res) => {
+KnowledgeRoute.post("/send-data", (req, res) => {
   const newKnowledge = new Knowledge({
     username: req.body.username,
     userID: req.body.userID,
@@ -49,6 +54,7 @@ KnowledgeRoute.post("/send-data", authenToken, (req, res) => {
     listImage: req.body.listImage,
     react: req.body.react,
     mode: req.body.mode,
+    genres: req.body.genres,
   });
 
   newKnowledge
@@ -59,11 +65,12 @@ KnowledgeRoute.post("/send-data", authenToken, (req, res) => {
     })
     .catch((err) => {
       console.log("Error");
+      res.status(400).send(err);
     });
 });
 
 /// Update member by ID
-KnowledgeRoute.post("/update", authenToken, (req, res) => {
+KnowledgeRoute.post("/update", (req, res) => {
   Knowledge.findById(req.body.id)
     .then((result) => {
       const _mode = result.mode;
@@ -78,6 +85,7 @@ KnowledgeRoute.post("/update", authenToken, (req, res) => {
         listImage: req.body.listImage,
         react: req.body.react,
         mode: _mode,
+        genres: req.body.genres,
       })
         .then((data) => {
           res.send(data);
@@ -134,11 +142,13 @@ KnowledgeRoute.post("/update/:id", (req, res) => {
 });
 
 //Get a member by ID
-KnowledgeRoute.get("/:id", authenToken, (req, res) => {
+KnowledgeRoute.get("/:id", (req, res) => {
   Knowledge.findById(req.params.id)
+    .populate("genres")
     .then((data) => {
-      if (data) res.send(data);
-      else res.send("No Exist");
+      if (data) {
+        res.send(data);
+      } else res.send("No Exist");
     })
     .catch((err) => console.log(err));
 });

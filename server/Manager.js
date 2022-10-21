@@ -11,6 +11,7 @@ const EmailRoute = require("./routes/emailRoute");
 const CommentRoute = require("./routes/commentRoute");
 const ReportRoute = require("./routes/ReportRoute");
 const SavePostInfoRoute = require("./routes/savePostInfoRoute");
+const GenreRoute = require("./routes/genreRoute");
 
 /// Process file json and env
 app.use(bodyParser.json());
@@ -34,6 +35,7 @@ app.use("/api/sendEmail", EmailRoute);
 app.use("/api/comment", CommentRoute);
 app.use("/api/report", ReportRoute);
 app.use("/api/savedpost", SavePostInfoRoute);
+app.use("/api/genre", GenreRoute);
 
 //// Open port
 const port = process.env.PORT || 3001;
