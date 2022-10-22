@@ -229,7 +229,7 @@ const CommentScreen = ({ navigation, route }) => {
     setListComment([]);
     countComment();
     countCommentLevel0();
-    NewCommentAPI.reload(item._id, nextCursor)
+    await NewCommentAPI.reload(item._id, nextCursor)
       .then((data) => {
         dispatch({ type: "SET_LOADING_COMMENT", payload: false });
         setListComment(data);
