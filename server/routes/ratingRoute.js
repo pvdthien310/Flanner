@@ -26,6 +26,10 @@ RatingRoute.get("/:id", async (req, res) => {
     });
 });
 
+RatingRoute.post("/delete-all", async (req, res) => {
+  Rating.deleteMany({}).then((data) => res.send("ok"));
+});
+
 RatingRoute.post("/", async (req, res) => {
   const initValue = req.body.negative === 0 && req.body.positive === 0;
   const newRating = {
@@ -59,7 +63,7 @@ RatingRoute.put("/", async (req, res) => {
     { new: "true" }
   )
     .then((data) => {
-      res.json("Update successful");
+      res.json(data);
     })
     .catch((err) => {
       res.status(500).json({ Err: err });

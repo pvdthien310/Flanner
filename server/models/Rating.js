@@ -4,14 +4,17 @@ const RatingSchema = new mongoose.Schema(
   {
     positive: {
       type: Number,
+      default: 0,
       required: true,
     },
     negative: {
       type: Number,
+      default: 0,
       required: true,
     },
     rate: {
       type: Number,
+      default: 0,
       required: true,
     },
   },

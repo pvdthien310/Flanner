@@ -18,12 +18,14 @@ import {
 } from "react-native";
 import CommentAPI from "../../API/CommentAPI";
 import Api from "../../API/UserAPI";
+import RatingAPI from "../../API/RatingAPI";
 import CommentMember from "../../components/Knowledge/commentMember";
 import { useSelector, useDispatch } from "react-redux";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import NotificationApi from "../../API/NotificationAPI";
 import NewCommentAPI from "./../../API/NewCommentAPI";
 import axios from "axios";
+import KnowLedgeApi from "./../../API/KnowledgeAPI";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -33,6 +35,7 @@ const CommentScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const { item, routes } = route.params;
   const [listComment, setListComment] = useState(undefined);
+  const [rating, setRating] = useState(undefined);
   const { user } = useSelector((state) => state.User);
   const [body, setBody] = useState("");
   const [totalComment, setTotalComment] = useState(0);
@@ -112,7 +115,19 @@ const CommentScreen = ({ navigation, route }) => {
           "https://comebuyaiserver.herokuapp.com/sentiment",
           { sentence: newRootComment.body }
         );
-        console.log(temp.data.result);
+        if (temp.data.result === 1 || temp.data.result === 2) {
+          RatingAPI.update({
+            ...rating,
+            positive:
+              temp.data.result === 1 ? rating.positive + 1 : rating.positive,
+            negative:
+              temp.data.result === 2 ? rating.negative + 1 : rating.negative,
+          })
+            .then((data) => {
+              setRating(data);
+            })
+            .catch((err) => console.log(err));
+        }
       } catch (error) {
         console.log(error.message);
       }
@@ -198,6 +213,7 @@ const CommentScreen = ({ navigation, route }) => {
   useEffect(() => {
     setListComment([]);
     LoadComment();
+    setRating(item.rating);
     //refresh();
   }, []);
 

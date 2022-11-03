@@ -81,6 +81,23 @@ const NewCommentAPI = {
     );
     return res.data;
   },
+
+  countTotalPositive: async () => {
+    const res = await DatabaseClient.get(url + "/sentiment/total-positive");
+    return res.data;
+  },
+
+  countTotalNegative: async () => {
+    const res = await DatabaseClient.get(url + "/sentiment/total-negative");
+    return res.data;
+  },
+
+  updateSentiment: async (commentId, value) => {
+    const res = await DatabaseClient.get(
+      url + "/update-sentiment/" + commentId + "/" + value
+    );
+    return res.data;
+  },
 };
 
 export default NewCommentAPI;

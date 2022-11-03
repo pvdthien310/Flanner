@@ -362,3 +362,37 @@ NewCommentRoute.put("/update/username", async (req, res) => {
     .catch((err) => console.log(err));
 });
 module.exports = NewCommentRoute;
+
+/// Count positive and negative
+NewCommentRoute.get("/sentiment/total-positive", async (req, res) => {
+  NewComment.countDocuments({
+    level: 0,
+    isPositive: "1",
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => console.log(err));
+});
+
+NewCommentRoute.get("/sentiment/total-negative", async (req, res) => {
+  NewComment.count({
+    level: 0,
+    isPositive: "2",
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => console.log(err));
+});
+
+NewCommentRoute.post("/update-sentiment/:commentId/:value", (req, res) => {
+  NewComment.updateOne(
+    { _id: req.params.commentId },
+    { isPositive: req.params.value.toString() }
+  )
+    .then((data) => {
+      res.json("OK");
+    })
+    .catch((err) => console.log(err));
+});

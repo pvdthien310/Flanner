@@ -1,8 +1,10 @@
 const KnowledgeRoute = require("express").Router();
 const Knowledge = require("../models/Knowledge");
+const Rating = require("../models/Rating");
 const jwt = require("jsonwebtoken");
 const { base64encode, base64decode } = require("nodejs-base64");
 const url = require("url");
+const { ObjectId } = require("mongodb");
 
 KnowledgeRoute.get("/load-data/newsfeeds", async (req, res) => {
   const LIMIT = 10;
@@ -12,6 +14,7 @@ KnowledgeRoute.get("/load-data/newsfeeds", async (req, res) => {
   let skip = 0;
   if (cursor) skip = base64decode(cursor);
   const data = await Knowledge.find({ mode: "public" })
+    .populate("rating")
     .skip(+skip)
     .limit(LIMIT)
     .exec();
@@ -38,28 +41,34 @@ KnowledgeRoute.post("/delete", authenToken, (req, res) => {
 
 /// Add new member
 KnowledgeRoute.post("/send-data", authenToken, (req, res) => {
-  const newKnowledge = new Knowledge({
-    username: req.body.username,
-    userID: req.body.userID,
-    body: req.body.body,
-    title: req.body.title,
-    description: req.body.description,
-    avatar: req.body.avatar,
-    posttime: req.body.posttime,
-    listImage: req.body.listImage,
-    react: req.body.react,
-    mode: req.body.mode,
-  });
-
-  newKnowledge
-    .save()
+  generateRating()
     .then((data) => {
-      // console.log(data)
-      res.send("Add Success");
+      console.log(data);
+      const newKnowledge = new Knowledge({
+        username: req.body.username,
+        userID: req.body.userID,
+        body: req.body.body,
+        title: req.body.title,
+        description: req.body.description,
+        avatar: req.body.avatar,
+        posttime: req.body.posttime,
+        listImage: req.body.listImage,
+        react: req.body.react,
+        mode: req.body.mode,
+        rating: data._id,
+      });
+
+      newKnowledge
+        .save()
+        .then((data) => {
+          // console.log(data)
+          res.send("Add Success");
+        })
+        .catch((err) => {
+          console.log("Error", err);
+        });
     })
-    .catch((err) => {
-      console.log("Error");
-    });
+    .catch((err) => console.log("rating when gen knowledge", err));
 });
 
 /// Update member by ID
@@ -77,6 +86,7 @@ KnowledgeRoute.post("/update", authenToken, (req, res) => {
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
+        rating: req.body.rating,
         mode: _mode,
       })
         .then((data) => {
@@ -136,6 +146,7 @@ KnowledgeRoute.post("/update/:id", (req, res) => {
 //Get a member by ID
 KnowledgeRoute.get("/:id", authenToken, (req, res) => {
   Knowledge.findById(req.params.id)
+    .populate("rating")
     .then((data) => {
       if (data) res.send(data);
       else res.send("No Exist");
@@ -145,6 +156,7 @@ KnowledgeRoute.get("/:id", authenToken, (req, res) => {
 
 KnowledgeRoute.get("/load-data/:userID", authenToken, (req, res) => {
   Knowledge.find({ userID: req.params.userID })
+    .populate("rating")
     .then((data) => {
       res.send(data);
     })
@@ -153,6 +165,7 @@ KnowledgeRoute.get("/load-data/:userID", authenToken, (req, res) => {
 /// Load data without private and limitary post
 KnowledgeRoute.get("/load-data/friend/:userID", authenToken, (req, res) => {
   Knowledge.find({ userID: req.params.userID })
+    .populate("rating")
     .then((data) => {
       let processedList = data.filter((item) => {
         if (item.mode == "public") return item;
@@ -165,6 +178,7 @@ KnowledgeRoute.get("/load-data/friend/:userID", authenToken, (req, res) => {
 /// Get all members
 KnowledgeRoute.get("/", authenToken, (req, res) => {
   Knowledge.find({})
+    .populate("rating")
     .then((data) => {
       res.send(data);
     })
@@ -274,6 +288,29 @@ KnowledgeRoute.post("/update-post", authenToken, (req, res) => {
       res.send("Update Knowledge Successful!");
     })
     .catch((err) => console.log(err));
+});
+
+const generateRating = () => {
+  const newRating = new Rating({ rate: 0, positive: 0, negative: 0 });
+
+  return newRating.save();
+};
+
+KnowledgeRoute.post("/update-rating-object", (req, res) => {
+  Knowledge.find({})
+    .then((data) => {
+      let dataId = data.map((item) => item._id);
+      dataId.map((kl) => {
+        generateRating().then((rt) => {
+          Knowledge.updateOne({ _id: kl }, { rating: rt._id })
+            .then((result) => {})
+            .catch((err) => console.log(err));
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = KnowledgeRoute;
