@@ -12,6 +12,7 @@ import {
   Dimensions,
   Button,
   FlatList,
+  ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
@@ -22,6 +23,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import NotificationApi from "../../API/NotificationAPI";
 import NewCommentAPI from "./../../API/NewCommentAPI";
+import axios from "axios";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -82,7 +84,7 @@ const CommentScreen = ({ navigation, route }) => {
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
 
-  const SendComment = () => {
+  const SendComment = async () => {
     if (!isReplying) {
       setLoadingAddCmt(true);
       const d = new Date();
@@ -98,15 +100,22 @@ const CommentScreen = ({ navigation, route }) => {
         level: 0,
       };
 
-      CommentAPI.AddRootComment(newRootComment)
-        .then((res) => {
-          const newList = [res, ...listComment];
-          setListComment(newList);
-          setBody("");
-          setLoadingAddCmt(false);
-          if (item.userID != user.userID) sendNotification();
-        })
-        .catch((err) => console.log(err));
+      NewCommentAPI.addRoot(newRootComment).then((res) => {
+        setBody("");
+        setLoadingAddCmt(false);
+        const newList = [res, ...listComment];
+        setListComment(newList);
+        if (item.userID != user.userID) sendNotification();
+      });
+      try {
+        const temp = await axios.post(
+          "https://comebuyaiserver.herokuapp.com/sentiment",
+          { sentence: newRootComment.body }
+        );
+        console.log(temp.data.result);
+      } catch (error) {
+        console.log(error.message);
+      }
     } else {
       setIsReplying(false);
       setLoadingAddCmt(true);
@@ -256,7 +265,6 @@ const CommentScreen = ({ navigation, route }) => {
           style={{
             height: height * 0.3,
             width: "100%",
-
             shadowOffset: { width: 1, height: 1 },
             shadowColor: "black",
             shadowOpacity: 0.5,
@@ -360,19 +368,20 @@ const CommentScreen = ({ navigation, route }) => {
                 >
                   {totalComment} COMMENTS TOTAL
                 </Text>
-
-                <FlatList
+                <ScrollView
                   style={{
                     padding: 10,
                     maxHeight: height * 0.6,
                     height: "auto",
-                    overflow: "scroll",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
-                  data={listComment}
-                  renderItem={({ item }) => (
+                >
+                  {listComment.map((cmt, index) => (
                     <CommentMember
+                      key={cmt._id + index}
                       route={routes}
-                      item={item}
+                      item={cmt}
                       navigation={navigation}
                       nextScreen={routes.friendInfo}
                       reload={refresh}
@@ -380,9 +389,8 @@ const CommentScreen = ({ navigation, route }) => {
                         setFocusReply(replyToCmt)
                       }
                     ></CommentMember>
-                  )}
-                  keyExtractor={(item) => item._id}
-                />
+                  ))}
+                </ScrollView>
                 {listComment.length < totalLevel0 && (
                   <Text style={styles.viewMore} onPress={LoadComment}>
                     View more comments...

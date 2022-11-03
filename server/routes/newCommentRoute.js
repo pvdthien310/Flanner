@@ -308,7 +308,7 @@ NewCommentRoute.get("/load/limit-comment/:postId/:cursor", async (req, res) => {
   if (!Number.isInteger(parseInt(req.params.cursor))) {
     res.send("Cursor must be an integer");
   }
-  const LIMIT = 2;
+  const LIMIT = 5;
   let skip = parseInt(req.params.cursor);
   await NewComment.find({
     postId: req.params.postId,

@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet,
   Dimensions,
-  FlatList,
+  ScrollView,
 } from "react-native";
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
 import react from "react";
@@ -379,26 +379,26 @@ const CommentMember = ({
         )}
       </View>
       {!notShowList ? (
-        <View>
-          <FlatList
-            style={{
-              marginLeft: 20,
-              overflow: "scroll",
-            }}
-            data={listLevel}
-            renderItem={({ item }) => (
-              <CommentMember
-                route={route}
-                item={item}
-                navigation={navigation}
-                nextScreen={route.friendInfo}
-                setFocusOnReply={() => setFocusOnReply(item)}
-                reload={reload}
-              ></CommentMember>
-            )}
-            keyExtractor={(item) => item._id}
-          />
-        </View>
+        <ScrollView
+          style={{
+            padding: 10,
+            maxHeight: height * 0.6,
+            height: "auto",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {listLevel.map((cmt, index) => (
+            <CommentMember
+              key={cmt._id + index}
+              route={route}
+              item={cmt}
+              navigation={navigation}
+              nextScreen={route.friendInfo}
+              setFocusOnReply={(replyToCmt) => setFocusOnReply(replyToCmt)}
+            ></CommentMember>
+          ))}
+        </ScrollView>
       ) : null}
       {editMode && (
         <EditCommentDialog
