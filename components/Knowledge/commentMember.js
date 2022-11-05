@@ -19,6 +19,7 @@ import NewCommentAPI from "../../API/NewCommentAPI";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import EditCommentDialog from "./editCommentDialog";
 import Toast from "react-native-root-toast";
+import RatingAPI from "../../API/RatingAPI";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -29,6 +30,7 @@ const CommentMember = ({
   route,
   reload,
   setFocusOnReply,
+  rating,
 }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => {
@@ -117,7 +119,37 @@ const CommentMember = ({
       id: item._id.toString(),
       level: item.level,
     })
-      .then((res) => {
+      .then(async (res) => {
+        if (item.level === 0) {
+          const updateRatingItem = () => {
+            if (item.isPositive === "1" || sentiment.data.result === "0") {
+              return {
+                ...rating,
+                positive: rating.positive - 1,
+              };
+            }
+            if (item.isPositive === "2") {
+              return {
+                ...rating,
+                negative: rating.negative - 1,
+              };
+            }
+            return rating;
+          };
+          await RatingAPI.update(updateRatingItem)
+            .then((r) => {
+              reload();
+              let toast = Toast.show("Save successful!", {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+              });
+              dispatch({ type: "SET_LOADING_COMMENT", payload: false });
+            })
+            .catch((e) => console.log(e));
+        }
         reload();
         let toast = Toast.show("Save successful!", {
           duration: Toast.durations.SHORT,
@@ -223,6 +255,14 @@ const CommentMember = ({
                     {item.userName}
                   </Text>
                 </TouchableOpacity>
+              )}
+              {item.isPositive === "2" && (
+                <Ionicons
+                  style={{ flex: 1, marginTop: 2, marginLeft: 2 }}
+                  name="ios-warning"
+                  size={15}
+                  color="maroon"
+                />
               )}
               <Text
                 style={{
@@ -405,6 +445,7 @@ const CommentMember = ({
           commentItem={item}
           editMode={setEditMode}
           reload={reload}
+          rating={rating}
         />
       )}
     </View>

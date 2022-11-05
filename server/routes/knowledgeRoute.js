@@ -207,11 +207,15 @@ function authenToken(req, res, next) {
 
 KnowledgeRoute.get("/load-data/newsfeed/random", authenToken, (req, res) => {
   Knowledge.aggregate([{ $sample: { size: 15 } }])
-    .then((data) => {
+    .then(async (data) => {
       let processedList = data.filter((item) => {
         if (item.mode == "public") return item;
       });
-      res.send(processedList);
+      Knowledge.populate(processedList, "rating")
+        .then((list) => {
+          res.send(list);
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => {
       console.log(err);

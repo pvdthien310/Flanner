@@ -30,14 +30,14 @@ RatingRoute.post("/delete-all", async (req, res) => {
   Rating.deleteMany({}).then((data) => res.send("ok"));
 });
 
-RatingRoute.post("/", async (req, res) => {
+RatingRoute.post("/add", async (req, res) => {
   const initValue = req.body.negative === 0 && req.body.positive === 0;
   const newRating = {
     positive: req.body.positive,
     negative: req.body.negative,
     rate: initValue
       ? 0
-      : req.body.positive / (req.body.positive + req.body.negative),
+      : (req.body.positive / (req.body.positive + req.body.negative)) * 100,
   };
   Rating.create(newRating)
     .then((data) => {
@@ -48,19 +48,19 @@ RatingRoute.post("/", async (req, res) => {
     });
 });
 
-RatingRoute.put("/", async (req, res) => {
+RatingRoute.post("/update", async (req, res) => {
   const initValue = req.body.negative === 0 && req.body.positive === 0;
 
-  Rating.updateOne(
+  Rating.findOneAndUpdate(
     { _id: req.body._id },
     {
       positive: req.body.positive,
       negative: req.body.negative,
       rate: initValue
         ? 0
-        : req.body.positive / (req.body.positive + req.body.negative),
+        : (req.body.positive / (req.body.positive + req.body.negative)) * 100,
     },
-    { new: "true" }
+    { returnOriginal: false }
   )
     .then((data) => {
       res.json(data);
@@ -70,7 +70,7 @@ RatingRoute.put("/", async (req, res) => {
     });
 });
 
-RatingRoute.delete("/", async (req, res) => {
+RatingRoute.delete("/delete", async (req, res) => {
   Rating.deleteOne({
     _id: req.params.id,
   })

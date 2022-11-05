@@ -218,6 +218,17 @@ const DetailKnowledge = ({ route, navigation }) => {
               </Text>
 
               <Text style={Poststyle_Status.title_detail}>{data.title}</Text>
+              {item.rating.rate > 0 && (
+                <Text
+                  style={
+                    item.rating.rate > 50
+                      ? Poststyle_Status.positive
+                      : Poststyle_Status.negative
+                  }
+                >
+                  Positive rating: {item.rating.rate}%
+                </Text>
+              )}
               <Text style={Poststyle_Status.description_detail}>
                 {data.description}
               </Text>

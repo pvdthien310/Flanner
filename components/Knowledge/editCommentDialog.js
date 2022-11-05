@@ -12,7 +12,12 @@ import {
 import Toast from "react-native-root-toast";
 import { useSelector, useDispatch } from "react-redux";
 
-export default function EditCommentDialog({ commentItem, editMode, reload }) {
+export default function EditCommentDialog({
+  commentItem,
+  editMode,
+  reload,
+  rating,
+}) {
   const [modalVisible, setModalVisible] = useState(true);
   const { currentEditedId } = useSelector((state) => {
     return state.Comment;
@@ -28,11 +33,11 @@ export default function EditCommentDialog({ commentItem, editMode, reload }) {
       body: body,
     };
     await NewCommentAPI.update(newData)
-      .then((res) => {
+      .then(async (res) => {
         if (res == "OK") {
           setModalVisible(!modalVisible);
           reload();
-          let toast = Toast.show("Save successful!", {
+          Toast.show("Save successful!", {
             duration: Toast.durations.SHORT,
             position: Toast.positions.CENTER,
             shadow: true,
@@ -40,7 +45,54 @@ export default function EditCommentDialog({ commentItem, editMode, reload }) {
             hideOnPress: true,
           });
           dispatch({ type: "SET_EDITED_COMMENT", payload: commentItem._id });
-
+          try {
+            const sentiment = await axios.post(
+              "https://comebuyaiserver.herokuapp.com/sentiment",
+              { sentence: newRootComment.body }
+            );
+            if (
+              sentiment.data.result === "1" ||
+              sentiment.data.result === "2" ||
+              sentiment.data.result === "0"
+            ) {
+              if (sentiment.data.result === commentItem.isPositive) return;
+              const updateRatingItem = () => {
+                if (
+                  sentiment.data.result === "1" ||
+                  sentiment.data.result === "0"
+                ) {
+                  return {
+                    ...rating,
+                    positive: rating.positive + 1,
+                    negative: rating.negative - 1,
+                  };
+                }
+                if (sentiment.data.result === "2") {
+                  return {
+                    ...rating,
+                    negative: rating.negative + 1,
+                    positive: rating.positive - 1,
+                  };
+                }
+                return rating;
+              };
+              await RatingAPI.update(updateRatingItem)
+                .then(async (data) => {
+                  setRating(data);
+                  if (commentItem.isPositive !== sentiment.data.result) {
+                    await NewCommentAPI.update({
+                      ...newData,
+                      isPositive: sentiment.data.result,
+                    })
+                      .then()
+                      .catch((e) => console.log(e));
+                  }
+                })
+                .catch((err) => console.log(err));
+            }
+          } catch (error) {
+            console.log(error.message);
+          }
           editMode(false);
         }
       })

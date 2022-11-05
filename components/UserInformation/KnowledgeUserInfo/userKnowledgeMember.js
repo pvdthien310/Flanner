@@ -332,6 +332,17 @@ const UserKnowledgeMember = ({ item, navigation, routes }) => {
             </View>
 
             <Text style={Poststyle_Status.title}>{item.title}</Text>
+            {item.rating.rate > 0 && (
+              <Text
+                style={
+                  item.rating.rate > 50
+                    ? Poststyle_Status.positive
+                    : Poststyle_Status.negative
+                }
+              >
+                Positive rating: {item.rating.rate}%
+              </Text>
+            )}
           </View>
 
           <Text style={Poststyle_Status.description}>{item.description}</Text>

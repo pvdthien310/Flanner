@@ -103,34 +103,55 @@ const CommentScreen = ({ navigation, route }) => {
         level: 0,
       };
 
-      NewCommentAPI.addRoot(newRootComment).then((res) => {
+      NewCommentAPI.addRoot(newRootComment).then(async (res) => {
         setBody("");
         setLoadingAddCmt(false);
         const newList = [res, ...listComment];
         setListComment(newList);
+        try {
+          const sentiment = await axios.post(
+            "https://comebuyaiserver.herokuapp.com/sentiment",
+            { sentence: newRootComment.body }
+          );
+
+          if (
+            sentiment.data.result === "1" ||
+            sentiment.data.result === "2" ||
+            sentiment.data.result === "0"
+          ) {
+            await RatingAPI.update({
+              ...rating,
+              positive:
+                sentiment.data.result === "1" || sentiment.data.result === "0"
+                  ? rating.positive + 1
+                  : rating.positive,
+              negative:
+                sentiment.data.result === "2"
+                  ? rating.negative + 1
+                  : rating.negative,
+            })
+              .then(async (data) => {
+                setRating(data);
+                await NewCommentAPI.update({
+                  ...newRootComment,
+                  isPositive: sentiment.data.result,
+                })
+                  .then((cmt) => {
+                    const list = [cmt, ...listComment];
+                    console.log("comment", cmt);
+                    console.log("List", list);
+                    setListComment(newList);
+                  })
+                  .catch((e) => console.log(e));
+              })
+              .catch((err) => console.log(err));
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+        setTotalComment(totalComment + 1);
         if (item.userID != user.userID) sendNotification();
       });
-      try {
-        const temp = await axios.post(
-          "https://comebuyaiserver.herokuapp.com/sentiment",
-          { sentence: newRootComment.body }
-        );
-        if (temp.data.result === 1 || temp.data.result === 2) {
-          RatingAPI.update({
-            ...rating,
-            positive:
-              temp.data.result === 1 ? rating.positive + 1 : rating.positive,
-            negative:
-              temp.data.result === 2 ? rating.negative + 1 : rating.negative,
-          })
-            .then((data) => {
-              setRating(data);
-            })
-            .catch((err) => console.log(err));
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
     } else {
       setIsReplying(false);
       setLoadingAddCmt(true);
@@ -395,6 +416,7 @@ const CommentScreen = ({ navigation, route }) => {
                 >
                   {listComment.map((cmt, index) => (
                     <CommentMember
+                      ratingItem={item.rating}
                       key={cmt._id + index}
                       route={routes}
                       item={cmt}

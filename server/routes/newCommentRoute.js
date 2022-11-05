@@ -200,9 +200,11 @@ NewCommentRoute.post("/update", (req, res) => {
     }
   }
 
-  NewComment.updateOne({ _id: req.body._id }, newComment)
+  NewComment.findOneAndUpdate({ _id: req.body._id }, newComment, {
+    returnOriginal: false,
+  })
     .then((data) => {
-      res.send("OK");
+      res.send(data);
     })
     .catch((err) => {
       console.log(err);
