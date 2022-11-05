@@ -34,12 +34,17 @@ export default function App() {
     return null;
   }
   return (
+    // <RootSiblingParent>
+    //   <Chat client={client}>
+    //     <Provider store={store}>
+    //       <LoginStack />
+    //     </Provider>
+    //   </Chat>
+    // </RootSiblingParent>
     <RootSiblingParent>
-      <Chat client={client}>
-        <Provider store={store}>
-          <LoginStack />
-        </Provider>
-      </Chat>
+      <Provider store={store}>
+        <LoginStack />
+      </Provider>
     </RootSiblingParent>
   );
 }

@@ -22,7 +22,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import KnowLedgeApi from "../../API/KnowledgeAPI";
 import GenreApi from "../../API/Genres";
 import Toast from "react-native-root-toast";
-import GenresChip from "./genresChip";
+import GenresChip from "../../components/GenresChip";
 import RNPickerSelect from "react-native-picker-select";
 
 const { height } = Dimensions.get("screen");
@@ -35,7 +35,6 @@ export default function AddKnowledge({ route, navigation }) {
   const [loading, setLoading] = useState(false);
 
   const [genres, setGenres] = useState(false);
-  const [currentGenre, setCurrentGenre] = useState();
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   const dispatch = useDispatch();
@@ -291,7 +290,6 @@ export default function AddKnowledge({ route, navigation }) {
             onValueChange={(itemValue, itemIndex) => {
               addGenres(itemValue);
             }}
-            value={currentGenre}
             items={genres}
           />
         </View>
