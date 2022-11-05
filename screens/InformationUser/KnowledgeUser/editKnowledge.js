@@ -82,12 +82,14 @@ export default function EditKnowledge({ route, navigation }) {
       setImage(data.listImage);
       setSelectedGenres(data.genres);
 
-      const idFilters = data.genres.map((e) => e._id);
-      const filerGenres = genres.filter(
-        (e) => !idFilters.includes(e.value._id)
-      );
-      // console.log(filerGenres);
-      setGenres(filerGenres);
+      if (genres) {
+        const idFilters = data.genres.map((e) => e._id);
+        const filerGenres = genres.filter(
+          (e) => !idFilters.includes(e.value._id)
+        );
+        // console.log(filerGenres);
+        setGenres(filerGenres);
+      }
     }
   }, [data]);
 
