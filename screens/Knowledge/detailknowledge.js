@@ -24,7 +24,6 @@ import NotificationApi from "../../API/NotificationAPI";
 import Api from "../../API/UserAPI";
 
 const DetailKnowledge = ({ route, navigation }) => {
-  console.log(route);
   const [, forceRerender] = useState();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.User);
@@ -230,6 +229,17 @@ const DetailKnowledge = ({ route, navigation }) => {
                   ))}
               </View>
 
+              {item.rating.rate > 0 && (
+                <Text
+                  style={
+                    item.rating.rate > 50
+                      ? Poststyle_Status.positive
+                      : Poststyle_Status.negative
+                  }
+                >
+                  Positive rating: {item.rating.rate}%
+                </Text>
+              )}
               <Text style={Poststyle_Status.description_detail}>
                 {data.description}
               </Text>

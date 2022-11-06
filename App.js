@@ -12,8 +12,8 @@ import { StreamChat } from "stream-chat";
 
 const store = createStore(RootReducer);
 
-const API_KEY = "ypa7vxd248v5";
-const client = StreamChat.getInstance(API_KEY);
+// const API_KEY = "ypa7vxd248v5";
+// const client = StreamChat.getInstance(API_KEY);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -36,9 +36,11 @@ export default function App() {
     //   </Chat>
     // </RootSiblingParent>
     <RootSiblingParent>
+      {/* <Chat client={client}> */}
       <Provider store={store}>
         <LoginStack />
       </Provider>
+      {/* </Chat> */}
     </RootSiblingParent>
   );
 }

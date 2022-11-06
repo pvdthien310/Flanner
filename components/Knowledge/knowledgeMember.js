@@ -228,6 +228,17 @@ const KnowledgeMember = ({ item, navigation, nextScreen }) => {
             </View>
 
             <Text style={Poststyle_Status.title}>{item.title}</Text>
+            {item.rating.rate > 0 && (
+              <Text
+                style={
+                  item.rating.rate > 50
+                    ? Poststyle_Status.positive
+                    : Poststyle_Status.negative
+                }
+              >
+                Positive rating: {item.rating.rate}%
+              </Text>
+            )}
           </View>
           <View style={{ display: "flex", flexDirection: "row" }}>
             {item.genres.length > 0 &&

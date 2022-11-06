@@ -327,12 +327,14 @@ export const Poststyle_Status = StyleSheet.create({
     fontSize: 25,
     marginTop: 10,
     marginBottom: 5,
+    marginStart: 20,
   },
   description: {
     fontFamily: "nunitobold",
     fontSize: 15,
     marginTop: 10,
     marginBottom: 5,
+    marginStart: 20,
     color: "dimgray",
   },
   body: {
@@ -410,8 +412,10 @@ export const Poststyle_Status = StyleSheet.create({
     shadowRadius: 1,
   },
   reactnumber_detail: {
+    marginStart: 20,
     fontFamily: "nunitobold",
     fontSize: 17,
+    marginBottom: 10,
     alignSelf: "center",
     textDecorationLine: "underline",
   },
@@ -436,5 +440,21 @@ export const Poststyle_Status = StyleSheet.create({
   },
   buttonfavorite1: {
     color: "yellow",
+  },
+  positive: {
+    fontFamily: "nunitobold",
+    fontSize: 12,
+    marginTop: 10,
+    marginBottom: 5,
+    marginStart: 20,
+    color: "teal",
+  },
+  negative: {
+    fontFamily: "nunitobold",
+    fontSize: 12,
+    marginTop: 10,
+    marginBottom: 5,
+    marginStart: 20,
+    color: "maroon",
   },
 });

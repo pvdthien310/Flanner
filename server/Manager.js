@@ -12,6 +12,8 @@ const CommentRoute = require("./routes/commentRoute");
 const ReportRoute = require("./routes/ReportRoute");
 const SavePostInfoRoute = require("./routes/savePostInfoRoute");
 const GenreRoute = require("./routes/genreRoute");
+const NewCommentRoutes = require("./routes/newCommentRoute");
+const RatingRoute = require("./routes/ratingRoute");
 
 /// Process file json and env
 app.use(bodyParser.json());
@@ -36,6 +38,8 @@ app.use("/api/comment", CommentRoute);
 app.use("/api/report", ReportRoute);
 app.use("/api/savedpost", SavePostInfoRoute);
 app.use("/api/genre", GenreRoute);
+app.use("/api/new-comment", NewCommentRoutes);
+app.use("/api/rating", RatingRoute);
 
 //// Open port
 const port = process.env.PORT || 3001;

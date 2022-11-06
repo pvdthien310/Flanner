@@ -43,6 +43,10 @@ const KnowledgeSchema = new mongoose.Schema({
       ref: "Gerne",
     },
   ],
+  rating: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Rating",
+  },
 });
 
 module.exports = mongoose.model("Knowledge", KnowledgeSchema);
