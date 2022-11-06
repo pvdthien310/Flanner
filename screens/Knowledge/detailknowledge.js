@@ -33,6 +33,7 @@ const DetailKnowledge = ({ route, navigation }) => {
   const [host, setHost] = useState({});
   const [loading, setLoading] = useState(true);
   const [isNull, setIsNull] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
   const createTwoButtonAlert = () =>
     Alert.alert("Notification", "Do you want to navigate your profile?", [
@@ -219,6 +220,16 @@ const DetailKnowledge = ({ route, navigation }) => {
               </Text>
 
               <Text style={Poststyle_Status.title_detail}>{data.title}</Text>
+
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                {data.genres.length > 0 &&
+                  data.genres.map((genre, index) => (
+                    <Text key={index} style={Poststyle_Status.genres}>
+                      {genre.title}
+                    </Text>
+                  ))}
+              </View>
+
               <Text style={Poststyle_Status.description_detail}>
                 {data.description}
               </Text>
@@ -228,12 +239,32 @@ const DetailKnowledge = ({ route, navigation }) => {
                   backgroundColor: "lightgray",
                   padding: 5,
                   marginTop: 10,
-                  marginStart: 10,
                 }}
               >
-                <Text style={Poststyle_Status.body_detail}>{data.body}</Text>
+                <Text
+                  style={
+                    showMore
+                      ? Poststyle_Status.body_detail
+                      : { ...Poststyle_Status.body_detail, maxHeight: 300 }
+                  }
+                >
+                  {data.body}
+                </Text>
+
+                <TouchableOpacity onPress={() => setShowMore(!showMore)}>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontWeight: "bold",
+                      marginBottom: 10,
+                    }}
+                  >
+                    {showMore ? "Ẩn bớt" : " Xem thêm"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </PostText>
+
             <TouchableOpacity
               onPress={() => navigation.push(routes.showReactInfo, { data })}
             >

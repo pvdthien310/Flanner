@@ -24,7 +24,6 @@ CommentRoute.post("/send-data", authenToken, (req, res) => {
     posttime: req.body.posttime,
     react: req.body.react,
   });
-  // console.log(newComment)
   newComment
     .save()
     .then((data) => {

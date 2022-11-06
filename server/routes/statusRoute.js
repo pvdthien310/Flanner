@@ -1,26 +1,53 @@
-
-const StatusRoute = require('express').Router();
-const Status = require("../models/Status")
-const User = require("../models/User")
-const jwt = require('jsonwebtoken')
-
-
+const StatusRoute = require("express").Router();
+const Status = require("../models/Status");
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const { base64encode, base64decode } = require("nodejs-base64");
+const url = require("url");
 
 /// Delete member
-StatusRoute.post('/delete', authenToken, (req, res) => {
-    Status.findByIdAndRemove(req.body.id)
-        .then((data) => {
-            console.log("Delete Success")
-            res.send("delete")
-        }).catch(err => {
-            console.log("error", err)
-        })
-})
+StatusRoute.post("/delete", authenToken, (req, res) => {
+  Status.findByIdAndRemove(req.body.id)
+    .then((data) => {
+      console.log("Delete Success");
+      res.send("delete");
+    })
+    .catch((err) => {
+      console.log("error", err);
+    });
+});
 
 /// Add new member
-StatusRoute.post('/send-data', authenToken, (req, res) => {
-    // console.log(req.body.mode)
-    const newStatus = new Status({
+StatusRoute.post("/send-data", authenToken, (req, res) => {
+  // console.log(req.body.mode)
+  const newStatus = new Status({
+    username: req.body.username,
+    userID: req.body.userID,
+    body: req.body.body,
+    avatar: req.body.avatar,
+    posttime: req.body.posttime,
+    listImage: req.body.listImage,
+    react: req.body.react,
+    mode: req.body.mode,
+  });
+  // console.log(newStatus)
+  newStatus
+    .save()
+    .then((data) => {
+      // console.log(data)
+      res.send("Add Success");
+    })
+    .catch((err) => {
+      console.log("Error");
+    });
+});
+
+/// Update member by ID
+StatusRoute.post("/update", authenToken, (req, res) => {
+  Status.findById(req.body.id)
+    .then((result) => {
+      const _mode = result.mode;
+      Status.findByIdAndUpdate(req.body.id, {
         username: req.body.username,
         userID: req.body.userID,
         body: req.body.body,
@@ -28,254 +55,300 @@ StatusRoute.post('/send-data', authenToken, (req, res) => {
         posttime: req.body.posttime,
         listImage: req.body.listImage,
         react: req.body.react,
-        mode: req.body.mode
-    })
-    // console.log(newStatus)
-    newStatus.save()
+        mode: _mode,
+      })
         .then((data) => {
-            // console.log(data)
-            res.send("Add Success")
+          res.send(data);
         })
-        .catch(err => {
-            console.log('Error')
-        })
-})
-
-/// Update member by ID
-StatusRoute.post('/update', authenToken, (req, res) => {
-    Status.findById(req.body.id)
-        .then(result => {
-            const _mode = result.mode
-            Status.findByIdAndUpdate(req.body.id, {
-                username: req.body.username,
-                userID: req.body.userID,
-                body: req.body.body,
-                avatar: req.body.avatar,
-                posttime: req.body.posttime,
-                listImage: req.body.listImage,
-                react: req.body.react,
-                mode: _mode
-            })
-                .then(data => {
-
-                    res.send(data)
-                }).catch(err => {
-                    console.log(err)
-                })
-        })
-        .catch(err => console.log('err '))
-
-
-
-})
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => console.log("err "));
+});
 
 function authenToken(req, res, next) {
-    const authorizationHeader = req.headers['x-access-token'];
-    const token = authorizationHeader;
-    if (!token) {
-        res.status(401).send('Token het han');
-        return;
+  const authorizationHeader = req.headers["x-access-token"];
+  const token = authorizationHeader;
+  if (!token) {
+    res.status(401).send("Token het han");
+    return;
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+    console.log("accept token");
+    if (err) {
+      res.sendStatus(401);
+      return;
     }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-        console.log('accept token')
-        if (err) {
-            res.sendStatus(401);
-            return;
-        }
-        next();
-    })
+    next();
+  });
 }
 
 //Get a member by ID
-StatusRoute.get('/:id', authenToken, (req, res) => {
-    Status.findById(req.params.id)
-        .then(data => {
-            if (data)
-                res.send(data)
-            else
-                res.send('No Exist')
-        })
-        .catch(err => console.log(err))
-})
+StatusRoute.get("/:id", authenToken, (req, res) => {
+  Status.findById(req.params.id)
+    .then((data) => {
+      if (data) res.send(data);
+      else res.send("No Exist");
+    })
+    .catch((err) => console.log(err));
+});
 
-
-StatusRoute.get('/load-data/:userID', authenToken, (req, res) => {
-    Status.find({ userID: req.params.userID })
-        .then(data => res.send(data))
-        .catch(err => console.log(err))
-})
+StatusRoute.get("/load-data/:userID", authenToken, (req, res) => {
+  Status.find({ userID: req.params.userID })
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
+});
 
 //Load data without private and limitary post
-StatusRoute.get('/load-data/friend/:userID', authenToken, (req, res) => {
-    Status.find({ userID: req.params.userID })
-        .then(data => {
-            let processedList = data.filter(item => {
-                if (item.mode == 'public') return item
-            })
-            res.send(processedList)
-        })
-        .catch(err => console.log(err))
-})
+StatusRoute.get("/load-data/friend/:userID", authenToken, (req, res) => {
+  Status.find({ userID: req.params.userID })
+    .then((data) => {
+      let processedList = data.filter((item) => {
+        if (item.mode == "public") return item;
+      });
+      res.send(processedList);
+    })
+    .catch((err) => console.log(err));
+});
 
 /// Get all members
-StatusRoute.get('/', authenToken, (req, res) => {
-    Status.find({})
-        .then(data => {
-            // console.log(data)
-            res.send(data)
-        }).catch(err => {
-            console.log(err)
-        })
-})
+StatusRoute.get("/", authenToken, (req, res) => {
+  Status.find({})
+    .then((data) => {
+      // console.log(data)
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
-//Update 
-StatusRoute.post('/update/:id/:number/true/:userID', authenToken, (req, res) => {
+//Update
+StatusRoute.post(
+  "/update/:id/:number/true/:userID",
+  authenToken,
+  (req, res) => {
     let _number = parseInt(req.params.number) + 1;
 
-    Status.findByIdAndUpdate(req.params.id, { "reactNumber": _number.toString() }, { new: true })
-        .then((data) => {
-            Status.findByIdAndUpdate(req.params.id,
-                { "$push": { "react": req.params.userID } },
-                { "new": true, "upsert": true }
-
-            ).then((data) => res.send(data))
-                .catch(err => console.log(err))
-        }).catch(err => {
-            console.log(err)
-        })
-})
-StatusRoute.post('/update/:id/:number/false/:userID', authenToken, (req, res) => {
+    Status.findByIdAndUpdate(
+      req.params.id,
+      { reactNumber: _number.toString() },
+      { new: true }
+    )
+      .then((data) => {
+        Status.findByIdAndUpdate(
+          req.params.id,
+          { $push: { react: req.params.userID } },
+          { new: true, upsert: true }
+        )
+          .then((data) => res.send(data))
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+);
+StatusRoute.post(
+  "/update/:id/:number/false/:userID",
+  authenToken,
+  (req, res) => {
     let _number = parseInt(req.params.number) - 1;
 
-    Status.findByIdAndUpdate(req.params.id, { "reactNumber": _number.toString() }, { new: true })
-        .then((data) => {
-            Status.findByIdAndUpdate(req.params.id,
-                { "$pull": { "react": req.params.userID } },
-                { "new": true, "upsert": true }
+    Status.findByIdAndUpdate(
+      req.params.id,
+      { reactNumber: _number.toString() },
+      { new: true }
+    )
+      .then((data) => {
+        Status.findByIdAndUpdate(
+          req.params.id,
+          { $pull: { react: req.params.userID } },
+          { new: true, upsert: true }
+        )
+          .then((data) => res.send(data))
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+);
 
-            ).then((data) => res.send(data))
-                .catch(err => console.log(err))
-        }).catch(err => {
-            console.log(err)
-        })
-})
-
-StatusRoute.post('/update/:id/true/:userID', authenToken, (req, res) => {
-    Status.findById(req.params.id)
-        .then(data => {
-            if ((data.react).indexOf(req.params.userID) == -1) {
-                Status.findByIdAndUpdate(req.params.id,
-                    { "$push": { "react": req.params.userID } },
-                    { "new": true, "upsert": true }
-                ).then((data) => {
-                    res.send(data)
-                })
-                    .catch(err => console.log(err))
-            }
-            else
-                res.send(data)
-        })
-        .catch(err => console.log(err))
-})
-
-
-StatusRoute.post('/update/:id/false/:userID', authenToken, (req, res) => {
-    Status.findByIdAndUpdate(req.params.id,
-        { "$pull": { "react": req.params.userID } },
-        { "new": true, "upsert": true }
-    ).then((data) => {
-        res.send(data)
+StatusRoute.post("/update/:id/true/:userID", authenToken, (req, res) => {
+  Status.findById(req.params.id)
+    .then((data) => {
+      if (data.react.indexOf(req.params.userID) == -1) {
+        Status.findByIdAndUpdate(
+          req.params.id,
+          { $push: { react: req.params.userID } },
+          { new: true, upsert: true }
+        )
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => console.log(err));
+      } else res.send(data);
     })
-        .catch(err => console.log(err))
-})
-StatusRoute.post('/update/mode/:postID/limitary', authenToken, (req, res) => {
-    Status.findByIdAndUpdate(req.params.postID, { "mode": 'limitary' }, { new: true })
-        .then((data) => {
-            res.send(data)
-        }).catch(err => {
-            console.log(err)
-        })
-})
-StatusRoute.post('/update/mode/:postID/private', authenToken, (req, res) => {
-    Status.findById(req.params.postID)
-        .then(result => {
-            if (result.mode == 'limitary') {
-                res.send(result)
-                return;
-            }
-            else {
-                Status.findByIdAndUpdate(req.params.postID, { "mode": 'private' }, { new: true })
-                    .then((data) => {
-                        res.send(data)
-                    }).catch(err => {
-                        console.log(err)
-                    })
-            }
-        })
-        .catch(err => console.log('Loi load status'))
-})
-StatusRoute.post('/update/mode/:postID/public', authenToken, (req, res) => {
-    Status.findById(req.params.postID)
-        .then(result => {
-            if (result.mode == 'limitary') {
-                res.send(result)
-                return;
-            }
-            else {
-                Status.findByIdAndUpdate(req.params.postID, { "mode": 'public' }, { new: true })
-                    .then((data) => {
-                        res.send(data)
-                    }).catch(err => {
-                        console.log(err)
-                    })
-            }
-        })
-        .catch(err => console.log('Loi load status'))
-})
+    .catch((err) => console.log(err));
+});
 
-StatusRoute.get('/load-data/newsfeed/random/:userID', authenToken, (req, res) => {
+StatusRoute.post("/update/:id/false/:userID", authenToken, (req, res) => {
+  Status.findByIdAndUpdate(
+    req.params.id,
+    { $pull: { react: req.params.userID } },
+    { new: true, upsert: true }
+  )
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => console.log(err));
+});
+StatusRoute.post("/update/mode/:postID/limitary", authenToken, (req, res) => {
+  Status.findByIdAndUpdate(
+    req.params.postID,
+    { mode: "limitary" },
+    { new: true }
+  )
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+StatusRoute.post("/update/mode/:postID/private", authenToken, (req, res) => {
+  Status.findById(req.params.postID)
+    .then((result) => {
+      if (result.mode == "limitary") {
+        res.send(result);
+        return;
+      } else {
+        Status.findByIdAndUpdate(
+          req.params.postID,
+          { mode: "private" },
+          { new: true }
+        )
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    })
+    .catch((err) => console.log("Loi load status"));
+});
+StatusRoute.post("/update/mode/:postID/public", authenToken, (req, res) => {
+  Status.findById(req.params.postID)
+    .then((result) => {
+      if (result.mode == "limitary") {
+        res.send(result);
+        return;
+      } else {
+        Status.findByIdAndUpdate(
+          req.params.postID,
+          { mode: "public" },
+          { new: true }
+        )
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    })
+    .catch((err) => console.log("Loi load status"));
+});
+
+StatusRoute.get(
+  "/load-data/newsfeed/random/:userID",
+  authenToken,
+  (req, res) => {
     User.find({})
-        .then(data => {
-            // res.send(data)
-            let processedList = data.filter(item => {
-                if (item.following.indexOf(req.params.userID) != -1 && item.followed.indexOf(req.params.userID) != -1)
-                    return item;
-            })
-            // console.log(processedList)
+      .then((data) => {
+        let processedList = data.filter((item) => {
+          if (
+            item.following.indexOf(req.params.userID) != -1 &&
+            item.followed.indexOf(req.params.userID) != -1
+          )
+            return item;
+        });
+        // console.log(processedList)
 
-            Status.aggregate([{ $sample: { size: 10 } }])
-                .then(data => {
-                    let ListStatus = []
-                    for (let i = 0; i < data.length; i++) {
-                        for (let j = 0; j < processedList.length; j++) {
-                            if (data[i].userID == processedList[j].userID) {
-                                if (!ListStatus.includes(data[i]))
-                                    ListStatus.push(data[i]);
-                                break;
-                            }
-                        }
-                    }
-                    res.send(ListStatus)
-                }).catch(err => {
-                    console.log(err)
-                })
-        }).catch(err => {
-            console.log(err)
-        })
+        Status.aggregate([{ $sample: { size: 10 } }])
+          .then((data) => {
+            let ListStatus = [];
+            for (let i = 0; i < data.length; i++) {
+              for (let j = 0; j < processedList.length; j++) {
+                if (data[i].userID == processedList[j].userID) {
+                  if (!ListStatus.includes(data[i])) ListStatus.push(data[i]);
+                  break;
+                }
+              }
+            }
+            res.send(ListStatus);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+);
 
+StatusRoute.get("/load-data/newsfeed/:userID", (req, res) => {
+  const LIMIT = 5;
+  var queryData = url.parse(req.url, true).query;
+  const { cursor } = queryData;
 
+  let skip = 0;
+  if (cursor) skip = base64decode(cursor);
 
-})
+  User.find({})
+    .then((data) => {
+      let listUserIds = data.map((item) => {
+        if (
+          item.following.indexOf(req.params.userID) != -1 &&
+          item.followed.indexOf(req.params.userID) != -1
+        )
+          return item.userID;
+      });
 
-StatusRoute.post('/update-post',authenToken, (req,res) => {
-    Status.updateMany({userID: req.body.userID}, {'username': req.body.name, 'avatar' : req.body.avatar})
-    .then(result => {
-        res.send('Update Status Successful!')
+      listUserIds = listUserIds.filter((item) => item != null);
+
+      Status.find(
+        { userID: { $in: listUserIds } },
+        {},
+        { skip: +skip, limit: LIMIT }
+      ).then((listStatus) => {
+        skip = +skip + LIMIT;
+        const cursorEncode = base64encode(skip);
+
+        res.send({
+          data: listStatus,
+          cursor: cursorEncode,
+        });
+      });
     })
-    .catch(err => console.log(err))
-})
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
+StatusRoute.post("/update-post", authenToken, (req, res) => {
+  Status.updateMany(
+    { userID: req.body.userID },
+    { username: req.body.name, avatar: req.body.avatar }
+  )
+    .then((result) => {
+      res.send("Update Status Successful!");
+    })
+    .catch((err) => console.log(err));
+});
 
-
-
-module.exports = StatusRoute
+module.exports = StatusRoute;
