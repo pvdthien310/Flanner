@@ -103,7 +103,7 @@ const CommentScreen = ({ navigation, route }) => {
         level: 0,
       };
 
-      NewCommentAPI.addRoot(newRootComment).then(async (res) => {
+      await NewCommentAPI.addRoot(newRootComment).then(async (res) => {
         setBody("");
         setLoadingAddCmt(false);
         const newList = [res, ...listComment];
@@ -133,18 +133,19 @@ const CommentScreen = ({ navigation, route }) => {
               .then(async (data) => {
                 setRating(data);
                 await NewCommentAPI.update({
+                  _id: res._id,
                   ...newRootComment,
                   isPositive: sentiment.data.result,
                 })
                   .then((cmt) => {
                     const list = [cmt, ...listComment];
-                    console.log("comment", cmt);
-                    console.log("List", list);
                     setListComment(newList);
                   })
                   .catch((e) => console.log(e));
               })
               .catch((err) => console.log(err));
+          } else {
+            console.log("ngu lam");
           }
         } catch (error) {
           console.log(error.message);

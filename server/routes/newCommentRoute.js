@@ -199,11 +199,12 @@ NewCommentRoute.post("/update", (req, res) => {
       return res.send("Reply comment must have parentId");
     }
   }
-
-  NewComment.findOneAndUpdate({ _id: req.body._id }, newComment, {
+  console.log(req.body._id);
+  NewComment.findByIdAndUpdate(req.body._id, newComment, {
     returnOriginal: false,
   })
     .then((data) => {
+      console.log(data);
       res.send(data);
     })
     .catch((err) => {
