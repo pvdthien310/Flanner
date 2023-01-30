@@ -243,6 +243,7 @@ const DetailKnowledge = ({ route, navigation }) => {
               <Text style={Poststyle_Status.description_detail}>
                 {data.description}
               </Text>
+
               <View
                 style={{
                   borderRadius: 10,
@@ -261,17 +262,19 @@ const DetailKnowledge = ({ route, navigation }) => {
                   {data.body}
                 </Text>
 
-                <TouchableOpacity onPress={() => setShowMore(!showMore)}>
-                  <Text
-                    style={{
-                      alignSelf: "center",
-                      fontWeight: "bold",
-                      marginBottom: 10,
-                    }}
-                  >
-                    {showMore ? "Ẩn bớt" : " Xem thêm"}
-                  </Text>
-                </TouchableOpacity>
+                {data.body.length > 200 && (
+                  <TouchableOpacity onPress={() => setShowMore(!showMore)}>
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                        fontWeight: "bold",
+                        marginBottom: 10,
+                      }}
+                    >
+                      {showMore ? "Hide" : "Show more"}
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </PostText>
 

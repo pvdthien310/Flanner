@@ -1,25 +1,29 @@
-const EmailRoute = require('express').Router();
-const Email = require("../models/Email")
-// const sendMail = require("../../gmail-api/sendEmail")
+const EmailRoute = require("express").Router();
+const nodemailer = require("nodemailer");
 
+EmailRoute.post("/", (req, res) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "flanerapplication@gmail.com",
+      pass: "imhcvoeuoazouvcm",
+    },
+  });
+  console.log(req.body);
+  const mailOptions = {
+    from: "flanerapplication@gmail.com",
+    to: req.body.to,
+    subject: req.body.subject,
+    text: req.body.text,
+  };
 
-EmailRoute.post('/', (req, res) => {
-    const value = {
-        from: req.body.from,
-        to: req.body.to,
-        subject: req.body.subject,
-        html: req.body.html
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.send(info.response);
     }
-    // const value = {
-    //     from: 'flanerapplication <trithuc23232@gmail.com>',
-    //     to: '19522321@gm.uit.edu.vn',
-    //     subject: "hello",
-    //     html: '<h1>shin ne html</h1>'
-    // }
+  });
+});
 
-    console.log(value)
-    // sendMail({ value })
-    res.send('send ok')
-})
-
-module.exports = EmailRoute
+module.exports = EmailRoute;

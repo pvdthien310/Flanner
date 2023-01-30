@@ -167,6 +167,7 @@ KnowledgeRoute.get("/:id", (req, res) => {
 
 KnowledgeRoute.get("/load-data/:userID", authenToken, (req, res) => {
   Knowledge.find({ userID: req.params.userID })
+    .populate("genres")
     .populate("rating")
     .then((data) => {
       res.send(data);
@@ -176,6 +177,7 @@ KnowledgeRoute.get("/load-data/:userID", authenToken, (req, res) => {
 /// Load data without private and limitary post
 KnowledgeRoute.get("/load-data/friend/:userID", authenToken, (req, res) => {
   Knowledge.find({ userID: req.params.userID })
+    .populate("genres")
     .populate("rating")
     .then((data) => {
       let processedList = data.filter((item) => {
@@ -189,6 +191,7 @@ KnowledgeRoute.get("/load-data/friend/:userID", authenToken, (req, res) => {
 /// Get all members
 KnowledgeRoute.get("/", authenToken, (req, res) => {
   Knowledge.find({})
+    .populate("genres")
     .populate("rating")
     .then((data) => {
       res.send(data);

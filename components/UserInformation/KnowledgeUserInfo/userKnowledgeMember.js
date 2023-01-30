@@ -344,7 +344,14 @@ const UserKnowledgeMember = ({ item, navigation, routes }) => {
               </Text>
             )}
           </View>
-
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            {item.genres.length > 0 &&
+              item.genres.map((genre, index) => (
+                <Text key={index} style={Poststyle_Status.genres}>
+                  {genre.title}
+                </Text>
+              ))}
+          </View>
           <Text style={Poststyle_Status.description}>{item.description}</Text>
         </TouchableOpacity>
       </PostText>
