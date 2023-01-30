@@ -14,7 +14,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { Chat, OverlayProvider } from "stream-chat-expo"; // Or stream-chat-expo
 import { StreamChat } from "stream-chat";
 
-const client = StreamChat.getInstance("wcrrmgg99vdh");
+const client = StreamChat.getInstance("kkxrmdu76hg7");
 
 const Tab = createBottomTabNavigator();
 

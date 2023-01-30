@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { StreamChat } from "stream-chat";
 import { useSelector } from "react-redux";
 
-const client = StreamChat.getInstance("wcrrmgg99vdh");
+const client = StreamChat.getInstance("kkxrmdu76hg7");
 
 export const useChatClient = () => {
   const { user } = useSelector((state) => {
