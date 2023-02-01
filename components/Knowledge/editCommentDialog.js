@@ -34,7 +34,7 @@ export default function EditCommentDialog({
     };
     await NewCommentAPI.update(newData)
       .then(async (res) => {
-        if (res == "OK") {
+        if (res) {
           setModalVisible(!modalVisible);
           reload();
           Toast.show("Save successful!", {
