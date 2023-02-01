@@ -64,11 +64,11 @@ export const DrawerStack = (props) => {
           ),
         }}
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="Flâner Chat"
         component={ChatStackNavigator}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Drawer.Screen
         name="User Information"
         component={UserInformationStack}
