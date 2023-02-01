@@ -50,13 +50,7 @@ export default function AddStatus({ route, navigation }) {
       })
       .catch((err) => console.log(err));
   };
-  const HandleUpImages = () => {
-    const uri = image;
-    const uriParts = uri.split(".");
-    const fileType = uriParts[uriParts.length - 1];
-    const type = `image/${fileType}`;
-    const name = Math.random().toString();
-    const photo = { uri, type, name };
+  const HandleUpImages = (photo) => {
     setLoading(true);
     const data = new FormData();
     data.append("file", photo);
@@ -140,9 +134,10 @@ export default function AddStatus({ route, navigation }) {
     //console.log(result);
 
     if (!result.cancelled) {
-      console.log(result);
       const uri = result.uri;
-      const type = result.type;
+      const uriParts = uri.split(".");
+      const fileType = uriParts[uriParts.length - 1];
+      const type = `image/${fileType}`;
       const name = Math.random().toString();
       const source = { uri, type, name };
       HandleUpImages(source);
@@ -272,6 +267,7 @@ export default function AddStatus({ route, navigation }) {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           data={image}
+          key={image.name}
           renderItem={({ item }) => (
             <View style={{ flexDirection: "column" }}>
               <Image style={styles.image} source={{ uri: item.uri }} />
