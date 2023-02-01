@@ -50,7 +50,13 @@ export default function AddStatus({ route, navigation }) {
       })
       .catch((err) => console.log(err));
   };
-  const HandleUpImages = (photo) => {
+  const HandleUpImages = () => {
+    const uri = image;
+    const uriParts = uri.split(".");
+    const fileType = uriParts[uriParts.length - 1];
+    const type = `image/${fileType}`;
+    const name = Math.random().toString();
+    const photo = { uri, type, name };
     setLoading(true);
     const data = new FormData();
     data.append("file", photo);

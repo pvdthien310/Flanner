@@ -74,7 +74,13 @@ export default function AddKnowledge({ route, navigation }) {
     setBody(val);
   };
   const [picture, setPicture] = useState([]);
-  const HandleUpImages = (photo) => {
+  const HandleUpImages = () => {
+    const uri = image;
+    const uriParts = uri.split(".");
+    const fileType = uriParts[uriParts.length - 1];
+    const type = `image/${fileType}`;
+    const name = Math.random().toString();
+    const photo = { uri, type, name };
     setLoading(true);
     const data = new FormData();
     data.append("file", photo);
@@ -98,6 +104,7 @@ export default function AddKnowledge({ route, navigation }) {
           ];
         });
         setLoading(false);
+        console.log(data.url);
       })
       .catch((err) => {
         Alert.alert("Error While Uploading Image");
