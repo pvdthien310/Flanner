@@ -110,7 +110,7 @@ const CommentScreen = ({ navigation, route }) => {
         setListComment(newList);
         try {
           const sentiment = await axios.post(
-            "https://comebuyaiserver.herokuapp.com/sentiment",
+            "https://comebuy-ai.onrender.com/sentiment",
             { sentence: newRootComment.body }
           );
 

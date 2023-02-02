@@ -170,7 +170,9 @@ export default function AddKnowledge({ route, navigation }) {
 
     if (!result.cancelled) {
       const uri = result.uri;
-      const type = result.type;
+      const uriParts = uri.split(".");
+      const fileType = uriParts[uriParts.length - 1];
+      const type = `image/${fileType}`;
       const name = Math.random().toString();
       const source = { uri, type, name };
       HandleUpImages(source);
@@ -357,6 +359,7 @@ export default function AddKnowledge({ route, navigation }) {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           data={image}
+          key={image.name}
           renderItem={({ item }) => (
             <View style={{ flexDirection: "column" }}>
               <Image style={styles.image} source={{ uri: item.uri }} />

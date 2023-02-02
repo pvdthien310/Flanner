@@ -34,7 +34,7 @@ export default function EditCommentDialog({
     };
     await NewCommentAPI.update(newData)
       .then(async (res) => {
-        if (res == "OK") {
+        if (res) {
           setModalVisible(!modalVisible);
           reload();
           Toast.show("Save successful!", {
@@ -47,7 +47,7 @@ export default function EditCommentDialog({
           dispatch({ type: "SET_EDITED_COMMENT", payload: commentItem._id });
           try {
             const sentiment = await axios.post(
-              "https://comebuyaiserver.herokuapp.com/sentiment",
+              "https://comebuy-ai.onrender.com/sentiment",
               { sentence: newRootComment.body }
             );
             if (

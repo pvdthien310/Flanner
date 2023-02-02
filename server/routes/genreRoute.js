@@ -55,7 +55,7 @@ GenreRoute.put("/", async (req, res) => {
     });
 });
 
-GenreRoute.delete("/", async (req, res) => {
+GenreRoute.delete("/:id", async (req, res) => {
   Gerne.deleteOne({
     _id: req.params.id,
   })
