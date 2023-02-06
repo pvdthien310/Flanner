@@ -17,13 +17,15 @@ KnowledgeRoute.get("/load-data/newsfeeds", async (req, res) => {
 
   let skip = 0;
   if (cursor) skip = base64decode(cursor);
-  const data = await Knowledge.find({ mode: "public" })
+  let data = await Knowledge.find({ mode: "public" })
     .populate("genres")
     .populate("rating")
-    .skip(+skip)
-    .limit(LIMIT)
     .exec();
+  // .sort({ posttime: -1 })
+  // .skip(+skip)
+  // .limit(LIMIT)
 
+  data = data.reverse().slice(+skip, +skip + LIMIT);
   skip = +skip + LIMIT;
   const cursorEncode = base64encode(skip);
 
